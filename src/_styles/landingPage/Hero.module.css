@@ -2,7 +2,7 @@
     width: 100%;
     padding-top: 40px;
     padding-bottom: 56px;
-    background: linear-gradient(180deg, var(--lp-surface-blue) 0%, var(--lp-bg) 100%);
+    background: linear-gradient(180deg, var(--lp-bg) 0%, var(--lp-surface-blue) 100%);
     overflow: hidden;
     scroll-margin-top: 72px;
 }

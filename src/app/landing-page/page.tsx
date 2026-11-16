@@ -15,6 +15,7 @@ import HowItWorks from "@/_components/landingPage/HowItWorks";
 import Catalog from "@/_components/landingPage/Catalog";
 import Contact from "@/_components/landingPage/Contact";
 import LpFooter from "@/_components/landingPage/LpFooter";
+import WaveDivider from "@/_components/landingPage/WaveDivider";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -35,15 +36,25 @@ export default function LandingPage() {
             <LpHeader />
             <main className={styles["landing__main"]}>
                 <Hero />
+                <WaveDivider from="var(--lp-surface-blue)" to="var(--lp-bg)" />
                 <Problem />
+                <WaveDivider from="var(--lp-bg)" to="var(--lp-surface-green)" flip />
                 <ImpactCalculator />
+                <WaveDivider from="var(--lp-surface-green)" to="var(--lp-bg)" />
                 <Solution />
+                <WaveDivider from="var(--lp-bg)" to="var(--lp-surface-dark)" flip />
                 <Accessibility />
+                <WaveDivider from="var(--lp-surface-dark)" to="var(--lp-bg)" />
                 <Brand />
+                <WaveDivider from="var(--lp-bg)" to="var(--lp-surface-green)" flip />
                 <Sustainability />
+                <WaveDivider from="var(--lp-surface-green)" to="var(--lp-bg)" />
                 <Business />
+                <WaveDivider from="var(--lp-bg)" to="var(--lp-surface)" flip />
                 <HowItWorks />
+                <WaveDivider from="var(--lp-surface)" to="var(--lp-bg)" />
                 <Catalog />
+                <WaveDivider from="var(--lp-bg)" to="var(--lp-contact-start)" flip />
                 <Contact />
             </main>
             <LpFooter />

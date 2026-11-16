@@ -57,6 +57,7 @@
   --lp-gradient: linear-gradient(90deg, #7cc67e 0%, #2f7fd0 100%);
   --lp-logo-inverse-filter: brightness(0) invert(1);
   --lp-logo-filter: none;
+  --lp-contact-start: #1b4f86;
 }
 
 /* ===== ESCALA DE CINZA: tema cinza escuro + filtro que tira qualquer cor ===== */
@@ -112,6 +113,7 @@ html[data-contrast="gray"] {
   --lp-gradient: linear-gradient(90deg, #8c8c8c 0%, #d0d0d0 100%);
   --lp-logo-inverse-filter: brightness(0) invert(1);
   --lp-logo-filter: brightness(0) invert(1);
+  --lp-contact-start: #2a2a2a;
 }
 
 /* ===== ALTO CONTRASTE ===== */
@@ -165,6 +167,7 @@ html[data-contrast="high"] {
   --lp-gradient: linear-gradient(90deg, #ffeb3b 0%, #ffeb3b 100%);
   --lp-logo-inverse-filter: brightness(0) invert(1);
   --lp-logo-filter: brightness(0) invert(1);
+  --lp-contact-start: #000;
 }
 
 @theme inline {

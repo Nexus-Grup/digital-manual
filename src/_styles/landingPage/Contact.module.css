@@ -2,7 +2,7 @@
     width: 100%;
     padding-top: 64px;
     padding-bottom: 64px;
-    background: linear-gradient(135deg, #1b4f86 0%, #111418 100%);
+    background: linear-gradient(180deg, var(--lp-contact-start) 0%, var(--lp-surface-dark) 100%);
     scroll-margin-top: 72px;
     content-visibility: auto;
     contain-intrinsic-size: auto 900px;
