@@ -17,7 +17,7 @@
 .catalog__filters {
     min-height: 48px;
     --md-filter-chip-container-shape: 999px;
-    --md-filter-chip-selected-container-color: var(--lp-green-soft);
+    --md-filter-chip-selected-container-color: var(--lp-surface-blue);
 }
 
 /* Mobile/tablet: single-row carousel (scrolls inside SnapCarousel); desktop: 4-column grid */
@@ -57,7 +57,7 @@
 }
 
 .catalog__card-category {
-    color: var(--lp-green-text);
+    color: var(--lp-primary);
     font-size: 0.8125rem;
     font-weight: 700;
     letter-spacing: 0.04em;

@@ -13,7 +13,7 @@
     text-align: center;
 }
 
-/* Section badge (pill): same frosted glass + gradient text as the brand tagline band */
+/* Section badge (pill): frosted glass. Light sections: solid primary text; dark sections: brand gradient text */
 .section-heading__eyebrow {
     display: inline-flex;
     align-items: center;
@@ -43,16 +43,16 @@
 }
 
 .section-heading__eyebrow-text {
-    background-image: var(--lp-text-gradient);
+    color: var(--lp-primary);
+}
+
+/* Gradient text only on dark backgrounds, where the light brand green keeps its contrast */
+.section-heading__eyebrow-text--inverse {
+    background-image: var(--lp-gradient-text);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 1px 3px rgba(17, 20, 24, 0.18));
-}
-
-.section-heading__eyebrow-text--inverse {
-    background-image: var(--lp-text-gradient-inverse);
 }
 
 .section-heading__title {

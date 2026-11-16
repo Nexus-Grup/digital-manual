@@ -19,9 +19,9 @@
     --md-sys-color-on-primary: var(--lp-on-primary);
     --md-sys-color-primary-container: var(--lp-surface-blue);
     --md-sys-color-on-primary-container: var(--lp-text);
-    --md-sys-color-secondary: var(--lp-green-text);
+    --md-sys-color-secondary: var(--lp-primary);
     --md-sys-color-on-secondary: var(--lp-on-primary);
-    --md-sys-color-secondary-container: var(--lp-green-soft);
+    --md-sys-color-secondary-container: var(--lp-surface-blue);
     --md-sys-color-on-secondary-container: var(--lp-text);
     --md-sys-color-tertiary: var(--lp-yellow);
     --md-sys-color-tertiary-container: var(--lp-yellow-soft);

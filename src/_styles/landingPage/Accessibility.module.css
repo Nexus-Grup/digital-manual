@@ -26,7 +26,7 @@
     flex-direction: column;
     gap: 8px;
     padding: 24px;
-    border-left: 4px solid var(--lp-yellow);
+    border-left: 4px solid var(--lp-accent-on-dark);
     border-radius: 0 20px 20px 0;
     background-color: rgba(255, 255, 255, 0.06);
 }
@@ -69,7 +69,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 14px;
-    background-color: var(--lp-yellow);
+    background-color: var(--lp-accent-on-dark);
     color: #111418;
 }
 

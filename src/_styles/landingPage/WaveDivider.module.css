@@ -19,7 +19,7 @@
 }
 
 .wave__layer--back {
-    fill: var(--wave-to);
+    fill: var(--wave-accent);
     opacity: 0.45;
 }
 

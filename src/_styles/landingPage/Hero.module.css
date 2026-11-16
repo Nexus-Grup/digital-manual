@@ -2,7 +2,7 @@
     width: 100%;
     padding-top: 40px;
     padding-bottom: 56px;
-    background: linear-gradient(180deg, var(--lp-bg) 0%, var(--lp-surface-blue) 100%);
+    background: linear-gradient(180deg, var(--lp-bg) 0%, var(--lp-surface) 100%);
     overflow: hidden;
     scroll-margin-top: 72px;
 }
@@ -22,16 +22,26 @@
     gap: 24px;
 }
 
+/* Same frosted-glass badge as the section badges (light sections: solid primary text) */
 .hero__tag {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 6px 14px;
+    border: 1px solid var(--lp-glass-border);
     border-radius: 999px;
-    background-color: var(--lp-green-soft);
-    color: var(--lp-text);
-    font-size: 0.875rem;
-    font-weight: 700;
+    background-color: var(--lp-glass-bg);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+    box-shadow:
+        0 6px 16px rgba(17, 20, 24, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    color: var(--lp-primary);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
 }
 
 .hero__heading {
@@ -134,7 +144,7 @@
 
 .hero__highlight-icon {
     display: inline-flex;
-    color: var(--lp-green-text);
+    color: var(--lp-primary);
 }
 
 .hero__visual {
@@ -186,10 +196,16 @@
     color: var(--lp-primary);
 }
 
+/* Eco badge: neutral text, the leaf icon carries the green (.hero__badge-icon--eco) */
 .hero__badge--bottom {
     bottom: 6%;
     left: 0;
-    color: var(--lp-green-text);
+    color: var(--lp-text);
+}
+
+.hero__badge-icon--eco {
+    display: inline-flex;
+    color: var(--lp-green);
 }
 
 @keyframes hero-float {

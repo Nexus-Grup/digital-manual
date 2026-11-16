@@ -29,11 +29,11 @@
 }
 
 .brand__card--mission {
-    background-color: var(--lp-surface-blue);
+    background-color: var(--lp-surface);
 }
 
 .brand__card--vision {
-    background-color: var(--lp-surface-green);
+    background-color: var(--lp-surface);
 }
 
 .brand__card-icon {
@@ -89,7 +89,7 @@
 }
 
 .brand__value-number {
-    color: var(--lp-green-text);
+    color: var(--lp-primary);
     font-size: 0.875rem;
     font-weight: 800;
     letter-spacing: 0.08em;
@@ -127,8 +127,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 14px;
-    background-color: var(--lp-yellow-soft);
-    color: var(--lp-text);
+    background-color: var(--lp-surface-blue);
+    color: var(--lp-primary);
 }
 
 .brand__legacy-text {

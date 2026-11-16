@@ -8,18 +8,25 @@ type WaveDividerProps = {
     to: string;
     /** Mirrors the wave horizontally to vary the rhythm between sections. */
     flip?: boolean;
+    /**
+     * Color of the translucent back layer (defaults to `to`). Use a brand color on light <-> dark
+     * transitions, where a translucent `to` over `from` would read as a gray stripe.
+     */
+    accent?: string;
 };
 
 type WaveStyle = CSSProperties & {
     "--wave-from": string;
     "--wave-to": string;
+    "--wave-accent": string;
 };
 
 // Decorative two-layer wave that blends one section background into the next.
-export default function WaveDivider({ from, to, flip = false }: WaveDividerProps) {
+export default function WaveDivider({ from, to, flip = false, accent }: WaveDividerProps) {
     const style: WaveStyle = {
         "--wave-from": from,
         "--wave-to": to,
+        "--wave-accent": accent ?? to,
     };
 
     return (

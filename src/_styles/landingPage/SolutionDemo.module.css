@@ -77,26 +77,22 @@
 
 .solution-demo__face--right {
     transform: rotateY(90deg) translateZ(var(--depth));
-    background-color: rgba(124, 198, 126, 0.3);
-    border-color: var(--lp-green-text);
+    background-color: rgba(47, 127, 208, 0.32);
 }
 
 .solution-demo__face--left {
     transform: rotateY(-90deg) translateZ(var(--depth));
-    background-color: rgba(124, 198, 126, 0.3);
-    border-color: var(--lp-green-text);
+    background-color: rgba(47, 127, 208, 0.32);
 }
 
 .solution-demo__face--top {
     transform: rotateX(90deg) translateZ(var(--depth));
-    background-color: rgba(242, 194, 48, 0.35);
-    border-color: #b08600;
+    background-color: rgba(142, 189, 235, 0.45);
 }
 
 .solution-demo__face--bottom {
     transform: rotateX(-90deg) translateZ(var(--depth));
-    background-color: rgba(242, 194, 48, 0.35);
-    border-color: #b08600;
+    background-color: rgba(142, 189, 235, 0.45);
 }
 
 @keyframes solution-demo-spin {

@@ -1,23 +1,26 @@
-/* Full-width smoky band: soft brand-color haze behind a frosted-glass panel */
+/* Full-width dark band: soft brand-color haze behind a dark frosted-glass panel with gradient text */
 .brand-band {
     position: relative;
     width: 100%;
     padding-top: 48px;
     padding-bottom: 48px;
-    background-color: var(--lp-surface);
+    background-color: var(--lp-surface-dark);
     overflow: hidden;
     isolation: isolate;
 }
 
-/* Blurred blobs: painted once (static), give the glass something to frost */
+/* Blurred blobs: painted once (static); --lp-haze is 0 in the contrast modes (plain background) */
 .brand-band__blob {
     position: absolute;
     top: auto;
     z-index: -1;
     border-radius: 50%;
-    filter: blur(48px);
-    /* --lp-haze is 0 in the contrast modes: plain background, no colored haze */
-    opacity: calc(0.55 * var(--lp-haze, 1));
+    filter: blur(56px);
+    /*
+     * Kept low so the blue end of the gradient text stays above 3:1 even at the center of the
+     * blue haze (worst case with the glass on top: ~3.4:1).
+     */
+    opacity: calc(0.15 * var(--lp-haze, 1));
     pointer-events: none;
 }
 
@@ -37,15 +40,6 @@
     background-color: var(--lp-brand-blue);
 }
 
-.brand-band__blob--yellow {
-    top: 20%;
-    left: 45%;
-    width: 180px;
-    height: 140px;
-    background-color: var(--lp-yellow);
-    opacity: calc(0.35 * var(--lp-haze, 1));
-}
-
 .brand-band__container {
     display: flex;
     justify-content: center;
@@ -53,27 +47,28 @@
     padding-right: 4%;
 }
 
+/* Dark glass (same treatment as the badges in dark sections) */
 .brand-band__glass {
     width: 100%;
     max-width: 960px;
     padding: 28px 24px;
-    border: 1px solid var(--lp-glass-border);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 28px;
-    background-color: var(--lp-glass-bg);
+    background-color: rgba(255, 255, 255, 0.04);
     -webkit-backdrop-filter: blur(18px) saturate(140%);
     backdrop-filter: blur(18px) saturate(140%);
     box-shadow:
-        0 16px 40px rgba(17, 20, 24, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        0 16px 40px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
+/* Official brand gradient as text: on #111418 the green end is ~9.8:1 and the blue end ~4.5:1 */
 .brand-band__text {
-    background-image: var(--lp-text-gradient);
+    background-image: var(--lp-gradient-text);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 6px rgba(17, 20, 24, 0.18));
     font-size: 1.375rem;
     font-weight: 800;
     line-height: 1.3;

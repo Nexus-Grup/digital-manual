@@ -66,7 +66,9 @@ export default function Hero() {
                         3D 360°
                     </p>
                     <p className={`${styles["hero__badge"]} ${styles["hero__badge--bottom"]}`}>
-                        <LeafIcon size={18} />
+                        <span className={styles["hero__badge-icon--eco"]}>
+                            <LeafIcon size={18} />
+                        </span>
                         Zero papel desnecessário
                     </p>
                 </div>

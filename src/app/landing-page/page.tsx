@@ -38,27 +38,27 @@ export default function LandingPage() {
             <LpHeader />
             <main className={styles["landing__main"]}>
                 <Hero />
-                <WaveDivider from="var(--lp-surface-blue)" to="var(--lp-bg)" />
+                <WaveDivider from="var(--lp-surface)" to="var(--lp-bg)" />
                 <Problem />
-                <WaveDivider from="var(--lp-bg)" to="var(--lp-surface-green)" flip />
+                <WaveDivider from="var(--lp-bg)" to="var(--lp-surface)" flip />
                 <ImpactCalculator />
-                <WaveDivider from="var(--lp-surface-green)" to="var(--lp-bg)" />
+                <WaveDivider from="var(--lp-surface)" to="var(--lp-bg)" />
                 <Solution />
-                <WaveDivider from="var(--lp-bg)" to="var(--lp-surface-dark)" flip />
+                <WaveDivider from="var(--lp-bg)" to="var(--lp-surface-dark)" accent="var(--lp-brand-blue)" flip />
                 <Accessibility />
-                <WaveDivider from="var(--lp-surface-dark)" to="var(--lp-bg)" />
+                <WaveDivider from="var(--lp-surface-dark)" to="var(--lp-bg)" accent="var(--lp-brand-blue)" />
                 <Brand />
                 <BrandBand />
                 <LogoMarquee />
-                <WaveDivider from="var(--lp-bg)" to="var(--lp-surface-green)" flip />
+                <WaveDivider from="var(--lp-bg)" to="var(--lp-surface)" flip />
                 <Sustainability />
-                <WaveDivider from="var(--lp-surface-green)" to="var(--lp-bg)" />
+                <WaveDivider from="var(--lp-surface)" to="var(--lp-bg)" />
                 <Business />
                 <WaveDivider from="var(--lp-bg)" to="var(--lp-surface)" flip />
                 <HowItWorks />
                 <WaveDivider from="var(--lp-surface)" to="var(--lp-bg)" />
                 <Catalog />
-                <WaveDivider from="var(--lp-bg)" to="var(--lp-contact-start)" flip />
+                <WaveDivider from="var(--lp-bg)" to="var(--lp-surface-dark)" accent="var(--lp-brand-blue)" flip />
                 <Contact />
             </main>
             <LpFooter />

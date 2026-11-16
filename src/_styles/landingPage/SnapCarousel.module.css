@@ -59,7 +59,7 @@
 /* Dark sections: only swaps the color variables (no combined selectors) */
 .snap-carousel__dot--inverse {
     --dot-color: var(--lp-text-inverse);
-    --dot-active-color: var(--lp-green);
+    --dot-active-color: var(--lp-accent-on-dark);
 }
 
 .snap-carousel__dot--active::before {

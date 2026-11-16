@@ -2,7 +2,7 @@
     width: 100%;
     padding-top: 64px;
     padding-bottom: 64px;
-    background-color: var(--lp-surface-green);
+    background-color: var(--lp-surface);
     scroll-margin-top: 72px;
 }
 

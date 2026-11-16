@@ -2,6 +2,7 @@
     width: 100%;
     padding-top: 56px;
     padding-bottom: 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     background-color: var(--lp-surface-dark);
     color: var(--lp-text-inverse);
 }
@@ -78,7 +79,7 @@
 }
 
 .lp-footer__link:focus-visible {
-    outline: 3px solid var(--lp-green);
+    outline: 3px solid var(--lp-accent-on-dark);
     outline-offset: 2px;
     border-radius: 4px;
 }
