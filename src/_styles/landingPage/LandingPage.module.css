@@ -1,0 +1,46 @@
+/* Landing page root: brand font + Material 3 theme tokens mapped to the brand book */
+.landing {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--lp-bg);
+    color: var(--lp-text);
+    font-family: var(--font-lp), Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+
+    /* Typography */
+    --md-ref-typeface-brand: var(--font-lp), Arial, sans-serif;
+    --md-ref-typeface-plain: var(--font-lp), Arial, sans-serif;
+
+    /* Color scheme */
+    --md-sys-color-primary: var(--lp-primary);
+    --md-sys-color-on-primary: var(--lp-on-primary);
+    --md-sys-color-primary-container: var(--lp-surface-blue);
+    --md-sys-color-on-primary-container: var(--lp-text);
+    --md-sys-color-secondary: var(--lp-green-text);
+    --md-sys-color-on-secondary: var(--lp-on-primary);
+    --md-sys-color-secondary-container: var(--lp-green-soft);
+    --md-sys-color-on-secondary-container: var(--lp-text);
+    --md-sys-color-tertiary: var(--lp-yellow);
+    --md-sys-color-tertiary-container: var(--lp-yellow-soft);
+    --md-sys-color-surface: var(--lp-bg);
+    --md-sys-color-on-surface: var(--lp-text);
+    --md-sys-color-on-surface-variant: var(--lp-text-muted);
+    --md-sys-color-surface-container-lowest: var(--lp-bg);
+    --md-sys-color-surface-container-low: var(--lp-surface);
+    --md-sys-color-surface-container: var(--lp-surface);
+    --md-sys-color-surface-container-high: var(--lp-surface);
+    --md-sys-color-surface-container-highest: var(--lp-surface-blue);
+    --md-sys-color-outline: var(--lp-text-muted);
+    --md-sys-color-outline-variant: var(--lp-border);
+    --md-sys-color-error: #b3261e;
+}
+
+.landing__main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+

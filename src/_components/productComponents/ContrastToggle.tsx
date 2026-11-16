@@ -74,9 +74,9 @@ export default function ContrastToggle() {
     };
   }, [open]);
 
-  // clicar na opção já ligada volta ao normal
-  const choose = (target: 'gray' | 'high') => {
-    const next: Mode = mode === target ? 'normal' : target;
+  // "Padrão" sempre volta ao normal; clicar na opção já ligada também volta ao normal
+  const choose = (target: Mode) => {
+    const next: Mode = target === 'normal' || mode === target ? 'normal' : target;
     apply(next);
     try {
       localStorage.setItem(KEY, next);
@@ -105,6 +105,20 @@ export default function ContrastToggle() {
 
       {open && (
         <div id={menuId} className={styles.menu} role="group" aria-label="Modo de visualização">
+          <button
+            type="button"
+            className={styles.item}
+            aria-pressed={mode === 'normal'}
+            onClick={() => choose('normal')}
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+              strokeWidth="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="8" />
+            </svg>
+            <span className={styles.label}>Padrão</span>
+            {mode === 'normal' && <CheckIcon />}
+          </button>
+
           <button
             type="button"
             className={styles.item}

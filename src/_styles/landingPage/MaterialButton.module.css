@@ -1,0 +1,19 @@
+/*
+ * Restores the Material 3 button paddings.
+ * The global reset (`* { padding: 0 }` in globals.css and Tailwind preflight) wins over the
+ * component's own :host styles, so every md-*-button must use one of these classes.
+ */
+.md-button {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.md-button--trailing-icon {
+    padding-left: 24px;
+    padding-right: 16px;
+}
+
+.md-button--text {
+    padding-left: 12px;
+    padding-right: 12px;
+}
