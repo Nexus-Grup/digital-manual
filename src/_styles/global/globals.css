@@ -58,6 +58,10 @@
   --lp-logo-inverse-filter: brightness(0) invert(1);
   --lp-logo-filter: none;
   --lp-contact-start: #1b4f86;
+  --lp-text-gradient: linear-gradient(90deg, #2e7d32 0%, #2a72bd 100%);
+  --lp-glass-bg: rgba(255, 255, 255, 0.5);
+  --lp-glass-border: rgba(255, 255, 255, 0.75);
+  --lp-haze: 1;
 }
 
 /* ===== ESCALA DE CINZA: tema cinza escuro + filtro que tira qualquer cor ===== */
@@ -114,6 +118,11 @@ html[data-contrast="gray"] {
   --lp-logo-inverse-filter: brightness(0) invert(1);
   --lp-logo-filter: brightness(0) invert(1);
   --lp-contact-start: #2a2a2a;
+  --lp-text-gradient: linear-gradient(90deg, #f0f0f0 0%, #f0f0f0 100%);
+  --lp-glass-bg: rgba(34, 34, 34, 0.6);
+  --lp-glass-border: rgba(255, 255, 255, 0.2);
+  --lp-haze: 0;
+  --lp-marquee-logo-color: #f0f0f0;
 }
 
 /* ===== ALTO CONTRASTE ===== */
@@ -168,6 +177,11 @@ html[data-contrast="high"] {
   --lp-logo-inverse-filter: brightness(0) invert(1);
   --lp-logo-filter: brightness(0) invert(1);
   --lp-contact-start: #000;
+  --lp-text-gradient: linear-gradient(90deg, #ffeb3b 0%, #ffeb3b 100%);
+  --lp-glass-bg: rgba(0, 0, 0, 0.85);
+  --lp-glass-border: #fff;
+  --lp-haze: 0;
+  --lp-marquee-logo-color: #fff;
 }
 
 @theme inline {

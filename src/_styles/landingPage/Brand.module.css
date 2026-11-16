@@ -172,17 +172,6 @@
     font-size: 1rem;
 }
 
-.brand__tagline {
-    padding: 28px 24px;
-    border-radius: 28px;
-    background: var(--lp-gradient);
-    color: #111418;
-    font-size: 1.375rem;
-    font-weight: 800;
-    line-height: 1.3;
-    text-align: center;
-}
-
 @media (min-width: 768px) {
     .brand {
         padding-top: 88px;
@@ -205,11 +194,6 @@
 
     .brand__values-list {
         grid-template-columns: repeat(2, 1fr);
-    }
-
-    .brand__tagline {
-        padding: 40px;
-        font-size: 1.75rem;
     }
 }
 

@@ -16,6 +16,8 @@ import Catalog from "@/_components/landingPage/Catalog";
 import Contact from "@/_components/landingPage/Contact";
 import LpFooter from "@/_components/landingPage/LpFooter";
 import WaveDivider from "@/_components/landingPage/WaveDivider";
+import BrandBand from "@/_components/landingPage/BrandBand";
+import LogoMarquee from "@/_components/landingPage/LogoMarquee";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -46,6 +48,8 @@ export default function LandingPage() {
                 <Accessibility />
                 <WaveDivider from="var(--lp-surface-dark)" to="var(--lp-bg)" />
                 <Brand />
+                <BrandBand />
+                <LogoMarquee />
                 <WaveDivider from="var(--lp-bg)" to="var(--lp-surface-green)" flip />
                 <Sustainability />
                 <WaveDivider from="var(--lp-surface-green)" to="var(--lp-bg)" />

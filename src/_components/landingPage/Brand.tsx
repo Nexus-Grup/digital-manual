@@ -109,9 +109,6 @@ export default function Brand() {
                         </ul>
                     </div>
                 </div>
-                <p className={styles["brand__tagline"]}>
-                    O manual do futuro. Interativo para quem monta, acessível para todos, sustentável para o planeta.
-                </p>
             </div>
         </section>
     );
