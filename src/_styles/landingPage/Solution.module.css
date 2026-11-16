@@ -4,8 +4,6 @@
     padding-bottom: 64px;
     background-color: var(--lp-bg);
     scroll-margin-top: 72px;
-    content-visibility: auto;
-    contain-intrinsic-size: auto 1100px;
 }
 
 .solution__container {

@@ -4,8 +4,6 @@
     padding-bottom: 64px;
     background-color: var(--lp-surface-green);
     scroll-margin-top: 72px;
-    content-visibility: auto;
-    contain-intrinsic-size: auto 900px;
 }
 
 .impact-calculator__container {

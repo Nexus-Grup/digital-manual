@@ -3,6 +3,7 @@ import styles from "@/_styles/landingPage/LpHeader.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 import headerLogo from "@/_assets/image/header_logo.svg";
 import ContrastToggle from "@/_components/productComponents/ContrastToggle";
+import LpMobileMenu from "@/_components/landingPage/LpMobileMenu";
 
 const NAV_LINKS = [
     { href: "#problema", label: "O problema" },
@@ -36,6 +37,7 @@ export default function LpHeader() {
                     <md-filled-button className={`${buttonStyles["md-button"]} ${styles["lp-header__cta"]}`} href="#contato">
                         Fale conosco
                     </md-filled-button>
+                    <LpMobileMenu links={NAV_LINKS} />
                 </div>
             </div>
         </header>

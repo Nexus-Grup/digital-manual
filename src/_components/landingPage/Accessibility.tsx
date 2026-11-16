@@ -1,5 +1,6 @@
 import styles from "@/_styles/landingPage/Accessibility.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
+import SnapCarousel from "@/_components/landingPage/SnapCarousel";
 import { ContrastIcon, GlobeIcon, HandIcon, VolumeIcon } from "@/_components/landingPage/Icons";
 
 const FEATURES = [
@@ -44,17 +45,19 @@ export default function Accessibility() {
                         </p>
                     </blockquote>
                 </div>
-                <ul className={styles["accessibility__list"]}>
-                    {FEATURES.map((feature) => (
-                        <li className={styles["accessibility__card"]} key={feature.title}>
-                            <span className={styles["accessibility__card-icon"]}>{feature.icon}</span>
-                            <div className={styles["accessibility__card-content"]}>
-                                <h3 className={styles["accessibility__card-title"]}>{feature.title}</h3>
-                                <p className={styles["accessibility__card-text"]}>{feature.text}</p>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                <SnapCarousel label="Recursos de acessibilidade" count={FEATURES.length} inverse>
+                    <ul className={styles["accessibility__list"]}>
+                        {FEATURES.map((feature) => (
+                            <li className={styles["accessibility__card"]} key={feature.title}>
+                                <span className={styles["accessibility__card-icon"]}>{feature.icon}</span>
+                                <div className={styles["accessibility__card-content"]}>
+                                    <h3 className={styles["accessibility__card-title"]}>{feature.title}</h3>
+                                    <p className={styles["accessibility__card-text"]}>{feature.text}</p>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </SnapCarousel>
             </div>
         </section>
     );

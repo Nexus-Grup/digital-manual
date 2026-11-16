@@ -6,6 +6,7 @@ import Link from "next/link";
 import styles from "@/_styles/landingPage/Catalog.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
+import SnapCarousel from "@/_components/landingPage/SnapCarousel";
 import { ArrowRightIcon, DevicesIcon, FridgeIcon, SofaIcon, WrenchIcon } from "@/_components/landingPage/Icons";
 
 type Category = "all" | "appliances" | "furniture" | "tools" | "electronics";
@@ -69,31 +70,33 @@ export default function Catalog() {
                         ></md-filter-chip>
                     ))}
                 </md-chip-set>
-                <ul className={styles["catalog__grid"]} aria-live="polite">
-                    {visibleProducts.map((product) => (
-                        <li className={styles["catalog__card"]} key={product.name}>
-                            <span className={styles["catalog__card-icon"]}>{CATEGORY_ICONS[product.category]}</span>
-                            <div className={styles["catalog__card-content"]}>
-                                <p className={styles["catalog__card-category"]}>{CATEGORY_LABELS[product.category]}</p>
-                                <h3 className={styles["catalog__card-title"]}>{product.name}</h3>
-                            </div>
-                            <ul className={styles["catalog__tags"]}>
-                                {product.features.map((feature) => (
-                                    <li className={styles["catalog__tag"]} key={feature}>
-                                        {feature}
-                                    </li>
-                                ))}
-                            </ul>
-                            <Link
-                                className={styles["catalog__link"]}
-                                href={`/products?q=${encodeURIComponent(product.name)}`}
-                            >
-                                Abrir manual
-                                <ArrowRightIcon size={18} />
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
+                <SnapCarousel label="Manuais digitalizados" count={visibleProducts.length} resetKey={active}>
+                    <ul className={styles["catalog__grid"]} aria-live="polite">
+                        {visibleProducts.map((product) => (
+                            <li className={styles["catalog__card"]} key={product.name}>
+                                <span className={styles["catalog__card-icon"]}>{CATEGORY_ICONS[product.category]}</span>
+                                <div className={styles["catalog__card-content"]}>
+                                    <p className={styles["catalog__card-category"]}>{CATEGORY_LABELS[product.category]}</p>
+                                    <h3 className={styles["catalog__card-title"]}>{product.name}</h3>
+                                </div>
+                                <ul className={styles["catalog__tags"]}>
+                                    {product.features.map((feature) => (
+                                        <li className={styles["catalog__tag"]} key={feature}>
+                                            {feature}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <Link
+                                    className={styles["catalog__link"]}
+                                    href={`/products?q=${encodeURIComponent(product.name)}`}
+                                >
+                                    Abrir manual
+                                    <ArrowRightIcon size={18} />
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </SnapCarousel>
                 <div className={styles["catalog__more"]}>
                     <md-filled-tonal-button className={buttonStyles["md-button"]} href="/products">Ver todos os manuais</md-filled-tonal-button>
                 </div>

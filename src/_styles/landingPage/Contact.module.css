@@ -4,8 +4,6 @@
     padding-bottom: 64px;
     background: linear-gradient(180deg, var(--lp-contact-start) 0%, var(--lp-surface-dark) 100%);
     scroll-margin-top: 72px;
-    content-visibility: auto;
-    contain-intrinsic-size: auto 900px;
 }
 
 .contact__container {

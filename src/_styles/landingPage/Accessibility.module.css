@@ -5,8 +5,6 @@
     background-color: var(--lp-surface-dark);
     color: var(--lp-text-inverse);
     scroll-margin-top: 72px;
-    content-visibility: auto;
-    contain-intrinsic-size: auto 900px;
 }
 
 .accessibility__container {
@@ -45,14 +43,16 @@
     font-size: 1rem;
 }
 
+/* Mobile/tablet: single-row carousel (scrolls inside SnapCarousel); desktop: 4-column grid */
 .accessibility__list {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
     gap: 16px;
     list-style: none;
 }
 
 .accessibility__card {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -102,8 +102,8 @@
         padding-right: 6%;
     }
 
-    .accessibility__list {
-        grid-template-columns: repeat(2, 1fr);
+    .accessibility__card {
+        flex-basis: 46%;
     }
 }
 
@@ -128,6 +128,7 @@
     }
 
     .accessibility__list {
+        display: grid;
         grid-template-columns: repeat(4, 1fr);
     }
 }
