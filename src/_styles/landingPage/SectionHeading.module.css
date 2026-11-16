@@ -13,27 +13,46 @@
     text-align: center;
 }
 
+/* Section badge (pill): same frosted glass + gradient text as the brand tagline band */
 .section-heading__eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    color: var(--lp-green-text);
-    font-size: 0.875rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    padding: 6px 14px;
+    border: 1px solid var(--lp-glass-border);
+    border-radius: 999px;
+    background-color: var(--lp-glass-bg);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+    box-shadow:
+        0 6px 16px rgba(17, 20, 24, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
 }
 
-.section-heading__eyebrow::before {
-    content: "";
-    width: 24px;
-    height: 4px;
-    border-radius: 4px;
-    background: var(--lp-gradient);
+/* Dark sections: dark glass so the light gradient text stays readable */
+.section-heading__eyebrow--inverse {
+    border-color: rgba(255, 255, 255, 0.18);
+    background-color: rgba(255, 255, 255, 0.06);
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
-.section-heading__eyebrow--inverse {
-    color: var(--lp-green);
+.section-heading__eyebrow-text {
+    background-image: var(--lp-text-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 1px 3px rgba(17, 20, 24, 0.18));
+}
+
+.section-heading__eyebrow-text--inverse {
+    background-image: var(--lp-text-gradient-inverse);
 }
 
 .section-heading__title {

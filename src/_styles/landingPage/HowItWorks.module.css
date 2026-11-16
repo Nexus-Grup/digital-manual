@@ -41,23 +41,63 @@
     gap: 12px;
 }
 
+/* Step number: brand gradient text (dark tones, >= 4.9:1 on white) instead of faded blue (~1.6:1) */
 .how-it-works__number {
-    color: var(--lp-brand-blue);
+    background-image: var(--lp-text-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(17, 20, 24, 0.12));
     font-size: 3rem;
     font-weight: 800;
     line-height: 1;
-    opacity: 0.35;
 }
 
+/* Frosted-glass icon badge over a blurred brand-color halo (same look as the tagline band) */
 .how-it-works__icon {
-    width: 52px;
-    height: 52px;
+    position: relative;
+    width: 56px;
+    height: 56px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid var(--lp-glass-border);
+    border-radius: 50%;
+    background-color: var(--lp-glass-bg);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    backdrop-filter: blur(12px) saturate(140%);
+    box-shadow:
+        0 8px 20px rgba(17, 20, 24, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    isolation: isolate;
+}
+
+.how-it-works__icon::before {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    z-index: -1;
     border-radius: 50%;
     background: var(--lp-gradient);
-    color: #111418;
+    filter: blur(10px);
+    opacity: calc(0.45 * var(--lp-haze, 1));
+}
+
+/* Hidden SVG that only holds the shared icon gradient (display: none would break the reference) */
+.how-it-works__defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.how-it-works__stop--start {
+    stop-color: var(--lp-grad-start);
+}
+
+.how-it-works__stop--end {
+    stop-color: var(--lp-grad-end);
 }
 
 .how-it-works__title {

@@ -20,6 +20,10 @@ export default function SectionHeading({ id, eyebrow, title, text, inverse = fal
         styles["section-heading__eyebrow"],
         inverse ? styles["section-heading__eyebrow--inverse"] : "",
     ].join(" ");
+    const textGradientClass = [
+        styles["section-heading__eyebrow-text"],
+        inverse ? styles["section-heading__eyebrow-text--inverse"] : "",
+    ].join(" ");
     const titleClass = [
         styles["section-heading__title"],
         inverse ? styles["section-heading__title--inverse"] : "",
@@ -31,7 +35,9 @@ export default function SectionHeading({ id, eyebrow, title, text, inverse = fal
 
     return (
         <div className={blockClass}>
-            <p className={eyebrowClass}>{eyebrow}</p>
+            <p className={eyebrowClass}>
+                <span className={textGradientClass}>{eyebrow}</span>
+            </p>
             <h2 id={id} className={titleClass}>
                 {title}
             </h2>
