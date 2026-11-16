@@ -15,6 +15,7 @@ import {
 import type { SimpleIcon } from "simple-icons";
 import styles from "@/_styles/landingPage/LogoMarquee.module.css";
 import MarqueeViewport from "@/_components/landingPage/MarqueeViewport";
+import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 
 type BrandLogo = {
     icon: SimpleIcon;
@@ -82,12 +83,12 @@ function LogoList({ clone = false }: { clone?: boolean }) {
 
 // Infinite single-line logo marquee. The list is rendered twice and the track slides by -50% (CSS only);
 // MarqueeViewport pauses it while it is off-screen.
-export default function LogoMarquee() {
+export default function LogoMarquee({ t }: { t: Dictionary["marquee"] }) {
     return (
         <section className={styles["logo-marquee"]} aria-labelledby="logo-marquee-title">
             <div className={styles["logo-marquee__container"]}>
                 <p className={styles["logo-marquee__title"]} id="logo-marquee-title">
-                    O mercado que queremos transformar: grandes fabricantes de eletrônicos, eletrodomésticos e móveis
+                    {t.title}
                 </p>
                 <MarqueeViewport>
                     <LogoList />

@@ -1,64 +1,29 @@
 import styles from "@/_styles/landingPage/Problem.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
 import { GlobeIcon, HandIcon, PaperIcon, ScaleIcon, SearchIcon, TreeIcon, TruckIcon } from "@/_components/landingPage/Icons";
+import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 
-const INDUSTRY_STATS = [
-    {
-        icon: <TreeIcon />,
-        value: "4.741 t",
-        label: "de papel por ano",
-        text: "estimadas só em manuais básicos de quatro gigantes: Whirlpool, Electrolux, Samsung e Apple.",
-    },
-    {
-        icon: <ScaleIcon />,
-        value: "80 g",
-        label: "por manual",
-        text: "é o peso médio de um único manual de eletrodoméstico, multiplicado por milhões de caixas.",
-    },
-    {
-        icon: <PaperIcon />,
-        value: "13.152",
-        label: "resmas de 500 folhas",
-        text: "por ano em um único cenário de bens de consumo, com 1,6 milhão de manuais impressos.",
-    },
-];
+// Icons in the same order as t.stats and t.pains.
+const STAT_ICONS = [<TreeIcon key="tree" />, <ScaleIcon key="scale" />, <PaperIcon key="paper" />];
+const PAIN_ICONS = [<SearchIcon key="search" />, <TruckIcon key="truck" />, <HandIcon key="hand" />, <GlobeIcon key="globe" />];
 
-const USER_PAINS = [
-    {
-        icon: <SearchIcon />,
-        text: "Letras miúdas e desenhos que confundem mais do que explicam.",
-    },
-    {
-        icon: <TruckIcon />,
-        text: "Manual perdido, rasgado ou jogado fora junto com a caixa.",
-    },
-    {
-        icon: <HandIcon />,
-        text: "Nenhum recurso para pessoas com deficiência visual, auditiva ou dificuldade de leitura.",
-    },
-    {
-        icon: <GlobeIcon />,
-        text: "Um só idioma, sem vídeo e sem como ver a peça de outro ângulo.",
-    },
-];
-
-export default function Problem() {
+export default function Problem({ t }: { t: Dictionary["problem"] }) {
     return (
         <section className={styles["problem"]} id="problema" aria-labelledby="problem-title">
             <div className={styles["problem__container"]}>
                 <SectionHeading
                     id="problem-title"
-                    eyebrow="O problema"
-                    title="O custo invisível do papel na indústria."
-                    text="O manual físico encarece a logística, gera lixo e, na maioria das vezes, acaba descartado ou esquecido. E quem precisa montar o produto continua sem ajuda."
+                    eyebrow={t.eyebrow}
+                    title={t.title}
+                    text={t.text}
                 />
                 <div className={styles["problem__grid"]}>
                     <div className={styles["problem__industry"]}>
-                        <h3 className={styles["problem__subtitle"]}>Para a indústria</h3>
+                        <h3 className={styles["problem__subtitle"]}>{t.industryTitle}</h3>
                         <ul className={styles["problem__stats"]}>
-                            {INDUSTRY_STATS.map((stat) => (
+                            {t.stats.map((stat, index) => (
                                 <li className={styles["problem__stat"]} key={stat.value}>
-                                    <span className={styles["problem__stat-icon"]}>{stat.icon}</span>
+                                    <span className={styles["problem__stat-icon"]}>{STAT_ICONS[index]}</span>
                                     <div className={styles["problem__stat-content"]}>
                                         <p className={styles["problem__stat-value"]}>
                                             {stat.value} <span className={styles["problem__stat-label"]}>{stat.label}</span>
@@ -70,21 +35,18 @@ export default function Problem() {
                         </ul>
                     </div>
                     <div className={styles["problem__users"]}>
-                        <h3 className={styles["problem__subtitle"]}>Para quem monta</h3>
+                        <h3 className={styles["problem__subtitle"]}>{t.usersTitle}</h3>
                         <ul className={styles["problem__pains"]}>
-                            {USER_PAINS.map((pain) => (
-                                <li className={styles["problem__pain"]} key={pain.text}>
-                                    <span className={styles["problem__pain-icon"]}>{pain.icon}</span>
-                                    <p className={styles["problem__pain-text"]}>{pain.text}</p>
+                            {t.pains.map((pain, index) => (
+                                <li className={styles["problem__pain"]} key={pain}>
+                                    <span className={styles["problem__pain-icon"]}>{PAIN_ICONS[index]}</span>
+                                    <p className={styles["problem__pain-text"]}>{pain}</p>
                                 </li>
                             ))}
                         </ul>
                     </div>
                 </div>
-                <p className={styles["problem__note"]}>
-                    Estimativas ilustrativas do estudo do Time Nexus, com base em relatórios anuais de 2025 e na premissa
-                    de papel 75 g/m² em formato A5. Não representam dados internos das empresas citadas.
-                </p>
+                <p className={styles["problem__note"]}>{t.note}</p>
             </div>
         </section>
     );

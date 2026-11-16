@@ -8,16 +8,11 @@ import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
 import SnapCarousel from "@/_components/landingPage/SnapCarousel";
 import { ArrowRightIcon, DevicesIcon, FridgeIcon, SofaIcon, WrenchIcon } from "@/_components/landingPage/Icons";
+import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 
 type Category = "all" | "appliances" | "furniture" | "tools" | "electronics";
 
-const CATEGORIES: { id: Category; label: string }[] = [
-    { id: "all", label: "Todos" },
-    { id: "appliances", label: "Eletrodomésticos" },
-    { id: "furniture", label: "Móveis" },
-    { id: "tools", label: "Ferramentas" },
-    { id: "electronics", label: "Eletrônicos" },
-];
+const CATEGORIES: Category[] = ["all", "appliances", "furniture", "tools", "electronics"];
 
 const CATEGORY_ICONS: Record<Exclude<Category, "all">, ReactNode> = {
     appliances: <FridgeIcon />,
@@ -26,24 +21,29 @@ const CATEGORY_ICONS: Record<Exclude<Category, "all">, ReactNode> = {
     electronics: <DevicesIcon />,
 };
 
-// Demo models used to showcase the experience; the real list comes from the product search.
-const PRODUCTS: { name: string; category: Exclude<Category, "all">; features: string[] }[] = [
-    { name: "Geladeira Frost Free 450 L", category: "appliances", features: ["3D 360°", "Vídeos", "Libras"] },
-    { name: "Lavadora 12 kg", category: "appliances", features: ["Checklist", "Voz alta"] },
-    { name: "Guarda-roupa 6 portas", category: "furniture", features: ["Vista explodida", "Checklist"] },
-    { name: "Rack para TV R-120", category: "furniture", features: ["3D 360°", "Libras"] },
-    { name: "Parafusadeira 12 V", category: "tools", features: ["Vídeos", "Segurança"] },
-    { name: "Furadeira de impacto 650 W", category: "tools", features: ["3D 360°", "Voz alta"] },
-    { name: "Smart TV 55 polegadas", category: "electronics", features: ["Configuração", "Libras"] },
-    { name: "Caixa de som Bluetooth", category: "electronics", features: ["Vídeos", "Idiomas"] },
+// Demo models used to showcase the experience (names/features come from the dictionary, same order).
+// The real list comes from the product search.
+const PRODUCT_CATEGORIES: Exclude<Category, "all">[] = [
+    "appliances",
+    "appliances",
+    "furniture",
+    "furniture",
+    "tools",
+    "tools",
+    "electronics",
+    "electronics",
 ];
 
-const CATEGORY_LABELS = Object.fromEntries(CATEGORIES.map((category) => [category.id, category.label]));
+type CatalogProps = {
+    t: Dictionary["catalog"];
+    carousel: Dictionary["carousel"];
+};
 
-export default function Catalog() {
+export default function Catalog({ t, carousel }: CatalogProps) {
     const [active, setActive] = useState<Category>("all");
 
-    const visibleProducts = active === "all" ? PRODUCTS : PRODUCTS.filter((product) => product.category === active);
+    const products = t.products.map((product, index) => ({ ...product, category: PRODUCT_CATEGORIES[index] }));
+    const visibleProducts = active === "all" ? products : products.filter((product) => product.category === active);
 
     // Filter chips toggle themselves on click; keep exactly one selected (single-select filter).
     const handleChipClick = (category: Category) => (event: MouseEvent<HTMLElement>) => {
@@ -56,27 +56,27 @@ export default function Catalog() {
             <div className={styles["catalog__container"]}>
                 <SectionHeading
                     id="catalog-title"
-                    eyebrow="Para quem monta"
-                    title="Explore manuais já digitalizados."
-                    text="Escolha uma categoria e teste na hora a experiência 3D e os recursos de acessibilidade. Modelos demonstrativos."
+                    eyebrow={t.eyebrow}
+                    title={t.title}
+                    text={t.text}
                 />
-                <md-chip-set className={styles["catalog__filters"]} aria-label="Filtrar por categoria">
+                <md-chip-set className={styles["catalog__filters"]} aria-label={t.filterAria}>
                     {CATEGORIES.map((category) => (
                         <md-filter-chip
-                            key={category.id}
-                            label={category.label}
-                            selected={active === category.id}
-                            onClick={handleChipClick(category.id)}
+                            key={category}
+                            label={t.categories[category]}
+                            selected={active === category}
+                            onClick={handleChipClick(category)}
                         ></md-filter-chip>
                     ))}
                 </md-chip-set>
-                <SnapCarousel label="Manuais digitalizados" count={visibleProducts.length} resetKey={active}>
+                <SnapCarousel label={t.carouselLabel} goToLabel={carousel.goTo} count={visibleProducts.length} resetKey={active}>
                     <ul className={styles["catalog__grid"]} aria-live="polite">
                         {visibleProducts.map((product) => (
                             <li className={styles["catalog__card"]} key={product.name}>
                                 <span className={styles["catalog__card-icon"]}>{CATEGORY_ICONS[product.category]}</span>
                                 <div className={styles["catalog__card-content"]}>
-                                    <p className={styles["catalog__card-category"]}>{CATEGORY_LABELS[product.category]}</p>
+                                    <p className={styles["catalog__card-category"]}>{t.categories[product.category]}</p>
                                     <h3 className={styles["catalog__card-title"]}>{product.name}</h3>
                                 </div>
                                 <ul className={styles["catalog__tags"]}>
@@ -90,7 +90,7 @@ export default function Catalog() {
                                     className={styles["catalog__link"]}
                                     href={`/products?q=${encodeURIComponent(product.name)}`}
                                 >
-                                    Abrir manual
+                                    {t.openManual}
                                     <ArrowRightIcon size={18} />
                                 </Link>
                             </li>
@@ -98,7 +98,9 @@ export default function Catalog() {
                     </ul>
                 </SnapCarousel>
                 <div className={styles["catalog__more"]}>
-                    <md-filled-tonal-button className={buttonStyles["md-button"]} href="/products">Ver todos os manuais</md-filled-tonal-button>
+                    <md-filled-tonal-button className={buttonStyles["md-button"]} href="/products">
+                        {t.viewAll}
+                    </md-filled-tonal-button>
                 </div>
             </div>
         </section>

@@ -6,17 +6,14 @@ import styles from "@/_styles/landingPage/Contact.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
 import { CheckIcon } from "@/_components/landingPage/Icons";
+import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 
-const VOLUME_OPTIONS = [
-    { value: "up-to-10k", label: "Até 10 mil produtos/ano" },
-    { value: "10k-100k", label: "De 10 mil a 100 mil produtos/ano" },
-    { value: "100k-1m", label: "De 100 mil a 1 milhão de produtos/ano" },
-    { value: "over-1m", label: "Mais de 1 milhão de produtos/ano" },
-];
+// Option values, in the same order as t.volumes.
+const VOLUME_VALUES = ["up-to-10k", "10k-100k", "100k-1m", "over-1m"];
 
 // B2B lead form. Material fields are form-associated, so native validation blocks invalid submits.
 // TODO: send the lead to a backend (API route or CRM) once it exists.
-export default function Contact() {
+export default function Contact({ t }: { t: Dictionary["contact"] }) {
     const [sent, setSent] = useState(false);
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -31,9 +28,9 @@ export default function Contact() {
                 <div className={styles["contact__intro"]}>
                     <SectionHeading
                         id="contact-title"
-                        eyebrow="Fale com a gente"
-                        title="Pronto para modernizar a embalagem e o pós-venda dos seus produtos?"
-                        text="Conte um pouco sobre a sua operação. Nosso time prepara uma demonstração com um manual da sua linha de produtos."
+                        eyebrow={t.eyebrow}
+                        title={t.title}
+                        text={t.text}
                         inverse
                     />
                 </div>
@@ -43,31 +40,31 @@ export default function Contact() {
                             <span className={styles["contact__success-icon"]}>
                                 <CheckIcon size={32} />
                             </span>
-                            <h3 className={styles["contact__success-title"]}>Recebemos seu contato!</h3>
-                            <p className={styles["contact__success-text"]}>
-                                Em breve o Time Nexus fala com você pelo e-mail informado.
-                            </p>
-                            <md-text-button className={buttonStyles["md-button--text"]} onClick={() => setSent(false)}>Enviar outro contato</md-text-button>
+                            <h3 className={styles["contact__success-title"]}>{t.successTitle}</h3>
+                            <p className={styles["contact__success-text"]}>{t.successText}</p>
+                            <md-text-button className={buttonStyles["md-button--text"]} onClick={() => setSent(false)}>
+                                {t.sendAnother}
+                            </md-text-button>
                         </div>
                     ) : (
                         <form className={styles["contact__form"]} onSubmit={handleSubmit} noValidate>
                             <md-outlined-text-field
                                 className={styles["contact__field"]}
-                                label="Nome"
+                                label={t.name}
                                 name="name"
                                 autocomplete="name"
                                 required
                             ></md-outlined-text-field>
                             <md-outlined-text-field
                                 className={styles["contact__field"]}
-                                label="Empresa"
+                                label={t.company}
                                 name="company"
                                 autocomplete="organization"
                                 required
                             ></md-outlined-text-field>
                             <md-outlined-text-field
                                 className={styles["contact__field"]}
-                                label="E-mail corporativo"
+                                label={t.email}
                                 name="email"
                                 type="email"
                                 autocomplete="email"
@@ -75,22 +72,20 @@ export default function Contact() {
                             ></md-outlined-text-field>
                             <md-outlined-select
                                 className={styles["contact__field"]}
-                                label="Volume aproximado de produtos por ano"
+                                label={t.volume}
                                 name="volume"
                                 required
                             >
-                                {VOLUME_OPTIONS.map((option) => (
-                                    <md-select-option key={option.value} value={option.value}>
-                                        <div slot="headline">{option.label}</div>
+                                {VOLUME_VALUES.map((value, index) => (
+                                    <md-select-option key={value} value={value}>
+                                        <div slot="headline">{t.volumes[index]}</div>
                                     </md-select-option>
                                 ))}
                             </md-outlined-select>
                             <md-filled-button className={`${buttonStyles["md-button"]} ${styles["contact__submit"]}`} type="submit">
-                                Quero uma demonstração
+                                {t.submit}
                             </md-filled-button>
-                            <p className={styles["contact__privacy"]}>
-                                Usamos seus dados apenas para retornar este contato.
-                            </p>
+                            <p className={styles["contact__privacy"]}>{t.privacy}</p>
                         </form>
                     )}
                 </div>

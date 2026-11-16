@@ -3,22 +3,19 @@
 import { useState } from "react";
 import styles from "@/_styles/landingPage/SolutionDemo.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
-
-const STEPS = [
-    "Separe as peças A, B e C",
-    "Encaixe a lateral na base",
-    "Fixe com 4 parafusos M6",
-];
+import { format } from "@/_i18n/config";
+import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 
 const CUBE_FACES = ["front", "back", "right", "left", "top", "bottom"] as const;
 
 // Lightweight preview of the product page: rotating 3D part, exploded view and step checklist.
-export default function SolutionDemo() {
+export default function SolutionDemo({ t }: { t: Dictionary["solution"]["demo"] }) {
+    const steps = t.steps;
     const [exploded, setExploded] = useState(false);
-    const [done, setDone] = useState<boolean[]>(STEPS.map(() => false));
+    const [done, setDone] = useState<boolean[]>(() => steps.map(() => false));
 
     const completed = done.filter(Boolean).length;
-    const progress = completed / STEPS.length;
+    const progress = completed / steps.length;
 
     const toggleStep = (index: number) => {
         setDone((current) => current.map((value, i) => (i === index ? !value : value)));
@@ -27,16 +24,16 @@ export default function SolutionDemo() {
     return (
         <div className={styles["solution-demo"]}>
             <div className={styles["solution-demo__header"]}>
-                <p className={styles["solution-demo__product"]}>Rack para TV · Modelo R-120</p>
+                <p className={styles["solution-demo__product"]}>{t.product}</p>
                 <p className={styles["solution-demo__step"]}>
-                    Passo {Math.min(completed + 1, STEPS.length)} de {STEPS.length}
+                    {format(t.step, { current: Math.min(completed + 1, steps.length), total: steps.length })}
                 </p>
             </div>
             <div className={styles["solution-demo__stage"]}>
                 <div
                     className={`${styles["solution-demo__cube"]} ${exploded ? styles["solution-demo__cube--exploded"] : ""}`}
                     role="img"
-                    aria-label={exploded ? "Peça em vista explodida" : "Peça girando em 360 graus"}
+                    aria-label={exploded ? t.cubeExploded : t.cubeSpinning}
                 >
                     {CUBE_FACES.map((face) => (
                         <span
@@ -51,15 +48,15 @@ export default function SolutionDemo() {
                 onClick={() => setExploded((value) => !value)}
                 aria-pressed={exploded}
             >
-                {exploded ? "Montar peça" : "Ver vista explodida"}
+                {exploded ? t.assemble : t.explode}
             </md-filled-tonal-button>
             <div className={styles["solution-demo__checklist"]}>
                 <div
                     className={styles["solution-demo__progress"]}
                     role="progressbar"
-                    aria-label="Progresso da montagem"
+                    aria-label={t.progress}
                     aria-valuemin={0}
-                    aria-valuemax={STEPS.length}
+                    aria-valuemax={steps.length}
                     aria-valuenow={completed}
                 >
                     <span
@@ -68,7 +65,7 @@ export default function SolutionDemo() {
                     ></span>
                 </div>
                 <ul className={styles["solution-demo__list"]}>
-                    {STEPS.map((step, index) => (
+                    {steps.map((step, index) => (
                         <li key={step}>
                             <label className={styles["solution-demo__item"]}>
                                 <md-checkbox

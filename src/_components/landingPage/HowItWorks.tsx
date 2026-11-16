@@ -1,42 +1,28 @@
 import styles from "@/_styles/landingPage/HowItWorks.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
 import { RocketIcon, SparkleIcon, UploadIcon } from "@/_components/landingPage/Icons";
+import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 
-const STEPS = [
-    {
-        icon: <UploadIcon size={26} />,
-        title: "Envio",
-        text: "Sua empresa envia o manual atual e os arquivos técnicos e 3D do produto.",
-    },
-    {
-        icon: <SparkleIcon size={26} />,
-        title: "Transformação",
-        text: "A plataforma converte o material em um manual 3D interativo, acessível e com vídeos integrados.",
-    },
-    {
-        icon: <RocketIcon size={26} />,
-        title: "Publicação",
-        text: "Geramos o QR Code exclusivo para a embalagem e indexamos o manual no buscador público.",
-    },
-];
+// Icons in the same order as t.steps.
+const STEP_ICONS = [<UploadIcon key="upload" size={26} />, <SparkleIcon key="sparkle" size={26} />, <RocketIcon key="rocket" size={26} />];
 
-export default function HowItWorks() {
+export default function HowItWorks({ t }: { t: Dictionary["howItWorks"] }) {
     return (
         <section className={styles["how-it-works"]} id="como-funciona" aria-labelledby="how-it-works-title">
             <div className={styles["how-it-works__container"]}>
                 <SectionHeading
                     id="how-it-works-title"
-                    eyebrow="Como funciona"
-                    title="Do papel ao QR Code em três passos."
-                    text="Implementação simples e rápida, sem mudar a linha de produção."
+                    eyebrow={t.eyebrow}
+                    title={t.title}
+                    text={t.text}
                     centered
                 />
                 <ol className={styles["how-it-works__list"]}>
-                    {STEPS.map((step, index) => (
+                    {t.steps.map((step, index) => (
                         <li className={styles["how-it-works__step"]} key={step.title}>
                             <div className={styles["how-it-works__step-header"]}>
                                 <span className={styles["how-it-works__number"]}>{index + 1}</span>
-                                <span className={styles["how-it-works__icon"]}>{step.icon}</span>
+                                <span className={styles["how-it-works__icon"]}>{STEP_ICONS[index]}</span>
                             </div>
                             <h3 className={styles["how-it-works__title"]}>{step.title}</h3>
                             <p className={styles["how-it-works__text"]}>{step.text}</p>

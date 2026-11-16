@@ -36,7 +36,24 @@ function CheckIcon() {
   );
 }
 
-export default function ContrastToggle() {
+type ContrastLabels = {
+  trigger: string;
+  group: string;
+  normal: string;
+  gray: string;
+  high: string;
+};
+
+// pt-BR defaults (product pages); the landing page passes translated labels.
+const DEFAULT_LABELS: ContrastLabels = {
+  trigger: "Opções de contraste",
+  group: "Modo de visualização",
+  normal: "Padrão",
+  gray: "Escala de cinza",
+  high: "Alto contraste",
+};
+
+export default function ContrastToggle({ labels = DEFAULT_LABELS }: { labels?: ContrastLabels }) {
   const mode = useSyncExternalStore<Mode>(subscribe, getSnapshot, () => 'normal');
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -96,15 +113,15 @@ export default function ContrastToggle() {
         data-active={mode !== 'normal'}
         aria-expanded={open}
         aria-controls={menuId}
-        aria-label="Opções de contraste"
-        title="Opções de contraste"
+        aria-label={labels.trigger}
+        title={labels.trigger}
         onClick={() => setOpen((v) => !v)}
       >
         <Image src={IconContrastehub} alt="" width={24} height={24} className={styles.triggerImg} />
       </button>
 
       {open && (
-        <div id={menuId} className={styles.menu} role="group" aria-label="Modo de visualização">
+        <div id={menuId} className={styles.menu} role="group" aria-label={labels.group}>
           <button
             type="button"
             className={styles.item}
@@ -115,7 +132,7 @@ export default function ContrastToggle() {
               strokeWidth="2" aria-hidden="true">
               <circle cx="12" cy="12" r="8" />
             </svg>
-            <span className={styles.label}>Padrão</span>
+            <span className={styles.label}>{labels.normal}</span>
             {mode === 'normal' && <CheckIcon />}
           </button>
 
@@ -128,7 +145,7 @@ export default function ContrastToggle() {
             <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
               <circle cx="12" cy="12" r="9" />
             </svg>
-            <span className={styles.label}>Escala de cinza</span>
+            <span className={styles.label}>{labels.gray}</span>
             {mode === 'gray' && <CheckIcon />}
           </button>
 
@@ -139,7 +156,7 @@ export default function ContrastToggle() {
             onClick={() => choose('high')}
           >
             <Image src={IconContraste} alt="" width={22} height={22} className={styles.itemImg} />
-            <span className={styles.label}>Alto contraste</span>
+            <span className={styles.label}>{labels.high}</span>
             {mode === 'high' && <CheckIcon />}
           </button>
         </div>
