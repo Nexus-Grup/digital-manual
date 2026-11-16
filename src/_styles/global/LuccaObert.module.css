@@ -1,0 +1,89 @@
+.wrap {
+  --bg: #ffffff;
+  --green: #7dc77e;
+  --belly: #c4e8c4;
+  --hat: #f2c331;
+  --hat-light: #f5d878;
+  --beak: #f28c28;
+  --ink: #12161a;
+  --muted: #5b6b60;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .wrap { --bg: #0f1411; --muted: #9fb3a5; }
+}
+
+.full {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+}
+
+.orbit {
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+}
+
+/* Anel de bolinhas */
+.ring {
+  position: absolute;
+  inset: 0;
+  animation: spin var(--spin) linear infinite;
+}
+.ring span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--dot);
+  height: var(--dot);
+  margin: calc(var(--dot) / -2) 0 0 calc(var(--dot) / -2);
+  border-radius: 50%;
+  background: var(--green);
+}
+
+/* Lucca centralizado */
+.lucca {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--size) * 0.42);
+  height: auto;
+  transform: translate(-50%, -50%);
+  overflow: visible;
+}
+
+/* Pupilas giram na mesma velocidade do anel */
+.look {
+  transform-box: view-box;
+  animation: spin var(--spin) linear infinite;
+}
+
+/* Piscar */
+.eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 3.6s infinite;
+}
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.08); }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.label {
+  margin: 0;
+  font: 600 0.95rem / 1.2 system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring, .look, .eye { animation: none; }
+}

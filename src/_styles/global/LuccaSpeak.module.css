@@ -1,0 +1,103 @@
+.wrap {
+  --bg: #ffffff;
+  --green: #7dc77e;
+  --belly: #c4e8c4;
+  --hat: #f2c331;
+  --hat-light: #f5d878;
+  --beak: #f28c28;
+  --ink: #12161a;
+  --paper: #ffffff;
+  --bubble-font: "Comic Neue", "Comic Sans MS", "Chalkboard SE", system-ui, sans-serif;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 34px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .wrap { --bg: #0f1411; }
+}
+
+.full {
+  position: fixed;
+  inset: 0;
+  align-items: center;
+  background: var(--bg);
+}
+
+.lucca { display: block; flex: none; height: auto; overflow: visible; }
+
+/* Olhos piscando */
+.eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 3.2s infinite;
+}
+@keyframes blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  94% { transform: scaleY(0.08); }
+}
+
+/* Bico: parado ou "falando" */
+.beak, .beakTalk {
+  transform-box: fill-box;
+  transform-origin: top center;
+}
+.beakTalk { animation: talk 0.2s ease-in-out infinite alternate; }
+@keyframes talk {
+  from { transform: scaleY(1); }
+  to { transform: scaleY(0.45); }
+}
+
+/* Balão de gibi */
+.bubble {
+  position: relative;
+  display: grid;
+  max-width: min(55vw, 340px);
+  margin-top: 6%;
+  padding: 16px 22px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: 24px;
+  box-shadow: 4px 4px 0 var(--ink); /* sombra "dura" de quadrinho */
+  font: 700 clamp(1rem, 2.4vw, 1.35rem) / 1.35 var(--bubble-font);
+  transform-origin: left 42px;
+  animation: pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes pop {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Rabinho do balão apontando para o Lucca */
+.bubble::before,
+.bubble::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-color: transparent;
+}
+.bubble::before { /* contorno */
+  left: -23px;
+  top: 30px;
+  border-width: 12px 21px 12px 0;
+  border-right-color: var(--ink);
+}
+.bubble::after { /* preenchimento */
+  left: -17px;
+  top: 33px;
+  border-width: 9px 18px 9px 0;
+  border-right-color: var(--paper);
+}
+
+/* Texto fantasma + texto digitado ocupam a mesma célula */
+.ghost, .typed { grid-area: 1 / 1; }
+.ghost { visibility: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .eye, .beakTalk, .bubble { animation: none; }
+}

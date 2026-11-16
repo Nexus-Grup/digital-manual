@@ -1,0 +1,90 @@
+.wrap {
+  position: relative;
+  color: var(--c-text);
+}
+
+/* ===== BOTÃO DO HEADER ===== */
+.trigger {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: var(--c-bg);
+  /* border: 1px solid var(--c-border); */
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.trigger:hover {
+  background: var(--c-hover);
+}
+
+.triggerImg,
+.itemImg {
+  filter: var(--icon-filter); /* o .svg é preto: vira branco no alto contraste */
+}
+
+/* algum modo ligado: botão destacado */
+.trigger[data-active="true"] {
+  background: var(--c-inverse-bg);
+  border-color: var(--c-inverse-bg);
+}
+
+.trigger[data-active="true"] .triggerImg {
+  filter: var(--icon-inverse-filter);
+}
+
+/* ===== MENU ===== */
+.menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 600;
+  width: 230px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+  color: var(--c-text);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.item:hover {
+  background: var(--c-hover);
+}
+
+.item[aria-pressed="true"] {
+  font-weight: 700;
+  background: var(--c-active);
+}
+
+.label {
+  flex: 1;
+}
+
+.trigger:focus-visible,
+.item:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 2px;
+}

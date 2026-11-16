@@ -1,0 +1,242 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 16px 24px;
+  color: var(--c-text);
+  text-align: center;
+}
+
+/* ===== CÍRCULO + ANÉIS ===== */
+.stage {
+  position: relative;
+  width: min(220px, 72%);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+.rings {
+  position: absolute;
+  inset: 0;
+}
+
+.ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px solid;
+  transform: translate(-50%, -50%);
+}
+
+.ring:nth-child(1) { width: 100%; height: 100%; border-color: #dde8f6; }
+.ring:nth-child(2) { width: 83%;  height: 83%;  border-color: #b3cdee; }
+.ring:nth-child(3) { width: 67%;  height: 67%;  border-color: #8fc3c4; }
+.ring:nth-child(4) { width: 52%;  height: 52%;  border-color: #8ecf94; }
+
+/* só pulsa enquanto toca */
+.root[data-playing="true"] .ring {
+  animation: pulse 2.4s ease-in-out infinite;
+}
+.root[data-playing="true"] .ring:nth-child(2) { animation-delay: 0.15s; }
+.root[data-playing="true"] .ring:nth-child(3) { animation-delay: 0.3s; }
+.root[data-playing="true"] .ring:nth-child(4) { animation-delay: 0.45s; }
+
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50%      { transform: translate(-50%, -50%) scale(1.04); }
+}
+
+/* carregando / erro: anéis neutros, o verde vira tracejado */
+.root[data-status="loading"] .ring,
+.root[data-status="error"] .ring {
+  border-color: var(--c-border-soft);
+}
+.root[data-status="loading"] .ring:nth-child(4),
+.root[data-status="error"] .ring:nth-child(4) {
+  border-style: dashed;
+  border-color: #8ecf94;
+}
+.root[data-status="error"] .ring:nth-child(3),
+.root[data-status="error"] .ring:nth-child(2) {
+  display: none;
+}
+.root[data-status="error"] .ring:nth-child(4) { border-color: var(--c-border); }
+
+.main {
+  position: relative;
+  width: 38%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: var(--c-inverse-text);
+  background: var(--c-inverse-bg);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.main svg {
+  width: 38%;
+  height: 38%;
+}
+
+.main:hover:not(:disabled) { transform: scale(1.06); }
+.main:active:not(:disabled) { transform: scale(0.96); }
+
+.main:disabled { cursor: default; }
+
+.root[data-status="loading"] .main { background: var(--c-loading); }
+
+/* erro: botão vazado com ícone de alerta */
+.root[data-status="error"] .main {
+  color: var(--c-text);
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+}
+
+.spinner { animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== TEXTOS ===== */
+.title {
+  margin: 28px 0 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.product {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: var(--c-muted);
+}
+
+.status {
+  margin: 6px 0 0;
+  min-height: 1.2em;
+  font-size: 0.8rem;
+  color: var(--c-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.root[data-status="loading"] .status { color: var(--c-ok); }
+.root[data-status="error"] .status { color: var(--c-warn); }
+
+/* ===== CONTROLES ===== */
+.controls {
+  width: 100%;
+  max-width: 260px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.restart,
+.retry {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+  color: var(--c-text);
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.restart {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+}
+
+.retry {
+  margin-top: 18px;
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.restart:hover:not(:disabled),
+.retry:hover {
+  background: var(--c-hover);
+  border-color: var(--c-border);
+}
+
+.restart:disabled { opacity: 0.5; cursor: default; }
+
+.volIcon { flex-shrink: 0; }
+
+/* ===== SLIDER DE VOLUME ===== */
+.volume {
+  flex: 1;
+  min-width: 0;
+  height: 20px;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+.volume::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--c-text) var(--v), var(--c-border-soft) var(--v));
+}
+
+.volume::-moz-range-track {
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--c-text) var(--v), var(--c-border-soft) var(--v));
+}
+
+.volume::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -6.5px;
+  border-radius: 50%;
+  background: var(--c-text);
+  border: 0;
+}
+
+.volume::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--c-text);
+  border: 0;
+}
+
+.main:focus-visible,
+.restart:focus-visible,
+.retry:focus-visible,
+.volume:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 2px;
+}
+
+/* ===== CELULAR ===== */
+@media (max-width: 640px) {
+  .root {
+    padding: 12px 16px 56px; /* espaço para a aba do Hub */
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring,
+  .spinner {
+    animation: none !important;
+  }
+}
+
+/* alto contraste: anéis brancos, o de dentro amarelo */
+:global(html[data-contrast="high"]) .ring { border-color: #fff !important; }
+:global(html[data-contrast="high"]) .ring:nth-child(4) { border-color: #ffeb3b !important; }

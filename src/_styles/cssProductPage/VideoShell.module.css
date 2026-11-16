@@ -1,0 +1,407 @@
+.shell {
+  --panel-w: 320px;
+  display: grid;
+  grid-template-columns: 0 minmax(0, 1fr);
+  height: 100%;
+  transition: grid-template-columns 0.25s ease;
+}
+
+.shell[data-open="true"] {
+  grid-template-columns: var(--panel-w) minmax(0, 1fr);
+}
+
+/* o conteúdo rola por dentro; a página não */
+.content {
+  min-width: 0;
+  height: 100%;
+  padding-left: 52px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.backdrop {
+  display: none;
+}
+
+.panelWrap {
+  position: relative;
+  height: 100%;
+  min-width: 0;
+  z-index: 5;
+}
+
+/* recorta o painel enquanto a coluna anima, sem deixar o texto reflowar */
+.clip {
+  height: 100%;
+  overflow: hidden;
+  visibility: hidden;
+  transition: visibility 0s 0.25s;
+}
+
+.shell[data-open="true"] .clip {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.panel {
+  width: var(--panel-w);
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+  color: var(--c-text);
+  background: var(--c-bg);
+  border-right: 1px solid var(--c-border-soft);
+}
+
+/* abas (vídeos / som) coladas na borda do painel */
+.tabs {
+  position: absolute;
+  top: 24px;
+  left: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 6;
+}
+
+.tab {
+  width: 36px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  color: var(--c-text);
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-left: 0;
+  border-radius: 0 12px 12px 0;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tab:hover { background: var(--c-hover); }
+
+.tab[data-active="true"],
+.tab[data-active="true"]:hover {
+  color: var(--c-inverse-text);
+  background: var(--c-inverse-bg);
+  border-color: var(--c-inverse-bg);
+}
+
+.paneHidden { display: none !important; }
+
+/* ===== CABEÇALHO ===== */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--c-border-soft);
+}
+
+.headerIcon {
+  display: grid;
+  place-items: center;
+}
+
+.heading {
+  margin: 0;
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.close {
+  display: none; /* só no mobile */
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  font-size: 1.2rem;
+  color: var(--c-text);
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.close:hover {
+  background: var(--c-hover);
+}
+
+/* ===== CORPO ===== */
+.body {
+  padding: 14px 16px 24px;
+}
+
+.player {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #0a1322;
+  border-radius: 12px;
+}
+
+.player iframe,
+.playerCover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.playerCover {
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.playerCover img,
+.itemThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.playBtn,
+.playBtnSmall {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  background: #e50914;
+  border-radius: 50%;
+  transition: transform 0.15s;
+}
+
+.playBtn { width: 52px; height: 52px; }
+.playBtnSmall { width: 26px; height: 26px; }
+
+.playerCover:hover .playBtn,
+.item:hover .playBtnSmall {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.mainTitle {
+  margin: 12px 0 0;
+  padding-bottom: 14px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.3;
+  border-bottom: 1px solid var(--c-border-soft);
+}
+
+.label {
+  margin: 14px 0 8px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--c-muted);
+}
+
+.labelMobile { display: none; }
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 40% 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 6px;
+  text-align: left;
+  color: var(--c-text);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.item:hover { background: var(--c-hover); }
+.itemActive, .itemActive:hover { background: var(--c-active); }
+
+.itemThumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #0a1322;
+  border-radius: 6px;
+}
+
+.itemTitle {
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.close:focus-visible,
+.tab:focus-visible,
+.item:focus-visible,
+.playerCover:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 2px;
+}
+
+/* ===== CELULAR: sheet que sobe de trás do Hub ===== */
+@media (max-width: 640px) {
+  .shell,
+  .shell[data-open="true"] {
+    display: block;
+    transition: none;
+  }
+
+  .panelWrap {
+    position: static;
+    height: auto;
+  }
+
+  .content {
+    padding-left: 0;
+    padding-bottom: 0;
+  }
+
+  .tabs {
+    display: none;
+  }
+
+  /* fundo escuro: cobre só a área acima do Hub (.stage) */
+  .backdrop {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0s 0.25s;
+  }
+
+  .shell[data-open="true"] .backdrop {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  /* sheet colada embaixo do .stage, ou seja, em cima do Hub */
+  .clip {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 250;
+    height: auto;
+    max-height: 92%;
+    display: flex;
+    flex-direction: column;
+    background: var(--c-surface);
+    border-radius: 20px 20px 0 0;
+    transform: translateY(100%);
+    transition: transform 0.28s ease, visibility 0s 0.28s;
+  }
+
+  .shell[data-open="true"] .clip {
+    transform: translateY(0);
+    transition-delay: 0s;
+    top: 100px;
+  }
+
+  /* o painel não rola: só organiza em coluna */
+  .panel {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--c-surface);
+    border-right: 0;
+    padding-bottom: 0;
+  }
+
+  .panel::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 4px;
+    background: var(--c-border-soft);
+    border-radius: 4px;
+  }
+
+  .header {
+    padding: 28px 16px 8px;
+    border-bottom: 0;
+  }
+
+  .headerIcon { display: none; }
+  .shell[data-tab="sound"] .heading { visibility: hidden; }
+  .heading { font-size: 1.05rem; }
+  .close { display: grid; }
+
+  .body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 8px 16px 0;
+  }
+
+  .mainTitle {
+    padding-bottom: 0;
+    border-bottom: 0;
+    font-size: 1rem;
+  }
+
+  .labelDesktop { display: none; }
+  .labelMobile { display: inline; }
+
+  /* partes fixas: não encolhem nem rolam */
+  .header,
+  .player,
+  .mainTitle,
+  .label {
+    flex-shrink: 0;
+  }
+
+  /* só a lista rola */
+  .list {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    gap: 0;
+    padding-bottom: 36px; /* espaço para a aba do Hub, que sobe 22px */
+  }
+
+  .liActive { display: none; } /* no mobile só mostra "mais vídeos" */
+  .list li { border-bottom: 1px solid var(--c-border-soft); }
+
+  .item {
+    padding: 10px 0;
+    border-radius: 0;
+  }
+
+  .itemTitle { font-size: 0.85rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell, .clip, .backdrop { transition: none; }
+}

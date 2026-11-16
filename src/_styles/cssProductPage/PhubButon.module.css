@@ -1,0 +1,226 @@
+.container {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== BARRA (PC) ===== */
+.container__HUB_button {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid #c9c9c9;
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
+}
+
+/* as abas só existem no mobile */
+.handles {
+  display: none;
+}
+
+/* ===== BOTÃO ===== */
+.container__button {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 220px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+
+  padding: 10px 16px;
+  font-size: 1.1rem;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+
+  color: #111;
+  background: #fff;
+  border: 1px solid #c9c9c9;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.container__button img {
+  flex-shrink: 0;
+  transition: filter 0.15s;
+}
+
+/* HOVER: fundo preto, texto e ícone brancos */
+.container__button:hover:not(:disabled) {
+  background: #111418;
+  border-color: #111418;
+  color: #fff;
+}
+
+.container__button:hover:not(:disabled) img {
+  filter: brightness(0) invert(1);
+}
+
+.container__button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* SELECIONADO: azul */
+.container__button[aria-current="page"] {
+  background: #2b7fd4;
+  border-color: #1f66b0;
+  color: #fff;
+}
+
+.container__button[aria-current="page"] img {
+  filter: brightness(0) invert(1);
+}
+
+.container__button[aria-current="page"]:hover:not(:disabled) {
+  background: #2b7fd4;
+  border-color: #1f66b0;
+}
+
+/* DESABILITADO */
+.container__button:disabled {
+  background: #8a8a8a;
+  border-color: #8a8a8a;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.container__button:disabled img {
+  filter: brightness(0) invert(1);
+}
+
+.container__button:focus-visible,
+.handle:focus-visible {
+  outline: 2px solid #2b7fd4;
+  outline-offset: 2px;
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 768px) {
+  .container__HUB_button {
+    gap: 8px;
+    padding: 10px 8px;
+  }
+
+  .container__button {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+  }
+}
+
+/* ===== CELULAR: barra colada no rodapé + aba que abre os vídeos ===== */
+@media (max-width: 640px) {
+  .container {
+    width: 90%;
+    position: relative;
+    z-index: 300; /* acima da sheet (250) e do fundo (200) */
+    padding: 0;
+  }
+
+  .container__HUB_button {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 18px 20px calc(10px + env(safe-area-inset-bottom));
+    gap: 0;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #c9c9c9;
+    border-bottom: 0;
+    /* border-radius: 16px 16px 0 0; */
+    border: 1px solid rgba(0, 0, 0, 0.28);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+    position: static; 
+  }
+
+  /* abas em cima da barra: vídeos + som */
+  .handles {
+    display: flex;
+    gap: 6px;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .handle {
+    display: grid;
+    place-items: center;
+    width: 76px;
+    height: 28px;
+    padding: 0;
+    color: #111;
+    background: #fff;
+    border: 1px solid #c9c9c9;
+    border-bottom: 0;
+    border-radius: 12px 12px 0 0;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    bottom: calc(100% + 12px);
+  }
+
+  .handle[data-active="true"] {
+    color: #fff;
+    background: #111418;
+    border-color: #111418;
+  }
+
+  .videosButton {
+    display: none;
+  }
+
+  .container__button {
+    flex: 0 0 auto;
+    max-width: none;
+    flex-direction: row;
+    gap: 10px;
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    color: #111;
+  }
+
+  .container__label {
+    display: none;
+  }
+
+  .container__button[aria-current="page"] {
+    padding: 10px 18px;
+    background: #111418;
+    border: none;
+    color: #fff;
+  }
+
+  .container__button[aria-current="page"] .container__label {
+    display: inline;
+  }
+
+  .container__button[aria-current="page"]:hover:not(:disabled) {
+    background: #111418;
+  }
+
+  .container__button:hover:not(:disabled):not([aria-current="page"]) {
+    background: transparent;
+    color: #111;
+  }
+
+  .container__button:hover:not(:disabled):not([aria-current="page"]) img {
+    filter: none;
+  }
+}

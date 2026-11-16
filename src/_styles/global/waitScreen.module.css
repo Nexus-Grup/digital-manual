@@ -1,0 +1,86 @@
+.stage {
+  --bg: #ffffff;
+  --green: #7dc77e;
+  --green-dark: #5aab5c;
+  --belly: #c4e8c4;
+  --hat: #f2c331;
+  --hat-light: #f5d878;
+  --beak: #f28c28;
+  --ink: #12161a;
+  --font: var(--font-inter, Inter), system-ui, sans-serif;
+  --size: clamp(2rem, 8vw, 4.2rem);
+  --lucca-small: calc(var(--size) * 0.96); /* tamanho do Lucca ao lado do texto */
+
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  transition: opacity 0.5s;
+}
+
+@media (prefers-color-scheme: dark) {
+  .stage { --bg: #ffffff; }
+}
+
+.out { opacity: 0; }
+
+.logo { display: flex; align-items: baseline; } /* base do Lucca = base das letras, em qualquer fonte */
+
+/* Lucca */
+.lucca {
+  width: 220px;
+  flex: none;
+  transform: scale(0);
+  transition:
+    width 0.9s cubic-bezier(0.6, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.in { transform: scale(1); }
+.small { width: var(--lucca-small); }
+
+.lucca svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+.arm, .feet { transition: opacity 0.35s; }
+.small .arm, .small .feet { opacity: 0; }
+
+.armL { transform-origin: 84px 174px; transform-box: view-box; }
+.waving .armL { animation: wave 0.6s ease-in-out 3; }
+
+@keyframes wave {
+  0%, 100% { transform: rotate(0); }
+  30% { transform: rotate(-24deg); }
+  70% { transform: rotate(16deg); }
+}
+
+/* Texto */
+.box {
+  overflow: hidden;
+  white-space: nowrap;
+  font: 800 var(--size) / 1.4 var(--font);
+  padding: 0.1em 0;
+  letter-spacing: -0.01em;
+  color: var(--green);
+  transition: width 0.9s cubic-bezier(0.6, 0, 0.2, 1);
+}
+.open { margin-left: 0.25em; }
+
+.caret {
+  display: inline-block;
+  width: 0.07em;
+  height: 0.9em;
+  margin-left: 0.06em;
+  background: var(--green);
+  vertical-align: -0.08em;
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.sizer {
+  position: absolute;
+  visibility: hidden;
+  white-space: nowrap;
+  font: 800 var(--size) / 1.1 var(--font);
+  letter-spacing: -0.01em;
+}

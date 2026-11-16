@@ -1,0 +1,57 @@
+.wrap {
+  --bg: #ffffff;
+  --green: #7dc77e;
+  --belly: #c4e8c4;
+  --hat: #f2c331;
+  --hat-light: #f5d878;
+  --beak: #f28c28;
+  --ink: #12161a;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .wrap { --bg: #0f1411; }
+}
+
+.full {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+}
+
+.lucca { display: block; height: auto; overflow: visible; }
+
+/* Piscar */
+.eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 3.2s infinite;
+}
+@keyframes blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  94% { transform: scaleY(0.08); }
+}
+
+/* Bolinhas girando */
+.spinner {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  animation: spin 0.9s steps(8) infinite;
+}
+.spinner span {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--green);
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .eye, .spinner { animation: none; }
+}

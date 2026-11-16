@@ -1,0 +1,15 @@
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.stage {
+  position: relative; /* a sheet e o fundo se ancoram aqui, acima do Hub */
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  width: 100%;
+}

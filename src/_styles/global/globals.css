@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+*{
+  top: 0;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* ===== tema padrão ===== */
+  --c-bg: #fff;
+  --c-text: #111;
+  --c-muted: #4a5160;
+  --c-border: #c9c9c9;
+  --c-border-soft: #e3e6ea;
+  --c-hover: #f0f2f5;
+  --c-active: #d9d9d9;
+  --c-surface: #f8f9fb;
+  --c-inverse-bg: #111418;
+  --c-inverse-text: #fff;
+  --c-accent: #2b7fd4;
+  --c-accent-dark: #1f66b0;
+  --c-on-accent: #fff;
+  --c-highlight: #ffe066;
+  --c-highlight-soft: #fff3b8;
+  --c-on-highlight: #111;
+  --c-ok: #2f8a3f;
+  --c-warn: #c2410c;
+  --c-loading: #4a4a4a;
+  /* ícones .svg pretos: filtros para ficarem brancos/pretos quando precisar */
+  --icon-filter: none;
+  --icon-inverse-filter: brightness(0) invert(1);
+  --icon-on-accent-filter: brightness(0) invert(1);
+}
+
+/* ===== ESCALA DE CINZA: tema cinza escuro + filtro que tira qualquer cor ===== */
+html[data-contrast="gray"] {
+  color-scheme: dark;
+  filter: grayscale(1); /* fotos, vídeos e cores fixas viram cinza */
+
+  --background: #222;
+  --foreground: #f0f0f0;
+
+  --c-bg: #222;
+  --c-text: #f0f0f0;
+  --c-muted: #c4c4c4;
+  --c-border: #8c8c8c;
+  --c-border-soft: #444;
+  --c-hover: #333;
+  --c-active: #444;
+  --c-surface: #222;
+  --c-inverse-bg: #e6e6e6;
+  --c-inverse-text: #1a1a1a;
+  --c-accent: #d0d0d0;
+  --c-accent-dark: #d0d0d0;
+  --c-on-accent: #1a1a1a;
+  --c-highlight: #d9d9d9;
+  --c-highlight-soft: #555;
+  --c-on-highlight: #1a1a1a;
+  --c-ok: #d0d0d0;
+  --c-warn: #e6e6e6;
+  --c-loading: #8c8c8c;
+  --icon-filter: brightness(0) invert(1);
+  --icon-inverse-filter: brightness(0);
+  --icon-on-accent-filter: brightness(0);
+}
+
+/* ===== ALTO CONTRASTE ===== */
+html[data-contrast="high"] {
+  color-scheme: dark;
+  --background: #000;
+  --foreground: #fff;
+
+  --c-bg: #000;
+  --c-text: #fff;
+  --c-muted: #fff;
+  --c-border: #fff;
+  --c-border-soft: #fff;
+  --c-hover: #1f1f1f;
+  --c-active: #333;
+  --c-surface: #000;
+  --c-inverse-bg: #ffeb3b;
+  --c-inverse-text: #000;
+  --c-accent: #ffeb3b;
+  --c-accent-dark: #ffeb3b;
+  --c-on-accent: #000;
+  --c-highlight: #ffeb3b;
+  --c-highlight-soft: #5c5400;
+  --c-on-highlight: #000;
+  --c-ok: #8dff9f;
+  --c-warn: #ffb4a0;
+  --c-loading: #c9b800;
+  --icon-filter: brightness(0) invert(1);
+  --icon-inverse-filter: brightness(0);
+  --icon-on-accent-filter: brightness(0);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* --background: #0a0a0a; */
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--c-text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.container-global{
+    flex-direction: column;
+    place-content: center flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: space-between;
+}
