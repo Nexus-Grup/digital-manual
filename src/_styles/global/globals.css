@@ -33,6 +33,33 @@
   --icon-filter: none;
   --icon-inverse-filter: brightness(0) invert(1);
   --icon-on-accent-filter: brightness(0) invert(1);
+
+  /* ===== landing page: brand book "Manual digital" ===== */
+  --lp-bg: #ffffff;
+  --lp-surface: #f5f8fc;
+  --lp-surface-blue: #eaf3fc;
+  --lp-surface-dark: #111418;
+  --lp-text: #111418;
+  --lp-text-muted: #4a5160;
+  --lp-text-inverse: #ffffff;
+  --lp-text-inverse-muted: #c9d1dc;
+  --lp-primary: #2a72bd;
+  --lp-on-primary: #ffffff;
+  --lp-brand-blue: #2f7fd0;
+  --lp-blue-soft: #8ebdeb;
+  --lp-green: #7cc67e;
+  --lp-green-soft: #ccebcd;
+  --lp-yellow: #f2c230;
+  --lp-yellow-soft: #f8dd8d;
+  --lp-border: #e3e6ea;
+  --lp-gradient: linear-gradient(90deg, #7cc67e 0%, #2f7fd0 100%);
+  --lp-logo-inverse-filter: brightness(0) invert(1);
+  --lp-logo-filter: none;
+  --lp-gradient-text: linear-gradient(90deg, #7cc67e 0%, #2f7fd0 100%);
+  --lp-accent-on-dark: #8ebdeb;
+  --lp-glass-bg: rgba(255, 255, 255, 0.5);
+  --lp-glass-border: rgba(255, 255, 255, 0.75);
+  --lp-haze: 1;
 }
 
 /* ===== ESCALA DE CINZA: tema cinza escuro + filtro que tira qualquer cor ===== */
@@ -65,6 +92,33 @@ html[data-contrast="gray"] {
   --icon-filter: brightness(0) invert(1);
   --icon-inverse-filter: brightness(0);
   --icon-on-accent-filter: brightness(0);
+
+  --lp-bg: #222;
+  --lp-surface: #2a2a2a;
+  --lp-surface-blue: #2a2a2a;
+  --lp-surface-dark: #111;
+  --lp-text: #f0f0f0;
+  --lp-text-muted: #c4c4c4;
+  --lp-text-inverse: #f0f0f0;
+  --lp-text-inverse-muted: #c4c4c4;
+  --lp-primary: #d0d0d0;
+  --lp-on-primary: #1a1a1a;
+  --lp-brand-blue: #d0d0d0;
+  --lp-blue-soft: #3a3a3a;
+  --lp-green: #d0d0d0;
+  --lp-green-soft: #3a3a3a;
+  --lp-yellow: #d9d9d9;
+  --lp-yellow-soft: #3a3a3a;
+  --lp-border: #555;
+  --lp-gradient: linear-gradient(90deg, #8c8c8c 0%, #d0d0d0 100%);
+  --lp-logo-inverse-filter: brightness(0) invert(1);
+  --lp-logo-filter: brightness(0) invert(1);
+  --lp-gradient-text: linear-gradient(90deg, #f0f0f0 0%, #f0f0f0 100%);
+  --lp-accent-on-dark: #d0d0d0;
+  --lp-glass-bg: rgba(34, 34, 34, 0.6);
+  --lp-glass-border: rgba(255, 255, 255, 0.2);
+  --lp-haze: 0;
+  --lp-marquee-logo-color: #f0f0f0;
 }
 
 /* ===== ALTO CONTRASTE ===== */
@@ -95,6 +149,33 @@ html[data-contrast="high"] {
   --icon-filter: brightness(0) invert(1);
   --icon-inverse-filter: brightness(0);
   --icon-on-accent-filter: brightness(0);
+
+  --lp-bg: #000;
+  --lp-surface: #000;
+  --lp-surface-blue: #000;
+  --lp-surface-dark: #000;
+  --lp-text: #fff;
+  --lp-text-muted: #fff;
+  --lp-text-inverse: #fff;
+  --lp-text-inverse-muted: #fff;
+  --lp-primary: #ffeb3b;
+  --lp-on-primary: #000;
+  --lp-brand-blue: #ffeb3b;
+  --lp-blue-soft: #1f1f1f;
+  --lp-green: #8dff9f;
+  --lp-green-soft: #1f1f1f;
+  --lp-yellow: #ffeb3b;
+  --lp-yellow-soft: #1f1f1f;
+  --lp-border: #fff;
+  --lp-gradient: linear-gradient(90deg, #ffeb3b 0%, #ffeb3b 100%);
+  --lp-logo-inverse-filter: brightness(0) invert(1);
+  --lp-logo-filter: brightness(0) invert(1);
+  --lp-gradient-text: linear-gradient(90deg, #ffeb3b 0%, #ffeb3b 100%);
+  --lp-accent-on-dark: #ffeb3b;
+  --lp-glass-bg: rgba(0, 0, 0, 0.85);
+  --lp-glass-border: #fff;
+  --lp-haze: 0;
+  --lp-marquee-logo-color: #fff;
 }
 
 @theme inline {

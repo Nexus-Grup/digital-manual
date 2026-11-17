@@ -1,0 +1,94 @@
+.section-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: 760px;
+}
+
+.section-heading--centered {
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+/* Section badge (pill): frosted glass. Light sections: solid primary text; dark sections: brand gradient text */
+.section-heading__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border: 1px solid var(--lp-glass-border);
+    border-radius: 999px;
+    background-color: var(--lp-glass-bg);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+    box-shadow:
+        0 6px 16px rgba(17, 20, 24, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+/* Dark sections: dark glass so the light gradient text stays readable */
+.section-heading__eyebrow--inverse {
+    border-color: rgba(255, 255, 255, 0.18);
+    background-color: rgba(255, 255, 255, 0.06);
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.section-heading__eyebrow-text {
+    color: var(--lp-primary);
+}
+
+/* Gradient text only on dark backgrounds, where the light brand green keeps its contrast */
+.section-heading__eyebrow-text--inverse {
+    background-image: var(--lp-gradient-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.section-heading__title {
+    color: var(--lp-text);
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+.section-heading__title--inverse {
+    color: var(--lp-text-inverse);
+}
+
+.section-heading__text {
+    color: var(--lp-text-muted);
+    font-size: 1.0625rem;
+    line-height: 1.5;
+}
+
+.section-heading__text--inverse {
+    color: var(--lp-text-inverse-muted);
+}
+
+@media (min-width: 768px) {
+    .section-heading__title {
+        font-size: 2.25rem;
+    }
+
+    .section-heading__text {
+        font-size: 1.125rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .section-heading__title {
+        font-size: 2.625rem;
+    }
+}

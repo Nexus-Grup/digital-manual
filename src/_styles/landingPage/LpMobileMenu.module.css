@@ -1,0 +1,148 @@
+/* Hamburger menu: tablet and mobile only (< 1200px) */
+.lp-mobile-menu {
+    display: flex;
+}
+
+.lp-mobile-menu__toggle {
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    /*
+     * Optical alignment: the 22px icon stays centered in the 48px touch target (so the hover
+     * background is centered too) and the button is pulled out by (48 - 22) / 2 = 13px, which puts
+     * the icon's right edge exactly on the container's 4% / 6% margin.
+     */
+    margin-right: -13px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--lp-text);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.lp-mobile-menu__toggle:hover {
+    background-color: var(--lp-surface-blue);
+}
+
+.lp-mobile-menu__toggle:focus-visible {
+    outline: 3px solid var(--lp-primary);
+    outline-offset: 2px;
+}
+
+.lp-mobile-menu__line {
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: currentColor;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+/* Lines are 2px tall with a 5px gap: 7px moves the outer lines onto the middle one */
+.lp-mobile-menu__line--top-open {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.lp-mobile-menu__line--middle-open {
+    opacity: 0;
+}
+
+.lp-mobile-menu__line--bottom-open {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Drop-down panel under the sticky header (the header is its containing block) */
+.lp-mobile-menu__panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 12px 4% 24px;
+    border-bottom: 1px solid var(--lp-border);
+    background-color: var(--lp-bg);
+    box-shadow: 0 16px 32px rgba(17, 20, 24, 0.12);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.lp-mobile-menu__panel--open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s;
+}
+
+.lp-mobile-menu__list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+}
+
+.lp-mobile-menu__link {
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    /* No side padding: link text starts on the same 4% / 6% line as the logo */
+    padding: 0;
+    border-bottom: 1px solid var(--lp-border);
+    color: var(--lp-text);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.lp-mobile-menu__link:hover {
+    color: var(--lp-primary);
+}
+
+.lp-mobile-menu__link:focus-visible {
+    outline: 3px solid var(--lp-primary);
+    outline-offset: -3px;
+    border-radius: 8px;
+}
+
+.lp-mobile-menu__cta {
+    align-self: stretch;
+    --md-filled-button-container-height: 48px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lp-mobile-menu__line {
+        transition: none;
+    }
+
+    .lp-mobile-menu__panel {
+        transition: none;
+    }
+
+    .lp-mobile-menu__panel--open {
+        transition: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .lp-mobile-menu__panel {
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+
+    /* Tablet: the header already shows its own "Fale conosco" button */
+    .lp-mobile-menu__cta {
+        display: none;
+    }
+}
+
+@media (min-width: 1200px) {
+    .lp-mobile-menu {
+        display: none;
+    }
+}
