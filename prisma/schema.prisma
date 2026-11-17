@@ -1,0 +1,421 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum SystemRole {
+  USER
+  ADMIN
+}
+
+enum BrandRole {
+  EDITOR
+  VIEWER
+}
+
+enum CompanyRole {
+  MEMBER
+  OWNER
+}
+
+enum InformationType {
+  FEATURE
+  BENEFIT
+  IMPORTANT
+  SAFETY
+  CARE
+  FUNCTIONALITY
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  AUDIO
+  MODEL_3D
+}
+
+enum ProductCategory {
+  ELECTRONICS
+  FURNITURE
+  CLOTHING
+  TOYS
+  FOOD
+  BEAUTY
+  SPORTS
+  AUTOMOTIVE
+  BOOKS
+  MUSIC
+  SOFTWARE
+  OTHER
+}
+
+enum AudioType {
+  POWER_ON
+  IN_USE
+}
+
+enum DocumentType {
+  USER_MANUAL
+  ASSEMBLY_MANUAL
+  TECHNICAL_DATASHEET
+  INSTALLATION_GUIDE
+  MAINTENANCE_GUIDE
+  WARRANTY_DOCUMENT
+  SAFETY_GUIDE
+  CERTIFICATION
+}
+
+enum AssemblyType {
+  ASSEMBLY_GUIDE
+  USAGE_GUIDE
+  INSTALLATION_GUIDE
+  MAINTENANCE_GUIDE
+  DISASSEMBLY_GUIDE
+}
+
+enum EventType {
+  QR_SCAN
+  MANUAL_VIEW
+  MANUAL_DOWNLOAD
+  PRODUCT_VIEW
+  LANDING_PAGE_VIEW
+  GALLERY_VIEW
+  MODEL_3D_VIEW
+}
+
+// ============================================================
+// USUÁRIOS, EMPRESAS E MARCAS
+// ============================================================
+
+model User {
+  id                 Int        @id @default(autoincrement())
+  firstName          String
+  lastName           String
+  userName           String     @unique
+  email              String     @unique
+  passwordHash       String
+  systemRole         SystemRole @default(USER)
+  isActive           Boolean    @default(true)
+  mustChangePassword Boolean    @default(false)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+
+  userCompanies UserCompany[]
+
+  @@map("users")
+}
+
+model Company {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  logoUrl     String?
+  website     String?
+  isActive    Boolean @default(true)
+
+  brands        Brand[]
+  userCompanies UserCompany[]
+
+  @@map("companies")
+}
+
+model Brand {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  imgUrl      String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  companyId   Int
+
+  company    Company     @relation(fields: [companyId], references: [id])
+  products   Product[]
+  userBrands UserBrand[]
+
+  @@index([companyId])
+  @@map("brands")
+}
+
+// Vínculo usuário <-> empresa (com papel)
+model UserCompany {
+  id          Int         @id @default(autoincrement())
+  createdAt   DateTime    @default(now())
+  userId      Int
+  companyId   Int
+  companyRole CompanyRole @default(MEMBER)
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company    Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  userBrands UserBrand[]
+
+  @@unique([userId, companyId])
+  @@index([companyId])
+  @@map("user_companies")
+}
+
+// Vínculo membro da empresa <-> marca (com papel)
+model UserBrand {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  userCompanyId Int
+  brandId       Int
+  brandRole     BrandRole @default(VIEWER)
+
+  userCompany UserCompany @relation(fields: [userCompanyId], references: [id], onDelete: Cascade)
+  brand       Brand       @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@unique([userCompanyId, brandId])
+  @@index([brandId])
+  @@map("user_brands")
+}
+
+// ============================================================
+// PRODUTOS
+// ============================================================
+
+model Product {
+  id          Int             @id @default(autoincrement())
+  name        String
+  model       String?
+  code        String          @unique
+  description String?
+  imgUrl      String?
+  category    ProductCategory @default(OTHER)
+  createdAt   DateTime        @default(now())
+  brandId     Int
+
+  brand           Brand                   @relation(fields: [brandId], references: [id])
+  informations    Information[]
+  assemblies      Assembly[]
+  videos          ProductVideo[]
+  audios          ProductAudio[]
+  technicalSheets ProductTechnicalSheet[]
+  manuals         Manual[]
+  galleries       ProductGallery[]
+  qrCodes         ProductQrCode[]
+  analyticsEvents ProductAnalyticsEvent[]
+
+  @@index([brandId])
+  @@index([category])
+  @@map("products")
+}
+
+model Information {
+  id          Int             @id @default(autoincrement())
+  type        InformationType
+  title       String
+  description String?
+  isActive    Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  productId   Int
+
+  product Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+  steps   InformationStep[]
+
+  @@index([productId])
+  @@map("informations")
+}
+
+model InformationStep {
+  id            Int     @id @default(autoincrement())
+  title         String
+  description   String?
+  icon          String?
+  displayOrder  Int     @default(0)
+  informationId Int
+
+  information Information @relation(fields: [informationId], references: [id], onDelete: Cascade)
+
+  @@index([informationId])
+  @@map("information_steps")
+}
+
+// ============================================================
+// MONTAGEM
+// ============================================================
+
+model Assembly {
+  id          Int          @id @default(autoincrement())
+  type        AssemblyType
+  title       String
+  description String?      @db.Text
+  isActive    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  productId   Int
+
+  product Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  steps   AssemblyStep[]
+
+  @@index([productId])
+  @@map("assemblies")
+}
+
+model AssemblyStep {
+  id          Int      @id @default(autoincrement())
+  stepNumber  Int
+  title       String
+  description String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  assemblyId  Int
+
+  assembly Assembly @relation(fields: [assemblyId], references: [id], onDelete: Cascade)
+
+  @@index([assemblyId])
+  @@map("assembly_steps")
+}
+
+// ============================================================
+// MÍDIAS E DOCUMENTOS DO PRODUTO
+// ============================================================
+
+model ProductVideo {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  url         String
+  code        String?
+  productId   Int
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_videos")
+}
+
+model ProductAudio {
+  id        Int       @id @default(autoincrement())
+  audioUrl  String
+  audioType AudioType @default(POWER_ON)
+  productId Int
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_audios")
+}
+
+model ProductTechnicalSheet {
+  id             Int      @id @default(autoincrement())
+  title          String
+  description    String?
+  material       String?
+  dimensions     String?
+  weight         Decimal? @db.Decimal(10, 2)
+  specifications Json?
+  createdAt      DateTime @default(now())
+  productId      Int
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_technical_sheets")
+}
+
+model Manual {
+  id           Int          @id @default(autoincrement())
+  title        String
+  fileUrl      String
+  documentType DocumentType
+  language     String?
+  version      String?
+  isActive     Boolean      @default(true)
+  productId    Int
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("manuals")
+}
+
+model ProductGallery {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?   @db.Text
+  mediaType   MediaType
+  mediaUrl    String?
+  isActive    Boolean   @default(true)
+  productId   Int
+
+  product Product               @relation(fields: [productId], references: [id], onDelete: Cascade)
+  images  ProductGalleryImage[]
+
+  @@index([productId])
+  @@map("product_galleries")
+}
+
+model ProductGalleryImage {
+  id           Int     @id @default(autoincrement())
+  imageUrl     String
+  imageTitle   String?
+  displayOrder Int     @default(0)
+  galleryId    Int
+
+  gallery ProductGallery @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+
+  @@index([galleryId])
+  @@map("product_gallery_images")
+}
+
+// ============================================================
+// ARTIGOS (no diagrama estas 3 tabelas só têm o id; faltam colunas)
+// ============================================================
+
+model ProductArticle {
+  id Int @id @default(autoincrement())
+
+  @@map("product_articles")
+}
+
+model ProductArticleSection {
+  id Int @id @default(autoincrement())
+
+  @@map("product_article_sections")
+}
+
+model ProductArticleMedia {
+  id Int @id @default(autoincrement())
+
+  @@map("product_article_media")
+}
+
+// ============================================================
+// ANALYTICS E QR CODE
+// ============================================================
+
+model ProductAnalyticsEvent {
+  id        Int       @id @default(autoincrement())
+  eventType EventType
+  source    String?
+  createdAt DateTime  @default(now())
+  productId Int
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([eventType])
+  @@map("product_analytics_events")
+}
+
+model ProductQrCode {
+  id        Int      @id @default(autoincrement())
+  value     String
+  url       String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  productId Int
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_qr_codes")
+}
