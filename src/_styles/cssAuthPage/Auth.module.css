@@ -1,0 +1,266 @@
+/* ===== CARD ===== */
+.card {
+  width: min(406px, 100%);
+  box-sizing: border-box;
+  padding: 32px;
+  background: #fff;
+  border: 1px solid #b9b9b9;
+  border-radius: 10px;
+  color: #111;
+  font-family: inherit;
+}
+
+/* ===== LOGO ===== */
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.logoText {
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #7bc67e;
+}
+
+/* ===== TEXTOS ===== */
+.title {
+  margin: 0 0 12px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.description {
+  margin: 0 0 22px;
+  text-align: center;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: #444;
+}
+
+/* ===== FORM ===== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 0.95rem;
+  color: #111;
+}
+
+.inputWrap {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  height: 36px;
+  box-sizing: border-box;
+  padding: 0 16px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: #111;
+  background: #fff;
+  border: 1px solid #b5b5b5;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input::placeholder {
+  color: #757575;
+}
+
+.input:hover {
+  border-color: #8a8a8a;
+}
+
+.input:focus-visible {
+  border-color: #2b7fd4;
+  box-shadow: 0 0 0 3px rgba(43, 127, 212, 0.2);
+}
+
+.input[aria-invalid="true"] {
+  border-color: #d93025;
+}
+
+.input[aria-invalid="true"]:focus-visible {
+  box-shadow: 0 0 0 3px rgba(217, 48, 37, 0.18);
+}
+
+.inputWithIcon {
+  padding-right: 44px;
+}
+
+.eye {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  color: #555;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.eye:hover {
+  color: #111;
+}
+
+.eye:focus-visible {
+  outline: 2px solid #2b7fd4;
+  outline-offset: -2px;
+}
+
+/* ===== LINHA: remember me + forgot ===== */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: -8px;
+  font-size: 0.85rem;
+}
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #333;
+  cursor: pointer;
+}
+
+.check input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: #111;
+  cursor: pointer;
+}
+
+.link {
+  color: #333;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: #111;
+  text-decoration: underline;
+}
+
+.link:focus-visible,
+.back:focus-visible {
+  outline: 2px solid #2b7fd4;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ===== BOTÃO ===== */
+.submit {
+  width: 100%;
+  height: 48px;
+  margin-top: 4px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: #fff;
+  background: #111;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.submit:hover:not(:disabled) {
+  background: #2a2a2a;
+}
+
+.submit:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.submit:disabled {
+  background: #6b6b6b;
+  cursor: not-allowed;
+}
+
+.submit:focus-visible {
+  outline: 2px solid #2b7fd4;
+  outline-offset: 3px;
+}
+
+/* ===== MENSAGENS ===== */
+.error {
+  font-size: 0.78rem;
+  color: #d93025;
+}
+
+.formError {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  color: #a1160a;
+  background: #fdecea;
+  border-radius: 8px;
+}
+
+.success {
+  margin: 0 0 8px;
+  padding: 14px 16px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #1c5b2a;
+  background: #eaf6ec;
+  border-radius: 10px;
+}
+
+.success p {
+  margin: 0;
+}
+
+/* ===== VOLTAR ===== */
+.back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+  font-size: 0.9rem;
+  color: #111;
+  text-decoration: none;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+/* ===== CELULAR ===== */
+@media (max-width: 480px) {
+  .card {
+    padding: 24px 20px;
+  }
+
+  .logoText {
+    font-size: 1.6rem;
+  }
+
+  .input {
+    font-size: 1rem; /* evita o zoom automático do iOS ao focar */
+  }
+}
