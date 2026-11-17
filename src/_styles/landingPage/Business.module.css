@@ -1,0 +1,133 @@
+.business {
+    width: 100%;
+    padding-top: 64px;
+    padding-bottom: 64px;
+    background-color: var(--lp-bg);
+    scroll-margin-top: 72px;
+}
+
+.business__container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+.business__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    list-style: none;
+}
+
+.business__card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    border: 1px solid var(--lp-border);
+    border-radius: 24px;
+    background-color: var(--lp-bg);
+    transition: transform 0.2s ease;
+}
+
+.business__card:hover {
+    transform: translateY(-4px);
+}
+
+.business__card-icon {
+    width: 52px;
+    height: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background-color: var(--lp-surface-blue);
+    color: var(--lp-primary);
+}
+
+.business__card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.business__card-title {
+    color: var(--lp-text);
+    font-size: 1.125rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.business__card-text {
+    color: var(--lp-text-muted);
+    font-size: 1rem;
+}
+
+.business__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 28px 24px;
+    border-radius: 28px;
+    background-color: var(--lp-surface-blue);
+}
+
+.business__cta-text {
+    color: var(--lp-text);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.business__cta-actions {
+    flex-shrink: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .business__card {
+        transition: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .business {
+        padding-top: 88px;
+        padding-bottom: 88px;
+    }
+
+    .business__container {
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+
+    .business__list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .business__cta {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 32px 40px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .business__container {
+        width: 1140px;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .business__list {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

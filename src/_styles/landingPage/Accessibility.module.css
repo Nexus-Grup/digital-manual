@@ -1,0 +1,134 @@
+.accessibility {
+    width: 100%;
+    padding-top: 64px;
+    padding-bottom: 64px;
+    background-color: var(--lp-surface-dark);
+    color: var(--lp-text-inverse);
+    scroll-margin-top: 72px;
+}
+
+.accessibility__container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+.accessibility__top {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.accessibility__quote {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 24px;
+    border-left: 4px solid var(--lp-accent-on-dark);
+    border-radius: 0 20px 20px 0;
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.accessibility__quote-text {
+    color: var(--lp-text-inverse);
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.accessibility__quote-hint {
+    color: var(--lp-text-inverse-muted);
+    font-size: 1rem;
+}
+
+/* Mobile/tablet: single-row carousel (scrolls inside SnapCarousel); desktop: 4-column grid */
+.accessibility__list {
+    display: flex;
+    gap: 16px;
+    list-style: none;
+}
+
+.accessibility__card {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 24px;
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.accessibility__card-icon {
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background-color: var(--lp-accent-on-dark);
+    color: #111418;
+}
+
+.accessibility__card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.accessibility__card-title {
+    color: var(--lp-text-inverse);
+    font-size: 1.125rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.accessibility__card-text {
+    color: var(--lp-text-inverse-muted);
+    font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+    .accessibility {
+        padding-top: 88px;
+        padding-bottom: 88px;
+    }
+
+    .accessibility__container {
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+
+    .accessibility__card {
+        flex-basis: 46%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .accessibility__container {
+        width: 1140px;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .accessibility__top {
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 48px;
+    }
+
+    .accessibility__quote {
+        flex: 0 0 340px;
+    }
+
+    .accessibility__list {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
