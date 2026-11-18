@@ -4,7 +4,7 @@
 
 ---
 
-## 📖 A Nossa História: Por que estamos reinventando o manual?
+## Por que estamos reinventando o manual?
 
 Imagine abrir a caixa de um produto novo — um eletrodoméstico, um móvel planejado ou uma ferramenta — e, em vez de enfrentar um livreto de dezenas de páginas com letras miúdas, diagramas confusos e um destino quase certo no lixo, você encontra um simples **QR Code**.
 
@@ -16,33 +16,33 @@ O **Manual digital** nasceu para fechar essa lacuna: conectar **tecnologia, incl
 
 ---
 
-## 🧭 Identidade Estratégica
+## Identidade Estratégica
 
-### 🎯 Missão
+### Missão
 Transformar a experiência de pós-compra e montagem de produtos por meio de manuais digitais interativos, intuitivos e 100% acessíveis, reduzindo drasticamente o desperdício de papel e os custos operacionais das indústrias.
 
-### 🔭 Visão
+### Visão
 Tornar-se o padrão global de documentação técnica digital e pós-venda interativo, liderando a transição das indústrias de bens de consumo, eletrodomésticos e mobiliário rumo à eliminação do papel desnecessário e à inclusão digital universal.
 
-### 💎 Valores & Princípios
-* **♿ Acessibilidade Radical:** Acreditamos que instruir é incluir. Nenhum consumidor deve ficar para trás por barreiras sensoriais, linguísticas ou cognitivas (compromisso nativo com **Libras/VLibras**, leitura de tela, alto contraste, *Dark Mode*, *White Mode* e tradução multilíngue).
-* **🌱 Sustentabilidade Mensurável:** Cada QR Code escaneado poupa árvores, água, energia e emissões de carbono na cadeia gráfica e logística.
-* **🧊 Inovação Centrada no Usuário:** Substituímos folhetos estáticos por visualização **3D em 360°**, vista explodida de peças, passo a passo interativo e central integrada de vídeos.
-* **🤝 Eficiência e Parceria B2B:** Convertemos custos de impressão e logística em indicadores ESG reais, encantamento no *unboxing* e redução de chamados no suporte (SAC).
-* **⚖️ Transição Responsável:** Respeitamos o ritmo do mercado e do consumidor, promovendo a redução inteligente do papel sem excluir quem ainda necessita de alternativas físicas.
+### Valores & Princípios
+* **Acessibilidade Radical:** Acreditamos que instruir é incluir. Nenhum consumidor deve ficar para trás por barreiras sensoriais, linguísticas ou cognitivas (compromisso nativo com **Libras/VLibras**, leitura de tela, alto contraste, *Dark Mode*, *White Mode* e tradução multilíngue).
+* **Sustentabilidade Mensurável:** Cada QR Code escaneado poupa árvores, água, energia e emissões de carbono na cadeia gráfica e logística.
+* **Inovação Centrada no Usuário:** Substituímos folhetos estáticos por visualização **3D em 360°**, vista explodida de peças, passo a passo interativo e central integrada de vídeos.
+* **Eficiência e Parceria B2B:** Convertemos custos de impressão e logística em indicadores ESG reais, encantamento no *unboxing* e redução de chamados no suporte (SAC).
+* **Transição Responsável:** Respeitamos o ritmo do mercado e do consumidor, promovendo a redução inteligente do papel sem excluir quem ainda necessita de alternativas físicas.
 
 ---
 
-## 🚀 Uma Plataforma, Dois Públicos
+## Uma Plataforma, Dois Públicos
 
-### 🏭 Para Empresas e Fabricantes (B2B)
+### Para Empresas e Fabricantes (B2B)
 Transforme o custo gráfico da sua embalagem em um diferencial competitivo e ambiental:
 * **Redução Imediata de Custos:** Menos papel, impressão, armazenamento e peso no transporte logístico.
 * **Relatórios de Impacto ESG:** Métricas claras de toneladas de papel, resmas e $\text{CO}_2$ economizados por lote comercializado.
 * **Atualização em Tempo Real:** Corrija instruções ou adicione melhorias técnicas instantaneamente, sem precisar reimprimir milhares de manuais.
 * **Menos Chamados no SAC:** Instruções visuais em 3D e vídeo reduzem erros de montagem, devoluções e dúvidas no pós-venda.
 
-### 🧑‍🔧 Para Consumidores Finais (B2C)
+### Para Consumidores Finais (B2C)
 Diga adeus à frustração na hora de instalar ou montar qualquer produto:
 * **Acesso Híbrido e Instantâneo:** Escaneie o QR Code da embalagem ou pesquise pelo nome, modelo ou código diretamente na página inicial da plataforma.
 * **Exploração 3D em 360°:** Gire o produto, dê zoom nas peças, veja encaixes detalhados e acompanhe o passo a passo no seu ritmo.
@@ -51,7 +51,7 @@ Diga adeus à frustração na hora de instalar ou montar qualquer produto:
 
 ---
 
-## 👥 Time Nexus
+## Time Nexus
 Projeto idealizado e desenvolvido por:
 * **Dan**
 * **Sthe**
@@ -60,7 +60,7 @@ Projeto idealizado e desenvolvido por:
 
 ---
 
-## 💻 Documentação Técnica do Projeto
+## Documentação Técnica do Projeto
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
