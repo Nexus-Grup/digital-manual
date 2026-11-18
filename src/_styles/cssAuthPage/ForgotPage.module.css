@@ -1,0 +1,8 @@
+.page {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  background: linear-gradient(90deg, #2f7fd4 0%, #7bc67e 100%);
+}

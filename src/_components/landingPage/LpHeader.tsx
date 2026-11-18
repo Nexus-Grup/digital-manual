@@ -8,6 +8,8 @@ import ContrastToggle from "@/_components/productComponents/ContrastToggle";
 import LanguageMenu from "@/_components/landingPage/LanguageMenu";
 import VLibrasButton from "@/_components/landingPage/VLibrasButton";
 import LpMobileMenu from "@/_components/landingPage/LpMobileMenu";
+import Link from "next/link";
+import { User } from "lucide-react";
 
 // Section anchors, in the same order as dict.header.nav.
 const NAV_HREFS = ["#problema", "#solucao", "#acessibilidade", "#sobre", "#empresas"];
@@ -48,6 +50,7 @@ export default function LpHeader({ locale, t, menu }: LpHeaderProps) {
                         {t.contact}
                     </md-filled-button>
                     <LpMobileMenu links={links} contact={t.contact} t={menu} />
+                    <Link href={'/login'} className={styles.user_button}><User/></Link>
                 </div>
             </div>
         </header>

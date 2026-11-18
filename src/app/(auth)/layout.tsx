@@ -1,3 +1,6 @@
-export default function Layout({ children }: { children: React.ReactNode }) {
+
+export const instant = false;
+export default async function Layout({ children }: { children: React.ReactNode }) {
+
   return <>{children}</>;
 }
