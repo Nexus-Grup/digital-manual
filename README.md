@@ -1,4 +1,4 @@
-# 🦉 Manual digital (`Manual.io`) — Projeto Nexus
+# 🦉 Manual digital — Projeto Nexus
 
 > *"O manual do futuro: interativo para quem monta, acessível para todos, sustentável para o planeta."*
 
