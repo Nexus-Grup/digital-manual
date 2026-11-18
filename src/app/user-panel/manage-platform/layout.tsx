@@ -11,8 +11,7 @@ export default async function ManagePlatformLayout({
   children: React.ReactNode;
 }) {
     
-  const user = await getCurrentUser();
-  if (!user) redirect("/login");
+  const user = (await getCurrentUser())!;
 
   // Logado, mas não admin -> volta para o painel do usuário
   if (user.systemRole !== "ADMIN") {

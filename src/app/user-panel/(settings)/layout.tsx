@@ -8,8 +8,7 @@ export default async function SettingsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getCurrentUser();
-  if (!user) redirect("/login");
+  const user = (await getCurrentUser())!;
 
   const isAdmin = user.systemRole === "ADMIN";
 

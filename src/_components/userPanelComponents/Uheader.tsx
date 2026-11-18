@@ -19,7 +19,7 @@ export default function Uheader({ user, notifications, unreadCount }: UheaderPro
         <header className={styles.container}>
             <div className={styles.o_minimal_header__supergraphic}></div>
             <div className={styles.container__menu}>
-                <Image src={headerLogo} alt="logo" className={styles.header_logo} onClick={() => router.push('/products')}/>
+                <Image src={headerLogo} alt="logo" className={styles.header_logo} onClick={() => router.push('/landing-page')}/>
                 <div className={styles.container__actions}>
                     
                     {/* botão de idioma entra aqui depois */}

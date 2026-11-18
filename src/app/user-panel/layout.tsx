@@ -11,7 +11,7 @@ export default async function UserPanelLayout({
 }) {
   
   const user = await getCurrentUser();
-  if (!user) redirect("/login");
+  if (!user) return null;
 
   const notifications = [
   { id: 1, title: "Bem-vindo", message: "Sua conta foi criada.", read: false, createdAt: "2026-11-17T10:00:00.000Z", data: null },
