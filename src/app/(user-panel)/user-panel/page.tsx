@@ -1,9 +1,5 @@
-import styles from '@/_styles/cssUserPanelPage/UserPanel.module.css'
-
+import { redirect } from 'next/navigation';
+const BASE = "/user-panel/company-overview" 
 export default function UserPanelPage() {
-  return (
-    <main className={styles.container_main}>
-
-    </main>
-  );
+  redirect(BASE)
 }

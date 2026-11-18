@@ -3,7 +3,7 @@ import { USideMenu } from "@/_components/userPanelComponents/USideMenu";
 import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Toaster } from "sonner";
-
+export const instant = false;
 export default async function UserPanelLayout({
   children,
 }: {

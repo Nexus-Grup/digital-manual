@@ -3,7 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { CreateUserForm, type AdminCreateUserValues } from "@/_components/utils/CreateUserForm"
+// Ajuste o caminho para onde está o seu CreateUserForm
+import {
+  CreateUserForm,
+  type AdminCreateUserValues,
+} from "@/_components/utils/CreateUserForm";
+
+const LIST_HREF = "/user-panel/manage-platform/users";
 
 export function CreateUserAdmin() {
   const router = useRouter();
@@ -20,16 +26,15 @@ export function CreateUserAdmin() {
       const data = await res.json().catch(() => null);
 
       if (!res.ok) {
-        // 400 (zod) devolve um objeto; 403/409/500 devolvem texto
-        const message =
-          typeof data?.error === "string" ? data.error : "Invalid data. Check the fields.";
-        toast.error(message);
+        toast.error(
+          typeof data?.error === "string" ? data.error : "Invalid data. Check the fields."
+        );
         return;
       }
 
       toast.success("User created successfully.");
-      router.push("/user-panel/manage-platform/users");
-      router.refresh();
+      router.push(LIST_HREF); // volta para a lista
+      router.refresh(); // atualiza tabela e cards
     } catch {
       toast.error("Network error. Try again.");
     } finally {
@@ -41,7 +46,7 @@ export function CreateUserAdmin() {
     <CreateUserForm
       variant="admin"
       loading={loading}
-      onCancel={() => router.back()}
+      onCancel={() => router.push(LIST_HREF)}
       onSubmit={handleSubmit}
     />
   );
