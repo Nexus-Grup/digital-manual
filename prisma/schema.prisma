@@ -90,6 +90,14 @@ enum EventType {
   MODEL_3D_VIEW
 }
 
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ERROR
+  SYSTEM
+}
+
 // ============================================================
 // USUÁRIOS, EMPRESAS E MARCAS
 // ============================================================
@@ -107,9 +115,43 @@ model User {
   createdAt          DateTime   @default(now())
   updatedAt          DateTime   @updatedAt
 
-  userCompanies UserCompany[]
+  userCompanies     UserCompany[]
+  notifications     Notification[]
+  passwordResetCode PasswordResetCode[]
 
   @@map("users")
+}
+
+model PasswordResetCode {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  codeHash  String
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("password_reset_codes")
+}
+
+model Notification {
+  id        Int              @id @default(autoincrement())
+  userId    Int
+  type      NotificationType @default(INFO)
+  title     String
+  message   String
+  data      Json? // dados extras (ex: { "orderId": "123", "url": "/pedidos/123" })
+  read      Boolean          @default(false)
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+  @@index([userId, createdAt])
+  @@map("notifications")
 }
 
 model Company {

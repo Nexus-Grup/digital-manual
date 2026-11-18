@@ -1,0 +1,69 @@
+/* SideMenu.module.css */
+.nav {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 56px;
+  overflow: hidden;
+  background: #fff;
+  border-right: 1px solid #e5e5e5;
+  transition: width 0.2s ease;
+}
+
+.nav:hover {
+  width: 224px;
+}
+
+.groups {
+  flex: 1;
+  padding-top: 12px;
+}
+
+.group {
+  padding: 8px 4px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 13px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #111;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.item:hover {
+  background: #f3f3f3;
+}
+
+.active,
+.active:hover {
+  background: #d9d9d9;
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.label {
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.nav:hover .label {
+  opacity: 1;
+}
+
+.footer {
+  padding: 0 4px 12px;
+}

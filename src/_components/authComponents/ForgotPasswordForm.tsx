@@ -1,6 +1,7 @@
 'use client';
 
 import { useId, useState, type FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from '@/_styles/cssAuthPage/Auth.module.css';
 import AuthLogo from './AuthLogo';
@@ -13,6 +14,7 @@ export default function ForgotPasswordForm() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const router = useRouter();
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,12 +25,13 @@ export default function ForgotPasswordForm() {
 
     setLoading(true);
     try {
-      // TODO: trocar pela sua rota de recuperação de senha
-      // await fetch('/api/auth/forgot-password', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email: email.trim() }),
-      // });
+      const res = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      if (!res.ok) throw new Error();
+      router.push(`/reset-password?email=${encodeURIComponent(email.trim())}`);
       await new Promise((r) => setTimeout(r, 600)); // simulação
       setSent(true);
     } catch {

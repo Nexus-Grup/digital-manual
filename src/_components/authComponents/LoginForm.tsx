@@ -1,6 +1,7 @@
 'use client';
 
 import { useId, useState, type FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from '@/_styles/cssAuthPage/Auth.module.css';
 import AuthLogo from './AuthLogo';
@@ -28,6 +29,7 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const validate = (): Errors => {
     const next: Errors = {};
@@ -45,15 +47,16 @@ export default function LoginForm() {
 
     setLoading(true);
     try {
-      // TODO: trocar pela sua autenticação (rota /api/auth/login, Server Action, etc.)
-      // const res = await fetch('/api/auth/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email: email.trim(), password, remember }),
-      // });
-      // if (!res.ok) throw new Error('Invalid email or password');
-      // router.push('/');
-      await new Promise((r) => setTimeout(r, 600)); // simulação
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), password, remember }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(data?.error ?? 'Could not sign in');
+
+      router.push('/user-panel');
+      router.refresh();
     } catch (err) {
       setErrors({ form: err instanceof Error ? err.message : 'Could not sign in' });
     } finally {
