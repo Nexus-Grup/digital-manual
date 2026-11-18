@@ -1,0 +1,54 @@
+.dialog {
+  width: min(540px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  color: #111;
+  background: #fff;
+  border: 1px solid #b9b9b9;
+  border-radius: 12px;
+}
+
+.dialog::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.inner {
+  position: relative;
+  padding: 24px;
+}
+
+/* conteúdo que já tem card próprio */
+.bare {
+  background: transparent;
+  border: 0;
+}
+
+.bare .inner {
+  padding: 0;
+}
+
+.close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  color: #111;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.close:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.close:focus-visible {
+  outline: 2px solid #2b7fd4;
+}

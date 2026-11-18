@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react';
+import { SunMoon, Moon } from "lucide-react";
 import Image from 'next/image';
 import styles from '@/_styles/cssProductPage/ContrastToggle.module.css';
 import IconContraste from '@/_assets/image/hub icon/icone-contraste.svg';
-import IconContrastehub from '@/_assets/image/hub icon/sun-moon 1.svg';
 
 const KEY = 'contrast';
 const EVENT = 'contrastchange';
@@ -117,7 +117,7 @@ export default function ContrastToggle({ labels = DEFAULT_LABELS }: { labels?: C
         title={labels.trigger}
         onClick={() => setOpen((v) => !v)}
       >
-        <Image src={IconContrastehub} alt="" width={24} height={24} className={styles.triggerImg} />
+        <SunMoon size={24} />
       </button>
 
       {open && (
@@ -156,6 +156,7 @@ export default function ContrastToggle({ labels = DEFAULT_LABELS }: { labels?: C
             onClick={() => choose('high')}
           >
             <Image src={IconContraste} alt="" width={22} height={22} className={styles.itemImg} />
+            
             <span className={styles.label}>{labels.high}</span>
             {mode === 'high' && <CheckIcon />}
           </button>
