@@ -13,6 +13,7 @@
     "@material/web": "^2.5.0",
     "@prisma/adapter-pg": "^7.10.1",
     "@prisma/client": "^7.10.1",
+    "@supabase/supabase-js": "^2.119.1",
     "bcryptjs": "^3.0.3",
     "dotenv": "^18.0.10",
     "jose": "^6.2.17",

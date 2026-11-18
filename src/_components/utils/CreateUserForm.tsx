@@ -213,7 +213,7 @@ export function CreateUserForm(props: CreateUserFormProps) {
                 {companyId === props.defaultCompanyId && (
                   <span className={`${styles.badge} ${styles.badgeGray}`}>Current company</span>
                 )}
-                <ChevronDown size={16} aria-hidden />
+                {/* <ChevronDown size={16} aria-hidden /> */}
               </div>
             </div>
 

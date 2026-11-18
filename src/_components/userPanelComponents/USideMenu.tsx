@@ -20,9 +20,9 @@ const BASE = "/user-panel"
 const MENU_GROUPS: MenuItem[][] = [
   [
     { key: "overview", label: "Company Overview", href: `${BASE}/company-overview`, icon: Home },
-    { key: "brand",    label: "Brand Editor",     href: `${BASE}/edit-brands`,      icon: Tags },
-    { key: "product",  label: "Product Editor",   href: `${BASE}/edit-products`,    icon: Package },
-    { key: "company",  label: "Company Editor",   href: `${BASE}/edit-companies`,   icon: Building2 },
+    { key: "brand",    label: "Brand Editor",     href: `${BASE}/brands`,      icon: Tags },
+    { key: "product",  label: "Product Editor",   href: `${BASE}/products`,    icon: Package },
+    { key: "company",  label: "Company Editor",   href: `${BASE}/companies`,   icon: Building2 },
   ],
   [
     { key: "notifications", label: "Notifications",   href: `${BASE}/notifications`,   icon: Bell },
