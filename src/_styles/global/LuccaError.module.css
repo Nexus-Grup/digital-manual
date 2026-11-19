@@ -6,7 +6,7 @@
   --green: #7dc77e;
   --fg: #12161a;
   --muted: #5b6b60;
-  --font: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font: var(--font-brand), Arial, sans-serif;
 
   position: fixed;
   inset: 0;

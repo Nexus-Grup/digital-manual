@@ -29,6 +29,7 @@ export default function Hero({ t }: { t: Dictionary["hero"] }) {
                         </p>
                     </div>
                     <HeroSearch
+                        pulse
                         t={{
                             label: t.searchLabel,
                             placeholder: t.searchPlaceholder,

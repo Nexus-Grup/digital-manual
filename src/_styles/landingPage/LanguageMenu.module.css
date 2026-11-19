@@ -11,7 +11,7 @@
     gap: 4px;
     padding: 0 8px;
     border: 0;
-    border-radius: 8px;
+    border-radius: 5px;
     background-color: transparent;
     color: var(--lp-text);
     cursor: pointer;
@@ -42,7 +42,7 @@
     width: 240px;
     padding: 6px;
     border: 1px solid var(--lp-border);
-    border-radius: 12px;
+    border-radius: 10px;
     background-color: var(--lp-bg);
     box-shadow: 0 6px 20px rgba(17, 20, 24, 0.18);
 }
@@ -61,11 +61,21 @@
     justify-content: space-between;
     gap: 12px;
     padding: 0 12px;
-    border-radius: 8px;
+    border-radius: 5px;
     color: var(--lp-text);
     font-size: 0.9375rem;
     text-decoration: none;
     transition: background-color 0.15s ease;
+}
+
+/* Cookie mode (product pages): the option is a <button>, so reset the native button look. */
+.language-menu__option--button {
+    width: 100%;
+    border: 0;
+    background-color: transparent;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
 }
 
 .language-menu__option:hover {

@@ -18,7 +18,7 @@
      */
     margin-right: -13px;
     border: 0;
-    border-radius: 50%;
+    border-radius: 10px;
     background: transparent;
     color: var(--lp-text);
     cursor: pointer;
@@ -37,7 +37,7 @@
 .lp-mobile-menu__line {
     width: 22px;
     height: 2px;
-    border-radius: 2px;
+    border-radius: 5px;
     background-color: currentColor;
     transition: transform 0.25s ease, opacity 0.2s ease;
 }
@@ -107,7 +107,7 @@
 .lp-mobile-menu__link:focus-visible {
     outline: 3px solid var(--lp-primary);
     outline-offset: -3px;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 .lp-mobile-menu__cta {

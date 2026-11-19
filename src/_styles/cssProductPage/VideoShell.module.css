@@ -1,13 +1,7 @@
+/* the panel overlays the content (it doesn't push it): the content always takes the full width */
 .shell {
   --panel-w: 320px;
-  display: grid;
-  grid-template-columns: 0 minmax(0, 1fr);
   height: 100%;
-  transition: grid-template-columns 0.25s ease;
-}
-
-.shell[data-open="true"] {
-  grid-template-columns: var(--panel-w) minmax(0, 1fr);
 }
 
 /* o conteúdo rola por dentro; a página não */
@@ -26,11 +20,20 @@
   display: none;
 }
 
+/* anchored to .stage; slides in with transform (no layout change in the content) */
 .panelWrap {
-  position: relative;
-  height: 100%;
-  min-width: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--panel-w);
   z-index: 5;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+}
+
+.shell[data-open="true"] .panelWrap {
+  transform: translateX(0);
 }
 
 /* recorta o painel enquanto a coluna anima, sem deixar o texto reflowar */
@@ -54,6 +57,7 @@
   color: var(--c-text);
   background: var(--c-bg);
   border-right: 1px solid var(--c-border-soft);
+  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.08);
 }
 
 /* abas (vídeos / som) coladas na borda do painel */
@@ -264,9 +268,13 @@
     transition: none;
   }
 
-  .panelWrap {
+  .panelWrap,
+  .shell[data-open="true"] .panelWrap {
     position: static;
+    width: auto;
     height: auto;
+    transform: none;
+    transition: none;
   }
 
   .content {
@@ -331,6 +339,7 @@
     overflow: hidden;
     background: var(--c-surface);
     border-right: 0;
+    box-shadow: none;
     padding-bottom: 0;
   }
 
@@ -403,5 +412,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .shell, .clip, .backdrop { transition: none; }
+  .panelWrap, .clip, .backdrop { transition: none; }
 }

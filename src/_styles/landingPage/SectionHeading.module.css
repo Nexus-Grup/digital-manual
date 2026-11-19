@@ -19,7 +19,7 @@
     align-items: center;
     padding: 6px 14px;
     border: 1px solid var(--lp-glass-border);
-    border-radius: 999px;
+    border-radius: 10px;
     background-color: var(--lp-glass-bg);
     -webkit-backdrop-filter: blur(18px) saturate(140%);
     backdrop-filter: blur(18px) saturate(140%);

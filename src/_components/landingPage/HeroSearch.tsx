@@ -13,34 +13,64 @@ type HeroSearchProps = {
         aria: string;
         button: string;
     };
+    /** Field id (the landing hero and the /products page each have their own). */
+    id?: string;
+    /** Current search term, so the field keeps it on the results page. */
+    defaultValue?: string;
+    /** Active category and subcategory filters on /products, kept when searching again. */
+    category?: string;
+    subcategory?: string;
+    /** Soft pulsing halo around the field to draw attention (landing hero only). */
+    pulse?: boolean;
 };
 
-// Manual search for end users: name, model or product code.
-export default function HeroSearch({ t }: HeroSearchProps) {
+// Manual search for end users: name, model or product code. Results live at /products?q=...
+export default function HeroSearch({
+    t,
+    id = "hero-search",
+    defaultValue,
+    category,
+    subcategory,
+    pulse = false,
+}: HeroSearchProps) {
     const router = useRouter();
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const query = String(new FormData(event.currentTarget).get("q") ?? "").trim();
-        router.push(query ? `/products?q=${encodeURIComponent(query)}` : "/products");
+        const params = new URLSearchParams();
+        if (query) params.set("q", query);
+        if (category) params.set("category", category);
+        if (category && subcategory) params.set("sub", subcategory);
+        const search = params.toString();
+        router.push(search ? `/products?${search}` : "/products");
     };
 
     return (
         <form className={styles["hero__search"]} role="search" onSubmit={handleSubmit}>
-            <label className={styles["hero__search-label"]} htmlFor="hero-search">
+            <label className={styles["hero__search-label"]} htmlFor={id}>
                 {t.label}
             </label>
             <div className={styles["hero__search-row"]}>
-                <md-outlined-text-field
-                    id="hero-search"
-                    className={styles["hero__search-field"]}
-                    name="q"
-                    type="search"
-                    placeholder={t.placeholder}
-                    aria-label={t.aria}
+                <div
+                    className={
+                        pulse
+                            ? `${styles["hero__search-field-wrap"]} ${styles["hero__search-field-wrap--pulse"]}`
+                            : styles["hero__search-field-wrap"]
+                    }
                 >
-                    <SearchIcon slot="leading-icon" />
-                </md-outlined-text-field>
+                    <md-outlined-text-field
+                        id={id}
+                        className={styles["hero__search-field"]}
+                        name="q"
+                        type="search"
+                        value={defaultValue}
+                        placeholder={t.placeholder}
+                        aria-label={t.aria}
+                    >
+                        <SearchIcon slot="leading-icon" />
+                    </md-outlined-text-field>
+                </div>
                 <md-filled-button className={`${buttonStyles["md-button"]} ${styles["hero__search-button"]}`} type="submit">
                     {t.button}
                 </md-filled-button>

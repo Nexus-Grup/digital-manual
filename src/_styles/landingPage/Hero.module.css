@@ -29,7 +29,7 @@
     gap: 8px;
     padding: 6px 14px;
     border: 1px solid var(--lp-glass-border);
-    border-radius: 999px;
+    border-radius: 10px;
     background-color: var(--lp-glass-bg);
     -webkit-backdrop-filter: blur(18px) saturate(140%);
     backdrop-filter: blur(18px) saturate(140%);
@@ -77,7 +77,7 @@
     gap: 8px;
     padding: 20px;
     border: 1px solid var(--lp-border);
-    border-radius: 24px;
+    border-radius: 10px;
     background-color: var(--lp-bg);
     box-shadow: 0 12px 32px rgba(17, 20, 24, 0.08);
 }
@@ -94,10 +94,36 @@
     gap: 12px;
 }
 
+/* wrapper so the halo can sit around the Material field (its content lives in a shadow root) */
+.hero__search-field-wrap {
+    position: relative;
+    display: flex;
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Same soft pulsing halo as the hero badges, drawing the eye to the search (opacity only) */
+.hero__search-field-wrap--pulse::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 5px rgba(47, 127, 208, 0.22), 0 0 20px 4px rgba(47, 127, 208, 0.22);
+    opacity: 0;
+    pointer-events: none;
+    animation: hero-badge-pulse 2.8s ease-in-out infinite;
+}
+
+/* once the user is typing, the field already has their attention: stop the pulse */
+.hero__search-field-wrap--pulse:focus-within::after {
+    animation: none;
+    opacity: 0;
+}
+
 .hero__search-field {
     width: 100%;
     min-height: 56px;
-    --md-outlined-text-field-container-shape: 16px;
+    --md-outlined-text-field-container-shape: 10px;
 }
 
 .hero__search-button {
@@ -182,7 +208,7 @@
     align-items: center;
     gap: 6px;
     padding: 8px 14px;
-    border-radius: 999px;
+    border-radius: 10px;
     background-color: var(--lp-bg);
     color: var(--lp-text);
     font-size: 0.8125rem;
@@ -190,10 +216,24 @@
     box-shadow: 0 8px 24px rgba(17, 20, 24, 0.12);
 }
 
+/* Soft pulsing halo around the badge: only the glow fades in and out, the text stays fully legible.
+   Animates opacity only (cheap, no layout work). */
+.hero__badge::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 6px var(--badge-halo), 0 0 18px 4px var(--badge-halo);
+    opacity: 0;
+    pointer-events: none;
+    animation: hero-badge-pulse 2.8s ease-in-out infinite;
+}
+
 .hero__badge--top {
     top: 6%;
     right: 0;
     color: var(--lp-primary);
+    --badge-halo: rgba(47, 127, 208, 0.28);
 }
 
 /* Eco badge: neutral text, the leaf icon carries the green (.hero__badge-icon--eco) */
@@ -201,6 +241,23 @@
     bottom: 6%;
     left: 0;
     color: var(--lp-text);
+    --badge-halo: rgba(124, 198, 126, 0.38);
+}
+
+/* offset by half a cycle so the two badges take turns instead of blinking together */
+.hero__badge--bottom::after {
+    animation-delay: 1.4s;
+}
+
+@keyframes hero-badge-pulse {
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
 
 .hero__badge-icon--eco {
@@ -222,6 +279,13 @@
 @media (prefers-reduced-motion: reduce) {
     .hero__mascot {
         animation: none;
+    }
+
+    /* Reduced motion: the halo (opacity only, no movement) pulses a few times and then stays off,
+       under the 5s limit for auto-playing blinking content (WCAG 2.2.2). */
+    .hero__badge::after,
+    .hero__search-field-wrap--pulse::after {
+        animation-iteration-count: 2;
     }
 }
 
@@ -249,7 +313,7 @@
         align-items: center;
     }
 
-    .hero__search-field {
+    .hero__search-field-wrap {
         flex: 1 1 0;
         min-width: 0;
     }

@@ -5,7 +5,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "@/_styles/landingPage/LanguageMenu.module.css";
-import { LOCALE_INFO, LOCALES, format, localeHref } from "@/_i18n/config";
+import { LOCALE_COOKIE, LOCALE_INFO, LOCALES, format, localeHref } from "@/_i18n/config";
 import type { Locale } from "@/_i18n/config";
 import { CheckIcon, GlobeIcon } from "@/_components/landingPage/Icons";
 
@@ -16,11 +16,22 @@ type LanguageMenuProps = {
         trigger: string;
         menu: string;
     };
+    /**
+     * "route" (landing page): each option links to the localized URL.
+     * "cookie" (product pages, no locale in the URL): saves the choice in a cookie and re-renders the page.
+     */
+    mode?: "route" | "cookie";
 };
 
-// Header language switcher. Each option links to the localized URL (/landing-page, /landing-page/en...)
-// and keeps the current section (#hash). Same open/close behavior as the contrast toggle.
-export default function LanguageMenu({ locale, t }: LanguageMenuProps) {
+const ONE_YEAR = 60 * 60 * 24 * 365;
+
+function persistLocale(locale: Locale) {
+    document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=${ONE_YEAR}; samesite=lax`;
+}
+
+// Header language switcher. In route mode each option links to the localized URL (/landing-page,
+// /landing-page/en...) and keeps the current section (#hash). Same open/close behavior as the contrast toggle.
+export default function LanguageMenu({ locale, t, mode = "route" }: LanguageMenuProps) {
     const router = useRouter();
     const [open, setOpen] = useState(false);
     const menuId = useId();
@@ -58,6 +69,14 @@ export default function LanguageMenu({ locale, t }: LanguageMenuProps) {
         router.push(`${localeHref(target)}${hash}`);
     };
 
+    // Cookie mode: persist the choice and re-render the Server Components with the new locale.
+    const saveLocale = (target: Locale) => {
+        setOpen(false);
+        if (target === locale) return;
+        persistLocale(target);
+        router.refresh();
+    };
+
     const current = LOCALE_INFO[locale];
 
     return (
@@ -82,10 +101,27 @@ export default function LanguageMenu({ locale, t }: LanguageMenuProps) {
                     <ul className={styles["language-menu__list"]}>
                         {LOCALES.map((item) => {
                             const active = item === locale;
+                            const optionClass = `${styles["language-menu__option"]} ${active ? styles["language-menu__option--active"] : ""}`;
+                            if (mode === "cookie") {
+                                return (
+                                    <li key={item}>
+                                        <button
+                                            type="button"
+                                            className={`${optionClass} ${styles["language-menu__option--button"]}`}
+                                            lang={item}
+                                            aria-current={active ? "true" : undefined}
+                                            onClick={() => saveLocale(item)}
+                                        >
+                                            <span className={styles["language-menu__name"]}>{LOCALE_INFO[item].nativeName}</span>
+                                            {active ? <CheckIcon size={18} /> : null}
+                                        </button>
+                                    </li>
+                                );
+                            }
                             return (
                                 <li key={item}>
                                     <Link
-                                        className={`${styles["language-menu__option"]} ${active ? styles["language-menu__option--active"] : ""}`}
+                                        className={optionClass}
                                         href={localeHref(item)}
                                         hrefLang={item}
                                         lang={item}

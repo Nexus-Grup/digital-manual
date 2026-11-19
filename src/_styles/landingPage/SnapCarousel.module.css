@@ -14,7 +14,7 @@
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    border-radius: 24px;
+    border-radius: 10px;
 }
 
 .snap-carousel__viewport::-webkit-scrollbar {
@@ -50,7 +50,7 @@
     content: "";
     width: 8px;
     height: 8px;
-    border-radius: 999px;
+    border-radius: 10px;
     background-color: var(--dot-color);
     opacity: 0.4;
     transition: transform 0.2s ease, opacity 0.2s ease;
@@ -71,7 +71,7 @@
 .snap-carousel__dot:focus-visible {
     outline: 2px solid var(--lp-primary);
     outline-offset: 0;
-    border-radius: 50%;
+    border-radius: 10px;
 }
 
 @media (prefers-reduced-motion: reduce) {

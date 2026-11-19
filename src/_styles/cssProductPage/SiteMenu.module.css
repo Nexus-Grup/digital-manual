@@ -8,7 +8,7 @@
   color: var(--c-text);
   background: var(--c-bg);
   /* border: 1px solid var(--c-border); */
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
   transition: background 0.15s;
 }
@@ -72,7 +72,7 @@
   color: var(--c-text);
   background: var(--c-bg);
   /* border: 1px solid var(--c-border); */
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -90,7 +90,7 @@
   color: var(--c-muted);
   background: var(--c-bg);
   border: 1px solid var(--c-border);
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 .search:focus-within {
@@ -149,7 +149,7 @@
   color: var(--c-text);
   text-decoration: none;
   border-bottom: 1px solid var(--c-border-soft);
-  border-radius: 8px;
+  border-radius: 5px;
   transition: background 0.15s;
 }
 

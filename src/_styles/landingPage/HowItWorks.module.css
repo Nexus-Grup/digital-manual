@@ -27,7 +27,7 @@
     flex-direction: column;
     gap: 12px;
     padding: 28px 24px;
-    border-radius: 28px;
+    border-radius: 10px;
     background-color: var(--lp-bg);
     box-shadow: 0 8px 24px rgba(17, 20, 24, 0.06);
 }
@@ -56,7 +56,7 @@
     align-items: center;
     justify-content: center;
     border: 1px solid var(--lp-glass-border);
-    border-radius: 50%;
+    border-radius: 10px;
     background-color: var(--lp-glass-bg);
     -webkit-backdrop-filter: blur(12px) saturate(140%);
     backdrop-filter: blur(12px) saturate(140%);
@@ -72,7 +72,7 @@
     position: absolute;
     inset: 4px;
     z-index: -1;
-    border-radius: 50%;
+    border-radius: 10px;
     background: var(--lp-gradient);
     filter: blur(10px);
     opacity: calc(0.45 * var(--lp-haze, 1));

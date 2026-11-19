@@ -1,4 +1,4 @@
-/* Landing page root: brand font + Material 3 theme tokens mapped to the brand book */
+/* Landing page root: Material 3 theme tokens mapped to the brand book (the brand font comes from <body>) */
 .landing {
     width: 100%;
     min-height: 100vh;
@@ -6,13 +6,8 @@
     flex-direction: column;
     background-color: var(--lp-bg);
     color: var(--lp-text);
-    font-family: var(--font-lp), Arial, Helvetica, sans-serif;
     font-size: 1rem;
     line-height: 1.5;
-
-    /* Typography */
-    --md-ref-typeface-brand: var(--font-lp), Arial, sans-serif;
-    --md-ref-typeface-plain: var(--font-lp), Arial, sans-serif;
 
     /* Color scheme */
     --md-sys-color-primary: var(--lp-primary);

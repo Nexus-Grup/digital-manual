@@ -1,4 +1,3 @@
-import { Inter } from "next/font/google";
 import styles from "@/_styles/landingPage/LandingPage.module.css";
 import type { Locale } from "@/_i18n/config";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
@@ -19,12 +18,7 @@ import LpFooter from "@/_components/landingPage/LpFooter";
 import WaveDivider from "@/_components/landingPage/WaveDivider";
 import BrandBand from "@/_components/landingPage/BrandBand";
 import LogoMarquee from "@/_components/landingPage/LogoMarquee";
-
-const inter = Inter({
-    subsets: ["latin"],
-    display: "swap",
-    variable: "--font-lp",
-});
+import ReadAloud from "@/_components/productComponents/ReadAloud";
 
 type LandingPageViewProps = {
     locale: Locale;
@@ -36,7 +30,7 @@ type LandingPageViewProps = {
 export default function LandingPageView({ locale, dict }: LandingPageViewProps) {
     return (
         // lang on the wrapper so screen readers switch pronunciation (the root <html> stays pt-BR).
-        <div className={`${inter.variable} ${styles["landing"]}`} lang={locale}>
+        <div className={styles["landing"]} lang={locale}>
             <MaterialRegistry />
             <LpHeader locale={locale} t={dict.header} menu={dict.mobileMenu} />
             <main className={styles["landing__main"]}>
@@ -65,6 +59,8 @@ export default function LandingPageView({ locale, dict }: LandingPageViewProps) 
                 <Contact t={dict.contact} />
             </main>
             <LpFooter t={dict.footer} />
+            {/* Select any text to get a speaker button that reads it aloud in the page language. */}
+            <ReadAloud lang={locale} labels={dict.readAloud} />
         </div>
     );
 }
