@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { EllipsisVertical, Lock, Plus, TriangleAlert, User, UserMinus, UserPlus } from 'lucide-react';
+import { toast } from 'sonner';
 import styles from '@/_styles/cssUserPanelPage/CompanyUsers.module.css';
 import { request } from '@/lib/request';
 import { AddExistingUserModal } from '@/_components/userPanelComponents/AddExistingUserModal';
@@ -43,20 +44,19 @@ function MemberRow({
   const [panel, setPanel] = useState<Panel>(null);
   const [role, setRole] = useState<Role>(member.companyRole);
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
 
   const fullName = `${member.firstName} ${member.lastName}`;
   const url = `/api/companies/${companyId}/members/${member.userId}`;
 
   async function run(method: 'PATCH' | 'DELETE', body?: unknown) {
     setBusy(true);
-    setError('');
     const err = await request(url, method, body);
     setBusy(false);
     if (err) {
-      setError(err);
-      return;
+      toast.error(err);
+      return; // o painel continua aberto para tentar de novo
     }
+    toast.success(method === 'PATCH' ? 'Role updated.' : 'User removed from the company.');
     setPanel(null);
     router.refresh();
   }
@@ -78,7 +78,6 @@ function MemberRow({
           aria-label={`Actions for ${fullName}`}
           aria-expanded={panel !== null}
           onClick={() => {
-            setError('');
             setRole(member.companyRole);
             setPanel((p) => (p ? null : 'menu'));
           }}
@@ -129,7 +128,6 @@ function MemberRow({
               <small>{r === 'OWNER' ? 'Full access to company management.' : "Can access the company's brands."}</small>
             </label>
           ))}
-          {error && <p className={styles.panelError} role="alert">{error}</p>}
           <hr className={styles.panelDivider} />
           <div className={styles.panelActions}>
             <button
@@ -155,7 +153,6 @@ function MemberRow({
           <p className={styles.panelSmall}>
             The user account will not be deleted. Only their access to this company will be removed.
           </p>
-          {error && <p className={styles.panelError} role="alert">{error}</p>}
           <div className={styles.panelActions}>
             <button type="button" className={styles.pillBtn} onClick={() => setPanel(null)} disabled={busy}>
               Cancel
@@ -218,7 +215,10 @@ export function CompanyUsers({ companyId, companyName, currentUserId, members }:
           companyId={companyId}
           companyName={companyName}
           onClose={() => setModal(null)}
-          onCreated={done}
+          onCreated={() => {
+            toast.success('User created and added to the company.');
+            done();
+          }}
         />
       )}
     </section>

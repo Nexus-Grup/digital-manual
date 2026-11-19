@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { User } from 'lucide-react';
+import { toast } from 'sonner';
 import styles from '@/_styles/cssUserPanelPage/CompanyUsers.module.css';
 import { request } from '@/lib/request';
 import { Modal } from './Modal';
@@ -21,7 +22,6 @@ export function AddExistingUserModal({ companyId, onClose, onAdded }: Props) {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [role, setRole] = useState<'OWNER' | 'MEMBER'>('MEMBER');
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
 
   const term = query.trim();
   const searching = term.length >= 2;
@@ -57,16 +57,16 @@ export function AddExistingUserModal({ companyId, onClose, onAdded }: Props) {
   async function add() {
     if (!selected) return;
     setSaving(true);
-    setError('');
     const err = await request(`/api/companies/${companyId}/members`, 'POST', {
       userId: selected.id,
       companyRole: role,
     });
     setSaving(false);
     if (err) {
-      setError(err);
+      toast.error(err);
       return;
     }
+    toast.success('User added to the company.');
     onAdded();
   }
 
@@ -119,8 +119,6 @@ export function AddExistingUserModal({ companyId, onClose, onAdded }: Props) {
           Member
         </label>
       </fieldset>
-
-      {error && <p className={styles.modalError} role="alert">{error}</p>}
 
       <button type="button" className={styles.wideBtn} onClick={add} disabled={!selected || saving}>
         <User size={14} aria-hidden /> {saving ? 'Adding...' : 'Add to company'}

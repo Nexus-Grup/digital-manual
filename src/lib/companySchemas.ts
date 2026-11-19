@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isCompanyLogoUrl } from '@/lib/supabase-admin';
 
 const emptyToNull = (v: string | null | undefined) => (v ? v : null);
 
@@ -18,7 +19,12 @@ export const companyInput = z.object({
     .trim()
     .nullish()
     .transform(emptyToNull)
-    .refine((v) => !v || /^\/uploads\/companies\/[\w.-]+$/.test(v), 'Invalid logo'),
+    .refine(
+      (v) =>
+        !v ||
+        isCompanyLogoUrl(v) ||
+        /^\/uploads\/companies\/[\w.-]+$/.test(v),'Invalid logo'
+  ),
 });
 
 const companyRole = z.enum(['OWNER', 'MEMBER']);

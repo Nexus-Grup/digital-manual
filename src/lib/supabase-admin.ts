@@ -3,6 +3,17 @@ import { createClient } from "@supabase/supabase-js";
 
 export const LOGO_BUCKET = "company-logos";
 
+/**
+ * true se a URL é um logo enviado por NOSSA rota de upload (nosso bucket,
+ * pasta companies/, nome uuid.ext). Use ao validar o logoUrl recebido do cliente:
+ * impede salvar URLs de terceiros.
+ */
+export function isCompanyLogoUrl(value: string) {
+  const prefix = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${LOGO_BUCKET}/companies/`;
+  if (!value.startsWith(prefix)) return false;
+  return /^[0-9a-f-]{36}\.(png|jpg|svg)$/i.test(value.slice(prefix.length));
+}
+
 // Service role = acesso total. Só no servidor, nunca com NEXT_PUBLIC_
 export const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
