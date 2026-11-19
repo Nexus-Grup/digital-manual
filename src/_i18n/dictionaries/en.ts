@@ -11,6 +11,7 @@ const en: Dictionary = {
         navAria: "Page sections",
         nav: ["The problem", "Solution", "Accessibility", "About us", "For business"],
         contact: "Contact us",
+        account: "Sign in to your account",
         contrast: {
             trigger: "Contrast options",
             group: "Display mode",

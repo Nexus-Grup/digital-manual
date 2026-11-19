@@ -11,6 +11,7 @@ const it: Dictionary = {
         navAria: "Sezioni della pagina",
         nav: ["Il problema", "Soluzione", "Accessibilità", "Chi siamo", "Per le aziende"],
         contact: "Contattaci",
+        account: "Accedi al tuo account",
         contrast: {
             trigger: "Opzioni di contrasto",
             group: "Modalità di visualizzazione",

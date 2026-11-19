@@ -217,6 +217,15 @@ body {
   /* Material 3 web components read the typeface from these tokens */
   --md-ref-typeface-brand: var(--font-brand), Arial, sans-serif;
   --md-ref-typeface-plain: var(--font-brand), Arial, sans-serif;
+
+  /* Project corner scale: 5px and 10px, never above 10px. Maps the Material 3 shape scale, so md-*
+     components follow it too (buttons default to "full" = pill, which becomes 10px). */
+  --md-sys-shape-corner-extra-small: 5px;
+  --md-sys-shape-corner-small: 5px;
+  --md-sys-shape-corner-medium: 10px;
+  --md-sys-shape-corner-large: 10px;
+  --md-sys-shape-corner-extra-large: 10px;
+  --md-sys-shape-corner-full: 10px;
 }
 
 /* Smooth scroll for in-page links (landing header nav, "Fale conosco", hero CTAs). Sections already

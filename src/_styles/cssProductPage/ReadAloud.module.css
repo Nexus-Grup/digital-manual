@@ -10,7 +10,7 @@
   transform: translateX(-50%);
   background: var(--c-bg);
   border: 1px solid var(--c-border);
-  border-radius: 50%;
+  border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
@@ -41,7 +41,7 @@
   color: var(--c-text);
   background: var(--c-bg);
   border: 1px solid var(--c-border);
-  border-radius: 16px;
+  border-radius: 10px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.22);
 }
 
@@ -78,7 +78,7 @@
 .word {
   color: var(--c-on-highlight);
   background: var(--c-highlight);
-  border-radius: 3px;
+  border-radius: 5px;
   box-shadow: 0 0 0 2px var(--c-highlight);
 }
 
@@ -86,7 +86,7 @@
 .chunk {
   color: var(--c-text);
   background: var(--c-highlight-soft);
-  border-radius: 3px;
+  border-radius: 5px;
 }
 
 .warn {

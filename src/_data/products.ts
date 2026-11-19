@@ -57,6 +57,25 @@ const CATEGORY_FROM_DB: Partial<Record<ProductCategory, ShowcaseCategory>> = {
     FURNITURE: "furniture",
 };
 
+/**
+ * next/image throws for hosts that are not in next.config.ts images.remotePatterns, which would break the
+ * whole page. Only local files and public Supabase Storage URLs are used; anything else falls back to the icon.
+ */
+function isRenderableImage(url: string | null | undefined): url is string {
+    if (!url) return false;
+    if (url.startsWith("/") && !url.startsWith("//")) return true;
+    try {
+        const { protocol, hostname, pathname } = new URL(url);
+        return (
+            protocol === "https:" &&
+            hostname.endsWith(".supabase.co") &&
+            pathname.startsWith("/storage/v1/object/public/")
+        );
+    } catch {
+        return false;
+    }
+}
+
 export type ProductCatalog = {
     products: ProductSummary[];
     /** true while the database is empty and the demo catalog is shown */
@@ -78,21 +97,38 @@ export async function getProducts(): Promise<ProductCatalog> {
                 imgUrl: true,
                 category: true,
                 brand: { select: { name: true } },
+                // product photo: active image galleries, each with its first image (lowest displayOrder)
+                galleries: {
+                    where: { isActive: true, mediaType: "IMAGE" },
+                    orderBy: { id: "asc" },
+                    take: 3,
+                    select: {
+                        mediaUrl: true,
+                        images: { orderBy: { displayOrder: "asc" }, take: 1, select: { imageUrl: true } },
+                    },
+                },
             },
         });
         if (!rows.length) return { products: DEMO_PRODUCTS, isDemo: true };
 
-        const products = rows.map((row): ProductSummary => ({
-            id: String(row.id),
-            name: row.name,
-            model: row.model,
-            code: row.code,
-            brand: row.brand.name,
-            category: CATEGORY_FROM_DB[row.category] ?? "other",
-            // the Product table has no subcategory column yet
-            subcategory: null,
-            imgUrl: row.imgUrl,
-        }));
+        const products = rows.map((row): ProductSummary => {
+            // first gallery image, then the gallery cover (mediaUrl), then Product.imgUrl; none = category icon
+            const candidates = [
+                ...row.galleries.flatMap((gallery) => [gallery.images[0]?.imageUrl, gallery.mediaUrl]),
+                row.imgUrl,
+            ];
+            return {
+                id: String(row.id),
+                name: row.name,
+                model: row.model,
+                code: row.code,
+                brand: row.brand.name,
+                category: CATEGORY_FROM_DB[row.category] ?? "other",
+                // the Product table has no subcategory column yet
+                subcategory: null,
+                imgUrl: candidates.find(isRenderableImage) ?? null,
+            };
+        });
         return { products, isDemo: false };
     } catch (error) {
         console.error("getProducts failed, showing the demo catalog:", error);

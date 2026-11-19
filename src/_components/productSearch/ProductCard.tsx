@@ -13,15 +13,6 @@ const CATEGORY_ICONS: Record<ShowcaseCategory, ReactNode> = {
     other: <CubeIcon size={56} />,
 };
 
-// Soft brand tone behind the icon, one per category (Brand Book support colors).
-const MEDIA_MODIFIER: Record<ShowcaseCategory, string> = {
-    appliances: "product-card__media--appliances",
-    furniture: "product-card__media--furniture",
-    tools: "product-card__media--tools",
-    electronics: "product-card__media--electronics",
-    other: "product-card__media--other",
-};
-
 type ProductCardProps = {
     product: ProductSummary;
     categoryLabel: string;
@@ -34,7 +25,8 @@ export default function ProductCard({ product, categoryLabel, openLabel }: Produ
 
     return (
         <Link className={styles["product-card"]} href={`/products/${product.id}`}>
-            <div className={`${styles["product-card__media"]} ${styles[MEDIA_MODIFIER[product.category]]}`}>
+            {/* product photo when there is one, otherwise the icon of its category (same neutral background for all) */}
+            <div className={styles["product-card__media"]}>
                 {product.imgUrl ? (
                     <Image
                         className={styles["product-card__image"]}

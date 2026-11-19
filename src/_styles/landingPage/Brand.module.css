@@ -25,7 +25,7 @@
     flex-direction: column;
     gap: 12px;
     padding: 28px 24px;
-    border-radius: 28px;
+    border-radius: 10px;
 }
 
 .brand__card--mission {
@@ -42,7 +42,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 16px;
+    border-radius: 10px;
     background-color: var(--lp-bg);
     color: var(--lp-primary);
 }
@@ -85,7 +85,7 @@
     gap: 8px;
     padding: 20px;
     border: 1px solid var(--lp-border);
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 .brand__value-number {
@@ -126,7 +126,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 14px;
+    border-radius: 10px;
     background-color: var(--lp-surface-blue);
     color: var(--lp-primary);
 }
@@ -155,7 +155,7 @@
     gap: 6px;
     padding: 20px;
     border-left: 4px solid var(--lp-brand-blue);
-    border-radius: 0 16px 16px 0;
+    border-radius: 0 10px 10px 0;
     background-color: var(--lp-surface);
 }
 

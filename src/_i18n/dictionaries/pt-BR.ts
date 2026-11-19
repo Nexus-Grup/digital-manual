@@ -12,6 +12,7 @@ const ptBR = {
         navAria: "Seções da página",
         nav: ["O problema", "Solução", "Acessibilidade", "Sobre nós", "Para empresas"],
         contact: "Fale conosco",
+        account: "Entrar na sua conta",
         contrast: {
             trigger: "Opções de contraste",
             group: "Modo de visualização",

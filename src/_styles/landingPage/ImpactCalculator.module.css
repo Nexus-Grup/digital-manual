@@ -25,15 +25,15 @@
     flex-direction: column;
     gap: 16px;
     padding: 24px;
-    border-radius: 24px;
+    border-radius: 10px;
     background-color: var(--lp-bg);
 }
 
 .impact-calculator__field {
     width: 100%;
     min-height: 56px;
-    --md-outlined-text-field-container-shape: 12px;
-    --md-outlined-select-text-field-container-shape: 12px;
+    --md-outlined-text-field-container-shape: 10px;
+    --md-outlined-select-text-field-container-shape: 10px;
 }
 
 /* Results card: brand blue gradient with a soft green glow (tokens adapt to the contrast modes) */
@@ -42,7 +42,7 @@
     flex-direction: column;
     gap: 24px;
     padding: 28px 24px;
-    border-radius: 28px;
+    border-radius: 10px;
     background: var(--lp-impact-glow), var(--lp-impact-bg);
     color: var(--lp-text-inverse);
     box-shadow: 0 20px 48px rgba(22, 63, 110, 0.28);
@@ -62,7 +62,7 @@
     align-items: flex-start;
     gap: 6px;
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 10px;
     background-color: var(--lp-impact-tile);
 }
 
@@ -100,7 +100,7 @@
     align-items: flex-start;
     gap: 4px;
     padding: 16px;
-    border-radius: 18px;
+    border-radius: 10px;
     border: 1px solid var(--lp-impact-tile);
 }
 
