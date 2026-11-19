@@ -1,25 +1,34 @@
 import "server-only";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { LOGO_BUCKET } from "@/lib/logoUrl";
 
-export const LOGO_BUCKET = "company-logos";
+// Mantém compatibilidade com arquivos que importavam LOGO_BUCKET daqui.
+export { LOGO_BUCKET } from "@/lib/logoUrl";
+
+let client: SupabaseClient | null = null;
 
 /**
- * true se a URL é um logo enviado por NOSSA rota de upload (nosso bucket,
- * pasta companies/, nome uuid.ext). Use ao validar o logoUrl recebido do cliente:
- * impede salvar URLs de terceiros.
+ * Client com service role = acesso total. Só no servidor, nunca com NEXT_PUBLIC_.
+ * Criado sob demanda (lazy) para não quebrar o `next build` quando as
+ * variáveis de ambiente não estão disponíveis na hora de coletar as rotas.
  */
-export function isCompanyLogoUrl(value: string) {
-  const prefix = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${LOGO_BUCKET}/companies/`;
-  if (!value.startsWith(prefix)) return false;
-  return /^[0-9a-f-]{36}\.(png|jpg|svg)$/i.test(value.slice(prefix.length));
-}
+export function getSupabaseAdmin(): SupabaseClient {
+  if (!client) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Service role = acesso total. Só no servidor, nunca com NEXT_PUBLIC_
-export const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  { auth: { autoRefreshToken: false, persistSession: false } }
-);
+    if (!url || !key) {
+      throw new Error(
+        "NEXT_PUBLIC_SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY precisam estar definidas."
+      );
+    }
+
+    client = createClient(url, key, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+  }
+  return client;
+}
 
 /**
  * Apaga um logo do Storage a partir da URL pública salva no banco.
@@ -35,5 +44,5 @@ export async function deleteCompanyLogo(publicUrl: string | null | undefined) {
   const objectPath = decodeURIComponent(
     publicUrl.slice(index + marker.length).split("?")[0]
   );
-  await supabaseAdmin.storage.from(LOGO_BUCKET).remove([objectPath]);
+  await getSupabaseAdmin().storage.from(LOGO_BUCKET).remove([objectPath]);
 }
