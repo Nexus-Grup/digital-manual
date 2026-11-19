@@ -19,6 +19,7 @@ import LpFooter from "@/_components/landingPage/LpFooter";
 import WaveDivider from "@/_components/landingPage/WaveDivider";
 import BrandBand from "@/_components/landingPage/BrandBand";
 import LogoMarquee from "@/_components/landingPage/LogoMarquee";
+import ReadAloud from "@/_components/productComponents/ReadAloud";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -65,6 +66,8 @@ export default function LandingPageView({ locale, dict }: LandingPageViewProps) 
                 <Contact t={dict.contact} />
             </main>
             <LpFooter t={dict.footer} />
+            {/* Select any text to get a speaker button that reads it aloud in the page language. */}
+            <ReadAloud lang={locale} labels={dict.readAloud} />
         </div>
     );
 }

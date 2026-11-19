@@ -68,6 +68,16 @@
     transition: background-color 0.15s ease;
 }
 
+/* Cookie mode (product pages): the option is a <button>, so reset the native button look. */
+.language-menu__option--button {
+    width: 100%;
+    border: 0;
+    background-color: transparent;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
 .language-menu__option:hover {
     background-color: var(--lp-surface-blue);
 }

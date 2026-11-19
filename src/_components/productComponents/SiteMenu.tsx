@@ -9,8 +9,12 @@ import IconHome from '@/_assets/image/hub icon/icone-inicio-black.svg';
 import IconManual from '@/_assets/image/hub icon/icone-manual-black.svg';
 import IconInformation from '@/_assets/image/hub icon/icone-informacao-black.svg';
 import IconMontagem from '@/_assets/image/hub icon/icone-montagem-black.svg';
+import { format } from '@/_i18n/config';
+import type { Dictionary } from '@/_i18n/dictionaries/pt-BR';
 
-type Item = { group: string; label: string; href: string; icon: ReactNode };
+type GroupId = 'product' | 'general';
+type Item = { group: GroupId; label: string; href: string; icon: ReactNode };
+type SiteMenuProps = { t: Dictionary['productHeader']['menu'] };
 
 // tira acento e maiúscula para a busca ("informacoes" acha "Informações")
 const norm = (s: string) =>
@@ -30,7 +34,7 @@ const gridIcon = (
   </svg>
 );
 
-export default function SiteMenu() {
+export default function SiteMenu({ t }: SiteMenuProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { productId } = useParams<{ productId?: string }>();
@@ -47,17 +51,19 @@ export default function SiteMenu() {
     const list: Item[] = [];
     if (base) {
       list.push(
-        { group: 'Neste produto', label: 'Início', href: base, icon: img(IconHome) },
-        { group: 'Neste produto', label: 'Manual', href: `${base}/manual`, icon: img(IconManual) },
-        { group: 'Neste produto', label: 'Informações', href: `${base}/information`, icon: img(IconInformation) },
-        { group: 'Neste produto', label: 'Montagem', href: `${base}/assembly`, icon: img(IconMontagem) },
+        { group: 'product', label: t.home, href: base, icon: img(IconHome) },
+        { group: 'product', label: t.manual, href: `${base}/manual`, icon: img(IconManual) },
+        { group: 'product', label: t.information, href: `${base}/information`, icon: img(IconInformation) },
+        { group: 'product', label: t.assembly, href: `${base}/assembly`, icon: img(IconMontagem) },
       );
     }
-    list.push({ group: 'Geral', label: 'Todos os produtos', href: '/products', icon: gridIcon });
+    list.push({ group: 'general', label: t.allProducts, href: '/products', icon: gridIcon });
     // ideias para depois (descomente quando as rotas existirem):
-    // { group: 'Geral', label: 'Ajuda e contato', href: '/help', icon: ... }
+    // { group: 'general', label: 'Ajuda e contato', href: '/help', icon: ... }
     return list;
-  }, [productId]);
+  }, [productId, t]);
+
+  const groupLabel: Record<GroupId, string> = { product: t.groupProduct, general: t.groupGeneral };
 
   const results = useMemo(() => {
     const q = norm(query);
@@ -65,7 +71,7 @@ export default function SiteMenu() {
   }, [items, query]);
 
   const groups = useMemo(() => {
-    const map = new Map<string, Item[]>();
+    const map = new Map<GroupId, Item[]>();
     results.forEach((i) => map.set(i.group, [...(map.get(i.group) ?? []), i]));
     return [...map.entries()];
   }, [results]);
@@ -132,7 +138,7 @@ export default function SiteMenu() {
         ref={triggerRef}
         type="button"
         className={styles.trigger}
-        aria-label="Abrir menu"
+        aria-label={t.open}
         aria-expanded={open}
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}
@@ -156,8 +162,8 @@ export default function SiteMenu() {
             tabIndex={-1}
           >
             <header className={styles.head}>
-              <h2 id={titleId} className={styles.title}>Menu</h2>
-              <button type="button" className={styles.close} onClick={close} aria-label="Fechar menu">
+              <h2 id={titleId} className={styles.title}>{t.title}</h2>
+              <button type="button" className={styles.close} onClick={close} aria-label={t.close}>
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
                   strokeWidth="2" strokeLinecap="round" aria-hidden="true">
                   <path d="M6 6l12 12M18 6L6 18" />
@@ -175,18 +181,18 @@ export default function SiteMenu() {
                 ref={inputRef}
                 type="search"
                 className={styles.input}
-                placeholder="Buscar"
-                aria-label="Buscar no menu"
+                placeholder={t.search}
+                aria-label={t.searchAria}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={onSearchKey}
               />
             </div>
 
-            <nav className={styles.nav} aria-label="Menu principal">
+            <nav className={styles.nav} aria-label={t.navAria}>
               {groups.map(([group, list]) => (
                 <section key={group} className={styles.group}>
-                  <h3 className={styles.groupTitle}>{group}</h3>
+                  <h3 className={styles.groupTitle}>{groupLabel[group]}</h3>
                   <ul className={styles.list}>
                     {list.map((item) => (
                       <li key={item.href}>
@@ -214,7 +220,7 @@ export default function SiteMenu() {
 
               {results.length === 0 && (
                 <p className={styles.empty} role="status">
-                  Nada encontrado para “{query}”. Tente outra palavra.
+                  {format(t.empty, { query })}
                 </p>
               )}
             </nav>
