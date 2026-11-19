@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import styles from '@/_styles/cssProductPage/VideoShell.module.css';
 import { useVideos, type PanelTab } from './VideosContext';
 import SoundPanel from './SoundPanel';
@@ -46,6 +46,10 @@ function getYoutubeId(url: string): string | null {
   }
 }
 
+// Clicks on these don't count as "outside": panel triggers (side tabs and hub buttons, which already
+// toggle the panel) and the VLibras avatar, which lives in <body> outside the panel.
+const OUTSIDE_IGNORE = '[aria-controls="video-panel"], #vlibras-app-root';
+
 const thumb = (id: string) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 
 function PlayIcon() {
@@ -61,6 +65,7 @@ export default function VideoShell({ videos, audioUrl, productName, children }: 
   const isMobile = useIsMobile();
   const [current, setCurrent] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const panelWrapRef = useRef<HTMLDivElement>(null);
 
   const hasVideo = videos.length > 0;
   const hasAudio = Boolean(audioUrl);
@@ -93,6 +98,19 @@ export default function VideoShell({ videos, audioUrl, productName, children }: 
     };
   }, [isMobile, open, close]);
 
+  // While open: a click outside the panel closes it (on mobile the backdrop already covers the page).
+  useEffect(() => {
+    if (!open) return;
+    const onPointer = (e: PointerEvent) => {
+      const target = e.target as Element | null;
+      if (!target || panelWrapRef.current?.contains(target)) return;
+      if (target.closest(OUTSIDE_IGNORE)) return;
+      close();
+    };
+    document.addEventListener('pointerdown', onPointer);
+    return () => document.removeEventListener('pointerdown', onPointer);
+  }, [open, close]);
+
   if (!hasVideo && !hasAudio) return <>{children}</>;
 
   const main = videos[current] ?? videos[0];
@@ -110,7 +128,7 @@ export default function VideoShell({ videos, audioUrl, productName, children }: 
       {/* fundo escuro (só aparece no mobile) */}
       <div className={styles.backdrop} onClick={close} aria-hidden="true" />
 
-      <div className={styles.panelWrap}>
+      <div className={styles.panelWrap} ref={panelWrapRef}>
         <div className={styles.clip}>
           <aside
             id="video-panel"

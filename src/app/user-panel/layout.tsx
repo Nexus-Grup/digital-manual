@@ -1,7 +1,7 @@
 import Uheader from "@/_components/userPanelComponents/Uheader";
 import { USideMenu } from "@/_components/userPanelComponents/USideMenu";
 import { getCurrentUser } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 import { Toaster } from "sonner";
 export const instant = false;
 export default async function UserPanelLayout({
@@ -12,6 +12,11 @@ export default async function UserPanelLayout({
   
   const user = await getCurrentUser();
   if (!user) return null;
+
+  const memberships = await prisma.userCompany.findMany({
+  where: { userId: user.id, company: { isActive: true } },
+  select: { companyRole: true },
+    });
 
   const notifications = [
   { id: 1, title: "Bem-vindo", message: "Sua conta foi criada.", read: false, createdAt: "2026-11-17T10:00:00.000Z", data: null },
@@ -31,7 +36,7 @@ export default async function UserPanelLayout({
         unreadCount={unreadCount}
       />
       <div className="container-stage">
-        <USideMenu role={user.systemRole} />
+        <USideMenu role={user.systemRole} companyRoles={memberships.map((m) => m.companyRole)} />
         {children}
         <Toaster richColors position="top-right" />
       </div>

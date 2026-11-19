@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Pencil, Plus } from "lucide-react";
@@ -33,13 +34,28 @@ export type SettingsItem = {
   name: string;
   /** Só quem pode editar (ex.: OWNER da empresa) habilita o botão Edit */
   canEdit: boolean;
+  /** Só nas marcas: a empresa a que a marca pertence */
+  companyId?: number;
+};
+
+/** Empresa da lista do Brand Editor (todas as que o usuário faz parte) */
+export type BrandCompany = {
+  id: number;
+  name: string;
+  role: "ADMIN" | "OWNER" | "MANAGER" | "MEMBER";
+  /** ADMIN e OWNER criam marca; MANAGER e MEMBER não */
+  canCreateBrand: boolean;
 };
 
 type Props = {
   companies: SettingsItem[];
   brands: SettingsItem[];
+  /** Empresas do usuário, para escolher antes de ver as marcas */
+  brandCompanies: BrandCompany[];
   /** false para membro comum: a área de empresas não aparece */
   showCompanies: boolean;
+  /** false para quem só é MEMBER: a área de marcas não aparece */
+  showBrands: boolean;
 };
 
 /** Descobre em qual das duas áreas a rota atual está (ou nenhuma). */
@@ -51,31 +67,59 @@ function resourceFromPath(pathname: string): Resource | null {
   return null;
 }
 
-export function SettingsSidebar({ companies, brands, showCompanies }: Props) {
+export function SettingsSidebar({
+  companies,
+  brands,
+  brandCompanies,
+  showCompanies,
+  showBrands,
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams<Record<string, string | undefined>>();
+  // empresa escolhida no Brand Editor (quando ainda não há marca selecionada)
+  const [pickedCompany, setPickedCompany] = useState("");
 
   const resource = resourceFromPath(pathname);
 
   // Fora de /companies e /brands a sidebar não aparece
   if (!resource) return null;
 
-  // Membro comum não vê nada de empresas
+  // Membro comum não vê nada de empresas, nem de marcas
   if (resource === "company" && !showCompanies) return null;
+  if (resource === "brand" && !showBrands) return null;
 
   const cfg = CONFIG[resource];
-  const items = resource === "company" ? companies : brands;
+  const isBrand = resource === "brand";
 
-  // O item selecionado vem da rota: /companies/12/edit -> "12"
+  // O item selecionado vem da rota: /brands/12/edit -> "12"
   const selectedId = params[cfg.param] ?? "";
-  const selected = items.find((i) => String(i.id) === selectedId);
+  const selected = (isBrand ? brands : companies).find((i) => String(i.id) === selectedId);
 
-  const newHref = `${cfg.base}/new`;
+  // Empresa atual: a da marca aberta; senão a que o usuário escolheu; senão a única que ele tem
+  const companyId = isBrand
+    ? selected?.companyId
+      ? String(selected.companyId)
+      : pickedCompany || (brandCompanies.length === 1 ? String(brandCompanies[0].id) : "")
+    : "";
+
+  const items = isBrand ? brands.filter((b) => String(b.companyId) === companyId) : companies;
+  const currentCompany = brandCompanies.find((c) => String(c.id) === companyId);
+
+  // New brand: só ADMIN/OWNER, e só com uma empresa escolhida. Empresas e o resto seguem livres.
+  const canCreate = isBrand ? !!currentCompany?.canCreateBrand : true;
+  const newPath = `${cfg.base}/new`;
+  
+  const newHref = newPath;
   const editHref = selected ? `${cfg.base}/${selected.id}/edit` : null;
 
-  const isNew = pathname === newHref;
+  const isNew = pathname === newPath;
   const isEdit = !!editHref && pathname === editHref;
+
+  function onSelectCompany(e: React.ChangeEvent<HTMLSelectElement>) {
+    setPickedCompany(e.target.value);
+    router.push(cfg.base); // volta à lista: a marca aberta era de outra empresa
+  }
 
   function onSelect(e: React.ChangeEvent<HTMLSelectElement>) {
     const id = e.target.value;
@@ -88,18 +132,39 @@ export function SettingsSidebar({ companies, brands, showCompanies }: Props) {
     router.push(`${cfg.base}/${id}${suffix}`);
   }
 
+  const createHint = !companyId ? "Select a company first" : "Only owners can create brands";
+
   return (
     <aside className={styles.sidebar}>
       <header className={styles.header}>{cfg.title}</header>
 
       <nav className={styles.nav} aria-label={cfg.title}>
+        {isBrand && (
+          <select
+            className={styles.select}
+            aria-label="Select company"
+            value={companyId}
+            onChange={onSelectCompany}
+          >
+            <option value="">Select company</option>
+            {brandCompanies.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        )}
+
         <select
           className={styles.select}
           aria-label={cfg.select}
           value={selectedId}
           onChange={onSelect}
+          disabled={isBrand && !companyId}
         >
-          <option value="">{cfg.select}</option>
+          <option value="">
+            {isBrand && companyId && items.length === 0 ? "No brands in this company" : cfg.select}
+          </option>
           {items.map((item) => (
             <option key={item.id} value={item.id}>
               {item.name}
@@ -121,21 +186,28 @@ export function SettingsSidebar({ companies, brands, showCompanies }: Props) {
             type="button"
             className={styles.item}
             disabled
-            title={selected ? "Only owners can edit" : cfg.select}
+            title={selected ? "You don't have permission to edit" : cfg.select}
           >
             <Pencil size={14} aria-hidden />
             <span>{cfg.edit}</span>
           </button>
         )}
 
-        <Link
-          href={newHref}
-          className={`${styles.item} ${isNew ? styles.active : ""}`}
-          aria-current={isNew ? "page" : undefined}
-        >
-          <Plus size={14} aria-hidden />
-          <span>{cfg.create}</span>
-        </Link>
+        {canCreate ? (
+          <Link
+            href={newHref}
+            className={`${styles.item} ${isNew ? styles.active : ""}`}
+            aria-current={isNew ? "page" : undefined}
+          >
+            <Plus size={14} aria-hidden />
+            <span>{cfg.create}</span>
+          </Link>
+        ) : (
+          <button type="button" className={styles.item} disabled title={createHint}>
+            <Plus size={14} aria-hidden />
+            <span>{cfg.create}</span>
+          </button>
+        )}
       </nav>
     </aside>
   );

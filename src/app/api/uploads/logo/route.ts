@@ -1,8 +1,7 @@
-import { mkdir, writeFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
-import path from 'node:path';
 import { NextResponse } from 'next/server';
 import { HttpError, handleError, requireUser } from '@/lib/companyAccess';
+import { LOGO_BUCKET, supabaseAdmin } from '@/lib/supabase-admin';
 
 const MAX_SIZE = 2 * 1024 * 1024;
 
@@ -13,7 +12,7 @@ const TYPES: Record<string, { ext: string; valid: (b: Buffer) => boolean }> = {
     ext: 'svg',
     valid: (b) => {
       const text = b.toString('utf8');
-      return text.includes('<svg') && !/<script|\son\w+\s*=|javascript:/i.test(text);
+      return text.includes('<svg') && !/<script|<foreignObject|\son\w+\s*=|javascript:/i.test(text);
     },
   },
 };
@@ -31,12 +30,25 @@ export async function POST(req: Request) {
     const buffer = Buffer.from(await file.arrayBuffer());
     if (!kind.valid(buffer)) throw new HttpError(400, 'The file content does not match its type');
 
-    const dir = path.join(process.cwd(), 'public', 'uploads', 'companies');
-    await mkdir(dir, { recursive: true });
-    const name = `${randomUUID()}.${kind.ext}`;
-    await writeFile(path.join(dir, name), buffer);
+    // Nome aleatório: ninguém adivinha a URL nem sobrescreve o arquivo de outro
+    const objectPath = `companies/${randomUUID()}.${kind.ext}`;
 
-    return NextResponse.json({ url: `/uploads/companies/${name}` }, { status: 201 });
+    const { error } = await supabaseAdmin.storage
+      .from(LOGO_BUCKET)
+      .upload(objectPath, buffer, {
+        contentType: file.type,
+        cacheControl: '31536000', // 1 ano (o nome nunca se repete)
+        upsert: false,
+      });
+
+    if (error) {
+      console.error('Logo upload failed', error);
+      throw new HttpError(500, 'Could not upload the logo');
+    }
+
+    const { data } = supabaseAdmin.storage.from(LOGO_BUCKET).getPublicUrl(objectPath);
+
+    return NextResponse.json({ url: data.publicUrl }, { status: 201 });
   } catch (e) {
     return handleError(e);
   }

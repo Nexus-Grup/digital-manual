@@ -31,22 +31,22 @@ export function CompanyForm({ mode, company, children }: Props) {
   const isEdit = mode === 'edit' && !!company;
 
   const [name, setName] = useState(company?.name ?? '');
+  const [companyId, setCompanyId] = useState(company?.id ?? '');
   const [description, setDescription] = useState(company?.description ?? '');
   const [website, setWebsite] = useState(company?.website ?? '');
   const [logoUrl, setLogoUrl] = useState<string | null>(company?.logoUrl ?? null);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [error, setError] = useState('');
+  const [nameInvalid, setNameInvalid] = useState(false);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (uploading) return;
-    setError('');
-    setSaved(false);
+    setNameInvalid(false);
 
     if (name.trim().length < 2) {
-      setError('Enter the company name');
+      setNameInvalid(true); // só marca o campo; a mensagem vai no toast
+      toast.error('Enter the company name');
       return;
     }
 
@@ -59,18 +59,19 @@ export function CompanyForm({ mode, company, children }: Props) {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(data.error ?? 'Could not save the company');
+        toast.error(data.error ?? 'Could not save the company');
         return;
       }
       if (isEdit) {
-        setSaved(true);
+        toast.success('Changes saved.');
       } else {
+        toast.success('Company created.');
         // depois de criar, vai para a edição para adicionar usuários
         router.push(`${BASE}/${data.company.id}/edit`);
       }
       router.refresh(); // atualiza a lista da sidebar
     } catch {
-      setError('Network error. Try again.');
+      toast.error('Network error. Try again.');
     } finally {
       setSaving(false);
     }
@@ -85,11 +86,14 @@ export function CompanyForm({ mode, company, children }: Props) {
             {isEdit ? 'Company Information' : 'Register a new company in the platform.'}
           </p>
         </div>
-        {isEdit && (
-          <span className={`${styles.badge} ${company.isActive ? styles.badgeActive : styles.badgeInactive}`}>
-            {company.isActive ? 'active' : 'inactive'}
-          </span>
-        )}
+        <div>
+          {isEdit && (
+            <span className={`${styles.badge} ${company.isActive ? styles.badgeActive : styles.badgeInactive}`}>
+              {company.isActive ? 'active' : 'inactive'}
+            </span>
+          )}
+          <p style={{fontSize:'14px'}}>id ( {companyId} )</p>          
+        </div>
       </header>
 
       {/* o <form> envolve só os campos: a seção de usuários tem formulários próprios */}
@@ -102,7 +106,11 @@ export function CompanyForm({ mode, company, children }: Props) {
             placeholder="e.g. robert bosch gmbh"
             value={name}
             maxLength={120}
-            onChange={(e) => setName(e.target.value)}
+            aria-invalid={nameInvalid}
+            onChange={(e) => {
+              setName(e.target.value);
+              setNameInvalid(false);
+            }}
           />
         </div>
 
@@ -130,10 +138,14 @@ export function CompanyForm({ mode, company, children }: Props) {
           />
         </div>
 
-        <LogoField value={logoUrl} onChange={setLogoUrl} onBusyChange={setUploading} onError={setError} />
-
-        {error && <p className={styles.error} role="alert">{error}</p>}
-        {saved && <p className={styles.success} role="status">Changes saved.</p>}
+        <LogoField
+          value={logoUrl}
+          onChange={setLogoUrl}
+          onBusyChange={setUploading}
+          onError={(msg) => {
+            if (msg) toast.error(msg);
+          }}
+        />
       </form>
 
       {isEdit ? (

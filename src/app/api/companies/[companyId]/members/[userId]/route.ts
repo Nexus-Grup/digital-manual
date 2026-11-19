@@ -13,7 +13,8 @@ export async function PATCH(req: Request, { params }: Ctx) {
     await requireOwner(companyId);
     const { companyRole } = await readBody(req, roleInput);
 
-    if (companyRole === 'MEMBER') await assertNotLastOwner(companyId, userId);
+    // if (companyRole === 'MEMBER') await assertNotLastOwner(companyId, userId);
+    if (companyRole !== 'OWNER') await assertNotLastOwner(companyId, userId);
 
     await prisma.userCompany.update({
       where: { userId_companyId: { userId, companyId } },

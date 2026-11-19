@@ -11,7 +11,7 @@
     align-items: center;
     justify-content: center;
     border: 0;
-    border-radius: 8px;
+    border-radius: 5px;
     background-color: transparent;
     color: var(--lp-text);
     cursor: pointer;
@@ -56,7 +56,7 @@
     width: 240px;
     padding: 12px 14px;
     border: 1px solid var(--lp-border);
-    border-radius: 12px;
+    border-radius: 10px;
     background-color: var(--lp-bg);
     box-shadow: 0 8px 24px rgba(17, 20, 24, 0.12);
     color: var(--lp-text);

@@ -6,6 +6,13 @@ export type Locale = (typeof LOCALES)[number];
 
 export const DEFAULT_LOCALE: Locale = "pt-BR";
 
+/** Cookie that stores the chosen locale on routes without a locale segment (product pages). */
+export const LOCALE_COOKIE = "locale";
+
+export function isLocale(value: string | undefined): value is Locale {
+    return LOCALES.includes(value as Locale);
+}
+
 type LocaleInfo = {
     /** URL segment after /landing-page (null = default locale, served at /landing-page). */
     slug: string | null;

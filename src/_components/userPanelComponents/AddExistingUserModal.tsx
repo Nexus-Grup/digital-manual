@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { User } from 'lucide-react';
+import { toast } from 'sonner';
 import styles from '@/_styles/cssUserPanelPage/CompanyUsers.module.css';
 import { request } from '@/lib/request';
 import { Modal } from './Modal';
 
 type Candidate = { id: number; firstName: string; lastName: string; email: string };
+type Role = 'OWNER' | 'MANAGER' | 'MEMBER';
 
 type Props = {
   companyId: number;
@@ -19,9 +21,8 @@ export function AddExistingUserModal({ companyId, onClose, onAdded }: Props) {
   const [results, setResults] = useState<Candidate[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [role, setRole] = useState<'OWNER' | 'MEMBER'>('MEMBER');
+  const [role, setRole] = useState<Role>('MEMBER');
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
 
   const term = query.trim();
   const searching = term.length >= 2;
@@ -57,16 +58,16 @@ export function AddExistingUserModal({ companyId, onClose, onAdded }: Props) {
   async function add() {
     if (!selected) return;
     setSaving(true);
-    setError('');
     const err = await request(`/api/companies/${companyId}/members`, 'POST', {
       userId: selected.id,
       companyRole: role,
     });
     setSaving(false);
     if (err) {
-      setError(err);
+      toast.error(err);
       return;
     }
+    toast.success('User added to the company.');
     onAdded();
   }
 
@@ -115,12 +116,14 @@ export function AddExistingUserModal({ companyId, onClose, onAdded }: Props) {
           Owner
         </label>
         <label className={styles.radioRow}>
+          <input type="radio" name="add-role" checked={role === 'MANAGER'} onChange={() => setRole('MANAGER')} />
+          Manager
+        </label>
+        <label className={styles.radioRow}>
           <input type="radio" name="add-role" checked={role === 'MEMBER'} onChange={() => setRole('MEMBER')} />
           Member
         </label>
       </fieldset>
-
-      {error && <p className={styles.modalError} role="alert">{error}</p>}
 
       <button type="button" className={styles.wideBtn} onClick={add} disabled={!selected || saving}>
         <User size={14} aria-hidden /> {saving ? 'Adding...' : 'Add to company'}

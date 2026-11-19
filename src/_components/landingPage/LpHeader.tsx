@@ -9,7 +9,7 @@ import LanguageMenu from "@/_components/landingPage/LanguageMenu";
 import VLibrasButton from "@/_components/landingPage/VLibrasButton";
 import LpMobileMenu from "@/_components/landingPage/LpMobileMenu";
 import Link from "next/link";
-import { User } from "lucide-react";
+import { CircleUserRound } from "lucide-react";
 
 // Section anchors, in the same order as dict.header.nav.
 const NAV_HREFS = ["#problema", "#solucao", "#acessibilidade", "#sobre", "#empresas"];
@@ -50,7 +50,9 @@ export default function LpHeader({ locale, t, menu }: LpHeaderProps) {
                         {t.contact}
                     </md-filled-button>
                     <LpMobileMenu links={links} contact={t.contact} t={menu} />
-                    <Link href={'/login'} className={styles.user_button}><User/></Link>
+                    <Link className={styles["lp-header__account"]} href="/login" aria-label={t.account} title={t.account}>
+                        <CircleUserRound size={22} strokeWidth={1.75} aria-hidden="true" />
+                    </Link>
                 </div>
             </div>
         </header>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense, type ReactNode } from "react";
-import Pheader from "@/_components/productComponents/Pheader";
+import ProductHeader, { ProductHeaderFallback } from "@/_components/productComponents/ProductHeader";
 import HubButton from "@/_components/productComponents/hubButton";
 import VideoShell from "@/_components/productComponents/VideoShell";
 import { VideosProvider } from "@/_components/productComponents/VideosContext";
@@ -45,7 +45,9 @@ export default function RootLayout({
   return (
     <main className={`container-global ${styles.app}`}>
       <VideosProvider>
-        <Pheader />
+        <Suspense fallback={<ProductHeaderFallback />}>
+          <ProductHeader />
+        </Suspense>
         <div className={styles.stage}>
           <Suspense fallback={null}>
             <VideosLoader params={params}>{children}</VideosLoader>

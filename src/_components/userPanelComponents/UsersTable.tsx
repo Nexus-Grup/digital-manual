@@ -73,7 +73,7 @@ export async function UsersTable({ searchParams }: { searchParams: SearchParams 
       <thead>
         <tr>
           <th>Users</th>
-          <th className={styles.center}>Role</th>
+          <th className={styles.center}>System Role</th>
           <th className={styles.center}>Company</th>
           <th className={styles.center}>Status</th>
           <th className={styles.center}>Registration</th>

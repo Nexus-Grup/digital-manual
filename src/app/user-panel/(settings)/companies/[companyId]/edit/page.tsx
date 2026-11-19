@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { canManageCompany } from "@/lib/companyAccess";
 import { CompanyForm } from "@/_components/userPanelComponents/CompanyForm";
 import { CompanyUsers } from "@/_components/userPanelComponents/CompanyUsers";
+import styles from "@/_styles/cssUserPanelPage/EditCompanies.module.css"
 
 export const instant = false; // mesmo padrão do seu layout
 
@@ -60,23 +61,26 @@ export default async function EditCompanyPage({
   }));
 
   return (
-    <CompanyForm
-      mode="edit"
-      company={{
-        id: company.id,
-        name: company.name,
-        description: company.description,
-        website: company.website,
-        logoUrl: company.logoUrl,
-        isActive: company.isActive,
-      }}
-    >
-      <CompanyUsers
-        companyId={company.id}
-        companyName={company.name}
-        currentUserId={user.id}
-        members={members}
-      />
-    </CompanyForm>
+    <main className={styles.container_main}>
+      <CompanyForm
+        mode="edit"
+        company={{
+          id: company.id,
+          name: company.name,
+          description: company.description,
+          website: company.website,
+          logoUrl: company.logoUrl,
+          isActive: company.isActive,
+        }}
+      >
+        <CompanyUsers
+          companyId={company.id}
+          companyName={company.name}
+          currentUserId={user.id}
+          members={members}
+        />
+      </CompanyForm>      
+    </main>
+
   );
 }

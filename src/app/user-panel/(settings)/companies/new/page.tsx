@@ -14,7 +14,7 @@ export default async function NewCompanyPage() {
   if (!(await canAccessCompanyArea(user))) notFound();
 
   return (
-    <main className={styles.container_main}>
+    <main className={styles.container_main_page}>
         <CompanyForm mode="create" />
     </main>
   );

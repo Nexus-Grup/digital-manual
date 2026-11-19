@@ -7,7 +7,7 @@
   --hat-light: #f5d878;
   --beak: #f28c28;
   --ink: #12161a;
-  --font: var(--font-inter, Inter), system-ui, sans-serif;
+  --font: var(--font-brand), Arial, sans-serif;
   --size: clamp(2rem, 8vw, 4.2rem);
   --lucca-small: calc(var(--size) * 0.96); /* tamanho do Lucca ao lado do texto */
 

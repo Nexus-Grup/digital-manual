@@ -7,22 +7,32 @@ import { Home, Tags, Package, Building2, Users, LayoutDashboard, LogOut, Bell, L
 import styles from "@/_styles/cssUserPanelPage/USideMenu.module.css";
 
 type SystemRole = "USER" | "ADMIN"; // mesmos valores do seu enum SystemRole
+type CompanyRole = "OWNER" | "MANAGER" | "MEMBER"; // mesmos valores do seu enum CompanyRole
 
 interface MenuItem {
   key: string;
   label: string;
   href: string;
   icon: LucideIcon;
-  roles?: SystemRole[]; // sem "roles" = todo usuário vê
+  roles?: SystemRole[]; // papel no sistema que pode ver
+  companyRoles?: CompanyRole[]; // papel em ALGUMA empresa que pode ver
+  // sem "roles" e sem "companyRoles" = todo usuário vê
+  // com os dois = vê quem atender a um OU ao outro
 }
 const BASE = "/user-panel" 
 
 const MENU_GROUPS: MenuItem[][] = [
   [
     { key: "overview", label: "Company Overview", href: `${BASE}/company-overview`, icon: Home },
-    { key: "brand",    label: "Brand Editor",     href: `${BASE}/brands`,      icon: Tags },
+    {
+      key: "brand", label: "Brand Editor", href: `${BASE}/brands`, icon: Tags,
+      roles: ["ADMIN"], companyRoles: ["OWNER", "MANAGER"], // membro não vê
+    },
     { key: "product",  label: "Product Editor",   href: `${BASE}/products`,    icon: Package },
-    { key: "company",  label: "Company Editor",   href: `${BASE}/companies`,   icon: Building2 },
+    {
+      key: "company", label: "Company Editor", href: `${BASE}/companies`, icon: Building2,
+      roles: ["ADMIN"], companyRoles: ["OWNER"], // só admin do sistema e owner de empresa
+    },
   ],
   [
     { key: "notifications", label: "Notifications",   href: `${BASE}/notifications`,   icon: Bell },
@@ -31,12 +41,26 @@ const MENU_GROUPS: MenuItem[][] = [
     { key: "logs",          label: "Logs",            href: `${BASE}/logs`,            icon: Logs, roles: ["ADMIN"] },
   ],
 ];
-export function USideMenu({ role }: { role: SystemRole }) {
+export function USideMenu({
+  role,
+  companyRoles = [],
+}: {
+  role: SystemRole;
+  /** papéis do usuário nas empresas dele (ex.: ["OWNER", "MEMBER"]) */
+  companyRoles?: CompanyRole[];
+}) {
   const pathname = usePathname();
   const router = useRouter();
 
+  const canSee = (item: MenuItem) => {
+    if (!item.roles && !item.companyRoles) return true;
+    const bySystem = item.roles?.includes(role) ?? false;
+    const byCompany = item.companyRoles?.some((r) => companyRoles.includes(r)) ?? false;
+    return bySystem || byCompany;
+  };
+
   const groups = MENU_GROUPS
-    .map((group) => group.filter((item) => !item.roles || item.roles.includes(role)))
+    .map((group) => group.filter(canSee))
     .filter((group) => group.length > 0);
 
   async function handleLogout() {

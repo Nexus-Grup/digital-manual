@@ -8,14 +8,30 @@
     background-color: var(--lp-bg);
     border-bottom: 1px solid var(--lp-border);
 }
-.user_button{
-    width: 35px;
-    height: 35px;
-    border-radius: 26px;
-    background-color: #cfe2f1;
-    display: flex;
+/* Account (login) button: outlined, same 44px size as the other header actions */
+.lp-header__account {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
+    border: 1px solid var(--lp-border);
+    border-radius: 10px;
+    background-color: var(--lp-bg);
+    color: var(--lp-text);
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.lp-header__account:hover {
+    border-color: var(--lp-primary);
+    background-color: var(--lp-surface-blue);
+    color: var(--lp-primary);
+}
+
+.lp-header__account:focus-visible {
+    outline: 3px solid var(--lp-primary);
+    outline-offset: 2px;
 }
 .lp-header__bar {
     width: 100%;
@@ -61,7 +77,7 @@
     align-items: center;
     min-height: 48px;
     padding: 0 12px;
-    border-radius: 24px;
+    border-radius: 10px;
     color: var(--lp-text);
     font-size: 0.9375rem;
     font-weight: 600;
