@@ -10,15 +10,12 @@ import IconManual from '@/_assets/image/hub icon/icone-manual-black.svg';
 import IconInformation from '@/_assets/image/hub icon/icone-informacao-black.svg';
 import IconMontagem from '@/_assets/image/hub icon/icone-montagem-black.svg';
 import { format } from '@/_i18n/config';
+import { normalizeText } from '@/lib/text';
 import type { Dictionary } from '@/_i18n/dictionaries/pt-BR';
 
 type GroupId = 'product' | 'general';
 type Item = { group: GroupId; label: string; href: string; icon: ReactNode };
 type SiteMenuProps = { t: Dictionary['productHeader']['menu'] };
-
-// tira acento e maiúscula para a busca ("informacoes" acha "Informações")
-const norm = (s: string) =>
-  s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 
 const img = (src: typeof IconHome) => (
   <Image src={src} alt="" width={24} height={24} className={styles.itemImg} />
@@ -66,8 +63,8 @@ export default function SiteMenu({ t }: SiteMenuProps) {
   const groupLabel: Record<GroupId, string> = { product: t.groupProduct, general: t.groupGeneral };
 
   const results = useMemo(() => {
-    const q = norm(query);
-    return q ? items.filter((i) => norm(i.label).includes(q)) : items;
+    const q = normalizeText(query);
+    return q ? items.filter((i) => normalizeText(i.label).includes(q)) : items;
   }, [items, query]);
 
   const groups = useMemo(() => {

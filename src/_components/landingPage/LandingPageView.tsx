@@ -1,4 +1,3 @@
-import { Inter } from "next/font/google";
 import styles from "@/_styles/landingPage/LandingPage.module.css";
 import type { Locale } from "@/_i18n/config";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
@@ -21,12 +20,6 @@ import BrandBand from "@/_components/landingPage/BrandBand";
 import LogoMarquee from "@/_components/landingPage/LogoMarquee";
 import ReadAloud from "@/_components/productComponents/ReadAloud";
 
-const inter = Inter({
-    subsets: ["latin"],
-    display: "swap",
-    variable: "--font-lp",
-});
-
 type LandingPageViewProps = {
     locale: Locale;
     dict: Dictionary;
@@ -37,7 +30,7 @@ type LandingPageViewProps = {
 export default function LandingPageView({ locale, dict }: LandingPageViewProps) {
     return (
         // lang on the wrapper so screen readers switch pronunciation (the root <html> stays pt-BR).
-        <div className={`${inter.variable} ${styles["landing"]}`} lang={locale}>
+        <div className={styles["landing"]} lang={locale}>
             <MaterialRegistry />
             <LpHeader locale={locale} t={dict.header} menu={dict.mobileMenu} />
             <main className={styles["landing__main"]}>

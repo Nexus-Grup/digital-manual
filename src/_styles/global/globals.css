@@ -181,8 +181,8 @@ html[data-contrast="high"] {
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-brand), Arial, Helvetica, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -192,10 +192,18 @@ html[data-contrast="high"] {
   }
 }
 
+/* Brand typeface on every page (loaded in app/layout.tsx). Only 400 and 700 exist: 500 renders as
+   400 and 600/800 as 700, using the real bold instead of a synthesized one. */
 body {
   background: var(--background);
   color: var(--c-text);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-brand), Arial, Helvetica, sans-serif;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+
+  /* Material 3 web components read the typeface from these tokens */
+  --md-ref-typeface-brand: var(--font-brand), Arial, sans-serif;
+  --md-ref-typeface-plain: var(--font-brand), Arial, sans-serif;
 }
 
 

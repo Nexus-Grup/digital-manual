@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "@/_styles/global/globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+// Brand typeface (Brand Book: rounded sans-serif with open shapes, legible on small screens and for
+// low vision/dyslexia). Self-hosted WOFF2 with font-display: swap and a metric-adjusted Arial
+// fallback, so text shows immediately and doesn't shift when the font arrives.
+const brandFont = localFont({
+  src: [
+    { path: "../_assets/fonts/AmpleSoftPro-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../_assets/fonts/AmpleSoftPro-Bold.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-brand",
+  display: "swap",
+  fallback: ["Arial", "Helvetica", "sans-serif"],
+  adjustFontFallback: "Arial",
 });
 
 export const metadata: Metadata = {
@@ -19,10 +23,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="pt-BR" className={`${brandFont.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

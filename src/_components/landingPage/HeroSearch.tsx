@@ -13,29 +13,40 @@ type HeroSearchProps = {
         aria: string;
         button: string;
     };
+    /** Field id (the landing hero and the /products page each have their own). */
+    id?: string;
+    /** Current search term, so the field keeps it on the results page. */
+    defaultValue?: string;
+    /** Active category filter on /products, kept when searching again. */
+    category?: string;
 };
 
-// Manual search for end users: name, model or product code.
-export default function HeroSearch({ t }: HeroSearchProps) {
+// Manual search for end users: name, model or product code. Results live at /products?q=...
+export default function HeroSearch({ t, id = "hero-search", defaultValue, category }: HeroSearchProps) {
     const router = useRouter();
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const query = String(new FormData(event.currentTarget).get("q") ?? "").trim();
-        router.push(query ? `/products?q=${encodeURIComponent(query)}` : "/products");
+        const params = new URLSearchParams();
+        if (query) params.set("q", query);
+        if (category) params.set("category", category);
+        const search = params.toString();
+        router.push(search ? `/products?${search}` : "/products");
     };
 
     return (
         <form className={styles["hero__search"]} role="search" onSubmit={handleSubmit}>
-            <label className={styles["hero__search-label"]} htmlFor="hero-search">
+            <label className={styles["hero__search-label"]} htmlFor={id}>
                 {t.label}
             </label>
             <div className={styles["hero__search-row"]}>
                 <md-outlined-text-field
-                    id="hero-search"
+                    id={id}
                     className={styles["hero__search-field"]}
                     name="q"
                     type="search"
+                    value={defaultValue}
                     placeholder={t.placeholder}
                     aria-label={t.aria}
                 >

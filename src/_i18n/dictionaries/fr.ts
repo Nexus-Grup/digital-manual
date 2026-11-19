@@ -4,7 +4,7 @@ const fr: Dictionary = {
     meta: {
         title: "Manual digital | Le manuel du futur : interactif, accessible et durable",
         description:
-            "Remplacez les notices papier confuses par des manuels numériques en 3D, accessibles via QR code. Un guide intuitif pour ceux qui montent ; moins de coûts, des objectifs ESG et moins de demandes au service client pour les marques.",
+            "Remplacez les notices papier confuses par des manuels numériques, accessibles via QR code. Un guide intuitif pour ceux qui montent ; moins de coûts, des objectifs ESG et moins de demandes au service client pour les marques.",
     },
     header: {
         homeAria: "Manual digital, retour en haut de page",
@@ -371,6 +371,34 @@ const fr: Dictionary = {
             "Nous suivons les recommandations WCAG, avec une structure compatible avec les lecteurs d’écran, le contraste élevé, la Libras via VLibras et la traduction de langue. Vous avez rencontré un obstacle ? Écrivez-nous.",
         copyright: "© 2026 Manual digital. Tous droits réservés.",
         team: "Réalisé par le Time Nexus : Danilo, Stephany, Thaiza et Bianca.",
+    },
+    productSearch: {
+        title: "Trouvez le manuel de votre produit",
+        text: "Recherchez par nom, modèle ou code, ou scannez le QR code de l'emballage.",
+        search: {
+            label: "Nom, modèle ou code",
+            placeholder: "Ex. : visseuse, GSR 120-LI",
+            aria: "Rechercher un manuel par nom, modèle ou code",
+            button: "Rechercher",
+        },
+        filterAria: "Filtrer par catégorie",
+        resultsAria: "Manuels trouvés",
+        countAll: "{count} manuels disponibles",
+        countAllOne: "1 manuel disponible",
+        countQuery: "{count} résultats pour « {query} »",
+        countQueryOne: "1 résultat pour « {query} »",
+        emptyTitle: "Aucun manuel trouvé pour « {query} »",
+        emptyCategory: "Pas encore de manuels dans cette catégorie",
+        emptyText: "Vérifiez le nom ou le code sur l'étiquette ou l'emballage du produit, puis réessayez.",
+        clear: "Voir tous les manuels",
+        openManual: "Ouvrir le manuel",
+        other: "Autres",
+        demoNote: "",
+        cta: {
+            title: "Vous êtes fabricant ? Numérisez les manuels de votre marque.",
+            text: "Moins de papier, moins d'appels au SAV et un manuel accessible à tous vos clients.",
+            button: "Nous contacter",
+        },
     },
     readAloud: {
         titleReading: "Lecture à voix haute",

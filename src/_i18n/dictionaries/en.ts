@@ -4,7 +4,7 @@ const en: Dictionary = {
     meta: {
         title: "Manual digital | The manual of the future: interactive, accessible and sustainable",
         description:
-            "Replace confusing paper manuals with accessible 3D digital manuals via QR Code. An intuitive guide for whoever assembles the product; lower costs, ESG goals and fewer support tickets for brands.",
+            "Replace confusing paper manuals with accessible digital manuals via QR Code. An intuitive guide for whoever assembles the product; lower costs, ESG goals and fewer support tickets for brands.",
     },
     header: {
         homeAria: "Manual digital, back to top",
@@ -371,6 +371,34 @@ const en: Dictionary = {
             "We follow the WCAG guidelines, with a structure compatible with screen readers, high contrast, Libras via VLibras and language translation. Found a barrier? Let us know.",
         copyright: "© 2026 Manual digital. All rights reserved.",
         team: "Made by Time Nexus: Danilo, Stephany, Thaiza and Bianca.",
+    },
+    productSearch: {
+        title: "Find your product's manual",
+        text: "Search by name, model or code, or point your camera at the QR Code on the box.",
+        search: {
+            label: "Name, model or code",
+            placeholder: "E.g. drill driver, GSR 120-LI",
+            aria: "Search manuals by name, model or code",
+            button: "Search",
+        },
+        filterAria: "Filter by category",
+        resultsAria: "Manuals found",
+        countAll: "{count} manuals available",
+        countAllOne: "1 manual available",
+        countQuery: "{count} results for “{query}”",
+        countQueryOne: "1 result for “{query}”",
+        emptyTitle: "No manuals found for “{query}”",
+        emptyCategory: "No manuals in this category yet",
+        emptyText: "Check the name or code on the product label or box and try again.",
+        clear: "See all manuals",
+        openManual: "Open manual",
+        other: "Other",
+        demoNote: "",
+        cta: {
+            title: "Are you a manufacturer? Digitize your brand's manuals.",
+            text: "Less paper, fewer support tickets and an accessible manual for every customer.",
+            button: "Contact us",
+        },
     },
     readAloud: {
         titleReading: "Reading aloud",

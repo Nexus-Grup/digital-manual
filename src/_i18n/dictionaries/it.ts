@@ -4,7 +4,7 @@ const it: Dictionary = {
     meta: {
         title: "Manual digital | Il manuale del futuro: interattivo, accessibile e sostenibile",
         description:
-            "Sostituisci i confusi manuali cartacei con manuali digitali in 3D, accessibili tramite codice QR. Una guida intuitiva per chi monta; meno costi, obiettivi ESG e meno richieste all'assistenza clienti per i brand.",
+            "Sostituisci i confusi manuali cartacei con manuali digitali, accessibili tramite codice QR. Una guida intuitiva per chi monta; meno costi, obiettivi ESG e meno richieste all'assistenza clienti per i brand.",
     },
     header: {
         homeAria: "Manual digital, torna all'inizio",
@@ -371,6 +371,34 @@ const it: Dictionary = {
             "Seguiamo le linee guida WCAG, con una struttura compatibile con screen reader, contrasto elevato, Libras tramite VLibras e traduzione della lingua. Hai incontrato una barriera? Scrivici.",
         copyright: "© 2026 Manual digital. Tutti i diritti riservati.",
         team: "Realizzato dal Time Nexus: Danilo, Stephany, Thaiza e Bianca.",
+    },
+    productSearch: {
+        title: "Trova il manuale del tuo prodotto",
+        text: "Cerca per nome, modello o codice, oppure inquadra il QR code sulla confezione.",
+        search: {
+            label: "Nome, modello o codice",
+            placeholder: "Es.: avvitatore, GSR 120-LI",
+            aria: "Cerca il manuale per nome, modello o codice",
+            button: "Cerca",
+        },
+        filterAria: "Filtra per categoria",
+        resultsAria: "Manuali trovati",
+        countAll: "{count} manuali disponibili",
+        countAllOne: "1 manuale disponibile",
+        countQuery: "{count} risultati per “{query}”",
+        countQueryOne: "1 risultato per “{query}”",
+        emptyTitle: "Nessun manuale trovato per “{query}”",
+        emptyCategory: "Non ci sono ancora manuali in questa categoria",
+        emptyText: "Controlla il nome o il codice sull'etichetta o sulla confezione del prodotto e riprova.",
+        clear: "Vedi tutti i manuali",
+        openManual: "Apri manuale",
+        other: "Altro",
+        demoNote: "",
+        cta: {
+            title: "Sei un produttore? Digitalizza i manuali del tuo marchio.",
+            text: "Meno carta, meno richieste di assistenza e un manuale accessibile a tutti i clienti.",
+            button: "Contattaci",
+        },
     },
     readAloud: {
         titleReading: "Lettura ad alta voce",
