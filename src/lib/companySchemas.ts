@@ -27,7 +27,7 @@ export const companyInput = z.object({
   ),
 });
 
-const companyRole = z.enum(['OWNER', 'MEMBER']);
+const companyRole = z.enum(['OWNER', 'MANAGER', 'MEMBER']);
 
 export const addMemberInput = z.object({
   userId: z.number().int().positive(),

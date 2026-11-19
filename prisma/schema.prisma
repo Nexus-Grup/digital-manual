@@ -22,6 +22,7 @@ enum BrandRole {
 
 enum CompanyRole {
   MEMBER
+  MANAGER
   OWNER
 }
 

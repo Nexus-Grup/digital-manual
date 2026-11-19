@@ -8,6 +8,7 @@ import { request } from '@/lib/request';
 import { Modal } from './Modal';
 
 type Candidate = { id: number; firstName: string; lastName: string; email: string };
+type Role = 'OWNER' | 'MANAGER' | 'MEMBER';
 
 type Props = {
   companyId: number;
@@ -20,7 +21,7 @@ export function AddExistingUserModal({ companyId, onClose, onAdded }: Props) {
   const [results, setResults] = useState<Candidate[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [role, setRole] = useState<'OWNER' | 'MEMBER'>('MEMBER');
+  const [role, setRole] = useState<Role>('MEMBER');
   const [saving, setSaving] = useState(false);
 
   const term = query.trim();
@@ -113,6 +114,10 @@ export function AddExistingUserModal({ companyId, onClose, onAdded }: Props) {
         <label className={styles.radioRow}>
           <input type="radio" name="add-role" checked={role === 'OWNER'} onChange={() => setRole('OWNER')} />
           Owner
+        </label>
+        <label className={styles.radioRow}>
+          <input type="radio" name="add-role" checked={role === 'MANAGER'} onChange={() => setRole('MANAGER')} />
+          Manager
         </label>
         <label className={styles.radioRow}>
           <input type="radio" name="add-role" checked={role === 'MEMBER'} onChange={() => setRole('MEMBER')} />

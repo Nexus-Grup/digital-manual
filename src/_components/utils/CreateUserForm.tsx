@@ -6,7 +6,7 @@ import styles from "@/_styles/utils/CreateUserForm.module.css";
 
 /** Espelham os enums do Prisma (não importar @prisma/client em Client Component). */
 export type GlobalRole = "USER" | "ADMIN";
-export type CompanyRole = "MEMBER" | "OWNER";
+export type CompanyRole = "MEMBER" | "OWNER" | "MANAGER";
 
 type BaseValues = {
   firstName: string;
@@ -52,6 +52,7 @@ const GLOBAL_ROLES: { value: GlobalRole; description: string }[] = [
 
 const COMPANY_ROLES: { value: CompanyRole; label: string }[] = [
   { value: "OWNER", label: "Owner" },
+  { value: "MANAGER", label: "Manager"},
   { value: "MEMBER", label: "Member" },
 ];
 

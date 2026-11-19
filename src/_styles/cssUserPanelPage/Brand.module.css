@@ -1,0 +1,123 @@
+/* Estilos extras das telas de marca.
+   O resto reaproveita CompanyForm.module.css e CompanyUsers.module.css */
+
+/* ---- Seletor de empresa (New Brand) ---- */
+.companyBox {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 7px 12px;
+  background: #fff;
+  border: 1px solid #b5b5b5;
+  border-radius: 8px;
+}
+
+.companyBox:focus-within {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.companyRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.companySelect {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  font-size: 13px;
+  color: #111;
+  background: transparent;
+  border: 0;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.currentBadge {
+  flex-shrink: 0;
+  padding: 1px 12px;
+  font-size: 9px;
+  background: #d9d9d9;
+  border-radius: 999px;
+}
+
+.companyHint {
+  padding-left: 22px;
+  font-size: 10px;
+  color: #999;
+}
+
+/* ---- Rodapé do Edit Brand: Deactivate à esquerda, Save à direita ---- */
+footer.footerBetween {
+  justify-content: space-between;
+}
+
+.deactivate {
+  height: 28px;
+  padding: 0 18px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: #e03131;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.deactivate:hover:not(:disabled) {
+  background: #c92a2a;
+}
+
+.deactivate:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.activate {
+  height: 28px;
+  padding: 0 18px;
+  font-size: 11px;
+  color: #111;
+  background: #fff;
+  border: 1px solid #b5b5b5;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.activate:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---- Lista de usuários da marca ---- */
+.roleViewer {
+  color: #111;
+  background: #d9d9d9;
+}
+
+.empty {
+  margin: 8px 0;
+  font-size: 12px;
+  color: #777;
+  text-align: center;
+}
+
+.singleAction {
+  display: flex;
+  justify-content: center;
+}
+
+.singleAction button {
+  min-width: 160px;
+}
+
+/* ---- Confirmação de desativar ---- */
+.confirmText {
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 1.4;
+}
