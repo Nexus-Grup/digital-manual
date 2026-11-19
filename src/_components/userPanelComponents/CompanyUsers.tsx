@@ -1,14 +1,38 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { EllipsisVertical, Lock, Plus, TriangleAlert, User, UserMinus, UserPlus } from 'lucide-react';
+import { EllipsisVertical, Lock, Plus, TriangleAlert, User, UserMinus, UserPlus, X } from 'lucide-react';
+import { toast } from 'sonner';
 import styles from '@/_styles/cssUserPanelPage/CompanyUsers.module.css';
 import { request } from '@/lib/request';
 import { AddExistingUserModal } from '@/_components/userPanelComponents/AddExistingUserModal';
 import { CreateUserModal } from '@/_components/userPanelComponents/CreateUserModal';
 
-type Role = 'OWNER' | 'MEMBER';
+type Role = 'OWNER' | 'MANAGER' | 'MEMBER';
+
+const ROLE_CONFIG: Record<
+  Role,
+  { label: string; description: string; badgeClass: string }
+> = {
+  OWNER: {
+    label: 'Owner',
+    description: 'Full access to company management.',
+    badgeClass: styles.roleOwner,
+  },
+  MANAGER: {
+    label: 'Manager',
+    description: 'Can manage and edit the company’s brands.',
+    badgeClass: styles.roleManager,
+  },
+  MEMBER: {
+    label: 'Member',
+    description: "Can access the company's brands.",
+    badgeClass: styles.roleMember,
+  },
+};
+
+const ROLES_LIST: Role[] = ['OWNER', 'MANAGER', 'MEMBER'];
 
 export type Member = {
   userId: number;
@@ -43,20 +67,58 @@ function MemberRow({
   const [panel, setPanel] = useState<Panel>(null);
   const [role, setRole] = useState<Role>(member.companyRole);
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
+  const [coords, setCoords] = useState<{ top: number; right: number }>({ top: 0, right: 0 });
+
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   const fullName = `${member.firstName} ${member.lastName}`;
   const url = `/api/companies/${companyId}/members/${member.userId}`;
+  const currentRoleInfo = ROLE_CONFIG[member.companyRole] || ROLE_CONFIG.MEMBER;
+
+  function openMenu() {
+    if (panel) {
+      setPanel(null);
+      return;
+    }
+    if (btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const top = spaceBelow < 220 ? Math.max(12, rect.top - 160) : rect.bottom + 6;
+      const right = Math.max(12, window.innerWidth - rect.right);
+      setCoords({ top, right });
+    }
+    setRole(member.companyRole);
+    setPanel('menu');
+  }
+
+  useEffect(() => {
+    if (!panel) return;
+    function handleOutside(e: MouseEvent) {
+      if (busy) return;
+      const target = e.target as Node;
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(target) &&
+        btnRef.current &&
+        !btnRef.current.contains(target)
+      ) {
+        setPanel(null);
+      }
+    }
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, [panel, busy]);
 
   async function run(method: 'PATCH' | 'DELETE', body?: unknown) {
     setBusy(true);
-    setError('');
     const err = await request(url, method, body);
     setBusy(false);
     if (err) {
-      setError(err);
+      toast.error(err);
       return;
     }
+    toast.success(method === 'PATCH' ? 'Role updated.' : 'User removed from the company.');
     setPanel(null);
     router.refresh();
   }
@@ -69,101 +131,120 @@ function MemberRow({
           <span className={styles.whoName}>{fullName}</span>
           <span className={styles.whoEmail}>{member.email}</span>
         </div>
-        <span className={`${styles.role} ${member.companyRole === 'OWNER' ? styles.roleOwner : styles.roleMember}`}>
-          {member.companyRole === 'OWNER' ? 'Owner' : 'Member'}
+        <span className={`${styles.role} ${currentRoleInfo.badgeClass}`}>
+          {currentRoleInfo.label}
         </span>
         <button
+          ref={btnRef}
           type="button"
           className={styles.kebab}
           aria-label={`Actions for ${fullName}`}
           aria-expanded={panel !== null}
-          onClick={() => {
-            setError('');
-            setRole(member.companyRole);
-            setPanel((p) => (p ? null : 'menu'));
-          }}
+          onClick={openMenu}
         >
           <EllipsisVertical size={18} aria-hidden />
         </button>
       </div>
 
-      {panel === 'menu' && (
-        <div className={styles.panel}>
-          <button type="button" className={styles.panelItem} onClick={() => setPanel('role')}>
-            <Lock size={13} aria-hidden /> Change role
-          </button>
-          <button type="button" className={styles.panelItem} onClick={() => setPanel('details')}>
-            <User size={13} aria-hidden /> View details
-          </button>
-          <hr className={styles.panelDivider} />
-          <button
-            type="button"
-            className={`${styles.panelItem} ${styles.danger}`}
-            onClick={() => setPanel('remove')}
-            disabled={isSelf}
-            title={isSelf ? "You can't remove yourself" : undefined}
-          >
-            <UserMinus size={13} aria-hidden /> Remove from company
-          </button>
-        </div>
-      )}
+      {panel !== null && (
+        <div
+          ref={panelRef}
+          className={styles.floatingPanel}
+          style={{ top: coords.top, right: coords.right }}
+        >
+          {panel === 'menu' && (
+            <>
+              <button type="button" className={styles.panelItem} onClick={() => setPanel('role')}>
+                <Lock size={14} aria-hidden /> Change role
+              </button>
+              <button type="button" className={styles.panelItem} onClick={() => setPanel('details')}>
+                <User size={14} aria-hidden /> View details
+              </button>
+              <hr className={styles.panelDivider} />
+              <button
+                type="button"
+                className={`${styles.panelItem} ${styles.danger}`}
+                onClick={() => setPanel('remove')}
+                disabled={isSelf}
+                title={isSelf ? "You can't remove yourself" : undefined}
+              >
+                <UserMinus size={14} aria-hidden /> Remove from company
+              </button>
+            </>
+          )}
 
-      {panel === 'details' && (
-        <div className={styles.panel}>
-          <dl className={styles.details}>
-            <dt>Name</dt><dd>{fullName}</dd>
-            <dt>Username</dt><dd>{member.userName}</dd>
-            <dt>Email</dt><dd>{member.email}</dd>
-            <dt>Role</dt><dd>{member.companyRole === 'OWNER' ? 'Owner' : 'Member'}</dd>
-          </dl>
-        </div>
-      )}
+          {panel === 'details' && (
+            <>
+              <div className={styles.panelHeader}>
+                <p className={styles.panelTitle}>User details</p>
+                <button type="button" className={styles.closeMini} onClick={() => setPanel(null)} aria-label="Close">
+                  <X size={14} />
+                </button>
+              </div>
+              <dl className={styles.details}>
+                <dt>Name</dt><dd>{fullName}</dd>
+                <dt>Username</dt><dd>{member.userName}</dd>
+                <dt>Email</dt><dd>{member.email}</dd>
+                <dt>Role</dt><dd>{currentRoleInfo.label}</dd>
+              </dl>
+            </>
+          )}
 
-      {panel === 'role' && (
-        <div className={styles.panel}>
-          <p className={styles.panelTitle}>Change user role</p>
-          {(['OWNER', 'MEMBER'] as const).map((r) => (
-            <label key={r} className={styles.roleOption}>
-              <input type="radio" name={`role-${member.userId}`} checked={role === r} onChange={() => setRole(r)} />
-              <span>{r === 'OWNER' ? 'Owner' : 'Member'}</span>
-              <small>{r === 'OWNER' ? 'Full access to company management.' : "Can access the company's brands."}</small>
-            </label>
-          ))}
-          {error && <p className={styles.panelError} role="alert">{error}</p>}
-          <hr className={styles.panelDivider} />
-          <div className={styles.panelActions}>
-            <button
-              type="button"
-              className={styles.pillBtn}
-              disabled={busy || role === member.companyRole}
-              onClick={() => run('PATCH', { companyRole: role })}
-            >
-              {busy ? 'Saving...' : 'Save role'}
-            </button>
-          </div>
-        </div>
-      )}
+          {panel === 'role' && (
+            <>
+              <div className={styles.panelHeader}>
+                <p className={styles.panelTitle}>Change user role</p>
+                <button type="button" className={styles.closeMini} onClick={() => setPanel(null)} disabled={busy} aria-label="Close">
+                  <X size={14} />
+                </button>
+              </div>
+              {ROLES_LIST.map((r) => (
+                <label key={r} className={styles.roleOption}>
+                  <input
+                    type="radio"
+                    name={`role-${member.userId}`}
+                    checked={role === r}
+                    onChange={() => setRole(r)}
+                  />
+                  <span>{ROLE_CONFIG[r].label}</span>
+                  <small>{ROLE_CONFIG[r].description}</small>
+                </label>
+              ))}
+              <hr className={styles.panelDivider} />
+              <div className={styles.panelActions}>
+                <button
+                  type="button"
+                  className={styles.pillBtn}
+                  disabled={busy || role === member.companyRole}
+                  onClick={() => run('PATCH', { companyRole: role })}
+                >
+                  {busy ? 'Saving...' : 'Save role'}
+                </button>
+              </div>
+            </>
+          )}
 
-      {panel === 'remove' && (
-        <div className={styles.panel}>
-          <p className={styles.panelTitle}>
-            <TriangleAlert size={15} className={styles.warn} aria-hidden /> Remove user?
-          </p>
-          <p className={styles.panelText}>
-            Are you sure you want to remove {fullName} from <strong>{companyName}</strong>?
-          </p>
-          <p className={styles.panelSmall}>
-            The user account will not be deleted. Only their access to this company will be removed.
-          </p>
-          {error && <p className={styles.panelError} role="alert">{error}</p>}
-          <div className={styles.panelActions}>
-            <button type="button" className={styles.pillBtn} onClick={() => setPanel(null)} disabled={busy}>
-              Cancel
-            </button>
-            <button type="button" className={styles.dangerBtn} onClick={() => run('DELETE')} disabled={busy}>
-              {busy ? 'Removing...' : 'Remove user'}
-            </button>
-          </div>
+          {panel === 'remove' && (
+            <>
+              <p className={styles.panelTitle}>
+                <TriangleAlert size={15} className={styles.warn} aria-hidden /> Remove user?
+              </p>
+              <p className={styles.panelText}>
+                Are you sure you want to remove {fullName} from <strong>{companyName}</strong>?
+              </p>
+              <p className={styles.panelSmall}>
+                The user account will not be deleted. Only their access to this company will be removed.
+              </p>
+              <div className={styles.panelActions}>
+                <button type="button" className={styles.pillBtn} onClick={() => setPanel(null)} disabled={busy}>
+                  Cancel
+                </button>
+                <button type="button" className={styles.dangerBtn} onClick={() => run('DELETE')} disabled={busy}>
+                  {busy ? 'Removing...' : 'Remove user'}
+                </button>
+              </div>
+            </>
+          )}
         </div>
       )}
     </li>
@@ -171,7 +252,7 @@ function MemberRow({
 }
 
 export function CompanyUsers({ companyId, companyName, currentUserId, members }: Props) {
-  const router = useRouter();
+    const router = useRouter();
   const [modal, setModal] = useState<'add' | 'create' | null>(null);
 
   const done = () => {
@@ -212,14 +293,6 @@ export function CompanyUsers({ companyId, companyName, currentUserId, members }:
 
       {modal === 'add' && (
         <AddExistingUserModal companyId={companyId} onClose={() => setModal(null)} onAdded={done} />
-      )}
-      {modal === 'create' && (
-        <CreateUserModal
-          companyId={companyId}
-          companyName={companyName}
-          onClose={() => setModal(null)}
-          onCreated={done}
-        />
       )}
     </section>
   );

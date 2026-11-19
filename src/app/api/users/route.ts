@@ -14,7 +14,7 @@ const base = z.object({
 });
 const adminSchema = base.extend({ role: z.enum(["USER", "ADMIN"]) });
 const companySchema = base.extend({
-  companyRole: z.enum(["MEMBER", "OWNER"]),
+  companyRole: z.enum(["MEMBER", "OWNER", "MANAGER"]),
   companyId: z.number().int().positive(),
 });
 
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
   }
   const d = parsed.data as z.infer<typeof base> & {
     role?: "USER" | "ADMIN";
-    companyRole?: "MEMBER" | "OWNER";
+    companyRole?: "MEMBER" | "OWNER" | "MANAGER";
     companyId?: number;
   };
 

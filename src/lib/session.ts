@@ -37,8 +37,10 @@ export async function readSession(): Promise<number | null> {
   const token = (await cookies()).get(COOKIE_NAME)?.value;
   if (!token) return null;
 
+  const key = getKey(); // Garante que erro de .env ausente não seja mascarado
+
   try {
-    const { payload } = await jwtVerify(token, getKey(), { algorithms: ["HS256"] });
+    const { payload } = await jwtVerify(token, key, { algorithms: ["HS256"] });
     const id = Number(payload.sub);
     return Number.isInteger(id) ? id : null;
   } catch {
