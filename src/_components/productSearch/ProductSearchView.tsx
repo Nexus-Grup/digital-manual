@@ -5,8 +5,15 @@ import heroStyles from "@/_styles/landingPage/Hero.module.css";
 import { getRequestLocale } from "@/_i18n/getRequestLocale";
 import { getDictionary } from "@/_i18n/getDictionary";
 import { format } from "@/_i18n/config";
-import { SHOWCASE_CATEGORIES, filterProducts, getProducts, isShowcaseCategory } from "@/_data/products";
-import type { ShowcaseCategory } from "@/_data/products";
+import {
+    SHOWCASE_CATEGORIES,
+    filterProducts,
+    getProducts,
+    isShowcaseCategory,
+    isShowcaseSubcategory,
+    subcategoriesOf,
+} from "@/_data/products";
+import type { ShowcaseCategory, ShowcaseSubcategory } from "@/_data/products";
 import HeroSearch from "@/_components/landingPage/HeroSearch";
 import ReadAloud from "@/_components/productComponents/ReadAloud";
 import ShowcaseFilters from "@/_components/productSearch/ShowcaseFilters";
@@ -25,6 +32,9 @@ export default async function ProductSearchView({ searchParams }: { searchParams
     const query = firstValue(params.q).trim();
     const categoryParam = firstValue(params.category);
     const category = isShowcaseCategory(categoryParam) ? categoryParam : null;
+    // ?sub= only counts when it belongs to the active category
+    const subParam = firstValue(params.sub);
+    const subcategory = category && isShowcaseSubcategory(category, subParam) ? subParam : null;
 
     const locale = await getRequestLocale();
     const [dict, catalog] = await Promise.all([getDictionary(locale), getProducts()]);
@@ -38,7 +48,28 @@ export default async function ProductSearchView({ searchParams }: { searchParams
         other: t.other,
     };
 
-    const results = filterProducts(catalog.products, { query, category, categoryLabels });
+    const subcategoryLabels: Record<ShowcaseSubcategory, string> = t.subcategories;
+
+    const results = filterProducts(catalog.products, {
+        query,
+        category,
+        subcategory,
+        categoryLabels,
+        subcategoryLabels,
+    });
+
+    // Second row (progressive disclosure): only after a category is chosen, and only types that have products
+    const subcategoryOptions = category
+        ? subcategoriesOf(category).filter((sub) =>
+              catalog.products.some((product) => product.category === category && product.subcategory === sub),
+          )
+        : [];
+
+    // Card eyebrow: "Tools › Drills"
+    const pathLabel = (product: (typeof results)[number]) =>
+        product.subcategory
+            ? `${categoryLabels[product.category]} › ${subcategoryLabels[product.subcategory]}`
+            : categoryLabels[product.category];
 
     // "Other" only appears when some product falls into it
     const hasOther = catalog.products.some((product) => product.category === "other");
@@ -68,6 +99,7 @@ export default async function ProductSearchView({ searchParams }: { searchParams
                         t={t.search}
                         defaultValue={query}
                         category={category ?? undefined}
+                        subcategory={subcategory ?? undefined}
                     />
                 </div>
             </section>
@@ -75,12 +107,34 @@ export default async function ProductSearchView({ searchParams }: { searchParams
             <section className={styles["showcase"]} aria-labelledby="showcase-count">
                 <div className={styles["showcase__container"]}>
                     <div className={styles["showcase__toolbar"]}>
-                        <ShowcaseFilters options={filterOptions} active={category} query={query} label={t.filterAria} />
+                        <div className={styles["showcase__filter-group"]}>
+                            <ShowcaseFilters
+                                level="category"
+                                options={filterOptions}
+                                active={category}
+                                query={query}
+                                category={category}
+                                label={t.filterAria}
+                            />
+                            {subcategoryOptions.length > 0 ? (
+                                <ShowcaseFilters
+                                    level="subcategory"
+                                    options={[
+                                        { value: null, label: t.allSubcategories },
+                                        ...subcategoryOptions.map((value) => ({ value, label: subcategoryLabels[value] })),
+                                    ]}
+                                    active={subcategory}
+                                    query={query}
+                                    category={category}
+                                    label={t.subcategoryAria}
+                                />
+                            ) : null}
+                        </div>
                         <div className={styles["showcase__summary"]}>
                             <h2 className={styles["showcase__count"]} id="showcase-count" aria-live="polite">
                                 {countText}
                             </h2>
-                            {catalog.isDemo ? <p className={styles["showcase__note"]}>{t.demoNote}</p> : null}
+                            {catalog.isDemo && t.demoNote ? <p className={styles["showcase__note"]}>{t.demoNote}</p> : null}
                         </div>
                     </div>
 
@@ -90,14 +144,14 @@ export default async function ProductSearchView({ searchParams }: { searchParams
                             label={t.resultsAria}
                             goToLabel={dict.carousel.goTo}
                             count={count}
-                            resetKey={`${query}|${category ?? ""}`}
+                            resetKey={`${query}|${category ?? ""}|${subcategory ?? ""}`}
                         >
                             <ul className={styles["showcase__grid"]}>
                                 {results.map((product) => (
                                     <li className={styles["showcase__item"]} key={product.id}>
                                         <ProductCard
                                             product={product}
-                                            categoryLabel={categoryLabels[product.category]}
+                                            categoryLabel={pathLabel(product)}
                                             openLabel={t.openManual}
                                         />
                                     </li>

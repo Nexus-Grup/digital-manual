@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "@/_styles/landingPage/ImpactCalculator.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
-import { PaperIcon, ScaleIcon, TreeIcon } from "@/_components/landingPage/Icons";
 import { format } from "@/_i18n/config";
 import type { Locale } from "@/_i18n/config";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
@@ -82,22 +81,20 @@ export default function ImpactCalculator({ t, locale }: ImpactCalculatorProps) {
     const sheets = totalGrams / A4_SHEET_GRAMS;
     const reams = sheets / SHEETS_PER_REAM;
 
-    const results = [
-        {
-            icon: <ScaleIcon />,
-            value: `${tons < 10 ? decimalFormat.format(tons) : integerFormat.format(tons)} t`,
-            label: t.results[0],
-        },
-        {
-            icon: <PaperIcon />,
-            value: integerFormat.format(sheets),
-            label: t.results[1],
-        },
-        {
-            icon: <TreeIcon />,
-            value: integerFormat.format(reams),
-            label: t.results[2],
-        },
+    // Main figure with the unit spelled out ("6,4 toneladas", not "6,4 t"); below 1 ton, kilograms read better.
+    const plural = new Intl.PluralRules(locale);
+    const useKilos = tons < 1;
+    const weightAmount = useKilos ? totalGrams / 1000 : tons;
+    const weightValue =
+        weightAmount < 10 && !useKilos ? decimalFormat.format(weightAmount) : integerFormat.format(weightAmount);
+    const isOne = plural.select(weightAmount) === "one";
+    const weightUnit = useKilos
+        ? isOne ? t.units.kgOne : t.units.kgOther
+        : isOne ? t.units.tonOne : t.units.tonOther;
+
+    const details = [
+        { value: integerFormat.format(sheets), label: t.results[1] },
+        { value: integerFormat.format(reams), label: t.results[2] },
     ];
 
     return (
@@ -157,14 +154,20 @@ export default function ImpactCalculator({ t, locale }: ImpactCalculatorProps) {
                     <p className={styles["impact-calculator__results-title"]}>
                         {format(t.resultsTitle, { count: integerFormat.format(manuals) })}
                     </p>
+                    {/* main result: paper weight, spelled out */}
+                    <div className={styles["impact-calculator__highlight"]}>
+                        <p className={styles["impact-calculator__highlight-value"]}>
+                            {weightValue}{" "}
+                            <span className={styles["impact-calculator__highlight-unit"]}>{weightUnit}</span>
+                        </p>
+                        <p className={styles["impact-calculator__highlight-label"]}>{t.results[0]}</p>
+                    </div>
+                    {/* equivalences, side by side */}
                     <ul className={styles["impact-calculator__list"]}>
-                        {results.map((result) => (
-                            <li className={styles["impact-calculator__item"]} key={result.label}>
-                                <span className={styles["impact-calculator__item-icon"]}>{result.icon}</span>
-                                <div className={styles["impact-calculator__item-content"]}>
-                                    <p className={styles["impact-calculator__value"]}>{result.value}</p>
-                                    <p className={styles["impact-calculator__label"]}>{result.label}</p>
-                                </div>
+                        {details.map((detail) => (
+                            <li className={styles["impact-calculator__item"]} key={detail.label}>
+                                <p className={styles["impact-calculator__value"]}>{detail.value}</p>
+                                <p className={styles["impact-calculator__label"]}>{detail.label}</p>
                             </li>
                         ))}
                     </ul>

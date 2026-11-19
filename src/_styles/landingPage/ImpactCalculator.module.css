@@ -36,58 +36,77 @@
     --md-outlined-select-text-field-container-shape: 12px;
 }
 
+/* Results card: brand blue gradient with a soft green glow (tokens adapt to the contrast modes) */
 .impact-calculator__results {
     display: flex;
     flex-direction: column;
     gap: 24px;
     padding: 28px 24px;
     border-radius: 28px;
-    background-color: var(--lp-surface-dark);
+    background: var(--lp-impact-glow), var(--lp-impact-bg);
     color: var(--lp-text-inverse);
+    box-shadow: 0 20px 48px rgba(22, 63, 110, 0.28);
 }
 
 .impact-calculator__results-title {
     color: var(--lp-text-inverse);
-    font-size: 1.125rem;
+    font-size: 1.0625rem;
     font-weight: 700;
-    line-height: 1.3;
+    line-height: 1.4;
 }
 
-.impact-calculator__list {
+/* main figure: the paper weight */
+.impact-calculator__highlight {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: var(--lp-impact-tile);
+}
+
+.impact-calculator__highlight-value {
+    color: var(--lp-text-inverse);
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+}
+
+/* unit spelled out next to the number, smaller and lighter */
+.impact-calculator__highlight-unit {
+    color: var(--lp-impact-accent);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.impact-calculator__highlight-label {
+    color: var(--lp-text-inverse);
+    font-size: 1rem;
+}
+
+/* equivalences: two columns */
+.impact-calculator__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
     list-style: none;
 }
 
 .impact-calculator__item {
     display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.impact-calculator__item-icon {
-    flex: 0 0 52px;
-    width: 52px;
-    height: 52px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 16px;
-    background-color: var(--lp-green);
-    color: #111418;
-}
-
-.impact-calculator__item-content {
-    display: flex;
     flex-direction: column;
-    gap: 2px;
-    min-width: 0;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 16px;
+    border-radius: 18px;
+    border: 1px solid var(--lp-impact-tile);
 }
 
 .impact-calculator__value {
     color: var(--lp-text-inverse);
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 800;
     line-height: 1.15;
     overflow-wrap: anywhere;
@@ -95,14 +114,16 @@
 
 .impact-calculator__label {
     color: var(--lp-text-inverse-muted);
-    font-size: 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.35;
 }
 
 .impact-calculator__note {
     padding-top: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    border-top: 1px solid var(--lp-impact-tile);
     color: var(--lp-text-inverse-muted);
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
 }
 
 @media (min-width: 768px) {
@@ -124,8 +145,12 @@
         padding: 40px;
     }
 
+    .impact-calculator__highlight-value {
+        font-size: 3.5rem;
+    }
+
     .impact-calculator__value {
-        font-size: 2.5rem;
+        font-size: 1.75rem;
     }
 }
 

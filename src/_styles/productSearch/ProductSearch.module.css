@@ -66,10 +66,25 @@
     gap: 16px;
 }
 
+/* category row + subcategory row (the second one only appears once a category is chosen) */
+.showcase__filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
 .showcase__filters {
     min-height: 48px;
     --md-filter-chip-container-shape: 999px;
     --md-filter-chip-selected-container-color: var(--lp-surface-blue);
+}
+
+/* second level: smaller label and a neutral selected tone, so the hierarchy reads at a glance */
+.showcase__filters--sub {
+    --md-filter-chip-label-text-size: 0.8125rem;
+    --md-filter-chip-selected-container-color: var(--lp-surface);
+    --md-filter-chip-outline-color: var(--lp-border);
 }
 
 .showcase__summary {
@@ -426,8 +441,14 @@
 
     .showcase__toolbar {
         flex-direction: row;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
+    }
+
+    /* line the count up with the first chip row */
+    .showcase__summary {
+        min-height: 48px;
+        flex-shrink: 0;
     }
 }
 

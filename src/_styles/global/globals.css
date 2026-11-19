@@ -57,6 +57,11 @@
   --lp-logo-filter: none;
   --lp-gradient-text: linear-gradient(90deg, #7cc67e 0%, #2f7fd0 100%);
   --lp-accent-on-dark: #8ebdeb;
+  /* impact calculator results card: deep brand blue with a soft green glow (white text >= 4.5:1) */
+  --lp-impact-bg: linear-gradient(140deg, #163f6e 0%, #1f5c9c 55%, #2a72bd 100%);
+  --lp-impact-glow: radial-gradient(circle at 100% 0%, rgba(124, 198, 126, 0.35) 0%, rgba(124, 198, 126, 0) 55%);
+  --lp-impact-tile: rgba(255, 255, 255, 0.14);
+  --lp-impact-accent: #ccebcd;
   --lp-glass-bg: rgba(255, 255, 255, 0.5);
   --lp-glass-border: rgba(255, 255, 255, 0.75);
   --lp-haze: 1;
@@ -115,6 +120,10 @@ html[data-contrast="gray"] {
   --lp-logo-filter: brightness(0) invert(1);
   --lp-gradient-text: linear-gradient(90deg, #f0f0f0 0%, #f0f0f0 100%);
   --lp-accent-on-dark: #d0d0d0;
+  --lp-impact-bg: #2a2a2a;
+  --lp-impact-glow: none;
+  --lp-impact-tile: rgba(255, 255, 255, 0.12);
+  --lp-impact-accent: #f0f0f0;
   --lp-glass-bg: rgba(34, 34, 34, 0.6);
   --lp-glass-border: rgba(255, 255, 255, 0.2);
   --lp-haze: 0;
@@ -172,6 +181,10 @@ html[data-contrast="high"] {
   --lp-logo-filter: brightness(0) invert(1);
   --lp-gradient-text: linear-gradient(90deg, #ffeb3b 0%, #ffeb3b 100%);
   --lp-accent-on-dark: #ffeb3b;
+  --lp-impact-bg: #000;
+  --lp-impact-glow: none;
+  --lp-impact-tile: #000;
+  --lp-impact-accent: #ffeb3b;
   --lp-glass-bg: rgba(0, 0, 0, 0.85);
   --lp-glass-border: #fff;
   --lp-haze: 0;
@@ -204,6 +217,32 @@ body {
   /* Material 3 web components read the typeface from these tokens */
   --md-ref-typeface-brand: var(--font-brand), Arial, sans-serif;
   --md-ref-typeface-plain: var(--font-brand), Arial, sans-serif;
+}
+
+/* Smooth scroll for in-page links (landing header nav, "Fale conosco", hero CTAs). Sections already
+   have scroll-margin-top, so they stop just below the sticky header. Users who ask the system for
+   reduced motion keep the instant jump (WCAG 2.3.3). */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Reduced motion: no sliding, the page jumps straight to the section, which then fades in briefly.
+   Opacity only (no movement), so the arrival still feels soft without triggering motion discomfort. */
+@media (prefers-reduced-motion: reduce) {
+  :target {
+    animation: target-fade-in 320ms ease-out;
+  }
+}
+
+@keyframes target-fade-in {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 
