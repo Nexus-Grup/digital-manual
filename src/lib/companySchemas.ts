@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { isCompanyLogoUrl } from '@/lib/supabase-admin';
+import { isCompanyLogoUrl } from '@/lib/logoUrl';
 
 const emptyToNull = (v: string | null | undefined) => (v ? v : null);
 
