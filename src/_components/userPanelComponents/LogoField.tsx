@@ -5,6 +5,7 @@ import { Download, ImagePlus, Trash2 } from 'lucide-react';
 import styles from '@/_styles/cssUserPanelPage/CompanyForm.module.css';
 
 type Props = {
+  label: string | null;
   value: string | null;
   onChange: (url: string | null) => void;
   onBusyChange: (busy: boolean) => void;
