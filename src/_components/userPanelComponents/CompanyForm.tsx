@@ -25,7 +25,7 @@ type Props = {
   children?: ReactNode;
 };
 
-export function CompanyForm({ mode, company, children }: Props) {
+function CompanyFormInner({ mode, company, children, onReset }: Props & { onReset: () => void }) {
   const router = useRouter();
   const formId = useId();
   const isEdit = mode === 'edit' && !!company;
@@ -66,6 +66,7 @@ export function CompanyForm({ mode, company, children }: Props) {
         toast.success('Changes saved.');
       } else {
         toast.success('Company created.');
+        onReset(); // zera o form: o Next guarda o estado da tela ao sair dela
         // depois de criar, vai para a edição para adicionar usuários
         router.push(`${BASE}/${data.company.id}/edit`);
       }
@@ -158,7 +159,15 @@ export function CompanyForm({ mode, company, children }: Props) {
       )}
 
       <footer className={styles.footer}>
-        <button type="button" className={styles.btn} onClick={() => router.push(BASE)} disabled={saving}>
+        <button
+          type="button"
+          className={styles.btn}
+          onClick={() => {
+            onReset(); // descarta o que foi digitado
+            router.push(BASE);
+          }}
+          disabled={saving}
+        >
           Cancel
         </button>
         <button type="submit" form={formId} className={styles.btn} disabled={saving || uploading}>
@@ -167,5 +176,21 @@ export function CompanyForm({ mode, company, children }: Props) {
         </button>
       </footer>
     </div>
+  );
+}
+
+/**
+ * A `key` recria o formulário (campos e logo voltam ao início) quando:
+ *  - muda a empresa, ou se vai de "edit" para "new";
+ *  - o formulário pede o reset (`onReset`): ao criar com sucesso e ao clicar em Cancel.
+ */
+export function CompanyForm(props: Props) {
+  const [resets, setResets] = useState(0);
+  return (
+    <CompanyFormInner
+      key={`${props.company?.id ?? 'new'}-${resets}`}
+      {...props}
+      onReset={() => setResets((n) => n + 1)}
+    />
   );
 }

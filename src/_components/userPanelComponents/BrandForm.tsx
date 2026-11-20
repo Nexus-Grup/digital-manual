@@ -35,7 +35,14 @@ type Props = {
 
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
 
-export function BrandForm({ mode, brand, companies = [], defaultCompanyId, children }: Props) {
+function BrandFormInner({
+  mode,
+  brand,
+  companies = [],
+  defaultCompanyId,
+  children,
+  onReset,
+}: Props & { onReset: () => void }) {
   const router = useRouter();
   const formId = useId();
   const isEdit = mode === 'edit' && !!brand;
@@ -85,6 +92,7 @@ export function BrandForm({ mode, brand, companies = [], defaultCompanyId, child
         toast.success('Changes saved.');
       } else {
         toast.success('Brand created.');
+        onReset(); // zera o form: o Next guarda o estado da tela ao sair dela
         // depois de criar, vai para a edição para adicionar usuários
         router.push(`${BASE}/${data.brand.id}/edit`);
       }
@@ -240,7 +248,15 @@ export function BrandForm({ mode, brand, companies = [], defaultCompanyId, child
           </footer>
         ) : (
           <footer className={styles.footer}>
-            <button type="button" className={styles.btn} onClick={() => router.push(BASE)} disabled={saving}>
+            <button
+              type="button"
+              className={styles.btn}
+              onClick={() => {
+                onReset(); // descarta o que foi digitado
+                router.push(BASE);
+              }}
+              disabled={saving}
+            >
               Cancel
             </button>
             <button
@@ -284,5 +300,21 @@ export function BrandForm({ mode, brand, companies = [], defaultCompanyId, child
         </Modal>
       )}
     </>
+  );
+}
+
+/**
+ * A `key` recria o formulário (campos e logo voltam ao início) quando:
+ *  - muda a marca, ou se vai de "edit" para "new";
+ *  - o formulário pede o reset (`onReset`): ao criar com sucesso e ao clicar em Cancel.
+ */
+export function BrandForm(props: Props) {
+  const [resets, setResets] = useState(0);
+  return (
+    <BrandFormInner
+      key={`${props.brand?.id ?? 'new'}-${resets}`}
+      {...props}
+      onReset={() => setResets((n) => n + 1)}
+    />
   );
 }
