@@ -5,7 +5,7 @@ import { User, UserPlus } from 'lucide-react';
 import { toast } from 'sonner';
 import styles from '@/_styles/cssUserPanelPage/CompanyUsers.module.css';
 import { request } from '@/lib/request';
-import { Modal } from './Modal';
+import { Modal } from '@/_components/userPanelComponents/utils_panel/Modal';
 
 type Candidate = { id: number; firstName: string; lastName: string; email: string };
 

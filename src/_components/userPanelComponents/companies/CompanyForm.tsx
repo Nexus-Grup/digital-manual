@@ -4,7 +4,7 @@ import { useId, useState, type FormEvent, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { Check, Lock } from 'lucide-react';
 import styles from '@/_styles/cssUserPanelPage/CompanyForm.module.css';
-import { LogoField } from './LogoField';
+import { LogoField } from '../utils_panel/LogoField';
 import { toast } from "sonner";
 
 const BASE = '/user-panel/companies';

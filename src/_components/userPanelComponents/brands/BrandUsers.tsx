@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import styles from '@/_styles/cssUserPanelPage/CompanyUsers.module.css';
 import extra from '@/_styles/cssUserPanelPage/Brand.module.css';
 import { request } from '@/lib/request';
-import { AddBrandUserModal } from '@/_components/userPanelComponents/AddBrandUserModal';
+import { AddBrandUserModal } from '@/_components/userPanelComponents/brands/AddBrandUserModal';
 
 type Role = 'EDITOR' | 'VIEWER';
 

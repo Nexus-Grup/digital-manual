@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import {
   SettingsSidebar,
   type BrandCompany,
-} from "@/_components/userPanelComponents/SettingsSidebar";
+} from "@/_components/userPanelComponents/settings/SettingsSidebar";
 
 export const instant = false;
 

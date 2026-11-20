@@ -6,8 +6,8 @@ import { EllipsisVertical, Lock, Plus, TriangleAlert, User, UserMinus, UserPlus,
 import { toast } from 'sonner';
 import styles from '@/_styles/cssUserPanelPage/CompanyUsers.module.css';
 import { request } from '@/lib/request';
-import { AddExistingUserModal } from '@/_components/userPanelComponents/AddExistingUserModal';
-import { CreateUserModal } from '@/_components/userPanelComponents/CreateUserModal';
+import { AddExistingUserModal } from '@/_components/userPanelComponents/utils_panel/AddExistingUserModal';
+import { CreateUserModal } from '@/_components/userPanelComponents/companies/CreateUserModal';
 
 type Role = 'OWNER' | 'MANAGER' | 'MEMBER';
 

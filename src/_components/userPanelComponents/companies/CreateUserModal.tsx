@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { request } from '@/lib/request';
 // ajuste o caminho se o seu CreateUserForm estiver em outra pasta
 import { CreateUserForm, type CompanyCreateUserValues } from '@/_components/utils/CreateUserForm';
-import { Modal } from './Modal';
+import { Modal } from '../utils_panel/Modal';
 
 type Props = {
   companyId: number;
