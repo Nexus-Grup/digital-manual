@@ -1,7 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { HttpError, handleError, requireUser } from '@/lib/companyAccess';
-import { LOGO_BUCKET, supabaseAdmin } from '@/lib/supabase-admin';
+import { LOGO_BUCKET } from '@/lib/logoUrl';
+import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
 const MAX_SIZE = 2 * 1024 * 1024;
 
@@ -33,7 +34,9 @@ export async function POST(req: Request) {
     // Nome aleatório: ninguém adivinha a URL nem sobrescreve o arquivo de outro
     const objectPath = `companies/${randomUUID()}.${kind.ext}`;
 
-    const { error } = await supabaseAdmin.storage
+    const supabase = getSupabaseAdmin();
+
+    const { error } = await supabase.storage
       .from(LOGO_BUCKET)
       .upload(objectPath, buffer, {
         contentType: file.type,
@@ -46,7 +49,7 @@ export async function POST(req: Request) {
       throw new HttpError(500, 'Could not upload the logo');
     }
 
-    const { data } = supabaseAdmin.storage.from(LOGO_BUCKET).getPublicUrl(objectPath);
+    const { data } = supabase.storage.from(LOGO_BUCKET).getPublicUrl(objectPath);
 
     return NextResponse.json({ url: data.publicUrl }, { status: 201 });
   } catch (e) {
