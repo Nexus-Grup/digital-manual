@@ -45,16 +45,26 @@ enum MediaType {
 enum ProductCategory {
   ELECTRONICS
   FURNITURE
-  CLOTHING
-  TOYS
-  FOOD
-  BEAUTY
-  SPORTS
+  APPLIANCES
+  TOOLS
   AUTOMOTIVE
-  BOOKS
-  MUSIC
   SOFTWARE
   OTHER
+}
+
+enum ProductSubcategory {
+  REFRIGERATOR
+  WASHER
+  MICROWAVE
+  WARDROBE
+  TV_STAND
+  DESK
+  SCREWDRIVER
+  DRILL
+  SANDER
+  TV
+  SPEAKER
+  HEADPHONES
 }
 
 enum AudioType {
@@ -224,14 +234,15 @@ model UserBrand {
 // ============================================================
 
 model Product {
-  id          Int             @id @default(autoincrement())
+  id          Int                 @id @default(autoincrement())
   name        String
   model       String?
-  code        String          @unique
+  code        String              @unique
   description String?
   imgUrl      String?
-  category    ProductCategory @default(OTHER)
-  createdAt   DateTime        @default(now())
+  category    ProductCategory     @default(OTHER)
+  subcategory ProductSubcategory?
+  createdAt   DateTime            @default(now())
   brandId     Int
 
   brand           Brand                   @relation(fields: [brandId], references: [id])
@@ -247,6 +258,7 @@ model Product {
 
   @@index([brandId])
   @@index([category])
+  @@index([subcategory])
   @@map("products")
 }
 
