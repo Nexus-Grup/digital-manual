@@ -143,7 +143,10 @@ export default async function SettingsLayout({
           showCompanies={showCompanies}
           showBrands={showBrands}
         />
-        {children}
+        <div className="container-stage-section">
+          {children}
+        </div>
+        
       </div>
     </main>
   );

@@ -290,10 +290,17 @@ export function CompanyUsers({ companyId, companyName, currentUserId, members }:
           <Plus size={14} aria-hidden /> Create user
         </button>
       </div>
+      <button onClick={() => setModal('create')}>oiiiii</button>
 
       {modal === 'add' && (
         <AddExistingUserModal companyId={companyId} onClose={() => setModal(null)} onAdded={done} />
       )}
+
+      {modal === 'create' && (
+        <CreateUserModal companyId={companyId} companyName={companyName} onClose={() => setModal(null)} onCreated={done} />
+      )}
+
+
     </section>
   );
 }

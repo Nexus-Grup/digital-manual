@@ -61,7 +61,7 @@ export default async function EditCompanyPage({
   }));
 
   return (
-    <main className={styles.container_main}>
+
       <CompanyForm
         mode="edit"
         company={{
@@ -80,7 +80,7 @@ export default async function EditCompanyPage({
           members={members}
         />
       </CompanyForm>      
-    </main>
+
 
   );
 }
