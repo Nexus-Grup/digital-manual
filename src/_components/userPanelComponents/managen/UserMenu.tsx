@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { User, Settings, Bell, LogOut, ChevronRight } from "lucide-react";
-import { useDropdown } from "./useDropdown";
+import { useDropdown } from "../utils_panel/useDropdown";
 import styles from "@/_styles/cssUserPanelPage/UserMenu.module.css";
 
 const BASE = "/user-panel";

@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
-import { UsersSelects, UsersSearch } from "@/_components/userPanelComponents/UsersFilters";
+import { UsersSelects, UsersSearch } from "@/_components/userPanelComponents/managen/UsersFilters";
 import Link from "next/link";
 import { Filter, Plus } from "lucide-react";
-import { UsersStats } from "@/_components/userPanelComponents/UsersStats";
-import { UsersTable } from "@/_components/userPanelComponents/UsersTable";
+import { UsersStats } from "@/_components/userPanelComponents/managen/UsersStats";
+import { UsersTable } from "@/_components/userPanelComponents/managen/UsersTable";
 import styles from "@/_styles/cssUserPanelPage/UsersPage.module.css";
 
 const NEW_USER_HREF = "/user-panel/manage-platform/users/new";

@@ -4,8 +4,8 @@ import headerLogo from '@/_assets/image/header_logo.svg';
 import Image from 'next/image'
 import { useRouter } from 'next/navigation';
 import ContrastToggle from '@/_components/productComponents/ContrastToggle';
-import NotificationBell, { type NotificationItem } from './NotificationBell';
-import UserMenu from './UserMenu';
+import NotificationBell, { type NotificationItem } from '@/_components/userPanelComponents/utils_panel/NotificationBell';
+import UserMenu from '@/_components/userPanelComponents/managen/UserMenu';
 
 interface UheaderProps {
     user: { firstName: string; lastName: string; email: string };

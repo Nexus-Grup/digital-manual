@@ -1,5 +1,5 @@
-import Uheader from "@/_components/userPanelComponents/Uheader";
-import { USideMenu } from "@/_components/userPanelComponents/USideMenu";
+import Uheader from "@/_components/userPanelComponents/utils_panel/Uheader";
+import { USideMenu } from "@/_components/userPanelComponents/managen/USideMenu";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Toaster } from "sonner";

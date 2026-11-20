@@ -7,8 +7,8 @@ import { toast } from 'sonner';
 import styles from '@/_styles/cssUserPanelPage/CompanyForm.module.css';
 import usersStyles from '@/_styles/cssUserPanelPage/CompanyUsers.module.css';
 import extra from '@/_styles/cssUserPanelPage/Brand.module.css';
-import { LogoField } from './LogoField';
-import { Modal } from './Modal';
+import { LogoField } from '../utils_panel/LogoField';
+import { Modal } from '../utils_panel/Modal';
 
 const BASE = '/user-panel/brands';
 
