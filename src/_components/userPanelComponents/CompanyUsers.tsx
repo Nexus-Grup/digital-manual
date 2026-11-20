@@ -294,6 +294,11 @@ export function CompanyUsers({ companyId, companyName, currentUserId, members }:
       {modal === 'add' && (
         <AddExistingUserModal companyId={companyId} onClose={() => setModal(null)} onAdded={done} />
       )}
+
+      {modal === 'create' && (
+        <CreateUserModal companyId={companyId} companyName={companyName} onClose={() => setModal(null)} onCreated={done} />
+      )}
+
     </section>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import styles from '@/_styles/cssUserPanelPage/CompanyUsers.module.css';
+import { toast } from 'sonner';
 import { request } from '@/lib/request';
 // ajuste o caminho se o seu CreateUserForm estiver em outra pasta
 import { CreateUserForm, type CompanyCreateUserValues } from '@/_components/utils/CreateUserForm';
@@ -16,17 +16,16 @@ type Props = {
 
 export function CreateUserModal({ companyId, companyName, onClose, onCreated }: Props) {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
 
   async function handleSubmit(values: CompanyCreateUserValues) {
     setLoading(true);
-    setError('');
     const err = await request(`/api/companies/${companyId}/members/new`, 'POST', values);
     setLoading(false);
     if (err) {
-      setError(err);
+      toast.error(err);
       return;
     }
+    toast.success('User created.');
     onCreated();
   }
 
@@ -40,7 +39,6 @@ export function CreateUserModal({ companyId, companyName, onClose, onCreated }: 
         onCancel={onClose}
         onSubmit={handleSubmit}
       />
-      {error && <p className={styles.modalError} role="alert">{error}</p>}
     </Modal>
   );
 }
