@@ -201,7 +201,7 @@
   font: inherit;
   font-size: 0.85rem;
   background: #fff;
-  border: 1px solid #b5b5b5;
+  border: 1px solid var(--c-border);
   border-radius: 999px;
   outline: none;
 }

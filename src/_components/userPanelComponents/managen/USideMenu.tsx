@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Home, Tags, Package, Building2, Users, LayoutDashboard, LogOut, Bell, Logs, type LucideIcon, } from "lucide-react";
+import { Home, Tags, Package, Building2, Users, LayoutDashboard, LogOut, Bell, Logs, Headset, type LucideIcon, } from "lucide-react";
 import styles from "@/_styles/cssUserPanelPage/USideMenu.module.css";
 
 type SystemRole = "USER" | "ADMIN"; // mesmos valores do seu enum SystemRole
@@ -36,6 +36,7 @@ const MENU_GROUPS: MenuItem[][] = [
   ],
   [
     { key: "notifications", label: "Notifications",   href: `${BASE}/notifications`,   icon: Bell },
+    { key: "support", label: "Support",   href: `${BASE}/support`,   icon: Headset },
     { key: "manage",        label: "Manage Platform", href: `${BASE}/manage-platform`, icon: Users, roles: ["ADMIN"] },
     { key: "dashboard",     label: "Dashboard",       href: `${BASE}/dashboard`,       icon: LayoutDashboard },
     { key: "logs",          label: "Logs",            href: `${BASE}/logs`,            icon: Logs, roles: ["ADMIN"] },

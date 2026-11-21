@@ -1,0 +1,56 @@
+.wrap { 
+    position: relative; 
+    display: inline-block; 
+}
+.trigger { 
+    display: inline-grid; 
+    place-items: center; 
+    width: 36px; 
+    height: 36px; 
+    border: 0; 
+    border-radius: 8px; 
+    background: transparent; 
+    color: #111; 
+    cursor: pointer; 
+}
+.trigger:hover { 
+    background: #f0f0f0; 
+}
+.trigger:focus-visible, .item:focus-visible { 
+    outline: 2px solid #2f7fd0; 
+    outline-offset: 2px; 
+}
+.menu { 
+    position: absolute; 
+    right: 0; 
+    top: 100%; 
+    z-index: 20; 
+    min-width: 180px; 
+    padding: 4px; 
+    border: 1px solid #cfcfcf; 
+    border-radius: 10px; 
+    background: #fff; 
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); 
+    text-align: left; 
+}
+.item { 
+    display: block; 
+    width: 100%; 
+    padding: 10px 12px; 
+    border: 0; 
+    border-radius: 6px; 
+    background: transparent; 
+    color: #111; 
+    font: inherit; 
+    font-size: 0.85rem; 
+    text-align: left; 
+    text-decoration: none; 
+    cursor: pointer; 
+}
+.item:hover { 
+    background: #f3f3f3; 
+}
+.item:disabled { 
+    opacity: 0.6; 
+    cursor: wait; 
+}

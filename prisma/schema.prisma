@@ -109,6 +109,35 @@ enum NotificationType {
   SYSTEM
 }
 
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  AWAITING_USER
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+// "What is it about?" (tela New ticket)
+enum TicketAbout {
+  PRODUCT
+  BRAND
+  COMPANY
+  ACCOUNT
+  OTHER
+}
+
+enum TicketCategory {
+  TECHNICAL_ISSUE
+  QUESTION
+  OTHER
+}
+
 // ============================================================
 // USUÁRIOS, EMPRESAS E MARCAS
 // ============================================================
@@ -129,6 +158,9 @@ model User {
   userCompanies     UserCompany[]
   notifications     Notification[]
   passwordResetCode PasswordResetCode[]
+  ticketsCreated    Ticket[]            @relation("TicketCreator")
+  ticketsAssigned   Ticket[]            @relation("TicketAssignee")
+  ticketMessages    TicketMessage[]
 
   @@map("users")
 }
@@ -175,6 +207,7 @@ model Company {
 
   brands        Brand[]
   userCompanies UserCompany[]
+  tickets       Ticket[]
 
   @@map("companies")
 }
@@ -191,6 +224,7 @@ model Brand {
   company    Company     @relation(fields: [companyId], references: [id])
   products   Product[]
   userBrands UserBrand[]
+  tickets    Ticket[]
 
   @@index([companyId])
   @@map("brands")
@@ -255,6 +289,7 @@ model Product {
   galleries       ProductGallery[]
   qrCodes         ProductQrCode[]
   analyticsEvents ProductAnalyticsEvent[]
+  tickets         Ticket[]
 
   @@index([brandId])
   @@index([category])
@@ -473,4 +508,75 @@ model ProductQrCode {
 
   @@index([productId])
   @@map("product_qr_codes")
+}
+
+// ============================================================
+// SUPORTE (CHAMADOS)
+// ============================================================
+
+// A descrição inicial do chamado é a primeira TicketMessage.
+model Ticket {
+  id            Int            @id @default(autoincrement())
+  title         String
+  about         TicketAbout    @default(OTHER)
+  category      TicketCategory @default(TECHNICAL_ISSUE)
+  priority      TicketPriority @default(MEDIUM)
+  status        TicketStatus   @default(OPEN)
+  createdById   Int
+  assigneeId    Int? // admin responsável (null = sem responsável)
+  productId     Int? // preenchido quando about = PRODUCT
+  brandId       Int? // preenchido quando about = BRAND (ou derivado do produto)
+  companyId     Int? // preenchido quando about = COMPANY (ou derivado da marca)
+  lastMessageAt DateTime       @default(now())
+  resolvedAt    DateTime?
+  closedAt      DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  createdBy User            @relation("TicketCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  assignee  User?           @relation("TicketAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  product   Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
+  brand     Brand?          @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  company   Company?        @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  messages  TicketMessage[]
+
+  @@index([createdById, status])
+  @@index([assigneeId, status])
+  @@index([brandId, status])
+  @@index([companyId, status])
+  @@index([productId])
+  @@index([status, lastMessageAt])
+  @@map("tickets")
+}
+
+model TicketMessage {
+  id         Int      @id @default(autoincrement())
+  body       String   @db.Text
+  isInternal Boolean  @default(false) // nota interna: só a equipe vê
+  createdAt  DateTime @default(now())
+  ticketId   Int
+  authorId   Int
+
+  ticket      Ticket             @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author      User               @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  attachments TicketAttachment[]
+
+  @@index([ticketId, createdAt])
+  @@index([authorId])
+  @@map("ticket_messages")
+}
+
+model TicketAttachment {
+  id        Int      @id @default(autoincrement())
+  fileUrl   String
+  fileName  String
+  mimeType  String?
+  sizeBytes Int?
+  createdAt DateTime @default(now())
+  messageId Int
+
+  message TicketMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([messageId])
+  @@map("ticket_attachments")
 }

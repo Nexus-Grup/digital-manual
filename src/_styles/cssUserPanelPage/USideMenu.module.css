@@ -6,7 +6,7 @@
   width: 56px;
   overflow: hidden;
   background: #fff;
-  border-right: 1px solid #e5e5e5;
+  border-right: 1px solid var(--c-border);
   transition: width 0.2s ease;
 }
 
@@ -21,7 +21,7 @@
 
 .group {
   padding: 8px 4px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--c-border);
 }
 
 .item {
