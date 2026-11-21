@@ -6,7 +6,7 @@
     align-content: center;
     justify-content: flex-start;
     background-color: var(--c-bg);
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid var(--c-border);
 }
 
 .o_minimal_header__supergraphic{

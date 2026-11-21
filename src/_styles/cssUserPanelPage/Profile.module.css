@@ -60,7 +60,7 @@
 .card {
   padding: 20px 24px;
   background: #fff;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--c-border);
   border-radius: 12px;
 }
 
@@ -70,7 +70,7 @@
   justify-content: space-between;
   gap: 12px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--c-border);
 }
 
 .cardTitle { margin: 0; font-size: 1.25rem; font-weight: 700; }
@@ -101,7 +101,7 @@
   font: inherit;
   font-size: 0.85rem;
   background: #fff;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--c-border);
   border-radius: 999px;
   outline: none;
 }

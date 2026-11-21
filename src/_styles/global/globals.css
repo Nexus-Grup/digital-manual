@@ -6,14 +6,14 @@
   padding: 0;
 }
 :root {
-  --background: #ffffff;
+  --background: #F9FAFB;
   --foreground: #171717;
 
   /* ===== tema padrão ===== */
   --c-bg: #fff;
   --c-text: #111;
   --c-muted: #4a5160;
-  --c-border: #c9c9c9;
+  --c-border: #b5b5b5;
   --c-border-soft: #e3e6ea;
   --c-hover: #f0f2f5;
   --c-active: #d9d9d9;
