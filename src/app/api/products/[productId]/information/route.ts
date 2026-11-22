@@ -10,8 +10,14 @@ const db: Record<string, ProductInformation> = {
     title: 'Descrição da ferramenta',
     productName: 'Parafusadeira GRT 120-CLI',
     description: DESCRIPTION,
-    imageUrl: null,
-    imageAlt: 'Parafusadeira GRT 120-CLI azul com bateria encaixada',
+    // fill imageUrl (e.g. '/products/8/front.webp') when the photos are added
+    gallery: [
+      { id: 1, imageUrl: null, alt: 'Parafusadeira GRT 120-CLI azul com bateria encaixada, vista 360°', is360: true },
+      { id: 2, imageUrl: null, alt: 'Parafusadeira vista de lado' },
+      { id: 3, imageUrl: null, alt: 'Detalhe do mandril de 1/2" (13 mm)' },
+      { id: 4, imageUrl: null, alt: 'Detalhe da luz de LED e do gatilho' },
+      { id: 5, imageUrl: null, alt: 'Bateria e carregador' },
+    ],
     features: [
       { id: 1, icon: 'light', text: 'Luz de LED, para trabalhar em áreas menos iluminadas.' },
       { id: 2, icon: 'bolt', text: 'Bivolt 127v - 220v. Pode ficar ligado até 18 horas.' },

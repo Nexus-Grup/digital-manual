@@ -14,7 +14,6 @@ export type AssemblyStepItem = {
 export type ProductAssembly = {
   title: string;
   productName: string;
-  subtitle: string;
   description: string;
   steps: AssemblyStepItem[];
 };

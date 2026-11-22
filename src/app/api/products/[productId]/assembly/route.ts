@@ -9,7 +9,6 @@ const db: Record<string, ProductAssembly> = {
   '8': {
     title: 'Instruções de montagem',
     productName: 'Parafusadeira GRT 120-CLI',
-    subtitle: 'Instruções',
     description: DESCRIPTION,
     steps: [
       {

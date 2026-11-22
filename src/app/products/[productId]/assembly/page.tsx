@@ -34,7 +34,6 @@ async function MountingContent({ params }: PageProps) {
         <ProductTextCard
           title={assembly.title}
           productName={assembly.productName}
-          subtitle={assembly.subtitle}
           description={assembly.description}
         />
 

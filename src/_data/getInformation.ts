@@ -9,13 +9,21 @@ export type InformationFeature = {
   text: string;
 };
 
+// Mirrors ProductGalleryImage (prisma/schema.prisma). The first image is the main (360°) view.
+export type GalleryImage = {
+  id: number;
+  /** null = placeholder until the real photo is added */
+  imageUrl: string | null;
+  alt: string;
+  /** shows the 360° seal next to the image */
+  is360?: boolean;
+};
+
 export type ProductInformation = {
   title: string;
   productName: string;
   description: string;
-  /** null = placeholder until the real photo is added */
-  imageUrl: string | null;
-  imageAlt: string;
+  gallery: GalleryImage[];
   features: InformationFeature[];
 };
 
