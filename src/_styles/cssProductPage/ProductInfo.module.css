@@ -1,0 +1,136 @@
+/* ===== Section ===== */
+.product-info {
+    width: 100%;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    color: var(--c-text);
+}
+
+.product-info__container {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 32px;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+/* ===== Product image + 360° seal ===== */
+.product-info__showcase {
+    display: flex;
+    justify-content: center;
+}
+
+.product-info__media {
+    position: relative;
+    width: 100%;
+    max-width: 260px;
+    aspect-ratio: 1 / 1;
+}
+
+.product-info__image {
+    object-fit: contain;
+}
+
+/* sits just outside the image's right edge, vertically centered */
+.product-info__360 {
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 8px);
+    z-index: 1;
+    display: flex;
+    color: var(--c-text);
+    transform: translateY(-50%);
+}
+
+/* ===== Feature cards ===== */
+.product-info__features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.product-info__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    list-style: none;
+}
+
+.product-info__card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    border-radius: 5px;
+}
+
+.product-info__card-icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    color: var(--c-text);
+    border: 1px solid var(--c-border);
+    border-radius: 5px;
+}
+
+.product-info__card-text {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+}
+
+/* ===== Tablet ===== */
+@media (min-width: 768px) {
+    .product-info__container {
+        grid-template-columns: 1fr 1fr;
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+
+    .product-info__features {
+        grid-column: 1 / -1;
+    }
+
+    .product-info__media {
+        max-width: 300px;
+    }
+}
+
+/* ===== Desktop ===== */
+@media (min-width: 1200px) {
+    /* same left column as the assembly page (ProductTextCard) */
+    .product-info__container {
+        grid-template-columns: 360px 1fr 300px;
+        gap: 40px;
+        width: 1140px;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .product-info__features {
+        grid-column: auto;
+    }
+
+    /* two cards visible; the rest is reached with the arrows */
+    .product-info__list {
+        max-height: 276px;
+        overflow-y: auto;
+        scroll-snap-type: y mandatory;
+        scrollbar-width: none;
+    }
+
+    .product-info__list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .product-info__card {
+        min-height: 130px;
+        scroll-snap-align: start;
+    }
+}
