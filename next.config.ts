@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
     agentFeedback: true,
   },
   cacheComponents: true,
+  // pdf.js loads its worker file at runtime: keep it out of the server bundle
+  serverExternalPackages: ["pdfjs-dist"],
   partialPrefetching: true,
   images: {
     // product photos (Product.imgUrl) uploaded to Supabase Storage
