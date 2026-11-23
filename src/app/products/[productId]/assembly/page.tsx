@@ -9,7 +9,7 @@ import ProductTextCard from "@/_components/productComponents/ProductTextCard";
 interface PageProps {
   params: Promise<{ productId: string }>;
 }
-
+export const instant = false;
 export const metadata: Metadata = {
   title: "Instruções de montagem | Manual digital",
   description: "Passo a passo ilustrado para montar a ferramenta.",

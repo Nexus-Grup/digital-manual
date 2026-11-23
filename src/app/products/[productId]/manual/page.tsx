@@ -26,7 +26,8 @@ export default function ManualPage({ params }: PageProps) {
 async function ManualContent({ params }: PageProps) {
   const { productId } = await params;
   const manual = await getManual(productId);
-  if (!manual || manual.sections.length === 0) notFound();
+  // sem texto digitalizado, o PDF precisa existir
+  if (!manual || (manual.sections.length === 0 && !manual.pdfUrl)) notFound();
 
   const updated = new Date(manual.updatedAt).toLocaleDateString("pt-BR", { timeZone: "UTC" });
 
@@ -38,8 +39,8 @@ async function ManualContent({ params }: PageProps) {
             <h1 className={styles["manual__title"]}>{manual.title}</h1>
             <p className={styles["manual__name"]}>{manual.productName}</p>
             <ul className={styles["manual__meta"]} aria-label="Sobre este documento">
-              <li className={styles["manual__meta-item"]}>Versão {manual.version}</li>
-              <li className={styles["manual__meta-item"]}>{manual.language}</li>
+              {manual.version && <li className={styles["manual__meta-item"]}>Versão {manual.version}</li>}
+              {manual.language && <li className={styles["manual__meta-item"]}>{manual.language}</li>}
               <li className={styles["manual__meta-item"]}>
                 Atualizado em{" "}
                 <time dateTime={manual.updatedAt}>{updated}</time>
@@ -61,7 +62,16 @@ async function ManualContent({ params }: PageProps) {
           )}
         </header>
 
-        <ManualViewer sections={manual.sections} pdfUrl={manual.pdfUrl} />
+        {manual.sections.length > 0 ? (
+          <ManualViewer sections={manual.sections} pdfUrl={manual.pdfUrl} />
+        ) : (
+          // manual ainda sem texto digitalizado: mostra o PDF direto na página
+          <iframe
+            src={`${manual.pdfUrl}#view=FitH`}
+            title={`${manual.title} (PDF)`}
+            style={{ width: "100%", height: "78vh", border: 0, borderRadius: 8, background: "#fff" }}
+          />
+        )}
       </div>
     </section>
   );

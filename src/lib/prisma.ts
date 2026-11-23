@@ -9,9 +9,6 @@ if (!connectionString) {
   );
 }
 
-// Mostra so o host (sem senha) para conferir no terminal
-console.log("[prisma] conectando em:", connectionString.split("@")[1]?.split("/")[0]);
-
 const adapter = new PrismaPg({ connectionString });
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
