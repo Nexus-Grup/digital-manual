@@ -1,10 +1,20 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
+import { notFound } from "next/navigation";
+import styles from "@/_styles/cssProductPage/Assembly.module.css";
+import { getAssembly } from "@/_data/getAssembly";
+import AssemblyViewer from "@/_components/productComponents/AssemblyViewer";
+import ProductTextCard from "@/_components/productComponents/ProductTextCard";
 
 interface PageProps {
   params: Promise<{ productId: string }>;
 }
 
-// 1. O componente principal apenas renderiza o Suspense e repassa a Promise
+export const metadata: Metadata = {
+  title: "Instruções de montagem | Manual digital",
+  description: "Passo a passo ilustrado para montar a ferramenta.",
+};
+
 export default function MountingPage({ params }: PageProps) {
   return (
     <Suspense fallback={<div>Carregando...</div>}>
@@ -13,15 +23,22 @@ export default function MountingPage({ params }: PageProps) {
   );
 }
 
-// 2. O componente interno resolve a Promise de forma segura
-async function MountingContent({ params }: { params: Promise<{ productId: string }> }) {
-  const resolvedParams = await params;
-  const productId = resolvedParams.productId;
+async function MountingContent({ params }: PageProps) {
+  const { productId } = await params;
+  const assembly = await getAssembly(productId);
+  if (!assembly || assembly.steps.length === 0) notFound();
 
   return (
-    <main> 
-      <h1>Montagem do Produto: {productId}</h1>
-      <p>Esta é uma página gerada dinamicamente para o ID do produto acima.</p>
-    </main>
+    <section className={styles["assembly"]}>
+      <div className={styles["assembly__container"]}>
+        <ProductTextCard
+          title={assembly.title}
+          productName={assembly.productName}
+          description={assembly.description}
+        />
+
+        <AssemblyViewer steps={assembly.steps} />
+      </div>
+    </section>
   );
 }

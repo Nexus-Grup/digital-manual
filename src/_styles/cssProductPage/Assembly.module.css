@@ -1,0 +1,199 @@
+/* ===== Section ===== */
+.assembly {
+    width: 100%;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    color: var(--c-text);
+}
+
+.assembly__container {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 32px;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+/* ===== Viewer ===== */
+.assembly__viewer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.assembly__stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.assembly__figure {
+    position: relative;
+    width: 100%;
+    max-width: 330px;
+    aspect-ratio: 330 / 392;
+    margin: 0;
+    overflow: hidden;
+    background: var(--c-bg);
+    border: 1px solid var(--c-text);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.assembly__image {
+    object-fit: contain;
+}
+
+.assembly__badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--c-bg);
+    background: var(--c-text);
+}
+
+.assembly__badge--small {
+    padding-left: 3px;
+    padding-right: 3px;
+    font-size: 0.875rem;
+}
+
+/* ===== Progress (bars + 1 / 2) ===== */
+.assembly__progress {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.assembly__bars {
+    display: flex;
+    gap: 6px;
+}
+
+.assembly__bar {
+    width: 48px;
+    height: 4px;
+    background: var(--c-border-soft);
+    border-radius: 5px;
+    transition: background 0.2s;
+}
+
+.assembly__bar--active {
+    background: var(--c-text);
+}
+
+.assembly__counter {
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.assembly__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* ===== Thumbnails ===== */
+.assembly__thumbs {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.assembly__thumb-list {
+    display: flex;
+    gap: 16px;
+    list-style: none;
+}
+
+.assembly__thumb-item {
+    display: flex;
+}
+
+.assembly__thumb {
+    position: relative;
+    width: 88px;
+    aspect-ratio: 114 / 130;
+    padding: 0;
+    overflow: hidden;
+    background: var(--c-bg);
+    border: 1px solid var(--c-text);
+    border-radius: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+.assembly__thumb:hover {
+    transform: translateY(-2px);
+}
+
+.assembly__thumb--active {
+    outline: 3px solid var(--c-accent);
+    outline-offset: 2px;
+}
+
+.assembly__thumb:focus-visible {
+    outline: 3px solid var(--c-accent);
+    outline-offset: 2px;
+}
+
+/* ===== Tablet ===== */
+@media (min-width: 768px) {
+    .assembly__container {
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+
+    .assembly__thumb {
+        width: 100px;
+    }
+}
+
+/* ===== Desktop ===== */
+@media (min-width: 1200px) {
+    /* same 3-column grid as the information page: text card | centered media | 300px side column */
+    .assembly__container {
+        grid-template-columns: 360px 1fr 300px;
+        gap: 40px;
+        width: 1140px;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* the viewer spans the last two columns and reuses them for image | thumbnails */
+    .assembly__viewer {
+        display: grid;
+        grid-column: 2 / 4;
+        grid-template-columns: subgrid;
+        align-items: center;
+    }
+
+    .assembly__thumbs {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .assembly__thumb-list {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .assembly__thumb {
+        width: 114px;
+    }
+}

@@ -14,6 +14,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* "safe": when the page is taller than the stage, start at the top instead of clipping it */
+  justify-content: safe center;
 }
 
 .backdrop {

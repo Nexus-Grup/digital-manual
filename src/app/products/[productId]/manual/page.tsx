@@ -1,10 +1,20 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
+import { notFound } from "next/navigation";
+import styles from "@/_styles/cssProductPage/Manual.module.css";
+import { getManual } from "@/_data/getManual";
+import ManualViewer from "@/_components/productComponents/ManualViewer";
+import { ExternalFileIcon } from "@/_components/productComponents/TabIcons";
 
 interface PageProps {
   params: Promise<{ productId: string }>;
 }
 
-// 1. Deixe o componente da página limpo e passe o params para o Suspense
+export const metadata: Metadata = {
+  title: "Manual do produto | Manual digital",
+  description: "Manual digital acessível, com busca, sumário e ajuste do tamanho do texto.",
+};
+
 export default function ManualPage({ params }: PageProps) {
   return (
     <Suspense fallback={<div>Carregando...</div>}>
@@ -13,15 +23,46 @@ export default function ManualPage({ params }: PageProps) {
   );
 }
 
-// 2. Crie um componente interno para ler o ID de forma assíncrona
-async function ManualContent({ params }: { params: Promise<{ productId: string }> }) {
-  const resolvedParams = await params;
-  const productId = resolvedParams.productId;
+async function ManualContent({ params }: PageProps) {
+  const { productId } = await params;
+  const manual = await getManual(productId);
+  if (!manual || manual.sections.length === 0) notFound();
+
+  const updated = new Date(manual.updatedAt).toLocaleDateString("pt-BR", { timeZone: "UTC" });
 
   return (
-    <main>
-      <h1>Manual do Produto: {productId}</h1>
-      <p>Esta é uma página gerada dinamicamente para o ID do produto acima.</p>
-    </main>
+    <section className={styles["manual"]}>
+      <div className={styles["manual__container"]}>
+        <header className={styles["manual__header"]}>
+          <div className={styles["manual__heading"]}>
+            <h1 className={styles["manual__title"]}>{manual.title}</h1>
+            <p className={styles["manual__name"]}>{manual.productName}</p>
+            <ul className={styles["manual__meta"]} aria-label="Sobre este documento">
+              <li className={styles["manual__meta-item"]}>Versão {manual.version}</li>
+              <li className={styles["manual__meta-item"]}>{manual.language}</li>
+              <li className={styles["manual__meta-item"]}>
+                Atualizado em{" "}
+                <time dateTime={manual.updatedAt}>{updated}</time>
+              </li>
+            </ul>
+          </div>
+
+          {manual.pdfUrl && (
+            <a
+              className={styles["manual__pdf"]}
+              href={manual.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <ExternalFileIcon />
+              Abrir PDF original
+              <span className={styles["manual__sr-only"]}> (abre em nova aba)</span>
+            </a>
+          )}
+        </header>
+
+        <ManualViewer sections={manual.sections} pdfUrl={manual.pdfUrl} />
+      </div>
+    </section>
   );
 }
