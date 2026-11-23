@@ -1,23 +1,19 @@
-import { cacheLife } from 'next/cache';
+import 'server-only';
+import { prisma } from '@/lib/prisma';
+import { parseProductId, productVisibility } from './publicProduct';
 
-export type AudioInfo = { url: string; productName: string };
+export type PublicAudio = { url: string; productName: string };
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+/** Audio do produto: prefere POWER_ON, depois IN_USE. Devolve null se nao houver. */
+export async function getAudios(productId: string): Promise<PublicAudio | null> {
+  const id = parseProductId(productId);
+  if (!id) return null;
 
-export async function getAudios(productId: string): Promise<AudioInfo | null> {
-  'use cache';
-  cacheLife('minutes'); // em produção, use 'hours'
+  const audio = await prisma.productAudio.findFirst({
+    where: { productId: id, product: productVisibility },
+    orderBy: [{ audioType: 'asc' }, { id: 'asc' }],
+    select: { audioUrl: true, product: { select: { name: true } } },
+  });
 
-  try {
-    const res = await fetch(`${BASE_URL}/api/products/${productId}/audios`);
-    if (!res.ok) {
-      console.error('getAudios falhou:', res.status, productId);
-      return null;
-    }
-    const data: { audio: AudioInfo | null } = await res.json();
-    return data.audio ?? null;
-  } catch (err) {
-    console.error('getAudios erro:', err);
-    return null; // sem áudio: a aba Som não aparece no PC
-  }
+  return audio ? { url: audio.audioUrl, productName: audio.product.name } : null;
 }

@@ -1,0 +1,214 @@
+.root {
+  display: grid;
+  grid-template-columns: minmax(220px, 360px) minmax(0, 1fr) 160px;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+  min-height: 100%;
+  padding: 24px 32px 110px; /* espaco para os botoes fixos de baixo */
+}
+
+.empty {
+  padding: 48px 16px;
+  text-align: center;
+  opacity: 0.7;
+}
+
+/* ---------- esquerda ---------- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.chip,
+.chipOn {
+  padding: 4px 12px;
+  border: 1px solid var(--card-border, #cfcfcf);
+  border-radius: 999px;
+  background: var(--card-bg, #fff);
+  color: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.chipOn {
+  background: #111;
+  border-color: #111;
+  color: #fff;
+}
+
+.guideCard {
+  padding: 24px 28px;
+  border: 1px solid var(--card-border, #cfcfcf);
+  border-radius: 12px;
+  background: var(--card-bg, #fff);
+}
+
+.heading {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.type {
+  margin: 6px 0 0;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.product {
+  margin: 2px 0 10px;
+  font-size: 17px;
+}
+
+.label {
+  margin: 0;
+  font-size: 16px;
+}
+
+.desc {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* ---------- centro ---------- */
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.stepTitle {
+  margin: 0;
+  font-size: 18px;
+  text-align: center;
+}
+
+.imageBox {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 4 / 3.4;
+  background: #fff;
+  border: 1px solid #111;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.25);
+}
+
+.imageBox img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.noImg {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.stepDesc {
+  max-width: 460px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  white-space: pre-wrap;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.segments {
+  display: flex;
+  gap: 6px;
+}
+
+.seg,
+.segOn {
+  width: 48px;
+  height: 4px;
+  border-radius: 2px;
+  background: #d4d4d4;
+}
+
+.segOn {
+  background: #111;
+}
+
+.count {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* ---------- direita ---------- */
+.right {
+  width: 100%;
+}
+
+.thumb,
+.thumbOn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 4 / 4.2;
+  padding: 0;
+  border: 1px solid #111;
+  background: #fff;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.25);
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.thumbOn {
+  opacity: 1;
+  outline: 3px solid #1f6feb;
+  outline-offset: 2px;
+}
+
+.thumb:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.thumb img,
+.thumbOn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.thumbNum {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 1;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: #555;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .root {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 16px 16px 110px;
+  }
+
+  .right {
+    max-width: 240px;
+    margin: 0 auto;
+  }
+}
