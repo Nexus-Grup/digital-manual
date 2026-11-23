@@ -67,6 +67,11 @@ enum ProductSubcategory {
   HEADPHONES
 }
 
+enum ProductStatus {
+  DRAFT
+  PUBLISHED
+}
+
 enum AudioType {
   POWER_ON
   IN_USE
@@ -278,7 +283,7 @@ model Product {
   subcategory ProductSubcategory?
   createdAt   DateTime            @default(now())
   brandId     Int
-
+  updatedAt DateTime      @default(now()) @updatedAt
   brand           Brand                   @relation(fields: [brandId], references: [id])
   informations    Information[]
   assemblies      Assembly[]
@@ -290,7 +295,10 @@ model Product {
   qrCodes         ProductQrCode[]
   analyticsEvents ProductAnalyticsEvent[]
   tickets         Ticket[]
+  status    ProductStatus @default(DRAFT)
 
+
+  @@index([status])
   @@index([brandId])
   @@index([category])
   @@index([subcategory])
@@ -337,6 +345,7 @@ model Assembly {
   type        AssemblyType
   title       String
   description String?      @db.Text
+  imageUrl String?
   isActive    Boolean      @default(true)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt

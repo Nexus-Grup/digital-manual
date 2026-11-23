@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { canManageCompany } from "@/lib/companyAccess";
 import { CompanyForm } from "@/_components/userPanelComponents/companies/CompanyForm";
 import { CompanyUsers } from "@/_components/userPanelComponents/companies/CompanyUsers";
-import styles from "@/_styles/cssUserPanelPage/EditCompanies.module.css"
+
 
 export const instant = false; // mesmo padrão do seu layout
 

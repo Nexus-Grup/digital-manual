@@ -1,0 +1,37 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.arrow {
+  display: grid;
+  place-items: center;
+  height: 30px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--bar-bg, #e6e6e6);
+  color: inherit;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.12);
+}
+
+.arrow:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.arrow:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
