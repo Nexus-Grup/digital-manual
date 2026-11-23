@@ -1,6 +1,8 @@
 import { cacheLife } from 'next/cache';
+import { LANGUAGES, labelOf } from '@/_lib/productConstants';
+import { getPublicProduct } from '@/_data/publicProduct';
 
-// Content blocks of a digitized manual (the PDF the company uploads is converted into these).
+// Content blocks of a digitized manual (reservado: hoje o banco guarda só o PDF).
 export type ManualBlock =
   | { type: 'heading'; text: string }
   | { type: 'paragraph'; text: string }
@@ -19,7 +21,6 @@ export type ManualSection = {
   blocks: ManualBlock[];
 };
 
-// Mirrors Manual (prisma/schema.prisma) plus the digitized sections.
 export type ProductManual = {
   title: string;
   productName: string;
@@ -29,23 +30,31 @@ export type ProductManual = {
   updatedAt: string;
   /** original PDF; null = not uploaded yet */
   pdfUrl: string | null;
+  /** vazio enquanto o manual não for digitalizado: a página mostra o PDF */
   sections: ManualSection[];
 };
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
 
 export async function getManual(productId: string): Promise<ProductManual | null> {
   'use cache';
   cacheLife('minutes'); // use 'hours' in production
 
   try {
-    const res = await fetch(`${BASE_URL}/api/products/${productId}/manual`);
-    if (!res.ok) {
-      console.error('getManual failed:', res.status, productId);
-      return null;
-    }
-    const data: { manual: ProductManual | null } = await res.json();
-    return data.manual ?? null;
+    const p = await getPublicProduct(productId);
+    if (!p) return null;
+
+    // vários manuais: mostra o manual do usuário (ou o primeiro)
+    const m = p.manuals.find((x) => x.documentType === 'USER_MANUAL') ?? p.manuals[0];
+    if (!m) return null;
+
+    return {
+      title: m.title,
+      productName: p.name,
+      version: m.version ?? '',
+      language: m.language ? labelOf(LANGUAGES, m.language) : '',
+      updatedAt: p.updatedAt, // o manual não tem data própria: usa a do produto
+      pdfUrl: m.fileUrl,
+      sections: [],
+    };
   } catch (err) {
     console.error('getManual error:', err);
     return null;

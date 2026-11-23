@@ -1,21 +1,20 @@
-import type { Metadata } from "next";
-import { Suspense } from "react";
-import { notFound } from "next/navigation";
-import styles from "@/_styles/cssProductPage/ProductInfo.module.css";
-import { getInformation } from "@/_data/getInformation";
-import InfoFeatureList from "@/_components/productComponents/InfoFeatureList";
-import ProductGallery from "@/_components/productComponents/ProductGallery";
-import ProductTextCard from "@/_components/productComponents/ProductTextCard";
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
+import InformationView from '@/_components/productComponents/InformationView';
+import { getPublicProduct } from '@/_data/publicProduct';
 
-interface PageProps {
-  params: Promise<{ productId: string }>;
-}
+export const instant = false;
 
 export const metadata: Metadata = {
-  title: "Informações do produto | Manual digital",
-  description: "Descrição, fotos e principais recursos da ferramenta.",
+  title: 'Informações do produto | Manual digital',
+  description: 'Descrição, fotos e principais recursos da ferramenta.',
 };
 
+type PageProps = { params: Promise<{ productId: string }> };
+
+// A leitura do banco fica dentro do <Suspense>: com Cache Components, acessar dados
+// sem cache fora dele dá erro ("Uncached data was accessed outside of <Suspense>").
 export default function InformationPage({ params }: PageProps) {
   return (
     <Suspense fallback={<div>Carregando...</div>}>
@@ -26,23 +25,20 @@ export default function InformationPage({ params }: PageProps) {
 
 async function InformationContent({ params }: PageProps) {
   const { productId } = await params;
-  const info = await getInformation(productId);
-  if (!info) notFound();
+  const product = await getPublicProduct(productId);
+  if (!product) notFound();
+
+  // imagem principal primeiro, depois a galeria (sem repetidas)
+  const images = [...new Set([product.imgUrl, ...product.gallery].filter((u): u is string => Boolean(u)))];
 
   return (
-    <section className={styles["product-info"]}>
-      <div className={styles["product-info__container"]}>
-        <ProductTextCard
-          title={info.title}
-          productName={info.productName}
-          description={info.description}
-        />
-
-        <div className={styles["product-info__body"]}>
-          <ProductGallery images={info.gallery} />
-          {info.features.length > 0 && <InfoFeatureList features={info.features} />}
-        </div>
-      </div>
-    </section>
+    <InformationView
+      productName={product.name}
+      title={product.information?.title ?? null}
+      description={product.information?.description ?? product.description}
+      cards={product.information?.cards ?? []}
+      model3dUrl={product.model3dUrl}
+      images={images}
+    />
   );
 }

@@ -4,6 +4,7 @@ import { HttpError, handleError, parseId, readBody } from '@/lib/companyAccess';
 import { requireProductAccess } from '@/lib/productAccess';
 import { updateBasicInput } from '@/lib/productSchemas';
 import { getProductFull, getProgress } from '@/lib/productQueries';
+import type { ProductSubcategory } from '@prisma/client';
 
 type Ctx = { params: Promise<{ productId: string }> };
 
@@ -28,7 +29,14 @@ export async function PATCH(req: Request, { params }: Ctx) {
     const clash = await prisma.product.findUnique({ where: { code: data.code }, select: { id: true } });
     if (clash && clash.id !== productId) throw new HttpError(409, 'This SKU / part number is already in use');
 
-    await prisma.product.update({ where: { id: productId }, data });
+    await prisma.product.update({
+      where: { id: productId },
+      data: {
+        ...data,
+        // o schema entrega string | null; o Prisma exige o enum
+        subcategory: data.subcategory as ProductSubcategory | null,
+      },
+    });
     return NextResponse.json({ ok: true, progress: await getProgress(productId) });
   } catch (e) {
     return handleError(e);

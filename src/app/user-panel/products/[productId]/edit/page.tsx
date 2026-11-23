@@ -16,7 +16,6 @@ export default async function EditProductPage({
   searchParams: Promise<{ step?: string }>;
 }) {
 
-  console.log((await params).productId)
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
@@ -25,7 +24,7 @@ export default async function EditProductPage({
 
 
   const row = await prisma.product.findUnique({ where: { id }, select: { brandId: true } });
-  console.log("edit product", { id, row });
+
   if (!row) notFound();
 
   const access = await brandAccess(user, row.brandId);

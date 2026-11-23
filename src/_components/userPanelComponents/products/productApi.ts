@@ -28,9 +28,6 @@ function storageClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  console.log('[upload] SUPABASE URL:', url);
-  console.log('[upload] SUPABASE KEY definida?', Boolean(key));
-
   if (!url || !key) {
     throw new Error('Faltam NEXT_PUBLIC_SUPABASE_URL e/ou a chave publishable/anon no .env.local (reinicie o npm run dev)');
   }
@@ -50,13 +47,6 @@ export async function uploadFile(productId: number, kind: UploadKind, file: File
     `/api/products/${productId}/upload/sign`, 'POST', { kind, fileName: file.name, size: file.size },
   );
   if (!sign.ok) return sign;
-
-  console.log('[upload] sign response:', {
-    bucket: sign.data.bucket,
-    path: sign.data.path,
-    hasToken: Boolean(sign.data.token),
-    publicUrl: sign.data.publicUrl,
-  });
 
   try {
     const { error } = await storageClient()

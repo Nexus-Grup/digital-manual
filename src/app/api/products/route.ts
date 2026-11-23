@@ -4,6 +4,7 @@ import { HttpError, handleError, readBody, requireUser } from '@/lib/companyAcce
 import { requireBrandEditor } from '@/lib/productAccess';
 import { createProductInput } from '@/lib/productSchemas';
 import { getProgress, listProducts } from '@/lib/productQueries';
+import type { ProductSubcategory } from '@prisma/client';
 
 // GET /api/products?brandId=&category=&subcategory=&q=&tab=&page=&pageSize=
 export async function GET(req: Request) {
@@ -38,7 +39,12 @@ export async function POST(req: Request) {
     }
 
     const product = await prisma.product.create({
-      data: { ...data, status: 'DRAFT' },
+      data: {
+        ...data,
+        // o schema entrega string | null; o Prisma exige o enum
+        subcategory: data.subcategory as ProductSubcategory | null,
+        status: 'DRAFT',
+      },
       select: { id: true },
     });
     return NextResponse.json({ product, progress: await getProgress(product.id) }, { status: 201 });
