@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import LuccaLoader from "@/_components/global/LuccaLoader";
 import styles from "@/_styles/global/LuccaError.module.css";
+import luccaThinking from "@/_assets/image/lucca/lucca-thinking.png";
 
 export type ErrorType = 400 | 401 | 403 | 404 | 429 | 500 | 503 | "offline" | "unknown";
 
@@ -60,7 +62,12 @@ export default function LuccaError({
 
   return (
     <main className={styles.page}>
-      <LuccaLoader variant="blink" size={120} fullscreen={false} />
+      {/* not found: Lucca thinking ("where did it go?"); other errors keep the blinking Lucca */}
+      {finalCode === 404 ? (
+        <Image className={styles.thinking} src={luccaThinking} alt="" sizes="160px" priority />
+      ) : (
+        <LuccaLoader variant="blink" size={120} fullscreen={false} />
+      )}
 
       <div className={styles.info}>
         <h1 className={styles.code}>{INFO[finalCode] ? label(finalCode) : String(code)}</h1>

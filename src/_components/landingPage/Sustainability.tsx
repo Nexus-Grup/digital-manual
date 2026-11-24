@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styles from "@/_styles/landingPage/Sustainability.module.css";
-import mascot from "@/_assets/image/icone-montagem-verde 1.png";
+import mascot from "@/_assets/image/lucca/lucca-celebrate.png";
+import luccaPlant from "@/_assets/image/lucca/lucca-plant.png";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
 import { BoltIcon, DropletIcon, TreeIcon, TruckIcon } from "@/_components/landingPage/Icons";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
@@ -14,6 +15,7 @@ export default function Sustainability({ t }: { t: Dictionary["sustainability"] 
             <div className={styles["sustainability__container"]}>
                 <SectionHeading
                     id="sustainability-title"
+                    lucca={luccaPlant}
                     eyebrow={t.eyebrow}
                     title={t.title}
                     text={t.text}

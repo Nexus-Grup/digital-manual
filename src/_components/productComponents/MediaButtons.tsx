@@ -2,11 +2,12 @@
 
 import styles from '@/_styles/cssProductPage/Manual.module.css';
 import { useVideos, type PanelTab } from './VideosContext';
-import { CameraIcon, WaveIcon } from './TabIcons';
+import { CameraIcon, ChatIcon, WaveIcon } from './TabIcons';
 
 const ITEMS: { tab: PanelTab; label: string; Icon: typeof CameraIcon }[] = [
   { tab: 'video', label: 'Vídeos', Icon: CameraIcon },
   { tab: 'sound', label: 'Som', Icon: WaveIcon },
+  { tab: 'chat', label: 'Perguntar', Icon: ChatIcon },
 ];
 
 /**

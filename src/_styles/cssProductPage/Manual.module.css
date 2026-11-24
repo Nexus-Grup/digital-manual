@@ -33,6 +33,19 @@
     border-bottom: 1px solid var(--c-border-soft);
 }
 
+/* Lucca reading the manual, next to the title */
+.manual__intro {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.manual__lucca {
+    flex: 0 0 auto;
+    width: 64px;
+    height: auto;
+}
+
 .manual__heading {
     display: flex;
     flex-direction: column;
@@ -630,6 +643,10 @@
     .manual__container {
         padding-left: 6%;
         padding-right: 6%;
+    }
+
+    .manual__lucca {
+        width: 88px;
     }
 
     .manual__header {

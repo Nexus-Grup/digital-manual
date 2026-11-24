@@ -5,6 +5,7 @@ import { useState } from "react";
 import styles from "@/_styles/landingPage/Contact.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
+import luccaWaving from "@/_assets/image/lucca/lucca-waving.png";
 import { CheckIcon } from "@/_components/landingPage/Icons";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 
@@ -28,6 +29,7 @@ export default function Contact({ t }: { t: Dictionary["contact"] }) {
                 <div className={styles["contact__intro"]}>
                     <SectionHeading
                         id="contact-title"
+                        lucca={luccaWaving}
                         eyebrow={t.eyebrow}
                         title={t.title}
                         text={t.text}

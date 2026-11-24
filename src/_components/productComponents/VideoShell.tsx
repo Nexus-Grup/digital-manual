@@ -1,11 +1,16 @@
 'use client';
 
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
+import Image from 'next/image';
 import styles from '@/_styles/cssProductPage/VideoShell.module.css';
+import luccaPlay from '@/_assets/image/lucca/lucca-play.png';
+import luccaHeadphones from '@/_assets/image/lucca/lucca-headphones.png';
+import luccaThinking from '@/_assets/image/lucca/lucca-thinking.png';
 import { usePathname } from 'next/navigation';
 import { useVideos, type PanelTab } from './VideosContext';
 import SoundPanel from './SoundPanel';
-import { CameraIcon, WaveIcon } from './TabIcons';
+import ChatPanel from './ChatPanel';
+import { CameraIcon, ChatIcon, WaveIcon } from './TabIcons';
 
 export type VideoItem = { url: string; title: string };
 
@@ -15,6 +20,8 @@ type Props = {
   audioUrl?: string | null;
   /** nome do produto, mostrado abaixo de "Experiência sonora" */
   productName?: string;
+  /** for the "Pergunte ao Lucca" chat, always available */
+  productId: string;
   children: ReactNode;
 };
 
@@ -61,7 +68,7 @@ function PlayIcon() {
   );
 }
 
-export default function VideoShell({ videos, audioUrl, productName, children }: Props) {
+export default function VideoShell({ videos, audioUrl, productName, productId, children }: Props) {
   const { tab, open, close, toggleTab, setAvailable } = useVideos();
   const pathname = usePathname();
   // the manual starts with its title, so on mobile its tabs live in the page header (MediaButtons)
@@ -75,7 +82,7 @@ export default function VideoShell({ videos, audioUrl, productName, children }: 
   const hasAudio = Boolean(audioUrl);
 
   useEffect(() => {
-    setAvailable({ video: hasVideo, sound: hasAudio });
+    setAvailable({ video: hasVideo, sound: hasAudio, chat: true });
   }, [hasVideo, hasAudio, setAvailable]);
 
   // Guarda a última aba aberta: durante a animação de fechar o painel
@@ -119,8 +126,6 @@ export default function VideoShell({ videos, audioUrl, productName, children }: 
     return () => document.removeEventListener('pointerdown', onPointer);
   }, [open, close]);
 
-  if (!hasVideo && !hasAudio) return <>{children}</>;
-
   const main = videos[current] ?? videos[0];
   const mainId = main ? getYoutubeId(main.url) : null;
 
@@ -129,7 +134,8 @@ export default function VideoShell({ videos, audioUrl, productName, children }: 
     setPlaying(true);
   };
 
-  const panelTitle = shown === 'sound' ? 'Som' : 'Vídeos';
+  const panelTitle = shown === 'sound' ? 'Som' : shown === 'chat' ? 'Pergunte ao Lucca' : 'Vídeos';
+  const panelLucca = shown === 'sound' ? luccaHeadphones : shown === 'chat' ? luccaThinking : luccaPlay;
 
   return (
     <div className={styles.shell} data-open={open} data-tab={shown}>
@@ -145,9 +151,13 @@ export default function VideoShell({ videos, audioUrl, productName, children }: 
             inert={!open}
           >
             <header className={styles.header}>
-              <span className={styles.headerIcon}>
-                {shown === 'sound' ? <WaveIcon /> : <CameraIcon />}
-              </span>
+              {/* Lucca watching (videos) or listening (sound); decorative, the heading names the panel */}
+              <Image
+                className={styles.headerLucca}
+                src={panelLucca}
+                alt=""
+                sizes="48px"
+              />
               <h2 className={styles.heading}>{panelTitle}</h2>
               <button
                 type="button"
@@ -231,6 +241,11 @@ export default function VideoShell({ videos, audioUrl, productName, children }: 
                 />
               </div>
             )}
+
+            {/* ===== ABA CHAT ===== */}
+            <div className={shown !== 'chat' ? styles.paneHidden : styles.chatPane}>
+              <ChatPanel productId={productId} active={tab === 'chat'} />
+            </div>
           </aside>
         </div>
 
@@ -266,6 +281,17 @@ export default function VideoShell({ videos, audioUrl, productName, children }: 
               <WaveIcon />
             </button>
           )}
+          <button
+            type="button"
+            className={styles.tab}
+            data-active={tab === 'chat'}
+            onClick={() => toggleTab('chat')}
+            aria-expanded={tab === 'chat'}
+            aria-controls="video-panel"
+            aria-label={tab === 'chat' ? 'Recolher perguntas ao Lucca' : 'Perguntar ao Lucca'}
+          >
+            <ChatIcon />
+          </button>
         </div>
       </div>
 

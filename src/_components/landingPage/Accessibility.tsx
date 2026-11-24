@@ -1,5 +1,6 @@
 import styles from "@/_styles/landingPage/Accessibility.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
+import luccaHeadphones from "@/_assets/image/lucca/lucca-headphones.png";
 import SnapCarousel from "@/_components/landingPage/SnapCarousel";
 import { ContrastIcon, GlobeIcon, HandIcon, VolumeIcon } from "@/_components/landingPage/Icons";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
@@ -19,6 +20,7 @@ export default function Accessibility({ t, carousel }: AccessibilityProps) {
                 <div className={styles["accessibility__top"]}>
                     <SectionHeading
                         id="accessibility-title"
+                        lucca={luccaHeadphones}
                         eyebrow={t.eyebrow}
                         title={t.title}
                         text={t.text}

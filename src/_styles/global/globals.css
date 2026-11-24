@@ -329,3 +329,22 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #e4e4e4; /* Cor ao passar o mouse */
 }
+/* ===== Google Translate fallback (src/_lib/pageTranslator.ts) =====
+   The widget injects a top banner, pushes <body> down with an inline style and highlights the
+   hovered text. Our header menu is the only control, so hide all of that. !important is the only way
+   to beat the widget's inline styles. */
+.skiptranslate iframe,
+.goog-te-banner-frame,
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}

@@ -1,42 +1,40 @@
 "use client";
 
-import type { MouseEvent } from "react";
-import { useEffect, useId, useRef, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import styles from "@/_styles/landingPage/LanguageMenu.module.css";
-import { LOCALE_COOKIE, LOCALE_INFO, LOCALES, format, localeHref } from "@/_i18n/config";
-import type { Locale } from "@/_i18n/config";
+import { format } from "@/_i18n/config";
 import { CheckIcon, GlobeIcon } from "@/_components/landingPage/Icons";
+import {
+    LANGUAGES,
+    getServerState,
+    getState,
+    restoreSavedLanguage,
+    subscribe,
+    translatePage,
+} from "@/_lib/pageTranslator";
 
 type LanguageMenuProps = {
-    locale: Locale;
     t: {
         /** "Idioma: {language}. Alterar idioma" */
         trigger: string;
         menu: string;
     };
-    /**
-     * "route" (landing page): each option links to the localized URL.
-     * "cookie" (product pages, no locale in the URL): saves the choice in a cookie and re-renders the page.
-     */
-    mode?: "route" | "cookie";
 };
 
-const ONE_YEAR = 60 * 60 * 24 * 365;
-
-function persistLocale(locale: Locale) {
-    document.cookie = `${LOCALE_COOKIE}=${locale}; path=/; max-age=${ONE_YEAR}; samesite=lax`;
-}
-
-// Header language switcher. In route mode each option links to the localized URL (/landing-page,
-// /landing-page/en...) and keeps the current section (#hash). Same open/close behavior as the contrast toggle.
-export default function LanguageMenu({ locale, t, mode = "route" }: LanguageMenuProps) {
-    const router = useRouter();
+// Header language switcher: automatic translation of the whole page (texts, product data, manual,
+// chat answers) by the browser's own translator, or Google Translate where the browser has none.
+// The menu itself is marked translate="no" so the language names stay readable.
+export default function LanguageMenu({ t }: LanguageMenuProps) {
     const [open, setOpen] = useState(false);
     const menuId = useId();
     const wrapRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
+    const state = useSyncExternalStore(subscribe, getState, getServerState);
+
+    // a language chosen on a previous visit comes back automatically
+    useEffect(() => {
+        restoreSavedLanguage();
+    }, []);
 
     // While open: Escape and outside clicks close the menu.
     useEffect(() => {
@@ -60,35 +58,34 @@ export default function LanguageMenu({ locale, t, mode = "route" }: LanguageMenu
         };
     }, [open]);
 
-    // Keep the section the visitor is reading when switching language.
-    const switchTo = (target: Locale) => (event: MouseEvent<HTMLAnchorElement>) => {
+    const choose = (code: string) => {
         setOpen(false);
-        const hash = window.location.hash;
-        if (!hash) return;
-        event.preventDefault();
-        router.push(`${localeHref(target)}${hash}`);
+        triggerRef.current?.focus();
+        if (code !== state.lang) translatePage(code);
     };
 
-    // Cookie mode: persist the choice and re-render the Server Components with the new locale.
-    const saveLocale = (target: Locale) => {
-        setOpen(false);
-        if (target === locale) return;
-        persistLocale(target);
-        router.refresh();
-    };
-
-    const current = LOCALE_INFO[locale];
+    const current = LANGUAGES.find((l) => l.code === state.lang) ?? LANGUAGES[0];
+    const busy = state.status === "downloading" || state.status === "translating";
+    const statusText =
+        state.status === "downloading"
+            ? `Baixando o idioma… ${Math.round(state.progress * 100)}%`
+            : state.status === "translating"
+              ? "Traduzindo a página…"
+              : state.status === "error"
+                ? "Não foi possível traduzir agora."
+                : "";
 
     return (
-        <div className={styles["language-menu"]} ref={wrapRef}>
+        <div className={styles["language-menu"]} ref={wrapRef} translate="no">
             <button
                 ref={triggerRef}
                 type="button"
                 className={styles["language-menu__trigger"]}
                 aria-expanded={open}
                 aria-controls={menuId}
-                aria-label={format(t.trigger, { language: current.nativeName })}
-                title={format(t.trigger, { language: current.nativeName })}
+                aria-busy={busy}
+                aria-label={format(t.trigger, { language: current.name })}
+                title={format(t.trigger, { language: current.name })}
                 onClick={() => setOpen((value) => !value)}
             >
                 <GlobeIcon size={20} />
@@ -96,45 +93,37 @@ export default function LanguageMenu({ locale, t, mode = "route" }: LanguageMenu
                     {current.short}
                 </span>
             </button>
+
+            {/* progress of the translation, announced to screen readers */}
+            <span className={styles["language-menu__sr-only"]} role="status">
+                {statusText}
+            </span>
+
             {open ? (
                 <nav id={menuId} className={styles["language-menu__panel"]} aria-label={t.menu}>
                     <ul className={styles["language-menu__list"]}>
-                        {LOCALES.map((item) => {
-                            const active = item === locale;
-                            const optionClass = `${styles["language-menu__option"]} ${active ? styles["language-menu__option--active"] : ""}`;
-                            if (mode === "cookie") {
-                                return (
-                                    <li key={item}>
-                                        <button
-                                            type="button"
-                                            className={`${optionClass} ${styles["language-menu__option--button"]}`}
-                                            lang={item}
-                                            aria-current={active ? "true" : undefined}
-                                            onClick={() => saveLocale(item)}
-                                        >
-                                            <span className={styles["language-menu__name"]}>{LOCALE_INFO[item].nativeName}</span>
-                                            {active ? <CheckIcon size={18} /> : null}
-                                        </button>
-                                    </li>
-                                );
-                            }
+                        {LANGUAGES.map((item) => {
+                            const active = item.code === state.lang;
                             return (
-                                <li key={item}>
-                                    <Link
-                                        className={optionClass}
-                                        href={localeHref(item)}
-                                        hrefLang={item}
-                                        lang={item}
-                                        aria-current={active ? "page" : undefined}
-                                        onClick={switchTo(item)}
+                                <li key={item.code}>
+                                    <button
+                                        type="button"
+                                        className={`${styles["language-menu__option"]} ${styles["language-menu__option--button"]} ${active ? styles["language-menu__option--active"] : ""}`}
+                                        lang={item.code}
+                                        aria-current={active ? "true" : undefined}
+                                        onClick={() => choose(item.code)}
+                                        disabled={busy}
                                     >
-                                        <span className={styles["language-menu__name"]}>{LOCALE_INFO[item].nativeName}</span>
+                                        <span className={styles["language-menu__name"]}>{item.name}</span>
                                         {active ? <CheckIcon size={18} /> : null}
-                                    </Link>
+                                    </button>
                                 </li>
                             );
                         })}
                     </ul>
+                    <p className={styles["language-menu__note"]}>
+                        {statusText || "Tradução automática. Pode haver pequenas diferenças do texto original."}
+                    </p>
                 </nav>
             ) : null}
         </div>

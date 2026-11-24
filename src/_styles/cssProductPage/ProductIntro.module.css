@@ -173,6 +173,35 @@
     cursor: default;
 }
 
+/* Lucca next to the primary action (assembly: celebrating on the last step) */
+.intro__lucca {
+    width: 56px;
+    height: auto;
+}
+
+@keyframes intro-lucca-pop {
+    0% {
+        opacity: 0;
+        transform: translateY(12px) scale(0.6);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateY(-4px) scale(1.06);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .intro__lucca {
+        animation: intro-lucca-pop 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+}
+
 /* secondary action (outlined): "Destaques" on the information page */
 .intro__secondary {
     display: flex;

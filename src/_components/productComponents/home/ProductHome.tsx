@@ -1,8 +1,8 @@
 import type { CSSProperties, ReactNode } from 'react';
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
 import {
-  ArrowRight, AudioLines, BookOpen, Download, Images, Info, Layers, PlayCircle, Sparkles, Wrench,
+  ArrowRight, AudioLines, BookOpen, Download, Images, Info, Layers, MessageCircleQuestion, PlayCircle, Sparkles, Wrench,
   type LucideIcon,
 } from 'lucide-react';
 import styles from '@/_styles/cssProductPage/ProductHome.module.css';
@@ -10,6 +10,12 @@ import type { PublicProduct } from '@/_data/publicProduct';
 import type { ProductAssembly } from '@/_data/getAssembly';
 import { toSpecs } from '@/_lib/productSpecs';
 import { highlightIcon } from '../highlightIcons';
+import luccaPointing from '@/_assets/image/lucca/lucca-pointing.png';
+import luccaWrench from '@/_assets/image/lucca/lucca-wrench.png';
+import luccaWaving from '@/_assets/image/lucca/lucca-waving.png';
+import luccaThumbsUp from '@/_assets/image/lucca/lucca-thumbs-up.png';
+import luccaMagnifier from '@/_assets/image/lucca/lucca-magnifier.png';
+import luccaClipboard from '@/_assets/image/lucca/lucca-clipboard.png';
 import HomeMediaButton from './HomeMediaButton';
 
 type Props = {
@@ -25,6 +31,36 @@ const CATEGORY_LABELS: Record<string, string> = {
   AUTOMOTIVE: 'Automotivo',
   SOFTWARE: 'Software',
 };
+
+// Lucca poses (decorative: alt="" — the text next to each one already says it all)
+const LUCCA = {
+  pointing: luccaPointing, // hero, pointing at the product
+  wrench: luccaWrench, // assembly, holding a wrench
+  waving: luccaWaving, // closing CTA, waving
+  thumbsUp: luccaThumbsUp, // highlights
+  magnifier: luccaMagnifier, // gallery
+  clipboard: luccaClipboard, // technical sheet
+};
+
+/** Section heading (eyebrow + h2) with a Lucca pose on the right. */
+function SectionHead({ id, eyebrow, title, lucca }: {
+  id: string; eyebrow: string; title: string; lucca: StaticImageData;
+}) {
+  return (
+    <div className={styles['home-section-head']}>
+      <div className={styles['home-section-head__text']}>
+        <p className={styles['home-eyebrow']}>{eyebrow}</p>
+        <h2 className={styles['home-heading']} id={id}>{title}</h2>
+      </div>
+      <Image
+        className={`${styles['home-section-head__lucca']} ${styles['home-reveal']}`}
+        src={lucca}
+        alt=""
+        sizes="(min-width: 768px) 104px, 72px"
+      />
+    </div>
+  );
+}
 
 const MAX_STATS = 3;
 const MAX_PREVIEW_STEPS = 4;
@@ -67,7 +103,7 @@ type Action = {
   title: string;
   meta: string;
   href?: string;
-  tab?: 'video' | 'sound';
+  tab?: 'video' | 'sound' | 'chat';
 };
 
 /**
@@ -107,6 +143,7 @@ export default function ProductHome({ product, assembly }: Props) {
     ...(product.audios.length > 0
       ? [{ key: 'sound', icon: AudioLines, title: 'Ouvir a ferramenta', meta: 'Experiência sonora', tab: 'sound' as const }]
       : []),
+    { key: 'chat', icon: MessageCircleQuestion, title: 'Pergunte ao Lucca', meta: 'Tire dúvidas sobre uso e montagem', tab: 'chat' as const },
   ];
 
   // numbers first, long text (material) last, so the grid rows close evenly
@@ -206,6 +243,10 @@ export default function ProductHome({ product, assembly }: Props) {
                 {plural(steps.length, 'passo ilustrado', 'passos ilustrados')}
               </p>
             )}
+            <div className={styles['home-hero__lucca']}>
+              <p className={styles['home-hero__bubble']}>Oi! Eu sou o Lucca e vou te ajudar.</p>
+              <Image className={styles['home-hero__lucca-image']} src={LUCCA.pointing} alt="" sizes="96px" />
+            </div>
           </div>
         </div>
       </section>
@@ -244,10 +285,7 @@ export default function ProductHome({ product, assembly }: Props) {
       {cards.length > 0 && (
         <section className={styles['home-highlights']} aria-labelledby="home-highlights-title">
           <div className={styles['home-highlights__container']}>
-            <div className={styles['home-highlights__header']}>
-              <p className={styles['home-eyebrow']}>Destaques</p>
-              <h2 className={styles['home-heading']} id="home-highlights-title">Feita para o seu dia a dia</h2>
-            </div>
+            <SectionHead id="home-highlights-title" eyebrow="Destaques" title="Feita para o seu dia a dia" lucca={LUCCA.thumbsUp} />
             <ul className={styles['home-highlights__list']}>
               {cards.map((card, i) => {
                 const Icon = highlightIcon(card.icon);
@@ -268,6 +306,7 @@ export default function ProductHome({ product, assembly }: Props) {
       {assembly && steps.length > 0 && (
         <section className={styles['home-assembly']} aria-labelledby="home-assembly-title">
           <div className={styles['home-assembly__container']}>
+            <Image className={styles['home-assembly__lucca']} src={LUCCA.wrench} alt="" sizes="(min-width: 768px) 140px, 96px" />
             <div className={styles['home-assembly__header']}>
               <p className={styles['home-eyebrow']}>Montagem</p>
               <h2 className={styles['home-heading']} id="home-assembly-title">
@@ -310,10 +349,7 @@ export default function ProductHome({ product, assembly }: Props) {
       {images.length > 1 && (
         <section className={styles['home-gallery']} aria-labelledby="home-gallery-title">
           <div className={styles['home-gallery__container']}>
-            <div className={styles['home-gallery__header']}>
-              <p className={styles['home-eyebrow']}>Galeria</p>
-              <h2 className={styles['home-heading']} id="home-gallery-title">Veja de perto</h2>
-            </div>
+            <SectionHead id="home-gallery-title" eyebrow="Galeria" title="Veja de perto" lucca={LUCCA.magnifier} />
             {/* keyboard users scroll the row with the arrow keys once it has focus */}
             <ul className={styles['home-gallery__track']} tabIndex={0} aria-label="Fotos do produto (role para o lado)">
               {images.map((src, i) => (
@@ -339,10 +375,7 @@ export default function ProductHome({ product, assembly }: Props) {
       {sheetRows.length > 0 && (
         <section className={styles['home-specs']} aria-labelledby="home-specs-title">
           <div className={styles['home-specs__container']}>
-            <div className={styles['home-specs__header']}>
-              <p className={styles['home-eyebrow']}>Ficha técnica</p>
-              <h2 className={styles['home-heading']} id="home-specs-title">Os números da ferramenta</h2>
-            </div>
+            <SectionHead id="home-specs-title" eyebrow="Ficha técnica" title="Os números da ferramenta" lucca={LUCCA.clipboard} />
             <dl className={styles['home-specs__list']}>
               {sheetRows.map((row, i) => (
                 <div
@@ -365,6 +398,11 @@ export default function ProductHome({ product, assembly }: Props) {
       <section className={styles['home-cta']} aria-labelledby="home-cta-title">
         <div className={styles['home-cta__container']}>
           <div className={`${styles['home-cta__card']} ${styles['home-reveal']}`}>
+            <svg className={styles['home-cta__lines']} viewBox="0 0 600 200" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+              <path d="M0,150 C120,110 240,190 360,150 C480,110 540,130 600,120" />
+              <path d="M0,175 C140,135 260,205 380,170 C500,135 560,155 600,150" />
+            </svg>
+            <Image className={styles['home-cta__lucca']} src={LUCCA.waving} alt="" sizes="(min-width: 1024px) 160px, 110px" />
             <div className={styles['home-cta__heading']}>
               <h2 className={styles['home-cta__title']} id="home-cta-title">Tudo sobre a sua ferramenta, num só lugar</h2>
               <p className={styles['home-cta__text']}>

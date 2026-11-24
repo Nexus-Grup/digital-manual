@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Image, { type StaticImageData } from "next/image";
 import styles from "@/_styles/landingPage/SectionHeading.module.css";
 
 type SectionHeadingProps = {
@@ -8,10 +9,12 @@ type SectionHeadingProps = {
     text?: ReactNode;
     inverse?: boolean;
     centered?: boolean;
+    /** Lucca pose next to the heading (decorative: the heading already says it all) */
+    lucca?: StaticImageData;
 };
 
 // Shared eyebrow + h2 + intro text used at the top of each section.
-export default function SectionHeading({ id, eyebrow, title, text, inverse = false, centered = false }: SectionHeadingProps) {
+export default function SectionHeading({ id, eyebrow, title, text, inverse = false, centered = false, lucca }: SectionHeadingProps) {
     const blockClass = [
         styles["section-heading"],
         centered ? styles["section-heading--centered"] : "",
@@ -33,7 +36,7 @@ export default function SectionHeading({ id, eyebrow, title, text, inverse = fal
         inverse ? styles["section-heading__text--inverse"] : "",
     ].join(" ");
 
-    return (
+    const heading = (
         <div className={blockClass}>
             <p className={eyebrowClass}>
                 <span className={textGradientClass}>{eyebrow}</span>
@@ -42,6 +45,25 @@ export default function SectionHeading({ id, eyebrow, title, text, inverse = fal
                 {title}
             </h2>
             {text ? <p className={textClass}>{text}</p> : null}
+        </div>
+    );
+
+    if (!lucca) return heading;
+
+    // with Lucca: on the right of a left-aligned heading, above a centered one
+    const wrapClass = [
+        styles["section-heading__wrap"],
+        centered ? styles["section-heading__wrap--centered"] : "",
+    ].join(" ");
+    return (
+        <div className={wrapClass}>
+            {heading}
+            <Image
+                className={styles["section-heading__lucca"]}
+                src={lucca}
+                alt=""
+                sizes="(min-width: 768px) 140px, 96px"
+            />
         </div>
     );
 }

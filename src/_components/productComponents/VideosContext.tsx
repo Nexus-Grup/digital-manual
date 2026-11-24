@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 
-export type PanelTab = 'video' | 'sound';
+export type PanelTab = 'video' | 'sound' | 'chat';
 
 type VideosCtx = {
   /** aba aberta no momento (null = painel fechado) */
@@ -34,10 +34,10 @@ export function VideosProvider({ children }: { children: ReactNode }) {
     [],
   );
   const close = useCallback(() => setTab(null), []);
-  const [available, setAvailableState] = useState<Record<PanelTab, boolean>>({ video: false, sound: false });
+  const [available, setAvailableState] = useState<Record<PanelTab, boolean>>({ video: false, sound: false, chat: false });
   const setAvailable = useCallback(
     (next: Record<PanelTab, boolean>) =>
-      setAvailableState((cur) => (cur.video === next.video && cur.sound === next.sound ? cur : next)),
+      setAvailableState((cur) => (cur.video === next.video && cur.sound === next.sound && cur.chat === next.chat ? cur : next)),
     [],
   );
 

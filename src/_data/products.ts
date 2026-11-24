@@ -3,6 +3,7 @@ import { cacheLife } from "next/cache";
 import type { ProductCategory } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { normalizeText } from "@/lib/text";
+import { productVisibility } from "@/_data/publicProduct";
 
 /** Showcase categories (strategy: appliances, furniture, tools, electronics) plus a catch-all. */
 export const SHOWCASE_CATEGORIES = ["appliances", "furniture", "tools", "electronics"] as const;
@@ -88,6 +89,8 @@ export async function getProducts(): Promise<ProductCatalog> {
 
     try {
         const rows = await prisma.product.findMany({
+            // same rule as the product page (getPublicProduct): drafts are not listed, so every card opens
+            where: productVisibility,
             orderBy: { name: "asc" },
             select: {
                 id: true,

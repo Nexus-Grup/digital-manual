@@ -6,6 +6,7 @@ import Link from "next/link";
 import styles from "@/_styles/landingPage/Catalog.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
+import luccaMagnifier from "@/_assets/image/lucca/lucca-magnifier.png";
 import SnapCarousel from "@/_components/landingPage/SnapCarousel";
 import { ArrowRightIcon, DevicesIcon, FridgeIcon, SofaIcon, WrenchIcon } from "@/_components/landingPage/Icons";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
@@ -56,6 +57,7 @@ export default function Catalog({ t, carousel }: CatalogProps) {
             <div className={styles["catalog__container"]}>
                 <SectionHeading
                     id="catalog-title"
+                    lucca={luccaMagnifier}
                     eyebrow={t.eyebrow}
                     title={t.title}
                     text={t.text}
