@@ -82,7 +82,7 @@
   background: var(--c-bg);
   border: 1px solid var(--c-border);
   border-left: 0;
-  border-radius: 0 12px 12px 0;
+  border-radius: 0 10px 10px 0;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
@@ -284,8 +284,23 @@
     padding-bottom: 0;
   }
 
+  /* video/sound tabs stay on the left edge, over the carousel (below the sheet backdrop) */
   .tabs {
+    position: absolute;
+    top: 24px;
+    left: 0;
+    z-index: 150;
+  }
+
+  /* pages whose top is text (manual): the tabs move into the page header (MediaButtons) */
+  .tabsInline {
     display: none;
+  }
+
+  .tab {
+    width: 40px;
+    height: 48px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
   /* fundo escuro: cobre só a área acima do Hub (.stage) */

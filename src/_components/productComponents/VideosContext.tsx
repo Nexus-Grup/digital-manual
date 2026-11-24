@@ -19,6 +19,9 @@ type VideosCtx = {
   /** abre a aba; se ela já estiver aberta, fecha */
   toggleTab: (tab: PanelTab) => void;
   close: () => void;
+  /** which panel tabs exist for this product (set by VideoShell) */
+  available: Record<PanelTab, boolean>;
+  setAvailable: (available: Record<PanelTab, boolean>) => void;
 };
 
 const VideosContext = createContext<VideosCtx | null>(null);
@@ -31,10 +34,16 @@ export function VideosProvider({ children }: { children: ReactNode }) {
     [],
   );
   const close = useCallback(() => setTab(null), []);
+  const [available, setAvailableState] = useState<Record<PanelTab, boolean>>({ video: false, sound: false });
+  const setAvailable = useCallback(
+    (next: Record<PanelTab, boolean>) =>
+      setAvailableState((cur) => (cur.video === next.video && cur.sound === next.sound ? cur : next)),
+    [],
+  );
 
   const value = useMemo(
-    () => ({ tab, open: tab !== null, toggleTab, close }),
-    [tab, toggleTab, close],
+    () => ({ tab, open: tab !== null, toggleTab, close, available, setAvailable }),
+    [tab, toggleTab, close, available, setAvailable],
   );
 
   return <VideosContext.Provider value={value}>{children}</VideosContext.Provider>;

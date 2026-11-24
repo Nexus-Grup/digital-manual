@@ -1,0 +1,180 @@
+/* Product pages (Informações, Montagem): the section fills the stage between header and hub and
+   never scrolls vertically. Only the carousels scroll, horizontally (and the side list on desktop). */
+.product-view {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    color: var(--c-text);
+}
+
+/* Mobile: media on top (flexible, shrinks to fit), text, then the swipeable side list */
+.product-view__container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+    min-height: 0;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+/* carousels bleed to the screen edges so the next card peeks in
+   (4% of the section = 4 / 92 of the container's content box) */
+.product-view__media {
+    order: -1;
+    flex: 1 1 0;
+    min-height: 150px;
+    margin-left: -4.348%;
+    margin-right: -4.348%;
+}
+
+.product-view__intro {
+    flex: 0 0 auto;
+    min-width: 0;
+}
+
+.product-view__aside {
+    flex: 0 0 auto;
+    min-height: 0;
+    margin-left: -4.348%;
+    margin-right: -4.348%;
+}
+
+/* side list (information highlights, assembly steps): inline only when the screen is tall enough
+   for it without shrinking the media (see the height query below). Otherwise the highlights open
+   from the "Destaques" button and the steps are navigated by the carousel and "Próximo passo" */
+.product-view__aside--when-fits {
+    display: none;
+}
+
+/* ===== Tablet: portrait keeps the mobile stack (media, text, highlights) with tablet margins ===== */
+@media (min-width: 768px) {
+    .product-view {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .product-view__container {
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+
+    /* 6% of the section = 6 / 88 of the container's content box */
+    .product-view__media {
+        margin-left: -6.818%;
+        margin-right: -6.818%;
+    }
+
+    .product-view__aside {
+        margin-left: -6.818%;
+        margin-right: -6.818%;
+    }
+}
+
+/* ===== Tablet portrait: the media stops growing at ~55% of the height and the stack is centered,
+   so the text gets the attention and doesn't stick to the hub ===== */
+@media (min-width: 768px) and (orientation: portrait) {
+    .product-view__container {
+        justify-content: center;
+    }
+
+    .product-view__media {
+        max-height: 55%;
+    }
+}
+
+/* ===== Tablet landscape: two columns ===== */
+@media (min-width: 768px) and (orientation: landscape) {
+    /* two columns: text on the left, images on the right; the side list (information
+       highlights) becomes a full-width row below */
+    .product-view__container {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr) auto;
+        align-items: center;
+        column-gap: 32px;
+        row-gap: 20px;
+    }
+
+    .product-view__intro {
+        grid-column: 1;
+        grid-row: 1;
+        align-self: center;
+        max-height: 100%;
+        overflow: hidden;
+    }
+
+    .product-view__media {
+        grid-column: 2;
+        grid-row: 1;
+        height: 100%;
+        min-height: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .product-view__aside {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+}
+
+/* ===== Tall phones/tablets (e.g. 768×1024, 430×932): the highlights fit below, no button needed.
+   Keep in sync with the same query in ProductIntro.module.css (hides "Destaques") ===== */
+@media (max-width: 1023px) and (min-height: 860px), (orientation: portrait) and (min-height: 860px) {
+    .product-view__aside--when-fits {
+        display: block;
+    }
+}
+
+/* ===== Desktop: text | media | side list ===== */
+@media (min-width: 1024px) and (orientation: landscape) {
+    .product-view {
+        padding-top: 24px;
+        padding-bottom: 24px;
+    }
+
+    .product-view__container {
+        display: grid;
+        grid-template-columns: minmax(0, 320px) minmax(0, 1fr) minmax(0, 300px);
+        grid-template-rows: minmax(0, 1fr);
+        align-items: center;
+        gap: 40px;
+    }
+
+    .product-view__media {
+        order: 0;
+        align-self: center;
+        width: 100%;
+        height: 100%;
+        max-height: 520px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .product-view__aside,
+    .product-view__aside--when-fits {
+        grid-column: 3;
+        grid-row: 1;
+        display: flex;
+        align-items: center;
+        height: 100%;
+        max-height: 600px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+@media (min-width: 1200px) {
+    .product-view__container {
+        width: 1140px;
+        gap: 40px;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

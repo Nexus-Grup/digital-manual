@@ -5,7 +5,11 @@ export type AssemblyStepItem = {
   id: number;
   /** letter printed on the drawing (A, B...) */
   label: string;
+  /** title as saved (may start with the letter, e.g. "A - ...") */
   title: string;
+  /** title without the leading letter, for the step cards */
+  name: string;
+  description: string | null;
   /** null = placeholder until the real drawing is added */
   imageUrl: string | null;
   alt: string;
@@ -19,6 +23,10 @@ export type ProductAssembly = {
 };
 
 const letter = (i: number) => (i < 26 ? String.fromCharCode(65 + i) : String(i + 1));
+
+// "A - Instalação da bateria" -> "Instalação da bateria" (the letter is already on the card)
+const stripLetter = (title: string, label: string) =>
+  title.replace(new RegExp(`^\\s*${label}\\s*[-–—:.)]\\s*`, 'i'), '').trim() || title;
 
 export async function getAssembly(productId: string): Promise<ProductAssembly | null> {
   'use cache';
@@ -41,6 +49,8 @@ export async function getAssembly(productId: string): Promise<ProductAssembly | 
         id: s.id,
         label: letter(i),
         title: s.title,
+        name: stripLetter(s.title, letter(i)),
+        description: s.description,
         imageUrl: s.imageUrl,
         alt: s.description ? `${s.title}. ${s.description}` : s.title,
       })),

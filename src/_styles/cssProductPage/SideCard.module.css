@@ -1,0 +1,115 @@
+.side-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    min-height: 88px;
+    padding: 14px 16px;
+    font: inherit;
+    text-align: left;
+    color: var(--c-text);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.side-card--button {
+    cursor: pointer;
+}
+
+.side-card--button:hover {
+    background: var(--c-hover);
+}
+
+.side-card--button:focus-visible {
+    outline: 2px solid var(--c-accent);
+    outline-offset: 2px;
+}
+
+.side-card--active {
+    border-color: var(--c-accent);
+    box-shadow: 0 0 0 1px var(--c-accent);
+}
+
+.side-card__lead {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--c-text);
+}
+
+.side-card__lead--icon {
+    background: var(--c-hover);
+    border-radius: 10px;
+}
+
+.side-card__lead--letter {
+    width: 52px;
+    height: 52px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    border: 1.5px solid var(--c-text);
+    border-radius: 5px;
+}
+
+.side-card__content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.side-card__title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.side-card__text {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--c-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* whole text, no clamp (highlights sheet) */
+.side-card--full {
+    align-items: flex-start;
+}
+
+.side-card__title--full {
+    display: block;
+    overflow: visible;
+}
+
+.side-card__text--full {
+    display: block;
+    overflow: visible;
+}
+
+@media (min-width: 1024px) and (orientation: landscape) {
+    .side-card__text {
+        -webkit-line-clamp: 3;
+    }
+
+    .side-card__text--full {
+        display: block;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .side-card {
+        transition: none;
+    }
+}

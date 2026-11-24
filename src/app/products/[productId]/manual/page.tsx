@@ -5,6 +5,7 @@ import styles from "@/_styles/cssProductPage/Manual.module.css";
 import { getManual } from "@/_data/getManual";
 import ManualViewer from "@/_components/productComponents/ManualViewer";
 import { ExternalFileIcon } from "@/_components/productComponents/TabIcons";
+import MediaButtons from "@/_components/productComponents/MediaButtons";
 
 interface PageProps {
   params: Promise<{ productId: string }>;
@@ -48,18 +49,21 @@ async function ManualContent({ params }: PageProps) {
             </ul>
           </div>
 
-          {manual.pdfUrl && (
-            <a
-              className={styles["manual__pdf"]}
-              href={manual.pdfUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <ExternalFileIcon />
-              Abrir PDF original
-              <span className={styles["manual__sr-only"]}> (abre em nova aba)</span>
-            </a>
-          )}
+          <div className={styles["manual__actions"]}>
+            {manual.pdfUrl && (
+              <a
+                className={styles["manual__pdf"]}
+                href={manual.pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <ExternalFileIcon />
+                Abrir PDF original
+                <span className={styles["manual__sr-only"]}> (abre em nova aba)</span>
+              </a>
+            )}
+            <MediaButtons />
+          </div>
         </header>
 
         {manual.sections.length > 0 ? (

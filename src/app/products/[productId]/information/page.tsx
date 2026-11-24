@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import InformationView from '@/_components/productComponents/InformationView';
+import LuccaLoader from '@/_components/global/LuccaLoader';
 import { getPublicProduct } from '@/_data/publicProduct';
+import { toSpecs } from '@/_lib/productSpecs';
 
 export const instant = false;
 
@@ -13,11 +15,13 @@ export const metadata: Metadata = {
 
 type PageProps = { params: Promise<{ productId: string }> };
 
-// A leitura do banco fica dentro do <Suspense>: com Cache Components, acessar dados
-// sem cache fora dele dá erro ("Uncached data was accessed outside of <Suspense>").
+const MAX_CHIPS = 4;
+
+// The database read stays inside <Suspense>: with Cache Components, reading uncached data
+// outside of it throws ("Uncached data was accessed outside of <Suspense>").
 export default function InformationPage({ params }: PageProps) {
   return (
-    <Suspense fallback={<div>Carregando...</div>}>
+    <Suspense fallback={<LuccaLoader />}>
       <InformationContent params={params} />
     </Suspense>
   );
@@ -28,7 +32,7 @@ async function InformationContent({ params }: PageProps) {
   const product = await getPublicProduct(productId);
   if (!product) notFound();
 
-  // imagem principal primeiro, depois a galeria (sem repetidas)
+  // main image first, then the gallery (no duplicates)
   const images = [...new Set([product.imgUrl, ...product.gallery].filter((u): u is string => Boolean(u)))];
 
   return (
@@ -37,6 +41,7 @@ async function InformationContent({ params }: PageProps) {
       title={product.information?.title ?? null}
       description={product.information?.description ?? product.description}
       cards={product.information?.cards ?? []}
+      chips={toSpecs(product.technical?.specs, MAX_CHIPS)}
       model3dUrl={product.model3dUrl}
       images={images}
     />

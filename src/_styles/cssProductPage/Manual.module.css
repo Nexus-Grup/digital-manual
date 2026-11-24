@@ -90,6 +90,33 @@
     outline-offset: 2px;
 }
 
+/* PDF link + video/sound buttons, aligned with the title's left edge */
+.manual__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+/* video/sound buttons (MediaButtons): mobile only; on larger screens the side tabs are used */
+.manual__media {
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.manual__media[data-active="true"] {
+    color: var(--c-inverse-text);
+    background: var(--c-inverse-bg);
+    border-color: var(--c-inverse-bg);
+}
+
+@media (min-width: 641px) {
+    .manual__media {
+        display: none;
+    }
+}
+
 /* ===== Layout: sidebar + content ===== */
 .manual__layout {
     display: grid;

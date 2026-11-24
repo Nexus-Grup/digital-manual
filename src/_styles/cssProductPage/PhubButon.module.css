@@ -19,14 +19,9 @@
   padding: 12px 16px;
   background: #fff;
   border: 1px solid #c9c9c9;
-  border-radius: 16px;
+  border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
   box-sizing: border-box;
-}
-
-/* as abas só existem no mobile */
-.handles {
-  display: none;
 }
 
 /* ===== BOTÃO ===== */
@@ -101,8 +96,7 @@
   filter: brightness(0) invert(1);
 }
 
-.container__button:focus-visible,
-.handle:focus-visible {
+.container__button:focus-visible {
   outline: 2px solid #2b7fd4;
   outline-offset: 2px;
 }
@@ -120,104 +114,76 @@
   }
 }
 
-/* ===== CELULAR: barra colada no rodapé + aba que abre os vídeos ===== */
+/* ===== TABLET: same 6% side spacing as the page containers (the bar no longer touches the edges) ===== */
+@media (min-width: 641px) and (max-width: 1199px) {
+  .container {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+}
+
+/* ===== CELULAR: barra flutuante só com ícones; o item selecionado mostra ícone + texto ===== */
 @media (max-width: 640px) {
   .container {
-    width: 90%;
+    height: auto;
     position: relative;
     z-index: 300; /* acima da sheet (250) e do fundo (200) */
-    padding: 0;
+    padding: 8px 4% calc(8px + env(safe-area-inset-bottom));
   }
 
   .container__HUB_button {
+    gap: 4px;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     max-width: none;
     margin: 0;
-    padding: 18px 20px calc(10px + env(safe-area-inset-bottom));
-    gap: 0;
-    justify-content: space-between;
-    align-items: center;
-    background: #fff;
-    border: 1px solid #c9c9c9;
-    border-bottom: 0;
-    /* border-radius: 16px 16px 0 0; */
-    border: 1px solid rgba(0, 0, 0, 0.28);
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
-    position: static; 
-  }
-
-  /* abas em cima da barra: vídeos + som */
-  .handles {
-    display: flex;
-    gap: 6px;
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .handle {
-    display: grid;
-    place-items: center;
-    width: 76px;
-    height: 28px;
-    padding: 0;
-    color: #111;
-    background: #fff;
-    border: 1px solid #c9c9c9;
-    border-bottom: 0;
-    border-radius: 12px 12px 0 0;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-    bottom: calc(100% + 12px);
-  }
-
-  .handle[data-active="true"] {
-    color: #fff;
-    background: #111418;
-    border-color: #111418;
-  }
-
-  .videosButton {
-    display: none;
+    padding: 6px 8px;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
   .container__button {
     flex: 0 0 auto;
+    gap: 8px;
     max-width: none;
-    flex-direction: row;
-    gap: 10px;
-    padding: 10px;
-    font-size: 0.9rem;
-    font-weight: 600;
+    min-width: 48px;
+    min-height: 48px;
+    padding: 8px 12px;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--c-text);
     background: transparent;
-    border: none;
-    border-radius: 12px;
-    color: #111;
+    border: 0;
+    border-radius: 10px;
   }
 
+  /* label only on the selected item (the others keep it for screen readers via aria-label) */
   .container__label {
     display: none;
   }
 
   .container__button[aria-current="page"] {
-    padding: 10px 18px;
-    background: #111418;
-    border: none;
-    color: #fff;
+    padding-left: 16px;
+    padding-right: 18px;
   }
 
   .container__button[aria-current="page"] .container__label {
     display: inline;
   }
 
+  .container__button[aria-current="page"],
   .container__button[aria-current="page"]:hover:not(:disabled) {
-    background: #111418;
+    color: #fff;
+    background: #2b7fd4;
+    border: 0;
   }
 
   .container__button:hover:not(:disabled):not([aria-current="page"]) {
-    background: transparent;
-    color: #111;
+    color: var(--c-text);
+    background: var(--c-hover);
   }
 
   .container__button:hover:not(:disabled):not([aria-current="page"]) img {

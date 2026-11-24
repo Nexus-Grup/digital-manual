@@ -1,119 +1,91 @@
 'use client';
 
-import { useState, type KeyboardEvent } from 'react';
-import Image from 'next/image';
-import styles from '@/_styles/cssProductPage/Assembly.module.css';
-import type { AssemblyStepItem } from '@/_data/getAssembly';
-import ImagePlaceholder from './ImagePlaceholder';
-import ScrollArrow from './ScrollArrow';
+import { useCallback, useState } from 'react';
+import { ArrowRight, RotateCcw } from 'lucide-react';
+import styles from '@/_styles/cssProductPage/ProductView.module.css';
+import introStyles from '@/_styles/cssProductPage/ProductIntro.module.css';
+import type { ProductAssembly } from '@/_data/getAssembly';
+import MediaCarousel, { type MediaSlide } from './MediaCarousel';
+import ProductIntro from './ProductIntro';
+import SideCard from './SideCard';
+import SnapList from './SnapList';
 
-export default function AssemblyViewer({ steps }: { steps: AssemblyStepItem[] }) {
-  const [current, setCurrent] = useState(0);
+/**
+ * Montagem: the step text, the drawing carousel and the steps list share the current step.
+ * Renders the three cells of the product-view container.
+ */
+export default function AssemblyViewer({ assembly }: { assembly: ProductAssembly }) {
+  const { steps } = assembly;
   const total = steps.length;
+  const [current, setCurrent] = useState(0);
   const step = steps[current];
+  const isLast = current === total - 1;
 
-  const go = (index: number) => setCurrent(Math.min(Math.max(index, 0), total - 1));
+  const go = useCallback((i: number) => setCurrent(Math.min(Math.max(i, 0), total - 1)), [total]);
 
-  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-      e.preventDefault();
-      go(current + 1);
-    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-      e.preventDefault();
-      go(current - 1);
-    }
-  };
+  const slides: MediaSlide[] = steps.map((s) => ({ id: s.id, src: s.imageUrl, alt: s.alt, badge: s.label }));
 
   return (
-    <div
-      className={styles['assembly__viewer']}
-      role="group"
-      aria-roledescription="carrossel"
-      aria-label="Passos da montagem"
-      onKeyDown={onKeyDown}
-    >
-      <div className={styles['assembly__stage']}>
-        <figure className={styles['assembly__figure']}>
-          {step.imageUrl ? (
-            <Image
-              className={styles['assembly__image']}
-              src={step.imageUrl}
-              alt={step.alt}
-              fill
-              sizes="(min-width: 1200px) 330px, (min-width: 768px) 50vw, 92vw"
-              fetchPriority="high"
+    <>
+      <div className={styles['product-view__intro']}>
+        <ProductIntro
+          tag="Montagem"
+          title={assembly.title}
+          subtitle={assembly.productName}
+          progress={{ current: current + 1, total, stepName: step.name }}
+          description={step.description || assembly.description}
+          sheetTitle={`Passo ${step.label}: ${step.name}`}
+          sheetExtra={
+            step.description && assembly.description ? (
+              <p className={introStyles['intro__sheet-note']}>{assembly.description}</p>
+            ) : null
+          }
+          action={
+            <button
+              type="button"
+              className={introStyles['intro__action']}
+              onClick={() => go(isLast ? 0 : current + 1)}
+            >
+              {isLast ? 'Recomeçar' : 'Próximo passo'}
+              {isLast ? <RotateCcw size={18} aria-hidden /> : <ArrowRight size={18} aria-hidden />}
+            </button>
+          }
+        />
+      </div>
+
+      <div className={styles['product-view__media']}>
+        <MediaCarousel
+          slides={slides}
+          label="Desenhos da montagem"
+          index={current}
+          onIndexChange={go}
+          counterPrefix={(i) => steps[i]?.label ?? ''}
+          zoomable
+          tone="drawing"
+        />
+      </div>
+
+      {/* steps list: inline on desktop and on tall screens (same rule as the information highlights) */}
+      <div className={`${styles['product-view__aside']} ${styles['product-view__aside--when-fits']}`}>
+        <SnapList
+          title="Passos"
+          label="Passos da montagem"
+          items={steps}
+          getKey={(s) => s.id}
+          activeIndex={current}
+          renderItem={(s, i, active) => (
+            <SideCard
+              variant="letter"
+              leading={s.label}
+              title={s.name}
+              text={`Passo ${s.label}`}
+              active={active}
+              ariaLabel={`Passo ${s.label}: ${s.name}`}
+              onSelect={() => go(i)}
             />
-          ) : (
-            <ImagePlaceholder alt={step.alt} caption={`Desenho do passo ${step.label}`} />
           )}
-          <span className={styles['assembly__badge']} aria-hidden="true">
-            {step.label}
-          </span>
-        </figure>
-
-        <div className={styles['assembly__progress']}>
-          <div className={styles['assembly__bars']} aria-hidden="true">
-            {steps.map((s, i) => (
-              <span
-                key={s.id}
-                className={`${styles['assembly__bar']} ${i === current ? styles['assembly__bar--active'] : ''}`}
-              />
-            ))}
-          </div>
-          <p className={styles['assembly__counter']} aria-live="polite">
-            <span className={styles['assembly__sr-only']}>Passo </span>
-            {current + 1} / {total}
-          </p>
-        </div>
-      </div>
-
-      <div className={styles['assembly__thumbs']}>
-        <ScrollArrow
-          direction="up"
-          label="Passo anterior"
-          disabled={current === 0}
-          onClick={() => go(current - 1)}
-        />
-
-        <ul className={styles['assembly__thumb-list']}>
-          {steps.map((s, i) => (
-            <li key={s.id} className={styles['assembly__thumb-item']}>
-              <button
-                type="button"
-                className={`${styles['assembly__thumb']} ${i === current ? styles['assembly__thumb--active'] : ''}`}
-                aria-label={`Passo ${s.label}: ${s.title}`}
-                aria-current={i === current ? 'step' : undefined}
-                onClick={() => go(i)}
-              >
-                {s.imageUrl ? (
-                  <Image
-                    className={styles['assembly__image']}
-                    src={s.imageUrl}
-                    alt=""
-                    fill
-                    sizes="120px"
-                  />
-                ) : (
-                  <ImagePlaceholder alt="" />
-                )}
-                <span
-                  className={`${styles['assembly__badge']} ${styles['assembly__badge--small']}`}
-                  aria-hidden="true"
-                >
-                  {s.label}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        <ScrollArrow
-          direction="down"
-          label="Próximo passo"
-          disabled={current === total - 1}
-          onClick={() => go(current + 1)}
         />
       </div>
-    </div>
+    </>
   );
 }

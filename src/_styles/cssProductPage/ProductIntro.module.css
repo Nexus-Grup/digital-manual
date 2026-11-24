@@ -1,0 +1,525 @@
+.intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 0;
+    min-height: 0;
+    color: var(--c-text);
+}
+
+.intro__tag {
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-tag-text);
+    background: var(--c-tag-bg);
+    border-radius: 5px;
+}
+
+.intro__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.intro__title {
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 1.25;
+    overflow-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* mobile hides the secondary lines to keep everything on one screen */
+.intro__subtitle {
+    display: none;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: var(--c-muted);
+}
+
+.intro__progress {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.intro__bars {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+}
+
+.intro__bar {
+    flex: 1 1 0;
+    height: 4px;
+    background: var(--c-border-soft);
+    border-radius: 5px;
+    transition: background 0.2s;
+}
+
+.intro__bar--done {
+    background: var(--c-accent);
+}
+
+.intro__step {
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.intro__step-name {
+    font-weight: 400;
+}
+
+.intro__text {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* assembly: no side list on mobile/tablet, so the step text gets one more line */
+.intro__text--steps {
+    -webkit-line-clamp: 3;
+}
+
+.intro__chips {
+    display: none;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+}
+
+.intro__chip {
+    padding: 6px 12px;
+    font-size: 0.8125rem;
+    line-height: 1.2;
+    color: var(--c-text);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+}
+
+.intro__chip-value {
+    color: var(--c-accent-dark);
+}
+
+.intro__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+}
+
+.intro__more {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 48px;
+    padding: 0;
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--c-accent-dark);
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.intro__more:hover {
+    text-decoration: underline;
+}
+
+/* primary action ("Próximo passo"), rendered by the page */
+.intro__action {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding-left: 22px;
+    padding-right: 22px;
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--c-on-accent);
+    background: var(--c-accent);
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.intro__action:hover:not(:disabled) {
+    background: var(--c-accent-dark);
+}
+
+.intro__action:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* secondary action (outlined): "Destaques" on the information page */
+.intro__secondary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    padding-left: 16px;
+    padding-right: 16px;
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--c-text);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.intro__secondary:hover {
+    background: var(--c-hover);
+}
+
+.intro__count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: 0.75rem;
+    color: var(--c-on-accent);
+    background: var(--c-accent);
+    border-radius: 5px;
+}
+
+.intro__more:focus-visible,
+.intro__secondary:focus-visible,
+.intro__action:focus-visible,
+.intro__sheet-close:focus-visible,
+.intro__sheet-ok:focus-visible {
+    outline: 2px solid var(--c-accent);
+    outline-offset: 2px;
+}
+
+/* ===== "Ver mais" sheet: bottom sheet on mobile, centered dialog on desktop ===== */
+.intro__sheet {
+    width: 100%;
+    max-width: none;
+    max-height: 85dvh;
+    margin-top: auto;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+    color: var(--c-text);
+    background: var(--c-bg);
+    border: 0;
+    border-radius: 10px 10px 0 0;
+}
+
+.intro__sheet[open] {
+    animation: sheet-in 0.25s ease-out;
+}
+
+.intro__sheet::backdrop {
+    background: rgba(0, 0, 0, 0.45);
+}
+
+@keyframes sheet-in {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.intro__sheet-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 85dvh;
+    padding-top: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+}
+
+.intro__sheet-handle {
+    align-self: center;
+    width: 44px;
+    height: 4px;
+    background: var(--c-border-soft);
+    border-radius: 5px;
+}
+
+.intro__sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.intro__sheet-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.intro__sheet-close {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    color: var(--c-text);
+    background: none;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.intro__sheet-close:hover {
+    background: var(--c-hover);
+}
+
+/* the only place that scrolls: the sheet's own text, never the page */
+.intro__sheet-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.intro__sheet-text {
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+/* general text of the guide, below the step text */
+.intro__sheet-note {
+    padding-top: 16px;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--c-muted);
+    border-top: 1px solid var(--c-border-soft);
+}
+
+/* highlight cards inside the sheet */
+.intro__sheet-list {
+    gap: 12px;
+    list-style: none;
+}
+
+.intro__sheet-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+}
+
+.intro__sheet-footer {
+    display: flex;
+}
+
+.intro__sheet-ok {
+    flex: 1 1 auto;
+    min-height: 52px;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--c-on-accent);
+    background: var(--c-accent);
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.intro__sheet-ok:hover {
+    background: var(--c-accent-dark);
+}
+
+/* ===== Tablet ===== */
+@media (min-width: 768px) {
+    .intro__title {
+        font-size: 1.625rem;
+        -webkit-line-clamp: 3;
+    }
+
+    .intro__subtitle {
+        display: block;
+    }
+
+    /* tablet: the text has its own column, so it can show more lines */
+    .intro__text,
+    .intro__text--steps {
+        -webkit-line-clamp: 6;
+    }
+}
+
+/* ===== Desktop ===== */
+@media (min-width: 1024px) and (orientation: landscape) {
+    .intro {
+        gap: 14px;
+    }
+
+    .intro__title {
+        font-size: 2rem;
+        -webkit-line-clamp: 3;
+    }
+
+    .intro__text,
+    .intro__text--steps {
+        -webkit-line-clamp: 6;
+    }
+
+    .intro__chips {
+        display: flex;
+    }
+
+    .intro__actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .intro__action {
+        order: -1;
+    }
+
+    /* desktop shows the highlights in the side column */
+    .intro__secondary--compact {
+        display: none;
+    }
+
+    /* on desktop "Ver mais" only shows when the text was cut */
+    .intro__more {
+        display: none;
+    }
+
+    .intro__more--visible {
+        display: flex;
+    }
+
+    .intro__sheet {
+        width: min(92vw, 600px);
+        margin: auto;
+        border-radius: 10px;
+    }
+
+    .intro__sheet[open] {
+        animation: none;
+    }
+
+    .intro__sheet-handle {
+        display: none;
+    }
+
+    .intro__sheet-body {
+        padding: 24px;
+    }
+}
+
+
+/* tall phones/tablets: the highlights are shown inline (ProductView), so the button goes away */
+@media (max-width: 1023px) and (min-height: 860px), (orientation: portrait) and (min-height: 860px) {
+    .intro__secondary--compact {
+        display: none;
+    }
+}
+
+/* short laptop screens: fewer lines so the column always fits */
+@media (min-width: 1024px) and (orientation: landscape) and (max-height: 760px) {
+    .intro__text,
+    .intro__text--steps {
+        -webkit-line-clamp: 4;
+    }
+}
+
+/* short phones: drop the tag and keep 2 lines so the drawing keeps a usable size */
+@media (max-width: 1023px) and (max-height: 700px) {
+    .intro__tag {
+        display: none;
+    }
+
+    .intro__text--steps {
+        -webkit-line-clamp: 2;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) and (max-height: 700px) {
+    .intro__text,
+    .intro__text--steps {
+        -webkit-line-clamp: 4;
+    }
+}
+
+/* tablet portrait (single column, plenty of height): the specs show inline and "Ver mais" only
+   appears when the text was cut, like on desktop; the photo shrinks to make room */
+@media (min-width: 768px) and (orientation: portrait) {
+    .intro__chips {
+        display: flex;
+    }
+
+    .intro__more {
+        display: none;
+    }
+
+    .intro__more--visible {
+        display: flex;
+    }
+}
+
+/* tall tablets (e.g. 960×1440): the description gets more lines and a larger size instead of an
+   oversized photo */
+@media (min-width: 768px) and (orientation: portrait) and (min-height: 1100px) {
+    .intro {
+        gap: 14px;
+    }
+
+    .intro__title {
+        font-size: 1.875rem;
+    }
+
+    .intro__step {
+        font-size: 1rem;
+    }
+
+    .intro__text,
+    .intro__text--steps {
+        font-size: 1.0625rem;
+        -webkit-line-clamp: 10;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .intro__sheet[open] {
+        animation: none;
+    }
+
+    .intro__bar,
+    .intro__action {
+        transition: none;
+    }
+}

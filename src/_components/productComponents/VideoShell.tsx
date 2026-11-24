@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import styles from '@/_styles/cssProductPage/VideoShell.module.css';
+import { usePathname } from 'next/navigation';
 import { useVideos, type PanelTab } from './VideosContext';
 import SoundPanel from './SoundPanel';
 import { CameraIcon, WaveIcon } from './TabIcons';
@@ -61,7 +62,10 @@ function PlayIcon() {
 }
 
 export default function VideoShell({ videos, audioUrl, productName, children }: Props) {
-  const { tab, open, close, toggleTab } = useVideos();
+  const { tab, open, close, toggleTab, setAvailable } = useVideos();
+  const pathname = usePathname();
+  // the manual starts with its title, so on mobile its tabs live in the page header (MediaButtons)
+  const tabsInline = pathname.endsWith('/manual');
   const isMobile = useIsMobile();
   const [current, setCurrent] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -69,6 +73,10 @@ export default function VideoShell({ videos, audioUrl, productName, children }: 
 
   const hasVideo = videos.length > 0;
   const hasAudio = Boolean(audioUrl);
+
+  useEffect(() => {
+    setAvailable({ video: hasVideo, sound: hasAudio });
+  }, [hasVideo, hasAudio, setAvailable]);
 
   // Guarda a última aba aberta: durante a animação de fechar o painel
   // continua mostrando o conteúdo certo em vez de piscar.
@@ -226,8 +234,12 @@ export default function VideoShell({ videos, audioUrl, productName, children }: 
           </aside>
         </div>
 
-        {/* abas na borda do painel (só no PC) */}
-        <div className={styles.tabs} role="group" aria-label="Painel lateral">
+        {/* tabs on the panel edge (desktop) / over the carousel edge (mobile) */}
+        <div
+          className={`${styles.tabs} ${tabsInline ? styles.tabsInline : ''}`}
+          role="group"
+          aria-label="Painel lateral"
+        >
           {hasVideo && (
             <button
               type="button"
