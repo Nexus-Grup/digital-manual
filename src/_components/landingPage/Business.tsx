@@ -1,6 +1,7 @@
 import styles from "@/_styles/landingPage/Business.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
+import luccaBriefcase from "@/_assets/image/lucca/lucca-briefcase.png";
 import { ArrowRightIcon, ChartIcon, CoinsIcon, HeadsetIcon, RefreshIcon } from "@/_components/landingPage/Icons";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 
@@ -13,6 +14,7 @@ export default function Business({ t }: { t: Dictionary["business"] }) {
             <div className={styles["business__container"]}>
                 <SectionHeading
                     id="business-title"
+                    lucca={luccaBriefcase}
                     eyebrow={t.eyebrow}
                     title={t.title}
                     text={t.text}
@@ -31,11 +33,11 @@ export default function Business({ t }: { t: Dictionary["business"] }) {
                 <div className={styles["business__cta"]}>
                     <p className={styles["business__cta-text"]}>{t.ctaText}</p>
                     <div className={styles["business__cta-actions"]}>
-                        <md-filled-button className={buttonStyles["md-button--trailing-icon"]} href="#contato" trailing-icon="">
+                        <md-filled-button suppressHydrationWarning className={buttonStyles["md-button--trailing-icon"]} href="#contato" trailing-icon="">
                             {t.ctaPrimary}
                             <ArrowRightIcon slot="icon" size={18} />
                         </md-filled-button>
-                        <md-outlined-button className={buttonStyles["md-button"]} href="#calculadora">
+                        <md-outlined-button suppressHydrationWarning className={buttonStyles["md-button"]} href="#calculadora">
                             {t.ctaSecondary}
                         </md-outlined-button>
                     </div>

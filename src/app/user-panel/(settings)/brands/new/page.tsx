@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
-import { BrandForm } from '@/_components/userPanelComponents/BrandForm';
+import { BrandForm } from '@/_components/userPanelComponents/brands/BrandForm';
 export const instant = false;
 
 export default async function NewBrandPage() {

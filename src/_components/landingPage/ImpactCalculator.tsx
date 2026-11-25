@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "@/_styles/landingPage/ImpactCalculator.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
+import luccaCalculator from "@/_assets/image/lucca/lucca-calculator.png";
 import { format } from "@/_i18n/config";
 import type { Locale } from "@/_i18n/config";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
@@ -103,12 +104,14 @@ export default function ImpactCalculator({ t, locale }: ImpactCalculatorProps) {
                 <div className={styles["impact-calculator__intro"]}>
                     <SectionHeading
                         id="calculator-title"
+                        lucca={luccaCalculator}
                         eyebrow={t.eyebrow}
                         title={t.title}
                         text={t.text}
                     />
                     <form className={styles["impact-calculator__form"]} onSubmit={(event) => event.preventDefault()}>
                         <md-outlined-text-field
+                            suppressHydrationWarning
                             ref={productsRef}
                             className={styles["impact-calculator__field"]}
                             label={t.productsLabel}

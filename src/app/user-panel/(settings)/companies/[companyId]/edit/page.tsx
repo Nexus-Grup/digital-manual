@@ -2,9 +2,9 @@ import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { canManageCompany } from "@/lib/companyAccess";
-import { CompanyForm } from "@/_components/userPanelComponents/CompanyForm";
-import { CompanyUsers } from "@/_components/userPanelComponents/CompanyUsers";
-import styles from "@/_styles/cssUserPanelPage/EditCompanies.module.css"
+import { CompanyForm } from "@/_components/userPanelComponents/companies/CompanyForm";
+import { CompanyUsers } from "@/_components/userPanelComponents/companies/CompanyUsers";
+
 
 export const instant = false; // mesmo padrão do seu layout
 
@@ -61,7 +61,7 @@ export default async function EditCompanyPage({
   }));
 
   return (
-    <main className={styles.container_main}>
+
       <CompanyForm
         mode="edit"
         company={{
@@ -80,7 +80,7 @@ export default async function EditCompanyPage({
           members={members}
         />
       </CompanyForm>      
-    </main>
+
 
   );
 }

@@ -6,6 +6,7 @@ import Link from "next/link";
 import styles from "@/_styles/landingPage/Catalog.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
+import luccaMagnifier from "@/_assets/image/lucca/lucca-magnifier.png";
 import SnapCarousel from "@/_components/landingPage/SnapCarousel";
 import { ArrowRightIcon, DevicesIcon, FridgeIcon, SofaIcon, WrenchIcon } from "@/_components/landingPage/Icons";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
@@ -56,13 +57,15 @@ export default function Catalog({ t, carousel }: CatalogProps) {
             <div className={styles["catalog__container"]}>
                 <SectionHeading
                     id="catalog-title"
+                    lucca={luccaMagnifier}
                     eyebrow={t.eyebrow}
                     title={t.title}
                     text={t.text}
                 />
-                <md-chip-set className={styles["catalog__filters"]} aria-label={t.filterAria}>
+                <md-chip-set suppressHydrationWarning className={styles["catalog__filters"]} aria-label={t.filterAria}>
                     {CATEGORIES.map((category) => (
                         <md-filter-chip
+                            suppressHydrationWarning
                             key={category}
                             label={t.categories[category]}
                             selected={active === category}
@@ -98,7 +101,7 @@ export default function Catalog({ t, carousel }: CatalogProps) {
                     </ul>
                 </SnapCarousel>
                 <div className={styles["catalog__more"]}>
-                    <md-filled-tonal-button className={buttonStyles["md-button"]} href="/products">
+                    <md-filled-tonal-button suppressHydrationWarning className={buttonStyles["md-button"]} href="/products">
                         {t.viewAll}
                     </md-filled-tonal-button>
                 </div>

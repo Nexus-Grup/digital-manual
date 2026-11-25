@@ -8,12 +8,16 @@
 .content {
   min-width: 0;
   height: 100%;
-  padding-left: 52px;
+  /* room for the side tabs; exposed so full-bleed bands (home) can extend under it */
+  --shell-gutter: 52px;
+  padding-left: var(--shell-gutter);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* "safe": when the page is taller than the stage, start at the top instead of clipping it */
+  justify-content: safe center;
 }
 
 .backdrop {
@@ -52,6 +56,8 @@
 .panel {
   width: var(--panel-w);
   height: 100%;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   box-sizing: border-box;
   color: var(--c-text);
@@ -80,7 +86,7 @@
   background: var(--c-bg);
   border: 1px solid var(--c-border);
   border-left: 0;
-  border-radius: 0 12px 12px 0;
+  border-radius: 0 10px 10px 0;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
@@ -96,8 +102,17 @@
 
 .paneHidden { display: none !important; }
 
+/* chat tab: fills the panel height (its log scrolls, the form stays at the bottom) */
+.chatPane {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
 /* ===== CABEÇALHO ===== */
 .header {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -105,9 +120,10 @@
   border-bottom: 1px solid var(--c-border-soft);
 }
 
-.headerIcon {
-  display: grid;
-  place-items: center;
+.headerLucca {
+  flex: 0 0 auto;
+  width: 44px;
+  height: auto;
 }
 
 .heading {
@@ -278,12 +294,27 @@
   }
 
   .content {
-    padding-left: 0;
+    --shell-gutter: 0px;
     padding-bottom: 0;
   }
 
+  /* video/sound tabs stay on the left edge, over the carousel (below the sheet backdrop) */
   .tabs {
+    position: absolute;
+    top: 24px;
+    left: 0;
+    z-index: 150;
+  }
+
+  /* pages whose top is text (manual): the tabs move into the page header (MediaButtons) */
+  .tabsInline {
     display: none;
+  }
+
+  .tab {
+    width: 40px;
+    height: 48px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
   /* fundo escuro: cobre só a área acima do Hub (.stage) */
@@ -360,7 +391,6 @@
     border-bottom: 0;
   }
 
-  .headerIcon { display: none; }
   .shell[data-tab="sound"] .heading { visibility: hidden; }
   .heading { font-size: 1.05rem; }
   .close { display: grid; }

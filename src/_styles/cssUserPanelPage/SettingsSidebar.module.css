@@ -34,7 +34,7 @@
   font-size: 13px;
   color: #111;
   background-color: #fff;
-  border: 1px solid #b5b5b5;
+  border: 1px solid var(--c-border);
   border-radius: 6px;
 }
 

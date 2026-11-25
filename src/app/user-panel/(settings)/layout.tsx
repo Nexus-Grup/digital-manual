@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import {
   SettingsSidebar,
   type BrandCompany,
-} from "@/_components/userPanelComponents/SettingsSidebar";
+} from "@/_components/userPanelComponents/settings/SettingsSidebar";
 
 export const instant = false;
 
@@ -143,7 +143,10 @@ export default async function SettingsLayout({
           showCompanies={showCompanies}
           showBrands={showBrands}
         />
-        {children}
+        <div className="container-stage-section">
+          {children}
+        </div>
+        
       </div>
     </main>
   );

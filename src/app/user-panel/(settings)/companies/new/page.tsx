@@ -1,7 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
 import { canAccessCompanyArea } from '@/lib/companyAccess';
-import { CompanyForm } from '@/_components/userPanelComponents/CompanyForm';
+import { CompanyForm } from '@/_components/userPanelComponents/companies/CompanyForm';
 import styles from "@/_styles/cssUserPanelPage/EditCompanies.module.css"
 
 export const instant = false;

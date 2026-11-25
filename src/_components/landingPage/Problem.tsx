@@ -1,5 +1,6 @@
 import styles from "@/_styles/landingPage/Problem.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
+import luccaPaper from "@/_assets/image/lucca/lucca-paper.png";
 import { GlobeIcon, HandIcon, PaperIcon, ScaleIcon, SearchIcon, TreeIcon, TruckIcon } from "@/_components/landingPage/Icons";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 
@@ -13,6 +14,7 @@ export default function Problem({ t }: { t: Dictionary["problem"] }) {
             <div className={styles["problem__container"]}>
                 <SectionHeading
                     id="problem-title"
+                    lucca={luccaPaper}
                     eyebrow={t.eyebrow}
                     title={t.title}
                     text={t.text}

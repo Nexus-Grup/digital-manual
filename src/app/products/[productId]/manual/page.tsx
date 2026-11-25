@@ -1,10 +1,23 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import styles from "@/_styles/cssProductPage/Manual.module.css";
+import { getManual } from "@/_data/getManual";
+import ManualViewer from "@/_components/productComponents/ManualViewer";
+import { ExternalFileIcon } from "@/_components/productComponents/TabIcons";
+import MediaButtons from "@/_components/productComponents/MediaButtons";
+import luccaBook from "@/_assets/image/lucca/lucca-book.png";
 
 interface PageProps {
   params: Promise<{ productId: string }>;
 }
 
-// 1. Deixe o componente da página limpo e passe o params para o Suspense
+export const metadata: Metadata = {
+  title: "Manual do produto | Manual digital",
+  description: "Manual digital acessível, com busca, sumário e ajuste do tamanho do texto.",
+};
+
 export default function ManualPage({ params }: PageProps) {
   return (
     <Suspense fallback={<div>Carregando...</div>}>
@@ -13,15 +26,62 @@ export default function ManualPage({ params }: PageProps) {
   );
 }
 
-// 2. Crie um componente interno para ler o ID de forma assíncrona
-async function ManualContent({ params }: { params: Promise<{ productId: string }> }) {
-  const resolvedParams = await params;
-  const productId = resolvedParams.productId;
+async function ManualContent({ params }: PageProps) {
+  const { productId } = await params;
+  const manual = await getManual(productId);
+  // sem texto digitalizado, o PDF precisa existir
+  if (!manual || (manual.sections.length === 0 && !manual.pdfUrl)) notFound();
+
+  const updated = new Date(manual.updatedAt).toLocaleDateString("pt-BR", { timeZone: "UTC" });
 
   return (
-    <main>
-      <h1>Manual do Produto: {productId}</h1>
-      <p>Esta é uma página gerada dinamicamente para o ID do produto acima.</p>
-    </main>
+    <section className={styles["manual"]}>
+      <div className={styles["manual__container"]}>
+        <header className={styles["manual__header"]}>
+          <div className={styles["manual__intro"]}>
+            <Image className={styles["manual__lucca"]} src={luccaBook} alt="" sizes="(min-width: 768px) 88px, 64px" />
+            <div className={styles["manual__heading"]}>
+              <h1 className={styles["manual__title"]}>{manual.title}</h1>
+              <p className={styles["manual__name"]}>{manual.productName}</p>
+              <ul className={styles["manual__meta"]} aria-label="Sobre este documento">
+                {manual.version && <li className={styles["manual__meta-item"]}>Versão {manual.version}</li>}
+                {manual.language && <li className={styles["manual__meta-item"]}>{manual.language}</li>}
+                <li className={styles["manual__meta-item"]}>
+                  Atualizado em{" "}
+                  <time dateTime={manual.updatedAt}>{updated}</time>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className={styles["manual__actions"]}>
+            {manual.pdfUrl && (
+              <a
+                className={styles["manual__pdf"]}
+                href={manual.pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <ExternalFileIcon />
+                Abrir PDF original
+                <span className={styles["manual__sr-only"]}> (abre em nova aba)</span>
+              </a>
+            )}
+            <MediaButtons />
+          </div>
+        </header>
+
+        {manual.sections.length > 0 ? (
+          <ManualViewer sections={manual.sections} pdfUrl={manual.pdfUrl} />
+        ) : (
+          // manual ainda sem texto digitalizado: mostra o PDF direto na página
+          <iframe
+            src={`${manual.pdfUrl}#view=FitH`}
+            title={`${manual.title} (PDF)`}
+            style={{ width: "100%", height: "78vh", border: 0, borderRadius: 8, background: "#fff" }}
+          />
+        )}
+      </div>
+    </section>
   );
 }

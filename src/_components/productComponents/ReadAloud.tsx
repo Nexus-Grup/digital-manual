@@ -125,6 +125,8 @@ export default function ReadAloud({ lang = 'pt-BR', labels: t = DEFAULT_LABELS }
   const voiceRef = useRef<SpeechSynthesisVoice | null>(null);
   const pos = useRef({ ci: 0, off: 0 }); // onde parou (para continuar)
   const markRef = useRef<HTMLElement>(null);
+  // voice language: the page's current one (automatic translation changes <html lang>)
+  const langRef = useRef(lang);
   const titleId = useId();
 
   /**
@@ -148,7 +150,7 @@ export default function ReadAloud({ lang = 'pt-BR', labels: t = DEFAULT_LABELS }
         const c = chunks[i];
         const from = c.start + (i === ci ? off : 0);
         const u = new SpeechSynthesisUtterance(full.slice(from, c.end));
-        u.lang = lang;
+        u.lang = langRef.current;
         if (voiceRef.current) u.voice = voiceRef.current;
 
         u.onstart = () => {
@@ -183,7 +185,7 @@ export default function ReadAloud({ lang = 'pt-BR', labels: t = DEFAULT_LABELS }
         synth.speak(u);
       }
     },
-    [lang],
+    [],
   );
 
   // As vozes chegam de forma assíncrona (principalmente no Chrome): pede a lista cedo para que
@@ -198,7 +200,9 @@ export default function ReadAloud({ lang = 'pt-BR', labels: t = DEFAULT_LABELS }
   }, []);
 
   const start = (t: string) => {
-    const { voice, missing } = pickVoice(lang);
+    const pageLang = document.documentElement.lang;
+    langRef.current = pageLang && !pageLang.startsWith('pt') ? pageLang : lang;
+    const { voice, missing } = pickVoice(langRef.current);
     voiceRef.current = voice;
     setMissingVoice(missing);
 

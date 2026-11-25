@@ -1,0 +1,21 @@
+.image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    color: var(--c-muted);
+    background: var(--c-hover);
+    border: 1px dashed var(--c-border);
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.image-placeholder__caption {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 0.875rem;
+    text-align: center;
+}

@@ -2,7 +2,6 @@ import Image from "next/image";
 import styles from "@/_styles/landingPage/LpHeader.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 import headerLogo from "@/_assets/image/header_logo.svg";
-import type { Locale } from "@/_i18n/config";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 import ContrastToggle from "@/_components/productComponents/ContrastToggle";
 import LanguageMenu from "@/_components/landingPage/LanguageMenu";
@@ -15,12 +14,11 @@ import { CircleUserRound } from "lucide-react";
 const NAV_HREFS = ["#problema", "#solucao", "#acessibilidade", "#sobre", "#empresas"];
 
 type LpHeaderProps = {
-    locale: Locale;
     t: Dictionary["header"];
     menu: Dictionary["mobileMenu"];
 };
 
-export default function LpHeader({ locale, t, menu }: LpHeaderProps) {
+export default function LpHeader({ t, menu }: LpHeaderProps) {
     const links = NAV_HREFS.map((href, index) => ({ href, label: t.nav[index] }));
 
     return (
@@ -43,9 +41,9 @@ export default function LpHeader({ locale, t, menu }: LpHeaderProps) {
                 </nav>
                 <div className={styles["lp-header__actions"]}>
                     <ContrastToggle labels={t.contrast} />
-                    <LanguageMenu locale={locale} t={t.language} />
+                    <LanguageMenu t={t.language} />
                     {/* VLibras translates Brazilian Portuguese into Libras, so it only makes sense on pt-BR. */}
-                    {locale === "pt-BR" ? <VLibrasButton t={t.libras} /> : null}
+                    <VLibrasButton t={t.libras} />
                     <md-filled-button className={`${buttonStyles["md-button"]} ${styles["lp-header__cta"]}`} href="#contato">
                         {t.contact}
                     </md-filled-button>

@@ -23,6 +23,24 @@
   .page { --bg: #0f1411; --fg: #e8efe9; --muted: #9fb3a5; }
 }
 
+.thinking {
+  width: 160px;
+  height: auto;
+}
+
+/* gentle head tilt while "thinking" (a few cycles, then rests) */
+@keyframes lucca-think {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-4deg) translateY(-4px); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .thinking {
+    transform-origin: 50% 100%;
+    animation: lucca-think 1.6s ease-in-out 0.3s 3;
+  }
+}
+
 .info { text-align: center; font-family: var(--font); }
 .code { margin: 0; font-size: clamp(3.5rem, 14vw, 7rem); font-weight: 800; line-height: 1; letter-spacing: -0.02em; color: var(--green); }
 .title { margin: 14px 0 0; font-size: clamp(1.2rem, 3.5vw, 1.7rem); font-weight: 700; color: var(--fg); }

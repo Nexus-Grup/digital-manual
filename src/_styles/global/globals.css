@@ -6,14 +6,14 @@
   padding: 0;
 }
 :root {
-  --background: #ffffff;
+  --background: #F9FAFB;
   --foreground: #171717;
 
   /* ===== tema padrão ===== */
   --c-bg: #fff;
   --c-text: #111;
   --c-muted: #4a5160;
-  --c-border: #c9c9c9;
+  --c-border: #b5b5b5;
   --c-border-soft: #e3e6ea;
   --c-hover: #f0f2f5;
   --c-active: #d9d9d9;
@@ -29,6 +29,11 @@
   --c-ok: #2f8a3f;
   --c-warn: #c2410c;
   --c-loading: #4a4a4a;
+  /* product pages: green section tag (text >= 4.5:1 on its background) and photo card */
+  --c-tag-bg: #e3f4e3;
+  --c-tag-text: #1f6b2c;
+  --c-media-bg: linear-gradient(160deg, #f4f6f5 0%, #e9eeeb 100%);
+  --c-shadow: 0 1px 2px rgba(17, 20, 24, 0.06), 0 6px 20px rgba(17, 20, 24, 0.06);
   /* ícones .svg pretos: filtros para ficarem brancos/pretos quando precisar */
   --icon-filter: none;
   --icon-inverse-filter: brightness(0) invert(1);
@@ -94,6 +99,10 @@ html[data-contrast="gray"] {
   --c-ok: #d0d0d0;
   --c-warn: #e6e6e6;
   --c-loading: #8c8c8c;
+  --c-tag-bg: #3a3a3a;
+  --c-tag-text: #f0f0f0;
+  --c-media-bg: #2a2a2a;
+  --c-shadow: none;
   --icon-filter: brightness(0) invert(1);
   --icon-inverse-filter: brightness(0);
   --icon-on-accent-filter: brightness(0);
@@ -155,6 +164,10 @@ html[data-contrast="high"] {
   --c-ok: #8dff9f;
   --c-warn: #ffb4a0;
   --c-loading: #c9b800;
+  --c-tag-bg: #000;
+  --c-tag-text: #8dff9f;
+  --c-media-bg: #000;
+  --c-shadow: none;
   --icon-filter: brightness(0) invert(1);
   --icon-inverse-filter: brightness(0);
   --icon-on-accent-filter: brightness(0);
@@ -263,6 +276,8 @@ body {
     height: 100vh;
     display: flex;
     justify-content: space-between;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
 }
 
 .container-stage{
@@ -272,6 +287,7 @@ body {
   width: 100%;
   height: 100%;
   display: flex;
+  overflow: auto;
 }
 
 .container-global-page{
@@ -281,4 +297,63 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.container-stage-section{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 24px 16px;
+}
+
+/* Customização detalhada (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 8px; /* Largura da barra vertical */
+  height: 8px; /* Altura da barra horizontal */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9; /* Cor do fundo/trilho */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffffff; /* Cor do indicador arrastável */
+  border-radius: 10px; /* Cantos arredondados */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e4e4e4; /* Cor ao passar o mouse */
+}
+/* ===== Google Translate fallback (src/_lib/pageTranslator.ts) =====
+   The widget injects a top banner, pushes <body> down with an inline style and highlights the
+   hovered text. Our header menu is the only control, so hide all of that. !important is the only way
+   to beat the widget's inline styles. */
+.skiptranslate iframe,
+.goog-te-banner-frame,
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }

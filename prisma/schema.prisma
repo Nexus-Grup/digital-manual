@@ -45,16 +45,31 @@ enum MediaType {
 enum ProductCategory {
   ELECTRONICS
   FURNITURE
-  CLOTHING
-  TOYS
-  FOOD
-  BEAUTY
-  SPORTS
+  APPLIANCES
+  TOOLS
   AUTOMOTIVE
-  BOOKS
-  MUSIC
   SOFTWARE
   OTHER
+}
+
+enum ProductSubcategory {
+  REFRIGERATOR
+  WASHER
+  MICROWAVE
+  WARDROBE
+  TV_STAND
+  DESK
+  SCREWDRIVER
+  DRILL
+  SANDER
+  TV
+  SPEAKER
+  HEADPHONES
+}
+
+enum ProductStatus {
+  DRAFT
+  PUBLISHED
 }
 
 enum AudioType {
@@ -99,6 +114,35 @@ enum NotificationType {
   SYSTEM
 }
 
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  AWAITING_USER
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+// "What is it about?" (tela New ticket)
+enum TicketAbout {
+  PRODUCT
+  BRAND
+  COMPANY
+  ACCOUNT
+  OTHER
+}
+
+enum TicketCategory {
+  TECHNICAL_ISSUE
+  QUESTION
+  OTHER
+}
+
 // ============================================================
 // USUÁRIOS, EMPRESAS E MARCAS
 // ============================================================
@@ -119,6 +163,9 @@ model User {
   userCompanies     UserCompany[]
   notifications     Notification[]
   passwordResetCode PasswordResetCode[]
+  ticketsCreated    Ticket[]            @relation("TicketCreator")
+  ticketsAssigned   Ticket[]            @relation("TicketAssignee")
+  ticketMessages    TicketMessage[]
 
   @@map("users")
 }
@@ -165,6 +212,7 @@ model Company {
 
   brands        Brand[]
   userCompanies UserCompany[]
+  tickets       Ticket[]
 
   @@map("companies")
 }
@@ -181,6 +229,7 @@ model Brand {
   company    Company     @relation(fields: [companyId], references: [id])
   products   Product[]
   userBrands UserBrand[]
+  tickets    Ticket[]
 
   @@index([companyId])
   @@map("brands")
@@ -224,16 +273,17 @@ model UserBrand {
 // ============================================================
 
 model Product {
-  id          Int             @id @default(autoincrement())
+  id          Int                 @id @default(autoincrement())
   name        String
   model       String?
-  code        String          @unique
+  code        String              @unique
   description String?
   imgUrl      String?
-  category    ProductCategory @default(OTHER)
-  createdAt   DateTime        @default(now())
+  category    ProductCategory     @default(OTHER)
+  subcategory ProductSubcategory?
+  createdAt   DateTime            @default(now())
   brandId     Int
-
+  updatedAt DateTime      @default(now()) @updatedAt
   brand           Brand                   @relation(fields: [brandId], references: [id])
   informations    Information[]
   assemblies      Assembly[]
@@ -244,9 +294,14 @@ model Product {
   galleries       ProductGallery[]
   qrCodes         ProductQrCode[]
   analyticsEvents ProductAnalyticsEvent[]
+  tickets         Ticket[]
+  status    ProductStatus @default(DRAFT)
 
+
+  @@index([status])
   @@index([brandId])
   @@index([category])
+  @@index([subcategory])
   @@map("products")
 }
 
@@ -290,6 +345,7 @@ model Assembly {
   type        AssemblyType
   title       String
   description String?      @db.Text
+  imageUrl String?
   isActive    Boolean      @default(true)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -461,4 +517,75 @@ model ProductQrCode {
 
   @@index([productId])
   @@map("product_qr_codes")
+}
+
+// ============================================================
+// SUPORTE (CHAMADOS)
+// ============================================================
+
+// A descrição inicial do chamado é a primeira TicketMessage.
+model Ticket {
+  id            Int            @id @default(autoincrement())
+  title         String
+  about         TicketAbout    @default(OTHER)
+  category      TicketCategory @default(TECHNICAL_ISSUE)
+  priority      TicketPriority @default(MEDIUM)
+  status        TicketStatus   @default(OPEN)
+  createdById   Int
+  assigneeId    Int? // admin responsável (null = sem responsável)
+  productId     Int? // preenchido quando about = PRODUCT
+  brandId       Int? // preenchido quando about = BRAND (ou derivado do produto)
+  companyId     Int? // preenchido quando about = COMPANY (ou derivado da marca)
+  lastMessageAt DateTime       @default(now())
+  resolvedAt    DateTime?
+  closedAt      DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  createdBy User            @relation("TicketCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  assignee  User?           @relation("TicketAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  product   Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
+  brand     Brand?          @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  company   Company?        @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  messages  TicketMessage[]
+
+  @@index([createdById, status])
+  @@index([assigneeId, status])
+  @@index([brandId, status])
+  @@index([companyId, status])
+  @@index([productId])
+  @@index([status, lastMessageAt])
+  @@map("tickets")
+}
+
+model TicketMessage {
+  id         Int      @id @default(autoincrement())
+  body       String   @db.Text
+  isInternal Boolean  @default(false) // nota interna: só a equipe vê
+  createdAt  DateTime @default(now())
+  ticketId   Int
+  authorId   Int
+
+  ticket      Ticket             @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author      User               @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  attachments TicketAttachment[]
+
+  @@index([ticketId, createdAt])
+  @@index([authorId])
+  @@map("ticket_messages")
+}
+
+model TicketAttachment {
+  id        Int      @id @default(autoincrement())
+  fileUrl   String
+  fileName  String
+  mimeType  String?
+  sizeBytes Int?
+  createdAt DateTime @default(now())
+  messageId Int
+
+  message TicketMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([messageId])
+  @@map("ticket_attachments")
 }

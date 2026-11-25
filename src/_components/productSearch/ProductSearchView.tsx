@@ -2,9 +2,8 @@ import Link from "next/link";
 import styles from "@/_styles/productSearch/ProductSearch.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 import heroStyles from "@/_styles/landingPage/Hero.module.css";
-import { getRequestLocale } from "@/_i18n/getRequestLocale";
 import { getDictionary } from "@/_i18n/getDictionary";
-import { format } from "@/_i18n/config";
+import { DEFAULT_LOCALE, format } from "@/_i18n/config";
 import {
     SHOWCASE_CATEGORIES,
     filterProducts,
@@ -26,7 +25,7 @@ export type SearchParams = Promise<Record<string, string | string[] | undefined>
 const firstValue = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value) ?? "";
 
 // Public product search (Cadasio showcase layout adapted to the brand): hero with search, category
-// chips, card grid and a B2B call to action. Reads the URL and the locale cookie: render inside <Suspense>.
+// chips, card grid and a B2B call to action. Reads the URL: render inside <Suspense>.
 export default async function ProductSearchView({ searchParams }: { searchParams: SearchParams }) {
     const params = await searchParams;
     const query = firstValue(params.q).trim();
@@ -36,8 +35,8 @@ export default async function ProductSearchView({ searchParams }: { searchParams
     const subParam = firstValue(params.sub);
     const subcategory = category && isShowcaseSubcategory(category, subParam) ? subParam : null;
 
-    const locale = await getRequestLocale();
-    const [dict, catalog] = await Promise.all([getDictionary(locale), getProducts()]);
+    const locale = DEFAULT_LOCALE;
+    const [dict, catalog] = await Promise.all([getDictionary(), getProducts()]);
     const t = dict.productSearch;
 
     const categoryLabels: Record<ShowcaseCategory, string> = {
@@ -85,7 +84,7 @@ export default async function ProductSearchView({ searchParams }: { searchParams
         : format(count === 1 ? t.countAllOne : t.countAll, { count });
 
     return (
-        <div className={styles["product-search"]} lang={locale}>
+        <div className={styles["product-search"]}>
             <section className={styles["showcase-hero"]} aria-labelledby="showcase-title">
                 <div className={styles["showcase-hero__container"]}>
                     <div className={styles["showcase-hero__content"]}>
@@ -164,7 +163,7 @@ export default async function ProductSearchView({ searchParams }: { searchParams
                                 {query ? format(t.emptyTitle, { query }) : t.emptyCategory}
                             </p>
                             <p className={styles["showcase__empty-text"]}>{t.emptyText}</p>
-                            <md-filled-tonal-button className={buttonStyles["md-button"]} href="/products">
+                            <md-filled-tonal-button suppressHydrationWarning className={buttonStyles["md-button"]} href="/products">
                                 {t.clear}
                             </md-filled-tonal-button>
                         </div>
@@ -194,7 +193,7 @@ export default async function ProductSearchView({ searchParams }: { searchParams
     );
 }
 
-// Same shape and height as the real content while the locale cookie and the URL are read (no layout shift).
+// Same shape and height as the real content while the URL is read (no layout shift).
 export function ProductSearchFallback() {
     return (
         <div className={styles["product-search"]} aria-busy="true">

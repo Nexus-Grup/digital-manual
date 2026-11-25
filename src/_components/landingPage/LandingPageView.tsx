@@ -30,9 +30,9 @@ type LandingPageViewProps = {
 export default function LandingPageView({ locale, dict }: LandingPageViewProps) {
     return (
         // lang on the wrapper so screen readers switch pronunciation (the root <html> stays pt-BR).
-        <div className={styles["landing"]} lang={locale}>
+        <div className={styles["landing"]}>
             <MaterialRegistry />
-            <LpHeader locale={locale} t={dict.header} menu={dict.mobileMenu} />
+            <LpHeader t={dict.header} menu={dict.mobileMenu} />
             <main className={styles["landing__main"]}>
                 <Hero t={dict.hero} />
                 <WaveDivider from="var(--lp-surface)" to="var(--lp-bg)" />

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { ManagePlatformSidebar } from "@/_components/userPanelComponents/ManagePlatformSidebar";
+import { ManagePlatformSidebar } from "@/_components/userPanelComponents/managen/ManagePlatformSidebar";
 export const instant = false;
 
 const BASE = "/user-panel";

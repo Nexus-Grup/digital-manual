@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { Building2, ChevronDown, Info, User, UserPlus, ShieldCheck } from "lucide-react";
+import { toast } from "sonner";
 import styles from "@/_styles/utils/CreateUserForm.module.css";
 
 /** Espelham os enums do Prisma (não importar @prisma/client em Client Component). */
@@ -87,11 +88,21 @@ export function CreateUserForm(props: CreateUserFormProps) {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (props.variant === "admin") {
-      await props.onSubmit({ ...values, role });
-    } else {
-      if (companyId === "") return;
-      await props.onSubmit({ ...values, companyRole, companyId });
+
+    try {
+      if (props.variant === "admin") {
+        await props.onSubmit({ ...values, role });
+      } else {
+        if (companyId === "") {
+          toast.error("Select a company.");
+          return;
+        }
+        await props.onSubmit({ ...values, companyRole, companyId });
+      }
+    } catch (err) {
+      // quem chama o formulário normalmente mostra o próprio toast de erro;
+      // este cobre o caso em que o onSubmit lança uma exceção
+      toast.error(err instanceof Error ? err.message : "Could not create the user. Try again.");
     }
   }
 

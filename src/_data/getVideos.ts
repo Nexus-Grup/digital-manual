@@ -1,22 +1,17 @@
-import { cacheLife } from 'next/cache';
-import type { VideoItem } from '@/_components/productComponents/VideoShell';
+import 'server-only';
+import { prisma } from '@/lib/prisma';
+import { parseProductId, productVisibility } from './publicProduct';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+export type PublicVideo = { url: string; title: string };
 
-export async function getVideos(productId: string): Promise<VideoItem[]> {
-  'use cache';
-  cacheLife('minutes'); // em produção, use 'hours'
+/** Videos do produto (so de produtos visiveis ao publico). */
+export async function getVideos(productId: string): Promise<PublicVideo[]> {
+  const id = parseProductId(productId);
+  if (!id) return [];
 
-  try {
-    const res = await fetch(`${BASE_URL}/api/products/${productId}/videos`);
-    if (!res.ok) {
-      console.error('getVideos falhou:', res.status, productId);
-      return [];
-    }
-    const data = await res.json();
-    return data.videos ?? [];
-  } catch (err) {
-    console.error('getVideos erro:', err);
-    return [];
-  }
+  return prisma.productVideo.findMany({
+    where: { productId: id, product: productVisibility },
+    orderBy: { id: 'asc' },
+    select: { url: true, title: true },
+  });
 }
