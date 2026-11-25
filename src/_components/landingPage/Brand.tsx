@@ -1,5 +1,6 @@
 import styles from "@/_styles/landingPage/Brand.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
+import luccaBook from "@/_assets/image/lucca/lucca-book.png";
 import { EyeIcon, FlagIcon, TargetIcon } from "@/_components/landingPage/Icons";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 
@@ -9,6 +10,7 @@ export default function Brand({ t }: { t: Dictionary["brand"] }) {
             <div className={styles["brand__container"]}>
                 <SectionHeading
                     id="brand-title"
+                    lucca={luccaBook}
                     eyebrow={t.eyebrow}
                     title={t.title}
                     text={t.text}

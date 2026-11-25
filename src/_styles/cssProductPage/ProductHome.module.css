@@ -1,0 +1,1120 @@
+/* =====================================================================
+   Product home ("Início"): landing page of the product.
+   Scrolls inside the stage (VideoShell .content). Mobile-first.
+   Animations: transform/opacity only, off with prefers-reduced-motion.
+   ===================================================================== */
+
+.home {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    /* plain white page: also covers the gutter the stage keeps for the side tabs (--shell-gutter) */
+    width: calc(100% + var(--shell-gutter, 0px));
+    /* fills the stage when short, grows with the content when long (never squeezed: flex item of the
+       scroller, so without flex-shrink: 0 the sections would shrink and the hero would be clipped) */
+    flex-shrink: 0;
+    min-height: 100%;
+    margin-left: calc(-1 * var(--shell-gutter, 0px));
+    padding-left: var(--shell-gutter, 0px);
+    padding-bottom: 56px;
+    color: var(--c-text);
+    background: var(--c-bg);
+}
+
+.home-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* ===== Shared: headings, eyebrow, buttons ===== */
+.home-eyebrow {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-tag-text);
+}
+
+/* section heading with a Lucca pose on the right */
+.home-section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+}
+
+.home-section-head__text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.home-section-head__lucca {
+    flex: 0 0 auto;
+    width: 72px;
+    height: auto;
+}
+
+.home-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+}
+
+.home-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 52px;
+    padding-left: 22px;
+    padding-right: 22px;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--c-on-accent);
+    text-decoration: none;
+    background: var(--c-accent-dark);
+    border: 2px solid var(--c-accent-dark);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.home-button:hover {
+    transform: translateY(-2px);
+}
+
+.home-button:active {
+    transform: translateY(0);
+}
+
+.home-button:focus-visible {
+    outline: 3px solid var(--c-accent);
+    outline-offset: 3px;
+}
+
+.home-button--outlined {
+    color: var(--c-text);
+    background: var(--c-bg);
+    border-color: var(--c-border);
+}
+
+.home-button--outlined:hover {
+    background: var(--c-hover);
+}
+
+/* on the dark CTA card */
+.home-button--light {
+    color: var(--lp-text);
+    background: var(--lp-bg);
+    border-color: var(--lp-bg);
+}
+
+.home-button--ghost {
+    color: var(--lp-text-inverse);
+    background: transparent;
+    border-color: var(--lp-text-inverse);
+}
+
+.home-button--ghost:hover {
+    background: var(--lp-impact-tile);
+}
+
+/* ===== HERO ===== */
+.home-hero {
+    position: relative;
+    width: 100%;
+    padding-top: 28px;
+    overflow: hidden;
+}
+
+.home-hero__container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+.home-hero__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    min-width: 0;
+}
+
+.home-hero__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+}
+
+.home-hero__tag {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 5px;
+}
+
+.home-hero__tag--brand {
+    color: var(--c-tag-text);
+    background: var(--c-tag-bg);
+    border-color: var(--c-tag-bg);
+}
+
+.home-hero__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.home-hero__title {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    overflow-wrap: break-word;
+}
+
+.home-hero__model {
+    font-size: 1rem;
+    color: var(--c-muted);
+}
+
+.home-hero__about {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.home-hero__text {
+    max-width: 60ch;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.home-hero__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 48px;
+    font-weight: 700;
+    color: var(--c-accent-dark);
+    text-decoration: none;
+}
+
+.home-hero__link:hover {
+    text-decoration: underline;
+}
+
+.home-hero__link:focus-visible {
+    outline: 3px solid var(--c-accent);
+    outline-offset: 2px;
+    border-radius: 5px;
+}
+
+.home-hero__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+    max-width: 480px;
+    list-style: none;
+}
+
+.home-hero__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+    box-shadow: var(--c-shadow);
+}
+
+.home-hero__stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--c-accent-dark);
+}
+
+.home-hero__stat-label {
+    font-size: 0.8125rem;
+    color: var(--c-muted);
+}
+
+.home-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* image first on mobile: the product is what the visitor scanned */
+.home-hero__visual {
+    order: -1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+/* Lucca next to the product, with a speech bubble */
+.home-hero__lucca {
+    position: absolute;
+    top: auto;
+    bottom: 8%;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.home-hero__lucca-image {
+    width: 64px;
+    height: auto;
+}
+
+/* bubble only from tablet: on phones it would cover the photo */
+.home-hero__bubble {
+    display: none;
+    position: relative;
+    max-width: 170px;
+    padding: 8px 12px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--c-text);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+    box-shadow: var(--c-shadow);
+}
+
+.home-hero__glow {
+    position: absolute;
+    inset: 8% 12%;
+    background: var(--lp-gradient);
+    border-radius: 50%;
+    filter: blur(48px);
+    opacity: 0.35;
+}
+
+/* no card: the product (transparent PNG/WebP) floats over the brand glow */
+.home-hero__frame {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    max-width: 480px;
+    aspect-ratio: 1 / 1;
+}
+
+.home-hero__image {
+    z-index: 1;
+    object-fit: contain;
+    padding: 6% 6% 14%;
+    filter: drop-shadow(0 18px 24px rgba(17, 20, 24, 0.16));
+}
+
+/* soft contact shadow on the "floor", follows the float */
+.home-hero__shadow {
+    position: absolute;
+    top: auto;
+    bottom: 7%;
+    left: 22%;
+    width: 56%;
+    height: 7%;
+    background: radial-gradient(closest-side, rgba(17, 20, 24, 0.28), rgba(17, 20, 24, 0));
+    border-radius: 50%;
+}
+
+.home-hero__placeholder {
+    color: var(--c-muted);
+}
+
+.home-hero__badge {
+    position: absolute;
+    /* globals.css sets top: 0 on every element: without auto the badge stretches over the photo */
+    top: auto;
+    bottom: -14px;
+    left: 50%;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--c-text);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+    box-shadow: var(--c-shadow);
+    transform: translateX(-50%);
+}
+
+/* ===== QUICK ACTIONS ===== */
+.home-actions {
+    width: 100%;
+}
+
+.home-actions__container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+.home-actions__list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    list-style: none;
+}
+
+.home-actions__item {
+    display: flex;
+}
+
+.home-actions__card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 88px;
+    padding: 16px;
+    font: inherit;
+    text-align: left;
+    color: var(--c-text);
+    text-decoration: none;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+    box-shadow: var(--c-shadow);
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.home-actions__card:hover {
+    border-color: var(--c-accent);
+    transform: translateY(-3px);
+}
+
+.home-actions__card:focus-visible {
+    outline: 3px solid var(--c-accent);
+    outline-offset: 2px;
+}
+
+.home-actions__card[aria-expanded="true"] {
+    border-color: var(--c-accent);
+}
+
+.home-actions__icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 52px;
+    height: 52px;
+    color: var(--c-accent-dark);
+    background: var(--c-surface);
+    border-radius: 10px;
+}
+
+.home-actions__body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.home-actions__title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.home-actions__meta {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: var(--c-muted);
+}
+
+.home-actions__arrow {
+    flex: 0 0 auto;
+    color: var(--c-muted);
+}
+
+/* ===== HIGHLIGHTS ===== */
+.home-highlights {
+    width: 100%;
+}
+
+.home-highlights__container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+.home-highlights__list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    list-style: none;
+}
+
+.home-highlights__card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+}
+
+.home-highlights__icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    color: var(--c-tag-text);
+    background: var(--c-tag-bg);
+    border-radius: 10px;
+}
+
+.home-highlights__title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.home-highlights__text {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--c-muted);
+}
+
+/* ===== ASSEMBLY PREVIEW ===== */
+.home-assembly {
+    width: 100%;
+}
+
+.home-assembly__container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+/* Lucca holding a wrench: in flow on mobile, top right of the section from tablet */
+.home-assembly__lucca {
+    align-self: flex-end;
+    width: 72px;
+    height: auto;
+}
+
+.home-assembly__header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 640px;
+}
+
+.home-assembly__text {
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--c-muted);
+}
+
+.home-assembly__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+    list-style: none;
+}
+
+.home-assembly__step {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+}
+
+.home-assembly__thumb {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 5px;
+}
+
+.home-assembly__image {
+    object-fit: contain;
+}
+
+.home-assembly__letter {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    font-weight: 700;
+    color: var(--c-inverse-text);
+    background: var(--c-inverse-bg);
+    border-radius: 5px;
+}
+
+.home-assembly__name {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+/* ===== GALLERY ===== */
+.home-gallery {
+    width: 100%;
+}
+
+.home-gallery__container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+.home-gallery__track {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    padding-bottom: 4px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    list-style: none;
+}
+
+.home-gallery__track:focus-visible {
+    outline: 3px solid var(--c-accent);
+    outline-offset: 2px;
+}
+
+.home-gallery__item {
+    position: relative;
+    flex: 0 0 75%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    /* no fill: product photos with a transparent background sit on the page color */
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+    scroll-snap-align: start;
+}
+
+.home-gallery__image {
+    object-fit: contain;
+    padding: 6%;
+    transition: transform 0.4s ease;
+}
+
+.home-gallery__image:hover {
+    transform: scale(1.05);
+}
+
+/* ===== TECHNICAL SHEET ===== */
+.home-specs {
+    width: 100%;
+}
+
+.home-specs__container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+.home-specs__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+/* value on top, label below (column-reverse keeps dt before dd in the DOM); flex-end = the top in a
+   reversed column, so the content doesn't sink when the row is taller */
+.home-specs__item {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 4px;
+    padding: 16px;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+}
+
+.home-specs__label {
+    font-size: 0.875rem;
+    color: var(--c-muted);
+}
+
+.home-specs__label::first-letter {
+    text-transform: uppercase;
+}
+
+.home-specs__value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.25;
+    overflow-wrap: break-word;
+}
+
+/* long descriptive values (material): full row on mobile/tablet, two of the four columns on desktop */
+.home-specs__item--wide {
+    grid-column: 1 / -1;
+}
+
+.home-specs__value--text {
+    font-size: 1rem;
+    line-height: 1.45;
+}
+
+/* ===== CLOSING CTA ===== */
+.home-cta {
+    width: 100%;
+}
+
+.home-cta__container {
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+.home-cta__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 32px 24px;
+    overflow: hidden;
+    color: var(--lp-text-inverse);
+    background: var(--lp-impact-glow), var(--lp-impact-bg);
+    border-radius: 10px;
+}
+
+/* decorative wave lines across the card */
+.home-cta__lines {
+    position: absolute;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    fill: none;
+    stroke: var(--lp-text-inverse);
+    stroke-width: 2;
+    opacity: 0.14;
+    pointer-events: none;
+}
+
+/* Lucca waving: last in the column on mobile, bottom right of the card from desktop */
+.home-cta__lucca {
+    order: 1;
+    position: relative;
+    align-self: flex-end;
+    width: 88px;
+    height: auto;
+}
+
+.home-cta__heading {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.home-cta__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.home-cta__text {
+    max-width: 56ch;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--lp-text-inverse-muted);
+}
+
+.home-cta__actions {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* =====================================================================
+   Animations (light): hero entrance, glow, scroll reveal
+   ===================================================================== */
+@keyframes home-rise {
+    from {
+        opacity: 0;
+        transform: translateY(32px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* the LCP image only scales (no opacity), so it is painted right away */
+@keyframes home-zoom {
+    from {
+        transform: translateY(24px) scale(0.9);
+    }
+
+    to {
+        transform: none;
+    }
+}
+
+@keyframes home-glow {
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(0.96);
+    }
+
+    50% {
+        opacity: 0.45;
+        transform: scale(1.04);
+    }
+}
+
+@keyframes home-badge {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes home-enter {
+    from {
+        opacity: 0;
+        transform: translateY(28px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes home-float {
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-14px) rotate(-1.5deg);
+    }
+}
+
+/* the floor shadow shrinks and fades while the product goes up */
+@keyframes home-shadow {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+
+    50% {
+        opacity: 0.55;
+        transform: scaleX(0.8);
+    }
+}
+
+@keyframes home-pop {
+    0% {
+        opacity: 0;
+        transform: translateY(16px) scale(0.6);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateY(-4px) scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    /* Lucca hops in after the product, then his speech bubble */
+    .home-hero__lucca-image {
+        animation: home-pop 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) 1s both;
+    }
+
+    .home-hero__bubble {
+        transform-origin: bottom left;
+        animation: home-pop 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) 1.4s both;
+    }
+
+    /* hero text: tags, title, text, specs and buttons come in one after the other */
+    .home-enter {
+        animation: home-enter 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+        animation-delay: calc(var(--i, 0) * 0.12s);
+    }
+
+    .home-hero__frame {
+        animation: home-zoom 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+
+    /* the product floats right after its entrance: 2 cycles (< 5s), then it rests, so there is no
+       endless motion next to the text (WCAG 2.2.2). Hovering it floats again while the pointer stays */
+    .home-hero__image {
+        animation: home-float 2.4s ease-in-out 0.9s 2;
+    }
+
+    .home-hero__image:hover {
+        animation: home-float 2.4s ease-in-out infinite;
+    }
+
+    .home-hero__shadow {
+        animation: home-shadow 2.4s ease-in-out 0.9s 2;
+    }
+
+    /* 2 cycles (< 5s), then it rests: no endless motion next to the text (WCAG 2.2.2) */
+    .home-hero__glow {
+        animation: home-glow 2.4s ease-in-out 0.9s 2;
+    }
+
+    .home-hero__badge {
+        animation: home-badge 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) 0.7s both;
+    }
+
+    .home-hero__stat {
+        animation: home-rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+        animation-delay: calc(0.36s + var(--i, 0) * 0.1s);
+    }
+
+    /* scroll reveal without JS: elements rise in as they enter the scroller. Browsers without
+       scroll-driven animations just show them */
+    @supports (animation-timeline: view()) {
+        .home-reveal {
+            animation: home-rise linear both;
+            animation-timeline: view();
+            animation-range: entry 5% cover 30%;
+        }
+    }
+}
+
+/* ===== Tablet ===== */
+@media (min-width: 768px) {
+    /* no top padding: the hero band starts right below the header */
+    .home {
+        gap: 72px;
+        padding-bottom: 72px;
+    }
+
+    .home-hero {
+        padding-top: 40px;
+    }
+
+    .home-heading {
+        font-size: 1.875rem;
+    }
+
+    .home-section-head__lucca {
+        width: 104px;
+    }
+
+    .home-hero__container,
+    .home-actions__container,
+    .home-highlights__container,
+    .home-assembly__container,
+    .home-gallery__container,
+    .home-specs__container,
+    .home-cta__container {
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+
+    .home-hero__title {
+        font-size: 2.5rem;
+    }
+
+    .home-hero__stat-value {
+        font-size: 1.5rem;
+    }
+
+    .home-actions__list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .home-highlights__list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .home-assembly__list {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .home-gallery__item {
+        flex-basis: 40%;
+    }
+
+    .home-specs__list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .home-cta__card {
+        padding: 48px;
+    }
+
+    .home-hero__lucca-image {
+        width: 88px;
+    }
+
+    .home-hero__bubble {
+        display: block;
+    }
+
+    .home-assembly__lucca {
+        position: absolute;
+        top: 0;
+        right: 6%;
+        width: 120px;
+    }
+
+    .home-cta__title {
+        font-size: 2rem;
+    }
+}
+
+/* ===== Desktop (wide): hero in two columns ===== */
+@media (min-width: 1024px) {
+    .home-hero__container {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-items: center;
+        gap: 56px;
+    }
+
+    .home-hero__visual {
+        order: 0;
+    }
+
+    .home-hero__title {
+        font-size: 3rem;
+    }
+
+    .home-hero__text {
+        -webkit-line-clamp: 5;
+    }
+
+    .home-highlights__list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .home-gallery__item {
+        flex-basis: 30%;
+    }
+
+    .home-specs__list {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .home-specs__item--wide {
+        grid-column: span 2;
+    }
+
+    /* room on the right for Lucca */
+    .home-cta__card {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 200px;
+    }
+
+    .home-cta__lucca {
+        position: absolute;
+        top: auto;
+        right: 32px;
+        bottom: 0;
+        width: 140px;
+    }
+
+    .home-hero__lucca {
+        left: -12px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .home-hero__container,
+    .home-actions__container,
+    .home-highlights__container,
+    .home-assembly__container,
+    .home-gallery__container,
+    .home-specs__container,
+    .home-cta__container {
+        width: 1140px;
+        /* the stage keeps 52px for the side tabs: never wider than the scroller */
+        max-width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .home-actions__list {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+}

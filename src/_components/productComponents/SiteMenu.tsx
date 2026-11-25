@@ -50,8 +50,8 @@ export default function SiteMenu({ t }: SiteMenuProps) {
       list.push(
         { group: 'product', label: t.home, href: base, icon: img(IconHome) },
         { group: 'product', label: t.manual, href: `${base}/manual`, icon: img(IconManual) },
-        { group: 'product', label: t.information, href: `${base}/information`, icon: img(IconInformation) },
         { group: 'product', label: t.assembly, href: `${base}/assembly`, icon: img(IconMontagem) },
+        { group: 'product', label: t.information, href: `${base}/information`, icon: img(IconInformation) },
       );
     }
     list.push({ group: 'general', label: t.allProducts, href: '/products', icon: gridIcon });

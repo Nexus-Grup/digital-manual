@@ -1,0 +1,195 @@
+/* Mobile: horizontal swipe row. Desktop: vertical column that never grows past its cell. */
+.snap-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    min-height: 0;
+    color: var(--c-text);
+}
+
+.snap-list__header {
+    display: none;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.snap-list__title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+}
+
+.snap-list__count {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+}
+
+.snap-list__arrow {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 100%;
+    height: 40px;
+    padding: 0;
+    color: var(--c-text);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+}
+
+.snap-list__arrow:hover:not(:disabled) {
+    background: var(--c-hover);
+}
+
+.snap-list__arrow:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.snap-list__arrow:focus-visible {
+    outline: 2px solid var(--c-accent);
+    outline-offset: 2px;
+}
+
+.snap-list__track {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4%;
+    padding-right: 4%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 4%;
+    scroll-padding-right: 4%;
+    scrollbar-width: none;
+    list-style: none;
+}
+
+.snap-list__track::-webkit-scrollbar {
+    display: none;
+}
+
+.snap-list__track:focus-visible {
+    outline: 2px solid var(--c-accent);
+    outline-offset: -2px;
+}
+
+.snap-list__item {
+    display: flex;
+    flex: 0 0 80%;
+    scroll-snap-align: center;
+}
+
+.snap-list__dots {
+    display: none;
+    justify-content: center;
+    gap: 6px;
+}
+
+.snap-list__dots--visible {
+    display: flex;
+}
+
+.snap-list__dot {
+    width: 8px;
+    height: 8px;
+    background: var(--c-border);
+    border-radius: 5px;
+    transition: width 0.2s, background 0.2s;
+}
+
+.snap-list__dot--active {
+    width: 24px;
+    background: var(--c-text);
+}
+
+/* ===== Tablet ===== */
+@media (min-width: 768px) {
+    .snap-list__track {
+        padding-left: 6%;
+        padding-right: 6%;
+        scroll-padding-left: 6%;
+        scroll-padding-right: 6%;
+    }
+
+    .snap-list__item {
+        flex-basis: 46%;
+    }
+}
+
+/* tall phones/tablets: the list is shown inline (information highlights), so it keeps its heading,
+   indented like the track */
+@media (max-width: 1023px) and (min-height: 860px), (orientation: portrait) and (min-height: 860px) {
+    .snap-list__header {
+        display: flex;
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) and (min-height: 860px), (min-width: 768px) and (orientation: portrait) and (min-height: 860px) {
+    .snap-list__header {
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+}
+
+/* ===== Desktop: vertical column ===== */
+@media (min-width: 1024px) and (orientation: landscape) {
+    .snap-list {
+        gap: 12px;
+        max-height: 100%;
+    }
+
+    .snap-list__header {
+        display: flex;
+    }
+
+    .snap-list__arrow--visible {
+        display: flex;
+    }
+
+    .snap-list__track {
+        flex-direction: column;
+        flex: 0 1 auto;
+        min-height: 0;
+        padding: 2px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+        scroll-snap-type: y mandatory;
+        scroll-padding-left: 0;
+        scroll-padding-right: 0;
+    }
+
+    .snap-list__item {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+    }
+
+    .snap-list__dots--visible {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .snap-list__dot,
+    .snap-list__arrow {
+        transition: none;
+    }
+}

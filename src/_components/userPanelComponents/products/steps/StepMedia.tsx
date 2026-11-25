@@ -1,7 +1,7 @@
 'use client';
 
 import { useId, useImperativeHandle, useState } from 'react';
-import { Plus, Trash2 } from 'lucide-react';
+import { Loader2, Plus, Sparkles, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import styles from '@/_styles/cssUserPanelPage/products/ProductWizard.module.css';
 import { AUDIO_TYPES, MAX_GALLERY, labelOf } from '@/_lib/productConstants';
@@ -17,6 +17,8 @@ export function StepMedia({ product, onProgress, ref }: StepProps) {
   const [imgUrl, setImgUrl] = useState<string | null>(product.imgUrl);
   const [gallery, setGallery] = useState<string[]>(product.gallery);
   const [model, setModel] = useState(product.model3dUrl ?? '');
+  const [generating, setGenerating] = useState(false);
+  const [modelStatus, setModelStatus] = useState('');
   const [videos, setVideos] = useState<VideoDTO[]>(product.videos);
   const [audios, setAudios] = useState<AudioDTO[]>(product.audios);
 
@@ -50,6 +52,24 @@ export function StepMedia({ product, onProgress, ref }: StepProps) {
     setAudioUrl(null);
     setAudioType('');
     return next;
+  }
+
+  // image-to-3D from the main image (TRELLIS on Hugging Face, ~1–2 min). The .glb is stored like an
+  // upload and saved with the rest of the media.
+  async function generateModel() {
+    if (!imgUrl || generating) return;
+    setGenerating(true);
+    setModelStatus('Generating the 3D model from the main image. This takes about 1–2 minutes, stay on this step.');
+    const r = await api<{ url: string }>(`/api/products/${product.id}/model3d`, 'POST', { imageUrl: imgUrl });
+    setGenerating(false);
+    if (!r.ok) {
+      setModelStatus(r.error);
+      toast.error(r.error);
+      return;
+    }
+    setModel(r.data.url);
+    setModelStatus('3D model generated. Save this step to publish it.');
+    toast.success('3D model generated.');
   }
 
   async function save() {
@@ -89,6 +109,23 @@ export function StepMedia({ product, onProgress, ref }: StepProps) {
         <span className={styles.label}>3D Model</span>
         <UploadBox productId={product.id} kind="model" value={null} onChange={(u) => u && setModel(u)} title="Upload or add 3D model URL" hint="GLB file, or paste a link below" />
         <input id={`${uid}-model`} className={styles.input} aria-label="3D model URL" placeholder="https://..." value={model} onChange={(e) => setModel(e.target.value)} />
+        <div className={styles.generateRow}>
+          <button
+            type="button"
+            className={styles.pillBtn}
+            onClick={generateModel}
+            disabled={!imgUrl || generating}
+            aria-describedby={`${uid}-model-status`}
+          >
+            {generating ? <Loader2 size={14} className={styles.spin} aria-hidden /> : <Sparkles size={14} aria-hidden />}
+            {generating ? 'Generating 3D model…' : model ? 'Generate again from main image' : 'Generate from main image'}
+          </button>
+          <p id={`${uid}-model-status`} className={styles.generateStatus} role="status">
+            {modelStatus || (imgUrl
+              ? 'Creates a 360° model from the main image (works best with a single product on a plain background).'
+              : 'Upload the main image to generate a 3D model from it.')}
+          </p>
+        </div>
       </div>
 
       {/* ---------- vídeos ---------- */}

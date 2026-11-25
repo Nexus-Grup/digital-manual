@@ -1,0 +1,394 @@
+/* Note: globals.css sets top: 0 on every element, so rules anchored to the bottom reset top: auto.
+   Fills the height its parent gives it: the track shrinks so the page never scrolls vertically. */
+.media-carousel {
+    --slide-bg: var(--c-media-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    color: var(--c-text);
+}
+
+.media-carousel--drawing {
+    --slide-bg: var(--c-bg);
+}
+
+.media-carousel__viewport {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+/* horizontal swipe with snap; the next slide peeks in on mobile */
+.media-carousel__track {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    height: 100%;
+    padding-left: 4%;
+    padding-right: 4%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 4%;
+    scroll-padding-right: 4%;
+    scrollbar-width: none;
+    list-style: none;
+}
+
+.media-carousel__track::-webkit-scrollbar {
+    display: none;
+}
+
+.media-carousel__track:focus-visible {
+    outline: 2px solid var(--c-accent);
+    outline-offset: -2px;
+}
+
+.media-carousel__slide {
+    position: relative;
+    flex: 0 0 86%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--slide-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+    scroll-snap-align: center;
+}
+
+.media-carousel__frame {
+    position: absolute;
+    top: 40px;
+    right: 12px;
+    bottom: 36px;
+    left: 12px;
+}
+
+/* mobile/tablet: keep the drawing clear of the letter badge (top) and "Ampliar" (bottom) */
+.media-carousel__frame--badge {
+    top: 56px;
+}
+
+.media-carousel__frame--zoom {
+    bottom: 60px;
+}
+
+.media-carousel__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.media-carousel__model {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.media-carousel__tag {
+    position: absolute;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    border-radius: 5px;
+}
+
+.media-carousel__empty {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+/* letter of the assembly step (A, B, C) */
+.media-carousel__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--c-inverse-text);
+    background: var(--c-inverse-bg);
+    border-radius: 5px;
+}
+
+.media-carousel__counter {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 3px 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--c-text);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 5px;
+}
+
+.media-carousel__hint {
+    position: absolute;
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--c-muted);
+}
+
+.media-carousel__zoom {
+    position: absolute;
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding-left: 14px;
+    padding-right: 14px;
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--c-text);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+    box-shadow: var(--c-shadow);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.media-carousel__zoom:hover {
+    background: var(--c-hover);
+}
+
+/* prev/next only on desktop: on mobile/tablet the dots and the step text already show the position */
+.media-carousel__nav {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    color: var(--c-text);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+    box-shadow: var(--c-shadow);
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: background 0.15s, opacity 0.15s;
+}
+
+.media-carousel__nav:hover:not(:disabled) {
+    background: var(--c-hover);
+}
+
+.media-carousel__nav:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.media-carousel__nav--prev {
+    left: 16px;
+}
+
+.media-carousel__nav--next {
+    right: 16px;
+}
+
+.media-carousel__zoom:focus-visible,
+.media-carousel__nav:focus-visible,
+.media-carousel__close:focus-visible {
+    outline: 2px solid var(--c-accent);
+    outline-offset: 2px;
+}
+
+.media-carousel__dots {
+    display: flex;
+    flex: 0 0 auto;
+    justify-content: center;
+    gap: 6px;
+}
+
+.media-carousel__dot {
+    width: 8px;
+    height: 8px;
+    background: var(--c-border);
+    border-radius: 5px;
+    transition: width 0.2s, background 0.2s;
+}
+
+.media-carousel__dot--active {
+    width: 24px;
+    background: var(--c-text);
+}
+
+.media-carousel__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* ===== Zoom ===== */
+.media-carousel__dialog {
+    width: min(96vw, 1100px);
+    max-width: none;
+    height: min(90dvh, 900px);
+    max-height: none;
+    margin: auto;
+    padding: 16px;
+    overflow: hidden;
+    color: var(--c-text);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+}
+
+.media-carousel__dialog::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.media-carousel__zoom-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.media-carousel__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    color: var(--c-text);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* ===== Tablet portrait: full-width row like mobile (next slide peeks in), tablet margins ===== */
+@media (min-width: 768px) {
+    .media-carousel__track {
+        padding-left: 6%;
+        padding-right: 6%;
+        scroll-padding-left: 6%;
+        scroll-padding-right: 6%;
+    }
+}
+
+/* ===== Tablet landscape: carousel sits in its own column, one slide at a time ===== */
+@media (min-width: 768px) and (orientation: landscape) {
+    .media-carousel__track {
+        gap: 0;
+        padding-left: 0;
+        padding-right: 0;
+        scroll-padding-left: 0;
+        scroll-padding-right: 0;
+    }
+
+    .media-carousel__slide {
+        flex-basis: 100%;
+    }
+}
+
+/* ===== Desktop: one slide at a time inside the center column ===== */
+@media (min-width: 1024px) and (orientation: landscape) {
+    /* dots sit inside the card, at its bottom edge */
+    .media-carousel {
+        position: relative;
+    }
+
+    .media-carousel__track {
+        gap: 0;
+        padding-left: 0;
+        padding-right: 0;
+        scroll-padding-left: 0;
+        scroll-padding-right: 0;
+    }
+
+    .media-carousel__slide {
+        flex-basis: 100%;
+    }
+
+    .media-carousel__nav {
+        display: flex;
+    }
+
+    /* desktop: the side margins already clear the badge and "Ampliar" */
+    .media-carousel__frame,
+    .media-carousel__frame--badge,
+    .media-carousel__frame--zoom {
+        top: 72px;
+        right: 72px;
+        bottom: 64px;
+        left: 72px;
+    }
+
+    .media-carousel__badge {
+        top: 24px;
+        left: 24px;
+        min-width: 44px;
+        height: 44px;
+        font-size: 1.5rem;
+    }
+
+    .media-carousel__counter {
+        top: 16px;
+        right: 16px;
+    }
+
+    .media-carousel__zoom {
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .media-carousel__hint {
+        display: none;
+    }
+
+    .media-carousel__dots {
+        position: absolute;
+        top: auto;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .media-carousel__dot,
+    .media-carousel__nav,
+    .media-carousel__zoom {
+        transition: none;
+    }
+}

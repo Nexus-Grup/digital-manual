@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "@/_styles/landingPage/Hero.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
-import mascot from "@/_assets/image/icone-montagem-verde 1.png";
+import mascot from "@/_assets/image/lucca/lucca-qrcode.png";
 import HeroSearch from "@/_components/landingPage/HeroSearch";
 import { ArrowRightIcon, CubeIcon, HandIcon, LeafIcon, QrCodeIcon } from "@/_components/landingPage/Icons";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";

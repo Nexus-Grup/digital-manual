@@ -92,3 +92,54 @@
         font-size: 2.625rem;
     }
 }
+
+/* ===== With a Lucca pose ===== */
+.section-heading__wrap {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    width: 100%;
+}
+
+/* centered heading: Lucca on top, everything centered */
+.section-heading__wrap--centered {
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-heading__lucca {
+    flex: 0 0 auto;
+    width: 88px;
+    height: auto;
+}
+
+@media (min-width: 768px) {
+    .section-heading__lucca {
+        width: 140px;
+    }
+}
+
+@keyframes section-heading-lucca-in {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.85);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* hops in as the section scrolls into view (no JS; browsers without scroll timelines just show it) */
+@media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+        .section-heading__lucca {
+            animation: section-heading-lucca-in linear both;
+            animation-timeline: view();
+            animation-range: entry 10% cover 30%;
+        }
+    }
+}

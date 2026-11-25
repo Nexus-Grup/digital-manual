@@ -34,6 +34,7 @@ async function VideosLoader({
       videos={videos}
       audioUrl={audio?.url ?? null}
       productName={audio?.productName}
+      productId={productId}
     >
       {children}
     </VideoShell>

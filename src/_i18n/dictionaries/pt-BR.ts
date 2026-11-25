@@ -68,7 +68,7 @@ const ptBR = {
         b2bText: "É fabricante ou marca?",
         b2bButton: "Digitalizar os manuais da minha empresa",
         highlights: ["QR Code na embalagem", "Visualização 3D em 360°", "Libras e leitura em voz alta"],
-        mascotAlt: "Lucca, a coruja guia do Manual digital, usando capacete de segurança",
+        mascotAlt: "Lucca, a coruja guia do Manual digital, escaneando com o celular o QR Code de um manual",
         badge3d: "3D 360°",
         badgeEco: "Zero papel desnecessário",
     },
