@@ -111,6 +111,7 @@ export default function ImpactCalculator({ t, locale }: ImpactCalculatorProps) {
                     />
                     <form className={styles["impact-calculator__form"]} onSubmit={(event) => event.preventDefault()}>
                         <md-outlined-text-field
+                            suppressHydrationWarning
                             ref={productsRef}
                             className={styles["impact-calculator__field"]}
                             label={t.productsLabel}

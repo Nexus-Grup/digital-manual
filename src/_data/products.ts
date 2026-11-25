@@ -107,7 +107,7 @@ export async function getProducts(): Promise<ProductCatalog> {
                     take: 3,
                     select: {
                         mediaUrl: true,
-                        images: { orderBy: { displayOrder: "asc" }, take: 1, select: { imageUrl: true } },
+                        images: { orderBy: { displayOrder: "asc" }, take: 0, select: { imageUrl: true } },
                     },
                 },
             },

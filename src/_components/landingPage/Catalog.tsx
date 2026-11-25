@@ -62,9 +62,10 @@ export default function Catalog({ t, carousel }: CatalogProps) {
                     title={t.title}
                     text={t.text}
                 />
-                <md-chip-set className={styles["catalog__filters"]} aria-label={t.filterAria}>
+                <md-chip-set suppressHydrationWarning className={styles["catalog__filters"]} aria-label={t.filterAria}>
                     {CATEGORIES.map((category) => (
                         <md-filter-chip
+                            suppressHydrationWarning
                             key={category}
                             label={t.categories[category]}
                             selected={active === category}
@@ -100,7 +101,7 @@ export default function Catalog({ t, carousel }: CatalogProps) {
                     </ul>
                 </SnapCarousel>
                 <div className={styles["catalog__more"]}>
-                    <md-filled-tonal-button className={buttonStyles["md-button"]} href="/products">
+                    <md-filled-tonal-button suppressHydrationWarning className={buttonStyles["md-button"]} href="/products">
                         {t.viewAll}
                     </md-filled-tonal-button>
                 </div>
