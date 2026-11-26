@@ -61,6 +61,7 @@ export default function HeroSearch({
                 >
                     <md-outlined-text-field
                         id={id}
+                        suppressHydrationWarning
                         className={styles["hero__search-field"]}
                         name="q"
                         type="search"
@@ -71,7 +72,7 @@ export default function HeroSearch({
                         <SearchIcon slot="leading-icon" />
                     </md-outlined-text-field>
                 </div>
-                <md-filled-button className={`${buttonStyles["md-button"]} ${styles["hero__search-button"]}`} type="submit">
+                <md-filled-button suppressHydrationWarning className={`${buttonStyles["md-button"]} ${styles["hero__search-button"]}`} type="submit">
                     {t.button}
                 </md-filled-button>
             </div>

@@ -44,13 +44,14 @@ export default function Contact({ t }: { t: Dictionary["contact"] }) {
                             </span>
                             <h3 className={styles["contact__success-title"]}>{t.successTitle}</h3>
                             <p className={styles["contact__success-text"]}>{t.successText}</p>
-                            <md-text-button className={buttonStyles["md-button--text"]} onClick={() => setSent(false)}>
+                            <md-text-button suppressHydrationWarning className={buttonStyles["md-button--text"]} onClick={() => setSent(false)}>
                                 {t.sendAnother}
                             </md-text-button>
                         </div>
                     ) : (
                         <form className={styles["contact__form"]} onSubmit={handleSubmit} noValidate>
                             <md-outlined-text-field
+                                suppressHydrationWarning
                                 className={styles["contact__field"]}
                                 label={t.name}
                                 name="name"
@@ -58,6 +59,7 @@ export default function Contact({ t }: { t: Dictionary["contact"] }) {
                                 required
                             ></md-outlined-text-field>
                             <md-outlined-text-field
+                                suppressHydrationWarning
                                 className={styles["contact__field"]}
                                 label={t.company}
                                 name="company"
@@ -65,6 +67,7 @@ export default function Contact({ t }: { t: Dictionary["contact"] }) {
                                 required
                             ></md-outlined-text-field>
                             <md-outlined-text-field
+                                suppressHydrationWarning
                                 className={styles["contact__field"]}
                                 label={t.email}
                                 name="email"
@@ -73,18 +76,19 @@ export default function Contact({ t }: { t: Dictionary["contact"] }) {
                                 required
                             ></md-outlined-text-field>
                             <md-outlined-select
+                                suppressHydrationWarning
                                 className={styles["contact__field"]}
                                 label={t.volume}
                                 name="volume"
                                 required
                             >
                                 {VOLUME_VALUES.map((value, index) => (
-                                    <md-select-option key={value} value={value}>
+                                    <md-select-option suppressHydrationWarning key={value} value={value}>
                                         <div slot="headline">{t.volumes[index]}</div>
                                     </md-select-option>
                                 ))}
                             </md-outlined-select>
-                            <md-filled-button className={`${buttonStyles["md-button"]} ${styles["contact__submit"]}`} type="submit">
+                            <md-filled-button suppressHydrationWarning className={`${buttonStyles["md-button"]} ${styles["contact__submit"]}`} type="submit">
                                 {t.submit}
                             </md-filled-button>
                             <p className={styles["contact__privacy"]}>{t.privacy}</p>

@@ -74,7 +74,7 @@ export default function Catalog({ t, carousel, products }: CatalogProps) {
                     </ul>
                 </SnapCarousel>
                 <div className={styles["catalog__more"]}>
-                    <md-filled-tonal-button className={buttonStyles["md-button"]} href="/products">
+                    <md-filled-tonal-button suppressHydrationWarning className={buttonStyles["md-button"]} href="/products">
                         {t.viewAll}
                     </md-filled-tonal-button>
                 </div>

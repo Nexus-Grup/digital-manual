@@ -47,9 +47,10 @@ export default function ShowcaseFilters({ level, options, active, query, categor
             : styles["showcase__filters"];
 
     return (
-        <md-chip-set className={className} aria-label={label}>
+        <md-chip-set suppressHydrationWarning className={className} aria-label={label}>
             {options.map((option) => (
                 <md-filter-chip
+                    suppressHydrationWarning
                     key={option.value ?? "all"}
                     label={option.label}
                     selected={active === option.value}
