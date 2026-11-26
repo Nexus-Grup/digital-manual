@@ -5,6 +5,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    scrollbar-width: none;
 }
 
 /* ===== HERO ===== */
@@ -177,7 +178,14 @@
 }
 
 .product-card__image {
-    object-fit: cover;
+    object-fit: contain;
+    position: relative;       
+    width: 100%;
+    aspect-ratio: 4 / 3;         
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+    padding: 24px;           
+    box-sizing: border-box;
 }
 
 .product-card__icon {

@@ -163,7 +163,7 @@ export default async function ProductSearchView({ searchParams }: { searchParams
                                 {query ? format(t.emptyTitle, { query }) : t.emptyCategory}
                             </p>
                             <p className={styles["showcase__empty-text"]}>{t.emptyText}</p>
-                            <md-filled-tonal-button className={buttonStyles["md-button"]} href="/products">
+                            <md-filled-tonal-button suppressHydrationWarning className={buttonStyles["md-button"]} href="/products">
                                 {t.clear}
                             </md-filled-tonal-button>
                         </div>

@@ -40,6 +40,7 @@ export default function Hero({ t }: { t: Dictionary["hero"] }) {
                     <div className={styles["hero__b2b"]}>
                         <p className={styles["hero__b2b-text"]}>{t.b2bText}</p>
                         <md-outlined-button
+                            suppressHydrationWarning
                             className={`${buttonStyles["md-button--trailing-icon"]} ${styles["hero__b2b-button"]}`}
                             href="#contato"
                             trailing-icon=""

@@ -348,3 +348,12 @@ body {
   background: none !important;
   box-shadow: none !important;
 }
+
+
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}

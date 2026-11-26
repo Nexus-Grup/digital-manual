@@ -33,11 +33,11 @@ export default function Business({ t }: { t: Dictionary["business"] }) {
                 <div className={styles["business__cta"]}>
                     <p className={styles["business__cta-text"]}>{t.ctaText}</p>
                     <div className={styles["business__cta-actions"]}>
-                        <md-filled-button className={buttonStyles["md-button--trailing-icon"]} href="#contato" trailing-icon="">
+                        <md-filled-button suppressHydrationWarning className={buttonStyles["md-button--trailing-icon"]} href="#contato" trailing-icon="">
                             {t.ctaPrimary}
                             <ArrowRightIcon slot="icon" size={18} />
                         </md-filled-button>
-                        <md-outlined-button className={buttonStyles["md-button"]} href="#calculadora">
+                        <md-outlined-button suppressHydrationWarning className={buttonStyles["md-button"]} href="#calculadora">
                             {t.ctaSecondary}
                         </md-outlined-button>
                     </div>
