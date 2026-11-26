@@ -314,7 +314,7 @@ const ptBR = {
     catalog: {
         eyebrow: "Para quem monta",
         title: "Explore manuais já digitalizados.",
-        text: "Escolha uma categoria e teste na hora a experiência 3D e os recursos de acessibilidade. Modelos demonstrativos.",
+        text: "Escolha uma categoria e abra o manual digital: montagem ilustrada, vídeos e recursos de acessibilidade.",
         filterAria: "Filtrar por categoria",
         categories: {
             all: "Todos",
@@ -322,18 +322,9 @@ const ptBR = {
             furniture: "Móveis",
             tools: "Ferramentas",
             electronics: "Eletrônicos",
+            other: "Outros",
         },
         carouselLabel: "Manuais digitalizados",
-        products: [
-            { name: "Geladeira Frost Free 450 L", features: ["3D 360°", "Vídeos", "Libras"] },
-            { name: "Lavadora 12 kg", features: ["Checklist", "Voz alta"] },
-            { name: "Guarda-roupa 6 portas", features: ["Vista explodida", "Checklist"] },
-            { name: "Rack para TV R-120", features: ["3D 360°", "Libras"] },
-            { name: "Parafusadeira 12 V", features: ["Vídeos", "Segurança"] },
-            { name: "Furadeira de impacto 650 W", features: ["3D 360°", "Voz alta"] },
-            { name: "Smart TV 55 polegadas", features: ["Configuração", "Libras"] },
-            { name: "Caixa de som Bluetooth", features: ["Vídeos", "Idiomas"] },
-        ],
         openManual: "Abrir manual",
         viewAll: "Ver todos os manuais",
     },

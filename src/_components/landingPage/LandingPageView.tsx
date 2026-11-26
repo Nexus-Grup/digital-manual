@@ -1,6 +1,7 @@
 import styles from "@/_styles/landingPage/LandingPage.module.css";
 import type { Locale } from "@/_i18n/config";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
+import type { ProductSummary } from "@/_data/products";
 import MaterialRegistry from "@/_components/landingPage/MaterialRegistry";
 import LpHeader from "@/_components/landingPage/LpHeader";
 import Hero from "@/_components/landingPage/Hero";
@@ -22,12 +23,14 @@ import ReadAloud from "@/_components/productComponents/ReadAloud";
 
 type LandingPageViewProps = {
     locale: Locale;
+    /** published products for the catalog section (same list as /products) */
+    products: ProductSummary[];
     dict: Dictionary;
 };
 
 // Whole landing page for one locale. Server Component: the dictionary stays on the server and
 // client components only receive the strings they render.
-export default function LandingPageView({ locale, dict }: LandingPageViewProps) {
+export default function LandingPageView({ locale, dict, products }: LandingPageViewProps) {
     return (
         // lang on the wrapper so screen readers switch pronunciation (the root <html> stays pt-BR).
         <div className={styles["landing"]}>
@@ -54,7 +57,7 @@ export default function LandingPageView({ locale, dict }: LandingPageViewProps) 
                 <WaveDivider from="var(--lp-bg)" to="var(--lp-surface)" flip />
                 <HowItWorks t={dict.howItWorks} />
                 <WaveDivider from="var(--lp-surface)" to="var(--lp-bg)" />
-                <Catalog t={dict.catalog} carousel={dict.carousel} />
+                <Catalog t={dict.catalog} carousel={dict.carousel} products={products} />
                 <WaveDivider from="var(--lp-bg)" to="var(--lp-surface-dark)" accent="var(--lp-brand-blue)" flip />
                 <Contact t={dict.contact} />
             </main>

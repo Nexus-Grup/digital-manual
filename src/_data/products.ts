@@ -1,4 +1,4 @@
-// Product catalog for the public search page (/products). Server-only.
+// Product catalog for the public search page (/products) and the landing catalog section. Server-only.
 import { cacheLife } from "next/cache";
 import type { ProductCategory } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
@@ -52,10 +52,12 @@ const DEMO_PRODUCTS: ProductSummary[] = (
     ] satisfies DemoRow[]
 ).map((row) => ({ ...row, imgUrl: null }));
 
-// The Prisma enum has no appliances/tools values yet: those fall into "other".
+// Database category -> showcase category (automotive, software and other fall into "other").
 const CATEGORY_FROM_DB: Partial<Record<ProductCategory, ShowcaseCategory>> = {
     ELECTRONICS: "electronics",
     FURNITURE: "furniture",
+    APPLIANCES: "appliances",
+    TOOLS: "tools",
 };
 
 /**

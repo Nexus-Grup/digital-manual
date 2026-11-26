@@ -1,55 +1,41 @@
 "use client";
 
-import type { MouseEvent, ReactNode } from "react";
+import type { MouseEvent } from "react";
 import { useState } from "react";
-import Link from "next/link";
 import styles from "@/_styles/landingPage/Catalog.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
 import luccaMagnifier from "@/_assets/image/lucca/lucca-magnifier.png";
 import SnapCarousel from "@/_components/landingPage/SnapCarousel";
-import { ArrowRightIcon, DevicesIcon, FridgeIcon, SofaIcon, WrenchIcon } from "@/_components/landingPage/Icons";
+import ProductCard from "@/_components/productSearch/ProductCard";
+import type { ProductSummary, ShowcaseCategory } from "@/_data/products";
 import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 
-type Category = "all" | "appliances" | "furniture" | "tools" | "electronics";
+type Filter = "all" | ShowcaseCategory;
 
-const CATEGORIES: Category[] = ["all", "appliances", "furniture", "tools", "electronics"];
+const ORDER: ShowcaseCategory[] = ["appliances", "furniture", "tools", "electronics", "other"];
 
-const CATEGORY_ICONS: Record<Exclude<Category, "all">, ReactNode> = {
-    appliances: <FridgeIcon />,
-    furniture: <SofaIcon />,
-    tools: <WrenchIcon />,
-    electronics: <DevicesIcon />,
-};
-
-// Demo models used to showcase the experience (names/features come from the dictionary, same order).
-// The real list comes from the product search.
-const PRODUCT_CATEGORIES: Exclude<Category, "all">[] = [
-    "appliances",
-    "appliances",
-    "furniture",
-    "furniture",
-    "tools",
-    "tools",
-    "electronics",
-    "electronics",
-];
+/** Cards shown on the landing page; the full list lives at /products ("Ver todos os manuais"). */
+const MAX_CARDS = 8;
 
 type CatalogProps = {
     t: Dictionary["catalog"];
     carousel: Dictionary["carousel"];
+    /** published products (same list as /products); a product without a photo shows its category icon */
+    products: ProductSummary[];
 };
 
-export default function Catalog({ t, carousel }: CatalogProps) {
-    const [active, setActive] = useState<Category>("all");
+export default function Catalog({ t, carousel, products }: CatalogProps) {
+    const [active, setActive] = useState<Filter>("all");
 
-    const products = t.products.map((product, index) => ({ ...product, category: PRODUCT_CATEGORIES[index] }));
-    const visibleProducts = active === "all" ? products : products.filter((product) => product.category === active);
+    // only the categories that have products get a chip
+    const filters: Filter[] = ["all", ...ORDER.filter((c) => products.some((p) => p.category === c))];
+    const visible = (active === "all" ? products : products.filter((p) => p.category === active)).slice(0, MAX_CARDS);
 
     // Filter chips toggle themselves on click; keep exactly one selected (single-select filter).
-    const handleChipClick = (category: Category) => (event: MouseEvent<HTMLElement>) => {
+    const handleChipClick = (filter: Filter) => (event: MouseEvent<HTMLElement>) => {
         (event.currentTarget as HTMLElement & { selected?: boolean }).selected = true;
-        setActive(category);
+        setActive(filter);
     };
 
     return (
@@ -62,39 +48,27 @@ export default function Catalog({ t, carousel }: CatalogProps) {
                     title={t.title}
                     text={t.text}
                 />
-                <md-chip-set className={styles["catalog__filters"]} aria-label={t.filterAria}>
-                    {CATEGORIES.map((category) => (
-                        <md-filter-chip
-                            key={category}
-                            label={t.categories[category]}
-                            selected={active === category}
-                            onClick={handleChipClick(category)}
-                        ></md-filter-chip>
-                    ))}
-                </md-chip-set>
-                <SnapCarousel label={t.carouselLabel} goToLabel={carousel.goTo} count={visibleProducts.length} resetKey={active}>
+                {filters.length > 2 ? (
+                    <md-chip-set className={styles["catalog__filters"]} aria-label={t.filterAria}>
+                        {filters.map((filter) => (
+                            <md-filter-chip
+                                key={filter}
+                                label={t.categories[filter]}
+                                selected={active === filter}
+                                onClick={handleChipClick(filter)}
+                            ></md-filter-chip>
+                        ))}
+                    </md-chip-set>
+                ) : null}
+                <SnapCarousel label={t.carouselLabel} goToLabel={carousel.goTo} count={visible.length} resetKey={active}>
                     <ul className={styles["catalog__grid"]} aria-live="polite">
-                        {visibleProducts.map((product) => (
-                            <li className={styles["catalog__card"]} key={product.name}>
-                                <span className={styles["catalog__card-icon"]}>{CATEGORY_ICONS[product.category]}</span>
-                                <div className={styles["catalog__card-content"]}>
-                                    <p className={styles["catalog__card-category"]}>{t.categories[product.category]}</p>
-                                    <h3 className={styles["catalog__card-title"]}>{product.name}</h3>
-                                </div>
-                                <ul className={styles["catalog__tags"]}>
-                                    {product.features.map((feature) => (
-                                        <li className={styles["catalog__tag"]} key={feature}>
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <Link
-                                    className={styles["catalog__link"]}
-                                    href={`/products?q=${encodeURIComponent(product.name)}`}
-                                >
-                                    {t.openManual}
-                                    <ArrowRightIcon size={18} />
-                                </Link>
+                        {visible.map((product) => (
+                            <li className={styles["catalog__item"]} key={product.id}>
+                                <ProductCard
+                                    product={product}
+                                    categoryLabel={t.categories[product.category]}
+                                    openLabel={t.openManual}
+                                />
                             </li>
                         ))}
                     </ul>
