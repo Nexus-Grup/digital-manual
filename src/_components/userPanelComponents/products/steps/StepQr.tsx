@@ -35,7 +35,7 @@ export function StepQr({ product, onProgress, ref }: StepProps) {
     if (!r.ok) return void toast.error(r.error);
     setQrs((l) => [...l, r.data.qr]);
     setModal(null);
-    toast.success(`${r.data.qr.value} created.`);
+    toast.success(`QR Code ${r.data.qr.value} criado.`);
     refreshProgress();
   }
 
@@ -46,7 +46,7 @@ export function StepQr({ product, onProgress, ref }: StepProps) {
     if (!r.ok) return void toast.error(r.error);
     setQrs((l) => l.filter((q) => q.id !== qr.id));
     setModal(null);
-    toast.success(`${qr.value} removed.`);
+    toast.success(`QR Code ${qr.value} removido.`);
     refreshProgress();
   }
 
@@ -54,17 +54,17 @@ export function StepQr({ product, onProgress, ref }: StepProps) {
     const r = await api(`/api/products/${product.id}/qr-codes/${qr.id}`, 'PATCH', { isActive: !qr.isActive });
     if (!r.ok) return void toast.error(r.error);
     setQrs((l) => l.map((q) => (q.id === qr.id ? { ...q, isActive: !q.isActive } : q)));
-    toast.success(qr.isActive ? `${qr.value} deactivated.` : `${qr.value} activated.`);
+    toast.success(qr.isActive ? `QR Code ${qr.value} desativado.` : `QR Code ${qr.value} ativado.`);
   }
 
   const copy = (url: string) =>
-    navigator.clipboard.writeText(url).then(() => toast.success('URL copied.'), () => toast.error('Could not copy the URL'));
+    navigator.clipboard.writeText(url).then(() => toast.success('URL copiada.'), () => toast.error('Não foi possível copiar a URL'));
 
   return (
     <div className={styles.stack}>
       <div className={styles.sectionHead}>
-        <h3 className={styles.sectionTitle}>Product QR Codes</h3>
-        <span className={styles.count}>{qrs.length} generated</span>
+        <h3 className={styles.sectionTitle}>QR Codes do produto</h3>
+        <span className={styles.count}>{qrs.length} {qrs.length === 1 ? 'gerado' : 'gerados'}</span>
       </div>
 
       {qrs.length > 0 && (
@@ -75,17 +75,17 @@ export function StepQr({ product, onProgress, ref }: StepProps) {
               <div className={styles.qrText}>
                 <strong>{q.value}</strong>
                 <small>{product.name}</small>
-                <span className={`${styles.badge} ${q.isActive ? styles.badgeOn : styles.badgeOff}`}>{q.isActive ? 'Active' : 'Inactive'}</span>
-                <small>Created {formatDay(q.createdAt)}</small>
+                <span className={`${styles.badge} ${q.isActive ? styles.badgeOn : styles.badgeOff}`}>{q.isActive ? 'Ativo' : 'Inativo'}</span>
+                <small>Criado em {formatDay(q.createdAt)}</small>
               </div>
-              <KebabMenu label={`Actions for ${q.value}`}>
+              <KebabMenu label={`Ações de ${q.value}`}>
                 {(close) => (
                   <>
-                    <button type="button" className={styles.menuItem} onClick={() => { close(); setModal({ kind: 'view', qr: q }); }}><Eye size={14} aria-hidden /> View QR Code</button>
-                    <button type="button" className={styles.menuItem} onClick={() => { close(); downloadQrPng(q.url ?? q.value, q.value); }}><Download size={14} aria-hidden /> Download PNG</button>
-                    <button type="button" className={styles.menuItem} onClick={() => { close(); toggle(q); }}><QrCode size={14} aria-hidden /> {q.isActive ? 'Deactivate' : 'Activate'}</button>
+                    <button type="button" className={styles.menuItem} onClick={() => { close(); setModal({ kind: 'view', qr: q }); }}><Eye size={14} aria-hidden /> Ver QR Code</button>
+                    <button type="button" className={styles.menuItem} onClick={() => { close(); downloadQrPng(q.url ?? q.value, q.value); }}><Download size={14} aria-hidden /> Baixar PNG</button>
+                    <button type="button" className={styles.menuItem} onClick={() => { close(); toggle(q); }}><QrCode size={14} aria-hidden /> {q.isActive ? 'Desativar' : 'Ativar'}</button>
                     <hr className={styles.menuDivider} />
-                    <button type="button" className={`${styles.menuItem} ${styles.menuDanger}`} onClick={() => { close(); setModal({ kind: 'remove', qr: q }); }}><Trash2 size={14} aria-hidden /> Remove QR Code</button>
+                    <button type="button" className={`${styles.menuItem} ${styles.menuDanger}`} onClick={() => { close(); setModal({ kind: 'remove', qr: q }); }}><Trash2 size={14} aria-hidden /> Remover QR Code</button>
                   </>
                 )}
               </KebabMenu>
@@ -96,59 +96,59 @@ export function StepQr({ product, onProgress, ref }: StepProps) {
 
       <button type="button" className={styles.bigBtn} onClick={() => setModal({ kind: 'create' })}>
         <QrCode size={16} aria-hidden />
-        <strong>Generate New QR Code</strong>
-        <small>Create another QR Code linked to this product.</small>
+        <strong>Gerar novo QR Code</strong>
+        <small>Crie outro QR Code ligado a este produto.</small>
       </button>
 
       {modal?.kind === 'create' && (
-        <ProductModal title="Generate QR Code" onClose={() => setModal(null)}>
-          <h2 className={styles.modalTitle}>Generate QR Code</h2>
-          <p className={styles.modalSub}>Create a new QR Code for {product.name}.</p>
+        <ProductModal title="Gerar QR Code" onClose={() => setModal(null)}>
+          <h2 className={styles.modalTitle}>Gerar QR Code</h2>
+          <p className={styles.modalSub}>Crie um novo QR Code para {product.name}.</p>
           <div className={styles.qrPreviewRow}>
             <QrImage value={`${product.code}-${nextValue}`} size={80} />
-            <div><small>QR Code ID</small><strong className={styles.qrId}>{nextValue}</strong><small>{product.name}</small></div>
+            <div><small>ID do QR Code</small><strong className={styles.qrId}>{nextValue}</strong><small>{product.name}</small></div>
           </div>
-          <small>Automatically generated</small>
+          <small>Gerado automaticamente</small>
           <div className={styles.field}>
-            <label>Destination URL</label>
-            <input className={styles.input} readOnly value={`${window.location.origin}/qr/••••••••`} aria-label="Destination URL" />
-            <small>The final address is created when you save.</small>
+            <label htmlFor="qr-target-url">URL de destino</label>
+            <input id="qr-target-url" className={styles.input} readOnly value={`${window.location.origin}/qr/••••••••`} aria-describedby="qr-target-hint" />
+            <small id="qr-target-hint">O endereço final é criado quando você salvar.</small>
           </div>
           <div className={styles.modalFoot}>
-            <button type="button" className={styles.pillBtn} onClick={() => setModal(null)} disabled={busy}>Cancel</button>
-            <button type="button" className={styles.primaryBtn} onClick={create} disabled={busy}>{busy ? 'Creating...' : 'Create QR Code'}</button>
+            <button type="button" className={styles.pillBtn} onClick={() => setModal(null)} disabled={busy}>Cancelar</button>
+            <button type="button" className={styles.primaryBtn} onClick={create} disabled={busy}>{busy ? 'Criando...' : 'Criar QR Code'}</button>
           </div>
         </ProductModal>
       )}
 
       {modal?.kind === 'view' && (
-        <ProductModal title="QR Code Preview" onClose={() => setModal(null)} wide>
-          <h2 className={styles.modalTitle}>QR Code Preview</h2>
+        <ProductModal title="Prévia do QR Code" onClose={() => setModal(null)} wide>
+          <h2 className={styles.modalTitle}>Prévia do QR Code</h2>
           <strong className={styles.qrId}>{modal.qr.value}</strong>
           <small>{product.name}</small>
           <div className={styles.viewGrid}>
             <QrImage value={modal.qr.url ?? modal.qr.value} size={170} className={styles.viewQr} />
             <div className={styles.viewRight}>
-              <button type="button" className={styles.bigBtn} onClick={() => downloadQrPng(modal.qr.url ?? modal.qr.value, modal.qr.value)}><Download size={16} aria-hidden /> Download PNG</button>
-              <button type="button" className={styles.bigBtn} onClick={() => downloadQrPdf(modal.qr.url ?? modal.qr.value, modal.qr.value, product.name)}><Download size={16} aria-hidden /> Download PDF</button>
+              <button type="button" className={styles.bigBtn} onClick={() => downloadQrPng(modal.qr.url ?? modal.qr.value, modal.qr.value)}><Download size={16} aria-hidden /> Baixar PNG</button>
+              <button type="button" className={styles.bigBtn} onClick={() => downloadQrPdf(modal.qr.url ?? modal.qr.value, modal.qr.value, product.name)}><Download size={16} aria-hidden /> Baixar PDF</button>
               <div className={styles.urlBox}>
-                <small>QR Code URL</small>
+                <small>URL do QR Code</small>
                 <span>{modal.qr.url}</span>
-                <button type="button" className={styles.iconBtn} onClick={() => modal.qr.url && copy(modal.qr.url)} aria-label="Copy URL"><Copy size={14} aria-hidden /></button>
+                <button type="button" className={styles.iconBtn} onClick={() => modal.qr.url && copy(modal.qr.url)} aria-label="Copiar URL do QR Code"><Copy size={14} aria-hidden /></button>
               </div>
             </div>
           </div>
-          <div className={styles.modalFoot}><button type="button" className={styles.pillBtn} onClick={() => setModal(null)}>Cancel</button></div>
+          <div className={styles.modalFoot}><button type="button" className={styles.pillBtn} onClick={() => setModal(null)}>Fechar</button></div>
         </ProductModal>
       )}
 
       {modal?.kind === 'remove' && (
-        <ProductModal title="Remove QR Code" onClose={() => setModal(null)}>
-          <h2 className={styles.modalTitle}>Remove {modal.qr.value}?</h2>
-          <p className={styles.modalSub}>Printed copies of this QR Code will stop working.</p>
+        <ProductModal title="Remover QR Code" onClose={() => setModal(null)}>
+          <h2 className={styles.modalTitle}>Remover {modal.qr.value}?</h2>
+          <p className={styles.modalSub}>Cópias impressas deste QR Code vão parar de funcionar.</p>
           <div className={styles.modalFoot}>
-            <button type="button" className={styles.pillBtn} onClick={() => setModal(null)} disabled={busy}>Cancel</button>
-            <button type="button" className={styles.dangerBtn} onClick={() => remove(modal.qr)} disabled={busy}>{busy ? 'Removing...' : 'Remove QR Code'}</button>
+            <button type="button" className={styles.pillBtn} onClick={() => setModal(null)} disabled={busy}>Cancelar</button>
+            <button type="button" className={styles.dangerBtn} onClick={() => remove(modal.qr)} disabled={busy}>{busy ? 'Removendo...' : 'Remover QR Code'}</button>
           </div>
         </ProductModal>
       )}

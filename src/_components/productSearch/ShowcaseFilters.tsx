@@ -3,6 +3,7 @@
 import type { MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import styles from "@/_styles/productSearch/ProductSearch.module.css";
+import { productSearchHref, type ShowcaseCategory, type ShowcaseSubcategory } from "@/_data/showcase";
 
 type FilterOption = {
     /** null = "All" */
@@ -21,7 +22,7 @@ type ShowcaseFiltersProps = {
     label: string;
 };
 
-// Filter chips (single select). The filters live in the URL (?category=&sub=), so results are rendered
+// Filter chips (single select). The filters live in the URL (?categoria=&tipo=), so results are rendered
 // on the server and the link can be shared. Changing the category resets the subcategory.
 export default function ShowcaseFilters({ level, options, active, query, category, label }: ShowcaseFiltersProps) {
     const router = useRouter();
@@ -29,16 +30,15 @@ export default function ShowcaseFilters({ level, options, active, query, categor
     const select = (value: string | null) => (event: MouseEvent<HTMLElement>) => {
         // filter chips toggle themselves on click; keep exactly one selected
         (event.currentTarget as HTMLElement & { selected?: boolean }).selected = true;
-        const params = new URLSearchParams();
-        if (query) params.set("q", query);
-        if (level === "category") {
-            if (value) params.set("category", value);
-        } else {
-            if (category) params.set("category", category);
-            if (value) params.set("sub", value);
-        }
-        const search = params.toString();
-        router.push(search ? `/products?${search}` : "/products", { scroll: false });
+        const href =
+            level === "category"
+                ? productSearchHref({ query, category: value as ShowcaseCategory | null })
+                : productSearchHref({
+                      query,
+                      category: category as ShowcaseCategory | null,
+                      subcategory: value as ShowcaseSubcategory | null,
+                  });
+        router.push(href, { scroll: false });
     };
 
     const className =

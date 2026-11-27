@@ -19,7 +19,7 @@ export async function PATCH(req: Request, { params }: Ctx) {
       where: { id },
       select: { status: true, title: true, createdById: true },
     });
-    if (!ticket) throw new HttpError(404, "Ticket not found");
+    if (!ticket) throw new HttpError(404, "Chamado não encontrado");
 
     const now = new Date();
     const statusChanged = !!status && status !== ticket.status;

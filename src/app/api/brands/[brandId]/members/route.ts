@@ -20,7 +20,7 @@ export async function POST(req: Request, { params }: Ctx) {
       select: { id: true, user: { select: { isActive: true } } },
     });
     if (!membership || !membership.user.isActive) {
-      throw new HttpError(400, 'This user is not a member of the company');
+      throw new HttpError(400, 'Este usuário não é membro da empresa');
     }
 
     try {
@@ -33,7 +33,7 @@ export async function POST(req: Request, { params }: Ctx) {
       });
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
-        throw new HttpError(409, 'This user is already in the brand');
+        throw new HttpError(409, 'Este usuário já está na marca');
       }
       throw e;
     }

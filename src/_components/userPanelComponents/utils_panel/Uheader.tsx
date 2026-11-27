@@ -1,11 +1,13 @@
-'use client'
-import styles from '@/_styles/cssUserPanelPage/Uheader.module.css'
+import Image from 'next/image';
+import Link from 'next/link';
+import styles from '@/_styles/landingPage/LpHeader.module.css';
 import headerLogo from '@/_assets/image/header_logo.svg';
-import Image from 'next/image'
-import { useRouter } from 'next/navigation';
-import ContrastToggle from '@/_components/productComponents/ContrastToggle';
 import NotificationBell, { type NotificationItem } from '@/_components/userPanelComponents/utils_panel/NotificationBell';
 import UserMenu from '@/_components/userPanelComponents/managen/UserMenu';
+import { PanelHelp } from '@/_components/userPanelComponents/utils_panel/PanelHelp';
+import ContrastToggle from '@/_components/productComponents/ContrastToggle';
+import LanguageMenu from '@/_components/landingPage/LanguageMenu';
+import VLibrasButton from '@/_components/landingPage/VLibrasButton';
 
 interface UheaderProps {
     user: { firstName: string; lastName: string; email: string };
@@ -13,21 +15,28 @@ interface UheaderProps {
     unreadCount: number;
 }
 
+// User panel header: same structure and styles as the landing and product headers
+// (container 4% / 6% / 1140px, brand bar on top, 44px actions), with the same contrast, language and
+// Libras controls.
 export default function Uheader({ user, notifications, unreadCount }: UheaderProps) {
-    const router = useRouter();
     return (
-        <header className={styles.container}>
-            <div className={styles.o_minimal_header__supergraphic}></div>
-            <div className={styles.container__menu}>
-                <Image src={headerLogo} alt="logo" className={styles.header_logo} onClick={() => router.push('/landing-page')}/>
-                <div className={styles.container__actions}>
-                    
-                    {/* botão de idioma entra aqui depois */}
+        <header className={styles['lp-header']}>
+            <div className={styles['lp-header__bar']} aria-hidden="true"></div>
+            <div className={styles['lp-header__container']}>
+                <Link className={`${styles['lp-header__brand']} ${styles['lp-header__brand--panel']}`} href="/inicio" aria-label="Manual digital, ir para a página inicial">
+                    <Image className={styles['lp-header__logo']} src={headerLogo} alt="Manual digital" width={150} height={25} />
+                </Link>
+                <div className={`${styles['lp-header__actions']} ${styles['lp-header__actions--panel']}`}>
+                    {/* same accessibility controls as the landing and product headers */}
+                    <ContrastToggle />
+                    <LanguageMenu />
+                    <VLibrasButton />
                     <NotificationBell notifications={notifications} unreadCount={unreadCount} />
-                    {/* <ContrastToggle /> */}
+                    {/* step-by-step guide of the panel (company → brand → product → publish) */}
+                    <PanelHelp />
                     <UserMenu name={`${user.firstName} ${user.lastName}`} email={user.email} />
                 </div>
             </div>
         </header>
-    )
+    );
 }

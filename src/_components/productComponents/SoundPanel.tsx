@@ -178,6 +178,7 @@ export default function SoundPanel({ src, productName, active }: Props) {
           <input
             type="range"
             className={styles.volume}
+            aria-valuetext={`${Math.round(volume * 100)}%`}
             min={0}
             max={1}
             step={0.01}

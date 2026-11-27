@@ -2,7 +2,6 @@
 
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import styles from "@/_styles/landingPage/LanguageMenu.module.css";
-import { format } from "@/_i18n/config";
 import { CheckIcon, GlobeIcon } from "@/_components/landingPage/Icons";
 import {
     LANGUAGES,
@@ -13,18 +12,10 @@ import {
     translatePage,
 } from "@/_lib/pageTranslator";
 
-type LanguageMenuProps = {
-    t: {
-        /** "Idioma: {language}. Alterar idioma" */
-        trigger: string;
-        menu: string;
-    };
-};
-
 // Header language switcher: automatic translation of the whole page (texts, product data, manual,
 // chat answers) by the browser's own translator, or Google Translate where the browser has none.
 // The menu itself is marked translate="no" so the language names stay readable.
-export default function LanguageMenu({ t }: LanguageMenuProps) {
+export default function LanguageMenu() {
     const [open, setOpen] = useState(false);
     const menuId = useId();
     const wrapRef = useRef<HTMLDivElement>(null);
@@ -65,6 +56,8 @@ export default function LanguageMenu({ t }: LanguageMenuProps) {
     };
 
     const current = LANGUAGES.find((l) => l.code === state.lang) ?? LANGUAGES[0];
+    // starts with the visible code ("PT-BR"), so voice commands like "clicar PT-BR" work (WCAG 2.5.3)
+    const triggerLabel = `${current.short}: idioma ${current.name}. Alterar idioma`;
     const busy = state.status === "downloading" || state.status === "translating";
     const statusText =
         state.status === "downloading"
@@ -84,8 +77,8 @@ export default function LanguageMenu({ t }: LanguageMenuProps) {
                 aria-expanded={open}
                 aria-controls={menuId}
                 aria-busy={busy}
-                aria-label={format(t.trigger, { language: current.name })}
-                title={format(t.trigger, { language: current.name })}
+                aria-label={triggerLabel}
+                title={triggerLabel}
                 onClick={() => setOpen((value) => !value)}
             >
                 <GlobeIcon size={20} />
@@ -100,7 +93,7 @@ export default function LanguageMenu({ t }: LanguageMenuProps) {
             </span>
 
             {open ? (
-                <nav id={menuId} className={styles["language-menu__panel"]} aria-label={t.menu}>
+                <nav id={menuId} className={styles["language-menu__panel"]} aria-label="Escolher idioma">
                     <ul className={styles["language-menu__list"]}>
                         {LANGUAGES.map((item) => {
                             const active = item.code === state.lang;

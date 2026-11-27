@@ -2,12 +2,12 @@
 
 import { useId, useState, type FormEvent, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { Check, Lock } from 'lucide-react';
+import { CircleAlert, Check, Lock } from 'lucide-react';
 import styles from '@/_styles/cssUserPanelPage/CompanyForm.module.css';
 import { LogoField } from '../utils_panel/LogoField';
 import { toast } from "sonner";
 
-const BASE = '/user-panel/companies';
+const BASE = '/painel/empresas';
 
 export type CompanyData = {
   id: number;
@@ -31,7 +31,6 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
   const isEdit = mode === 'edit' && !!company;
 
   const [name, setName] = useState(company?.name ?? '');
-  const [companyId, setCompanyId] = useState(company?.id ?? '');
   const [description, setDescription] = useState(company?.description ?? '');
   const [website, setWebsite] = useState(company?.website ?? '');
   const [logoUrl, setLogoUrl] = useState<string | null>(company?.logoUrl ?? null);
@@ -45,8 +44,8 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
     setNameInvalid(false);
 
     if (name.trim().length < 2) {
-      setNameInvalid(true); // só marca o campo; a mensagem vai no toast
-      toast.error('Enter the company name');
+      setNameInvalid(true); // erro aparece embaixo do campo, e o foco vai para ele
+      document.getElementById(`${formId}-name`)?.focus();
       return;
     }
 
@@ -59,20 +58,20 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        toast.error(data.error ?? 'Could not save the company');
+        toast.error(data.error ?? 'Não foi possível salvar a empresa');
         return;
       }
       if (isEdit) {
-        toast.success('Changes saved.');
+        toast.success('Alterações salvas.');
       } else {
-        toast.success('Company created.');
+        toast.success('Empresa criada.');
         onReset(); // zera o form: o Next guarda o estado da tela ao sair dela
         // depois de criar, vai para a edição para adicionar usuários
-        router.push(`${BASE}/${data.company.id}/edit`);
+        router.push(`${BASE}/${data.company.id}/editar`);
       }
       router.refresh(); // atualiza a lista da sidebar
     } catch {
-      toast.error('Network error. Try again.');
+      toast.error('Erro de conexão. Tente de novo.');
     } finally {
       setSaving(false);
     }
@@ -82,45 +81,54 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
     <div className={styles.card}>
       <header className={styles.header}>
         <div>
-          <h1 className={styles.title}>{isEdit ? 'Edit Company' : 'New Company'}</h1>
+          <h1 className={styles.title}>{isEdit ? 'Editar empresa' : 'Nova empresa'}</h1>
           <p className={styles.subtitle}>
-            {isEdit ? 'Company Information' : 'Register a new company in the platform.'}
+            {isEdit ? 'Informações da empresa' : 'Cadastre uma nova empresa na plataforma.'}
           </p>
         </div>
-        <div>
-          {isEdit && (
+        {isEdit && (
+          <div className={styles.headerAside}>
             <span className={`${styles.badge} ${company.isActive ? styles.badgeActive : styles.badgeInactive}`}>
-              {company.isActive ? 'active' : 'inactive'}
+              {company.isActive ? 'Ativa' : 'Inativa'}
             </span>
-          )}
-          <p style={{fontSize:'14px'}}>id ( {companyId} )</p>          
-        </div>
+            <p className={styles.meta}>ID {company.id}</p>
+          </div>
+        )}
       </header>
 
       {/* o <form> envolve só os campos: a seção de usuários tem formulários próprios */}
-      <form id={formId} className={styles.form} onSubmit={onSubmit} noValidate>
+      <form id={formId} className={styles.form} onSubmit={onSubmit} noValidate aria-describedby={`${formId}-required`}>
+        <p id={`${formId}-required`} className={styles.requiredNote}>Campos com * são obrigatórios.</p>
         <div className={styles.field}>
-          <label htmlFor={`${formId}-name`} className={styles.label}>Company name*</label>
+          <label htmlFor={`${formId}-name`} className={styles.label}>Nome da empresa *</label>
           <input
             id={`${formId}-name`}
             className={styles.input}
-            placeholder="e.g. robert bosch gmbh"
+            placeholder="ex.: Robert Bosch Ltda."
             value={name}
             maxLength={120}
+            required
+            aria-required="true"
             aria-invalid={nameInvalid}
+            aria-describedby={nameInvalid ? `${formId}-name-error` : undefined}
             onChange={(e) => {
               setName(e.target.value);
               setNameInvalid(false);
             }}
           />
+          {nameInvalid && (
+            <p id={`${formId}-name-error`} className={styles.fieldError} role="alert">
+              <CircleAlert size={14} aria-hidden /> Digite o nome da empresa, com pelo menos 2 letras.
+            </p>
+          )}
         </div>
 
         <div className={styles.field}>
-          <label htmlFor={`${formId}-desc`} className={styles.label}>Description</label>
+          <label htmlFor={`${formId}-desc`} className={styles.label}>Descrição</label>
           <textarea
             id={`${formId}-desc`}
             className={styles.textarea}
-            placeholder="Describe the company ...."
+            placeholder="Descreva a empresa..."
             value={description}
             maxLength={2000}
             onChange={(e) => setDescription(e.target.value)}
@@ -128,12 +136,12 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
         </div>
 
         <div className={styles.field}>
-          <label htmlFor={`${formId}-site`} className={styles.label}>Website</label>
+          <label htmlFor={`${formId}-site`} className={styles.label}>Site</label>
           <input
             id={`${formId}-site`}
             type="url"
             className={styles.input}
-            placeholder="https://www.company.com"
+            placeholder="https://www.suaempresa.com.br"
             value={website}
             onChange={(e) => setWebsite(e.target.value)}
           />
@@ -153,8 +161,8 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
         children
       ) : (
         <div className={styles.note}>
-          <span className={styles.noteTitle}><Lock size={12} aria-hidden /> Owner assignment</span>
-          <span className={styles.noteText}>You will automatically become the Owner of this company.</span>
+          <span className={styles.noteTitle}><Lock size={12} aria-hidden /> Proprietário</span>
+          <span className={styles.noteText}>Você se tornará automaticamente o proprietário desta empresa.</span>
         </div>
       )}
 
@@ -168,11 +176,11 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
           }}
           disabled={saving}
         >
-          Cancel
+          Cancelar
         </button>
-        <button type="submit" form={formId} className={styles.btn} disabled={saving || uploading}>
+        <button type="submit" form={formId} className={`${styles.btn} ${styles.btnPrimary}`} disabled={saving || uploading}>
           <Check size={15} aria-hidden />
-          {saving ? 'Saving...' : isEdit ? 'Save changes' : 'Create company'}
+          {saving ? 'Salvando...' : isEdit ? 'Salvar alterações' : 'Criar empresa'}
         </button>
       </footer>
     </div>

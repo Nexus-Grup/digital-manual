@@ -8,21 +8,21 @@ import { AdminTicketActionsMenu } from "./AdminTicketActionsMenu";
 import styles from "@/_styles/cssUserPanelPage/support/AdminInbox.module.css";
 
 export function AdminTicketsTable({ items }: { items: AdminTicketListItem[] }) {
-  if (items.length === 0) return <p className={styles.empty}>No tickets match these filters.</p>;
+  if (items.length === 0) return <p className={styles.empty}>Nenhum chamado corresponde a estes filtros.</p>;
   return (
     <div className={styles.scroll}>
       <table className={styles.table}>
         <thead>
           <tr>
             <th scope="col">N°</th>
-            <th scope="col">Subject</th>
-            <th scope="col">Requester</th>
-            <th scope="col">Related to</th>
-            <th scope="col">Priority</th>
+            <th scope="col">Assunto</th>
+            <th scope="col">Solicitante</th>
+            <th scope="col">Relacionado a</th>
+            <th scope="col">Prioridade</th>
             <th scope="col">Status</th>
-            <th scope="col">Assignee</th>
-            <th scope="col">Updated</th>
-            <th scope="col">Action</th>
+            <th scope="col">Responsável</th>
+            <th scope="col">Atualizado</th>
+            <th scope="col">Ação</th>
           </tr>
         </thead>
         <tbody>
@@ -39,7 +39,7 @@ export function AdminTicketsTable({ items }: { items: AdminTicketListItem[] }) {
               </td>
               <td><PriorityBadge priority={t.priority} /></td>
               <td><StatusBadge status={t.status} audience="admin" /></td>
-              <td className={t.assigneeName ? undefined : styles.muted}>{t.assigneeName ?? "Unassigned"}</td>
+              <td className={t.assigneeName ? undefined : styles.muted}>{t.assigneeName ?? "Sem responsável"}</td>
               <td className={styles.muted}><TimeText iso={t.lastMessageAt} relative /></td>
               <td><AdminTicketActionsMenu ticketId={t.id} status={t.status} /></td>
             </tr>

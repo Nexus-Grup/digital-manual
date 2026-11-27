@@ -52,6 +52,7 @@
     font-size: 1.5rem;
     font-weight: 800;
     line-height: 1.15;
+    font-family: var(--type-display);
 }
 
 .brand__card-text {
@@ -70,6 +71,7 @@
     font-size: 1.375rem;
     font-weight: 800;
     line-height: 1.3;
+    font-family: var(--type-display);
 }
 
 .brand__values-list {
@@ -93,6 +95,7 @@
     font-size: 0.875rem;
     font-weight: 800;
     letter-spacing: 0.08em;
+    font-family: var(--type-display);
 }
 
 .brand__value-title {
@@ -100,6 +103,7 @@
     font-size: 1.0625rem;
     font-weight: 800;
     line-height: 1.3;
+    font-family: var(--type-display);
 }
 
 .brand__value-text {

@@ -111,7 +111,7 @@ type Action = {
  * digital manual. Every section only renders when the product has that content.
  */
 export default function ProductHome({ product, assembly }: Props) {
-  const base = `/products/${product.id}`;
+  const base = `/produtos/${product.id}`;
   const images = [...new Set([product.imgUrl, ...product.gallery].filter((u): u is string => Boolean(u)))];
   const mainImage = images[0] ?? null;
   const description = product.information?.description ?? product.description;
@@ -128,14 +128,14 @@ export default function ProductHome({ product, assembly }: Props) {
       ? [{ key: 'manual', icon: BookOpen, title: 'Ler o manual', meta: 'Busca, sumário e texto ampliável', href: `${base}/manual` }]
       : []),
     ...(steps.length > 0
-      ? [{ key: 'assembly', icon: Wrench, title: 'Montar passo a passo', meta: `${plural(steps.length, 'passo', 'passos')} com desenhos`, href: `${base}/assembly` }]
+      ? [{ key: 'assembly', icon: Wrench, title: 'Montar passo a passo', meta: `${plural(steps.length, 'passo', 'passos')} com desenhos`, href: `${base}/montagem` }]
       : []),
     {
       key: 'information',
       icon: Info,
       title: 'Conhecer a ferramenta',
       meta: cards.length > 0 ? `${plural(cards.length, 'destaque', 'destaques')} e fotos` : 'Descrição e fotos',
-      href: `${base}/information`,
+      href: `${base}/informacoes`,
     },
     ...(product.videos.length > 0
       ? [{ key: 'video', icon: PlayCircle, title: 'Assistir aos vídeos', meta: plural(product.videos.length, 'vídeo', 'vídeos'), tab: 'video' as const }]
@@ -155,10 +155,10 @@ export default function ProductHome({ product, assembly }: Props) {
   ];
 
   const primary: { href: string; label: string } = steps.length > 0
-    ? { href: `${base}/assembly`, label: 'Começar a montagem' }
+    ? { href: `${base}/montagem`, label: 'Começar a montagem' }
     : manual
       ? { href: `${base}/manual`, label: 'Abrir o manual' }
-      : { href: `${base}/information`, label: 'Ver informações' };
+      : { href: `${base}/informacoes`, label: 'Ver informações' };
 
   return (
     <div className={styles['home']}>
@@ -189,7 +189,7 @@ export default function ProductHome({ product, assembly }: Props) {
             {description && (
               <div className={`${styles['home-hero__about']} ${styles['home-enter']}`} style={stagger(2)}>
                 <p className={styles['home-hero__text']}>{description}</p>
-                <Link className={styles['home-hero__link']} href={`${base}/information`}>
+                <Link className={styles['home-hero__link']} href={`${base}/informacoes`}>
                   Ver todas as informações
                   <ArrowRight size={18} aria-hidden />
                 </Link>
@@ -337,8 +337,8 @@ export default function ProductHome({ product, assembly }: Props) {
               ))}
             </ol>
 
-            <Link className={styles['home-button']} href={`${base}/assembly`}>
-              Começar pelo passo A
+            <Link className={styles['home-button']} href={`${base}/montagem`}>
+              Começar pelo passo 1
               <ArrowRight size={20} aria-hidden />
             </Link>
           </div>
@@ -350,8 +350,8 @@ export default function ProductHome({ product, assembly }: Props) {
         <section className={styles['home-gallery']} aria-labelledby="home-gallery-title">
           <div className={styles['home-gallery__container']}>
             <SectionHead id="home-gallery-title" eyebrow="Galeria" title="Veja de perto" lucca={LUCCA.magnifier} />
-            {/* keyboard users scroll the row with the arrow keys once it has focus */}
-            <ul className={styles['home-gallery__track']} tabIndex={0} aria-label="Fotos do produto (role para o lado)">
+            {/* mobile/tablet: scrollable row (arrow keys once it has focus); desktop: grid (CSS) */}
+            <ul className={styles['home-gallery__track']} tabIndex={0} aria-label="Fotos do produto">
               {images.map((src, i) => (
                 <li key={src} className={styles['home-gallery__item']}>
                   <Picture
@@ -363,7 +363,7 @@ export default function ProductHome({ product, assembly }: Props) {
                 </li>
               ))}
             </ul>
-            <Link className={styles['home-hero__link']} href={`${base}/information`}>
+            <Link className={styles['home-hero__link']} href={`${base}/informacoes`}>
               <Images size={18} aria-hidden />
               Ver fotos em tamanho maior
             </Link>

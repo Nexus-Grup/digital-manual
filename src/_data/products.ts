@@ -1,23 +1,20 @@
-// Product catalog for the public search page (/products). Server-only.
+// Product catalog for the public search page (/produtos) and the landing catalog section. Server-only.
 import { cacheLife } from "next/cache";
 import type { ProductCategory } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { normalizeText } from "@/lib/text";
 import { productVisibility } from "@/_data/publicProduct";
+import {
+    isShowcaseCategory,
+    isShowcaseSubcategory,
+    subcategoriesOf,
+    type MainCategory,
+    type ShowcaseCategory,
+    type ShowcaseSubcategory,
+} from "@/_data/showcase";
 
-/** Showcase categories (strategy: appliances, furniture, tools, electronics) plus a catch-all. */
-export const SHOWCASE_CATEGORIES = ["appliances", "furniture", "tools", "electronics"] as const;
-type MainCategory = (typeof SHOWCASE_CATEGORIES)[number];
-export type ShowcaseCategory = MainCategory | "other";
-
-/** Second filter level: product types inside each category (e.g. Tools › Drills). */
-export const SUBCATEGORIES = {
-    appliances: ["refrigerator", "washer", "microwave"],
-    furniture: ["wardrobe", "tvStand", "desk"],
-    tools: ["screwdriver", "drill", "sander"],
-    electronics: ["tv", "speaker", "headphones"],
-} as const satisfies Record<MainCategory, readonly string[]>;
-export type ShowcaseSubcategory = (typeof SUBCATEGORIES)[MainCategory][number];
+// categories, types and the search URL helpers live in showcase.ts (client-safe); re-exported here
+export * from "@/_data/showcase";
 
 export type ProductSummary = {
     id: string;
@@ -52,10 +49,12 @@ const DEMO_PRODUCTS: ProductSummary[] = (
     ] satisfies DemoRow[]
 ).map((row) => ({ ...row, imgUrl: null }));
 
-// The Prisma enum has no appliances/tools values yet: those fall into "other".
+// Database category -> showcase category (automotive, software and other fall into "other").
 const CATEGORY_FROM_DB: Partial<Record<ProductCategory, ShowcaseCategory>> = {
     ELECTRONICS: "electronics",
     FURNITURE: "furniture",
+    APPLIANCES: "appliances",
+    TOOLS: "tools",
 };
 
 /**
@@ -137,20 +136,6 @@ export async function getProducts(): Promise<ProductCatalog> {
         console.error("getProducts failed, showing the demo catalog:", error);
         return { products: DEMO_PRODUCTS, isDemo: true };
     }
-}
-
-export function isShowcaseCategory(value: string | undefined): value is ShowcaseCategory {
-    return value === "other" || SHOWCASE_CATEGORIES.includes(value as MainCategory);
-}
-
-/** Subcategories of a category (none for "other"). */
-export function subcategoriesOf(category: ShowcaseCategory): readonly ShowcaseSubcategory[] {
-    return category === "other" ? [] : SUBCATEGORIES[category];
-}
-
-/** True only when `value` is a subcategory of `category` (e.g. ?category=furniture&sub=drill is rejected). */
-export function isShowcaseSubcategory(category: ShowcaseCategory, value: string | undefined): value is ShowcaseSubcategory {
-    return subcategoriesOf(category).includes(value as ShowcaseSubcategory);
 }
 
 type Filter = {

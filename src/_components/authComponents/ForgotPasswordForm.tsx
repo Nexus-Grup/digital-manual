@@ -19,8 +19,8 @@ export default function ForgotPasswordForm() {
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!email.trim()) return setError('Enter your email');
-    if (!EMAIL_RE.test(email.trim())) return setError('Enter a valid email');
+    if (!email.trim()) return setError('Digite seu e-mail');
+    if (!EMAIL_RE.test(email.trim())) return setError('Digite um e-mail válido');
     setError('');
 
     setLoading(true);
@@ -31,11 +31,11 @@ export default function ForgotPasswordForm() {
         body: JSON.stringify({ email: email.trim() }),
       });
       if (!res.ok) throw new Error();
-      router.push(`/reset-password?email=${encodeURIComponent(email.trim())}`);
+      router.push(`/redefinir-senha?email=${encodeURIComponent(email.trim())}`);
       await new Promise((r) => setTimeout(r, 600)); // simulação
       setSent(true);
     } catch {
-      setError('Could not send the link. Try again.');
+      setError('Não foi possível enviar o código. Tente de novo.');
     } finally {
       setLoading(false);
     }
@@ -45,7 +45,7 @@ export default function ForgotPasswordForm() {
     <div className={styles.card}>
       <AuthLogo />
 
-      <h1 className={styles.title}>Forgot your password?</h1>
+      <h1 className={styles.title}>Esqueceu sua senha?</h1>
 
       {sent ? (
         <div className={styles.success} role="status">
@@ -62,13 +62,13 @@ export default function ForgotPasswordForm() {
 
           <form className={styles.form} onSubmit={onSubmit} noValidate>
             <div className={styles.field}>
-              <label htmlFor={`${id}-email`} className={styles.label}>Email</label>
+              <label htmlFor={`${id}-email`} className={styles.label}>E-mail</label>
               <input
                 id={`${id}-email`}
                 type="email"
                 name="email"
                 autoComplete="email"
-                placeholder="Enter your email"
+                placeholder="Digite seu e-mail"
                 className={styles.input}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -79,18 +79,18 @@ export default function ForgotPasswordForm() {
             </div>
 
             <button type="submit" className={styles.submit} disabled={loading}>
-              {loading ? 'Sending…' : 'Send reset link'}
+              {loading ? 'Enviando…' : 'Enviar código'}
             </button>
           </form>
         </>
       )}
 
-      <Link href="/login" className={styles.back}>
+      <Link href="/entrar" className={styles.back}>
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M15 18l-6-6 6-6" />
         </svg>
-        Back to sign in
+        Voltar para o login
       </Link>
     </div>
   );

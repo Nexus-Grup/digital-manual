@@ -53,6 +53,7 @@
     font-size: 1.0625rem;
     font-weight: 700;
     line-height: 1.4;
+    font-family: var(--type-display);
 }
 
 /* main figure: the paper weight */
@@ -72,6 +73,7 @@
     font-weight: 800;
     line-height: 1.05;
     overflow-wrap: anywhere;
+    font-family: var(--type-display);
 }
 
 /* unit spelled out next to the number, smaller and lighter */

@@ -1,22 +1,74 @@
-/* SideMenu.module.css */
+/* Panel menu (USideMenu). Mobile first:
+   - phones: a bar under the header with a "Menu" button and the current section; the button opens
+     the full list with visible labels and 48px rows (WCAG 1.4.10 reflow, 2.5.8 target size;
+     Nielsen: visibility of system status, recognition rather than recall);
+   - from 768px: the 56px icon rail that opens on hover/focus (tablet and desktop layout). */
 .nav {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  width: 56px;
-  overflow: hidden;
-  background: #fff;
-  border-right: 1px solid var(--c-border);
-  transition: width 0.2s ease;
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--pn-bg, #fff);
+  border-bottom: 1px solid var(--c-border);
 }
 
-.nav:hover {
-  width: 224px;
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 4%;
+  font: inherit;
+  color: var(--pn-text, #111);
+  text-align: left;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.toggle:hover {
+  background: var(--pn-hover, #f3f3f3);
+}
+
+.toggle:focus-visible {
+  outline: 3px solid var(--btn-focus-ring);
+  outline-offset: -3px;
+}
+
+.toggleText {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.toggleLabel {
+  font-family: var(--type-display);
+  font-size: 1rem;
+}
+
+.toggleCurrent {
+  overflow: hidden;
+  font-size: 0.875rem;
+  color: var(--pn-muted, #4a5160);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panel {
+  display: none;
+}
+
+.panelOpen {
+  display: block;
+  border-top: 1px solid var(--c-border);
 }
 
 .groups {
   flex: 1;
-  padding-top: 12px;
+  padding-top: 4px;
 }
 
 .group {
@@ -29,11 +81,12 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  padding: 8px 13px;
+  min-height: 48px;
+  padding: 8px 16px 8px 13px;
   border: none;
   border-radius: 6px;
   background: transparent;
-  color: #111;
+  color: var(--pn-text, #111);
   font: inherit;
   white-space: nowrap;
   cursor: pointer;
@@ -42,12 +95,17 @@
 }
 
 .item:hover {
-  background: #f3f3f3;
+  background: var(--pn-hover, #f3f3f3);
+}
+
+.item:focus-visible {
+  outline: 3px solid var(--btn-focus-ring);
+  outline-offset: -3px;
 }
 
 .active,
 .active:hover {
-  background: #d9d9d9;
+  background: var(--pn-hover, #d9d9d9);
 }
 
 .icon {
@@ -56,14 +114,62 @@
 
 .label {
   font-size: 14px;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.nav:hover .label {
-  opacity: 1;
 }
 
 .footer {
-  padding: 0 4px 12px;
+  padding: 8px 4px 12px;
+}
+
+/* ===== tablet and desktop: icon rail that opens on hover/focus ===== */
+@media (min-width: 768px) {
+  .nav {
+    height: 100%;
+    width: 56px;
+    overflow: hidden;
+    border-bottom: 0;
+    border-right: 1px solid var(--c-border);
+    transition: width 0.2s ease;
+    /* lets the width animate up to max-content (Chrome/Edge 129+; elsewhere it opens without the slide) */
+    interpolate-size: allow-keywords;
+  }
+
+  /* opens as wide as the longest label ("Visão geral da empresa"), so no text is cut */
+  .nav:hover,
+  .nav:focus-within {
+    width: max-content;
+    min-width: 224px;
+  }
+
+  .toggle {
+    display: none;
+  }
+
+  .panel {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    border-top: 0;
+  }
+
+  .groups {
+    padding-top: 12px;
+  }
+
+  .item {
+    min-height: 0;
+  }
+
+  .label {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .nav:hover .label,
+  .nav:focus-within .label {
+    opacity: 1;
+  }
+
+  .footer {
+    padding: 0 4px 12px;
+  }
 }

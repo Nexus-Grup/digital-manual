@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { User } from 'lucide-react';
 import { toast } from 'sonner';
 import styles from '@/_styles/cssUserPanelPage/CompanyUsers.module.css';
@@ -24,6 +24,7 @@ export function AddExistingUserModal({ companyId, onClose, onAdded }: Props) {
   const [role, setRole] = useState<Role>('MEMBER');
   const [saving, setSaving] = useState(false);
 
+  const uid = useId();
   const term = query.trim();
   const searching = term.length >= 2;
 
@@ -67,29 +68,38 @@ export function AddExistingUserModal({ companyId, onClose, onAdded }: Props) {
       toast.error(err);
       return;
     }
-    toast.success('User added to the company.');
+    toast.success('Usuário adicionado à empresa.');
     onAdded();
   }
 
   return (
-    <Modal label="Add existing user" onClose={onClose}>
-      <h2 className={styles.modalTitle}>Add existing user</h2>
+    <Modal label="Adicionar usuário existente" onClose={onClose}>
+      <h2 className={styles.modalTitle}>Adicionar usuário existente</h2>
 
-      <label htmlFor="user-search" className={styles.modalLabel}>Search user</label>
+      <label htmlFor={`${uid}-search`} className={styles.modalLabel}>Buscar usuário</label>
       <input
-        id="user-search"
+        id={`${uid}-search`}
+        aria-describedby={`${uid}-status`}
         type="search"
         className={styles.search}
-        placeholder="Search by name or email ..."
+        placeholder="Buscar por nome ou e-mail..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         autoComplete="off"
         autoFocus
       />
 
-      <ul className={styles.candidates} aria-live="polite">
-        {searching && loading && <li className={styles.hint}>Searching...</li>}
-        {searching && !loading && shown.length === 0 && <li className={styles.hint}>No users found.</li>}
+      <p id={`${uid}-status`} className={styles.status} role="status">
+        {!searching
+          ? 'Digite pelo menos 2 letras do nome ou do e-mail.'
+          : loading
+            ? 'Buscando...'
+            : shown.length === 0
+              ? 'Nenhum usuário encontrado.'
+              : `${shown.length} ${shown.length === 1 ? 'usuário encontrado' : 'usuários encontrados'}. Selecione um na lista.`}
+      </p>
+
+      <ul className={styles.candidates} aria-label="Resultados da busca">
         {shown.map((u) => (
           <li key={u.id}>
             <button
@@ -103,30 +113,30 @@ export function AddExistingUserModal({ companyId, onClose, onAdded }: Props) {
                 <span className={styles.whoName}>{u.firstName} {u.lastName}</span>
                 <span className={styles.whoEmail}>{u.email}</span>
               </span>
-              <span className={styles.availableBadge}>Available</span>
+              <span className={styles.availableBadge}>Disponível</span>
             </button>
           </li>
         ))}
       </ul>
 
       <fieldset className={styles.fieldset}>
-        <legend>Company role</legend>
+        <legend>Papel na empresa</legend>
         <label className={styles.radioRow}>
           <input type="radio" name="add-role" checked={role === 'OWNER'} onChange={() => setRole('OWNER')} />
-          Owner
+          Proprietário
         </label>
         <label className={styles.radioRow}>
           <input type="radio" name="add-role" checked={role === 'MANAGER'} onChange={() => setRole('MANAGER')} />
-          Manager
+          Gerente
         </label>
         <label className={styles.radioRow}>
           <input type="radio" name="add-role" checked={role === 'MEMBER'} onChange={() => setRole('MEMBER')} />
-          Member
+          Membro
         </label>
       </fieldset>
 
-      <button type="button" className={styles.wideBtn} onClick={add} disabled={!selected || saving}>
-        <User size={14} aria-hidden /> {saving ? 'Adding...' : 'Add to company'}
+      <button type="button" className={styles.wideBtn} onClick={add} disabled={!selected || saving} aria-describedby={!selected ? `${uid}-status` : undefined}>
+        <User size={14} aria-hidden /> {saving ? 'Adicionando...' : 'Adicionar à empresa'}
       </button>
     </Modal>
   );

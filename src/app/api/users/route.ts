@@ -20,7 +20,7 @@ const companySchema = base.extend({
 
 export async function POST(req: Request) {
   const me = await getCurrentUser();
-  if (!me) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!me) return NextResponse.json({ error: "Faça login para continuar" }, { status: 401 });
 
   const body = await req.json();
   const isCompanyFlow = "companyRole" in body;
@@ -42,10 +42,10 @@ export async function POST(req: Request) {
       select: { companyRole: true },
     });
     if (membership?.companyRole !== "OWNER") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
     }
   } else if (me.systemRole !== "ADMIN") {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
   }
 
   try {
@@ -71,10 +71,10 @@ export async function POST(req: Request) {
     } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
       return NextResponse.json(
-        { error: "Username or email already exists" },
+        { error: "Nome de usuário ou e-mail já cadastrado" },
         { status: 409 }
       );
     }
-    return NextResponse.json({ error: "Failed to create user" }, { status: 500 });
+    return NextResponse.json({ error: "Não foi possível criar o usuário" }, { status: 500 });
   }
 }

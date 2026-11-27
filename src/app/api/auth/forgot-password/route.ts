@@ -15,7 +15,7 @@ export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
   const parsed = schema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Enter a valid email" }, { status: 400 });
+    return NextResponse.json({ error: "Digite um e-mail válido" }, { status: 400 });
   }
 
   const user = await prisma.user.findUnique({ where: { email: parsed.data.email } });
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
         try {
           await sendResetCode(user.email, code);
         } catch (err) {
-          console.error("Failed to send reset code", err);
+          console.error("Não foi possível enviar o código de redefinição", err);
         }
       });
     }

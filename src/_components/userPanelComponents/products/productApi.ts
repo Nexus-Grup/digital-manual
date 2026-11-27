@@ -12,11 +12,11 @@ export async function api<T = unknown>(url: string, method: Method = 'GET', body
       ...(body !== undefined ? { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {}),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) return { ok: false, error: data?.error ?? 'Something went wrong. Try again.' };
+    if (!res.ok) return { ok: false, error: data?.error ?? 'Algo deu errado. Tente de novo.' };
     return { ok: true, data: data as T };
   } catch (e) {
     console.error('[api] fetch threw:', method, url, e);
-    return { ok: false, error: 'Network error. Try again.' };
+    return { ok: false, error: 'Erro de conexão. Tente de novo.' };
   }
 }
 
@@ -42,7 +42,12 @@ function storageClient() {
  *  2. o navegador envia o arquivo;
  *  3. o servidor confere o conteúdo real e devolve o endereço final.
  */
-export async function uploadFile(productId: number, kind: UploadKind, file: File): Promise<ApiResult<{ url: string }>> {
+export async function uploadFile(
+  productId: number,
+  kind: UploadKind,
+  file: File,
+  options: { cutout?: boolean } = {},
+): Promise<ApiResult<{ url: string; cutout?: boolean }>> {
   const sign = await api<{ bucket: string; path: string; token: string; publicUrl: string }>(
     `/api/products/${productId}/upload/sign`, 'POST', { kind, fileName: file.name, size: file.size },
   );
@@ -54,14 +59,16 @@ export async function uploadFile(productId: number, kind: UploadKind, file: File
       .uploadToSignedUrl(sign.data.path, sign.data.token, file, { contentType: file.type || undefined, cacheControl: '31536000' });
     if (error) {
       console.error('[upload] Supabase upload error:', error);
-      return { ok: false, error: 'Could not upload the file. Try again.' };
+      return { ok: false, error: 'Não foi possível enviar o arquivo. Tente de novo.' };
     }
   } catch (e) {
     console.error('[upload] Upload threw:', e);
-    return { ok: false, error: 'Network error. Try again.' };
+    return { ok: false, error: 'Erro de conexão. Tente de novo.' };
   }
 
-  const confirm = await api<{ url: string }>(`/api/products/${productId}/upload/confirm`, 'POST', { kind, path: sign.data.path });
+  const confirm = await api<{ url: string; cutout?: boolean }>(`/api/products/${productId}/upload/confirm`, 'POST', {
+    kind, path: sign.data.path, cutout: options.cutout === true,
+  });
   return confirm;
 }
 
@@ -72,5 +79,5 @@ export function fileNameFromUrl(url: string) {
 }
 
 export const formatDate = (iso: string) =>
-  new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(iso));
-export const formatDay = (iso: string) => new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium' }).format(new Date(iso));
+  new Intl.DateTimeFormat('pt-BR', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(iso));
+export const formatDay = (iso: string) => new Intl.DateTimeFormat('pt-BR', { dateStyle: 'medium' }).format(new Date(iso));

@@ -131,6 +131,7 @@
   flex: 1;
   font-size: 0.95rem;
   font-weight: 700;
+  font-family: var(--type-display);
 }
 
 .close {
@@ -218,7 +219,7 @@
 
 .label {
   margin: 14px 0 8px;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   color: var(--c-muted);

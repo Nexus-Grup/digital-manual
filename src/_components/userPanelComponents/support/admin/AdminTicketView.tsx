@@ -16,7 +16,7 @@ export async function AdminTicketView({ ticketId }: { ticketId: number }) {
 
   return (
     <section className={page.page}>
-      <Link href={ADMIN_SUPPORT_BASE} className={page.crumb}>← Support inbox</Link>
+      <Link href={ADMIN_SUPPORT_BASE} className={page.crumb}>← Caixa de suporte</Link>
       <div className={page.titleRow}>
         <h1 className={page.title}>{ticket.title}</h1>
         <StatusBadge status={ticket.status} audience="admin" />

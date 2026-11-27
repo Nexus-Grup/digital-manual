@@ -11,7 +11,7 @@ type Props = {
 
 export function InboxChips({ view, counts, current }: Props) {
   return (
-    <nav className={styles.chips} aria-label="Ticket views">
+    <nav className={styles.chips} aria-label="Visões de chamados">
       {ADMIN_VIEWS.map((v) => (
         <Link
           key={v.key}

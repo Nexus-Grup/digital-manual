@@ -8,8 +8,8 @@ export async function request(url: string, method: string, body?: unknown): Prom
     });
     if (res.ok) return null;
     const data = await res.json().catch(() => ({}));
-    return data.error ?? 'Something went wrong';
+    return data.error ?? 'Algo deu errado';
   } catch {
-    return 'Network error. Try again.';
+    return 'Erro de conexão. Tente de novo.';
   }
 }

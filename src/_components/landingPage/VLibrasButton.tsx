@@ -31,15 +31,6 @@ declare global {
 
 type Status = "idle" | "loading" | "ready" | "error";
 
-type VLibrasButtonProps = {
-    t: {
-        open: string;
-        close: string;
-        loading: string;
-        error: string;
-    };
-};
-
 let loader: Promise<VLibrasWidgetApi> | null = null;
 
 function hideFloatingButton() {
@@ -114,13 +105,13 @@ function openApp(api: VLibrasWidgetApi) {
     api.open?.();
 }
 
-export default function VLibrasButton({ t }: VLibrasButtonProps) {
+export default function VLibrasButton() {
     const [status, setStatus] = useState<Status>("idle");
     const [open, setOpen] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     // The avatar lives in <body>, outside React. Next keeps previous pages mounted but hidden (<Activity>),
-    // so when this page is hidden (e.g. switching to /landing-page/en) the cleanup closes the avatar.
+    // so when this page is hidden (e.g. navigating away from /inicio) the cleanup closes the avatar.
     // useLayoutEffect runs the cleanup synchronously before hiding (Next "preserving UI state" guide).
     useLayoutEffect(() => closeApp, []);
 
@@ -194,7 +185,11 @@ export default function VLibrasButton({ t }: VLibrasButtonProps) {
         }
     };
 
-    const label = status === "loading" ? t.loading : open ? t.close : t.open;
+    const label = status === "loading"
+            ? "Carregando a tradução em Libras…"
+            : open
+              ? "Fechar tradução em Libras"
+              : "Abrir tradução em Libras";
 
     return (
         <div className={styles["vlibras-button"]}>
@@ -216,7 +211,7 @@ export default function VLibrasButton({ t }: VLibrasButtonProps) {
             </button>
             {status === "error" ? (
                 <p className={styles["vlibras-button__error"]} role="alert">
-                    {t.error}
+                    Não foi possível carregar o VLibras. Verifique a conexão e tente de novo.
                 </p>
             ) : null}
         </div>

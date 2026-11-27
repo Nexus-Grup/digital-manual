@@ -5,9 +5,9 @@ import { prisma } from '@/lib/prisma';
 import { HttpError, handleError, readBody, requireUser } from '@/lib/companyAccess';
 
 const passwordInput = z.object({
-  currentPassword: z.string().min(1, 'Enter your current password'),
+  currentPassword: z.string().min(1, 'Digite sua senha atual'),
   // bcrypt só considera os primeiros 72 bytes, por isso o limite
-  newPassword: z.string().min(8, 'Use at least 8 characters').max(72, 'Use at most 72 characters'),
+  newPassword: z.string().min(8, 'Use pelo menos 8 caracteres').max(72, 'Use no máximo 72 caracteres'),
 });
 
 // POST /api/profile/password  { currentPassword, newPassword }
@@ -20,14 +20,14 @@ export async function POST(req: Request) {
       where: { id: me.id },
       select: { passwordHash: true },
     });
-    if (!row) throw new HttpError(404, 'User not found');
+    if (!row) throw new HttpError(404, 'Usuário não encontrado');
 
     // 400 (e não 401) para a tela não tratar "senha errada" como sessão expirada
     const valid = await bcrypt.compare(currentPassword, row.passwordHash);
-    if (!valid) throw new HttpError(400, 'Current password is incorrect');
+    if (!valid) throw new HttpError(400, 'A senha atual está incorreta');
 
     if (currentPassword === newPassword) {
-      throw new HttpError(400, 'The new password must be different from the current one');
+      throw new HttpError(400, 'A nova senha precisa ser diferente da atual');
     }
 
     await prisma.$transaction([

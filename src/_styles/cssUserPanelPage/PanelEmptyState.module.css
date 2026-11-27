@@ -1,0 +1,108 @@
+/* "Em breve" state for panel areas that are not built yet */
+.panel-empty {
+    width: 100%;
+    padding-top: 48px;
+    padding-bottom: 48px;
+}
+
+.panel-empty__container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    max-width: 640px;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+.panel-empty__icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    color: var(--btn-tertiary-text);
+    background-color: var(--lp-surface-blue);
+    border-radius: 10px;
+}
+
+.panel-empty__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.panel-empty__tag {
+    font-family: var(--type-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--btn-tertiary-text);
+}
+
+.panel-empty__title {
+    font-family: var(--type-display);
+    font-size: 1.75rem;
+    line-height: 1.2;
+    color: var(--c-text);
+}
+
+.panel-empty__text {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--c-muted);
+}
+
+.panel-empty__shortcuts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.panel-empty__shortcuts-title {
+    font-size: 0.875rem;
+    color: var(--c-muted);
+}
+
+.panel-empty__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+}
+
+/* secondary button */
+.panel-empty__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    font-family: var(--type-display);
+    font-size: 0.875rem;
+    color: var(--btn-secondary-text);
+    text-decoration: none;
+    background-color: var(--btn-secondary-bg);
+    border: 1px solid var(--btn-secondary-border);
+    border-radius: 10px;
+    transition: background-color 0.15s ease;
+}
+
+.panel-empty__link:hover {
+    background-color: var(--btn-secondary-bg-hover);
+}
+
+.panel-empty__link:active {
+    color: var(--btn-secondary-text-active);
+    background-color: var(--btn-secondary-bg-active);
+}
+
+.panel-empty__link:focus-visible {
+    outline: 3px solid var(--btn-focus-ring);
+    outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+    .panel-empty__container {
+        padding-left: 6%;
+        padding-right: 6%;
+    }
+}

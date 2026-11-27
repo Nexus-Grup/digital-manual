@@ -22,14 +22,14 @@ export async function POST(req: Request) {
   try {
     await requireUser();
     const file = (await req.formData()).get('file');
-    if (!(file instanceof File)) throw new HttpError(400, 'No file sent');
-    if (file.size > MAX_SIZE) throw new HttpError(400, 'Logo must be up to 2 MB');
+    if (!(file instanceof File)) throw new HttpError(400, 'Nenhum arquivo enviado');
+    if (file.size > MAX_SIZE) throw new HttpError(400, 'O logo pode ter até 2 MB');
 
     const kind = TYPES[file.type];
-    if (!kind) throw new HttpError(400, 'Use a PNG, JPG or SVG file');
+    if (!kind) throw new HttpError(400, 'Use um arquivo PNG, JPG ou SVG');
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    if (!kind.valid(buffer)) throw new HttpError(400, 'The file content does not match its type');
+    if (!kind.valid(buffer)) throw new HttpError(400, 'O conteúdo do arquivo não corresponde ao tipo');
 
     // Nome aleatório: ninguém adivinha a URL nem sobrescreve o arquivo de outro
     const objectPath = `companies/${randomUUID()}.${kind.ext}`;
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
 
     if (error) {
       console.error('Logo upload failed', error);
-      throw new HttpError(500, 'Could not upload the logo');
+      throw new HttpError(500, 'Não foi possível enviar o logo');
     }
 
     const { data } = supabase.storage.from(LOGO_BUCKET).getPublicUrl(objectPath);

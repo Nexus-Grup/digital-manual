@@ -15,7 +15,6 @@ import {
 import type { SimpleIcon } from "simple-icons";
 import styles from "@/_styles/landingPage/LogoMarquee.module.css";
 import MarqueeViewport from "@/_components/landingPage/MarqueeViewport";
-import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 
 type BrandLogo = {
     icon: SimpleIcon;
@@ -53,7 +52,10 @@ function logoHeight(ratio: number) {
 
 function LogoList({ clone = false }: { clone?: boolean }) {
     return (
-        <ul className={styles["logo-marquee__list"]} aria-hidden={clone || undefined}>
+        <ul
+            className={clone ? `${styles["logo-marquee__list"]} ${styles["logo-marquee__list--clone"]}` : styles["logo-marquee__list"]}
+            aria-hidden={clone || undefined}
+        >
             {BRANDS.map(({ icon, box }) => {
                 const [x, y, width, height] = box;
                 const ratio = width / height;
@@ -83,12 +85,12 @@ function LogoList({ clone = false }: { clone?: boolean }) {
 
 // Infinite single-line logo marquee. The list is rendered twice and the track slides by -50% (CSS only);
 // MarqueeViewport pauses it while it is off-screen.
-export default function LogoMarquee({ t }: { t: Dictionary["marquee"] }) {
+export default function LogoMarquee() {
     return (
         <section className={styles["logo-marquee"]} aria-labelledby="logo-marquee-title">
             <div className={styles["logo-marquee__container"]}>
                 <p className={styles["logo-marquee__title"]} id="logo-marquee-title">
-                    {t.title}
+                    O mercado que queremos transformar: grandes fabricantes de eletrônicos, eletrodomésticos e móveis
                 </p>
                 <MarqueeViewport>
                     <LogoList />

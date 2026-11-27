@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       where: { id: data.companyId, isActive: true },
       select: { id: true },
     });
-    if (!company) throw new HttpError(404, 'Company not found');
+    if (!company) throw new HttpError(404, 'Empresa não encontrada');
 
     const brand = await prisma.brand.create({
       data: {

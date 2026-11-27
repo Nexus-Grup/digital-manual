@@ -35,7 +35,7 @@ function manualPdf(product: NonNullable<Awaited<ReturnType<typeof getPublicProdu
 export async function GET(_req: Request, { params }: Ctx) {
   const { productId } = await params;
   const [product, assembly] = await Promise.all([getPublicProduct(productId), getAssembly(productId)]);
-  if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+  if (!product) return NextResponse.json({ error: 'Produto não encontrado' }, { status: 404 });
   return NextResponse.json({ suggestions: suggestions(product, assembly) });
 }
 

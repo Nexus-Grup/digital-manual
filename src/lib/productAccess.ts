@@ -32,8 +32,8 @@ export async function brandAccess(user: U, brandId: number) {
 export async function requireBrandEditor(brandId: number) {
   const user = await requireUser();
   const a = await brandAccess(user, brandId);
-  if (!a.canView) throw new HttpError(404, 'Brand not found');
-  if (!a.canEdit) throw new HttpError(403, 'You do not have permission to create products in this brand');
+  if (!a.canView) throw new HttpError(404, 'Marca não encontrada');
+  if (!a.canEdit) throw new HttpError(403, 'Você não tem permissão para criar produtos nesta marca');
   return user;
 }
 
@@ -44,17 +44,17 @@ export async function requireProductAccess(productId: number, mode: 'view' | 'ed
     where: { id: productId },
     select: { id: true, brandId: true, code: true },
   });
-  if (!product) throw new HttpError(404, 'Product not found');
+  if (!product) throw new HttpError(404, 'Produto não encontrado');
 
   const a = await brandAccess(user, product.brandId);
-  if (!a.canView) throw new HttpError(404, 'Product not found'); // não revela que existe
-  if (mode === 'edit' && !a.canEdit) throw new HttpError(403, 'You do not have permission to edit this product');
+  if (!a.canView) throw new HttpError(404, 'Produto não encontrado'); // não revela que existe
+  if (mode === 'edit' && !a.canEdit) throw new HttpError(403, 'Você não tem permissão para editar este produto');
   return { user, product, canEdit: a.canEdit };
 }
 
 /** Cada arquivo precisa ser deste produto (não vale reaproveitar URL de outro). */
 export function assertOwnMedia(productId: number, urls: (string | null | undefined)[]) {
   for (const u of urls) {
-    if (u && !isProductMediaUrl(u, productId)) throw new HttpError(400, 'Invalid file');
+    if (u && !isProductMediaUrl(u, productId)) throw new HttpError(400, 'Arquivo inválido');
   }
 }

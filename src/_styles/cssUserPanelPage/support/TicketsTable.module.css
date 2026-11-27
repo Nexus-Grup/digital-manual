@@ -16,23 +16,23 @@
     padding: 0 16px; 
     border: 1px solid var(--c-border); 
     border-radius: 999px; 
-    background: #fff; 
-    color: #111; 
+    background: var(--pn-bg, #fff); 
+    color: var(--pn-text, #111); 
     font: inherit; 
     font-size: 0.85rem; 
     cursor: pointer; 
 }
 .chip:hover { 
-    background: #f5f5f5; 
+    background: var(--pn-hover, #f5f5f5); 
 }
 .chip:focus-visible, .search:focus-visible { 
-    outline: 2px solid #2f7fd0; 
+    outline: 3px solid var(--btn-focus-ring); 
     outline-offset: 2px;
 }
 .active, .active:hover { 
-    background: #111; 
-    border-color: #111; 
-    color: #fff; 
+    background: var(--pn-strong, #111); 
+    border-color: var(--pn-border, #111); 
+    color: var(--pn-on-strong, #fff); 
     font-weight: 700; 
 }
 .search { 
@@ -60,14 +60,14 @@
 }
 .table th { 
     padding: 8px 12px; 
-    border-bottom: 1px solid #222; 
+    border-bottom: 1px solid var(--pn-border, #222); 
     text-align: left; 
     font-size: 0.85rem; 
     font-weight: 700; 
 }
 .table td { 
     padding: 12px; 
-    border-bottom: 1px solid #ddd; 
+    border-bottom: 1px solid var(--pn-border-soft, #ddd); 
     font-size: 0.85rem; 
     vertical-align: middle; 
 }
@@ -75,7 +75,7 @@
     text-align: right; 
 }
 .subject { 
-    color: #111; 
+    color: var(--pn-text, #111); 
     text-decoration: none; 
 }
 .subject:hover { 
@@ -83,16 +83,16 @@
 }
 .kind { 
     display: block; 
-    color: #666; 
-    font-size: 0.7rem; 
+    color: var(--pn-text, #666); 
+    font-size: 0.75rem; 
 }
 .muted { 
-    color: #444; 
+    color: var(--pn-text, #444); 
 }
 .empty { 
     padding: 32px 12px; 
     text-align: center; 
-    color: #555; 
+    color: var(--pn-text, #555); 
 }
 @media (max-width: 800px) { 
     .scroll { 
