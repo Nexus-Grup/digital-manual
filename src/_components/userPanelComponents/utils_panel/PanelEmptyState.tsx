@@ -11,13 +11,15 @@ type Props = {
   text: string;
   /** what the person can do right now instead */
   shortcuts: Shortcut[];
+  /** small label above the title (default "Em breve") */
+  tag?: string;
 };
 
 /**
  * Panel page whose feature is not built yet: says so clearly and points to what already works,
  * instead of an empty screen (Nielsen 1 — visibility of system status; 8 — no dead ends).
  */
-export function PanelEmptyState({ icon: Icon, title, text, shortcuts }: Props) {
+export function PanelEmptyState({ icon: Icon, title, text, shortcuts, tag = 'Em breve' }: Props) {
   return (
     <section className={styles['panel-empty']} aria-labelledby="panel-empty-title">
       <div className={styles['panel-empty__container']}>
@@ -25,7 +27,7 @@ export function PanelEmptyState({ icon: Icon, title, text, shortcuts }: Props) {
           <Icon size={28} />
         </span>
         <div className={styles['panel-empty__heading']}>
-          <p className={styles['panel-empty__tag']}>Em breve</p>
+          <p className={styles['panel-empty__tag']}>{tag}</p>
           <h1 className={styles['panel-empty__title']} id="panel-empty-title">{title}</h1>
           <p className={styles['panel-empty__text']}>{text}</p>
         </div>

@@ -1,0 +1,269 @@
+/* Daily usage line chart (panel indicators). Colors come from the --viz-* tokens (globals.css):
+   validated palette on the default theme, one ink + dash patterns on the contrast themes. */
+
+.usage-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+    padding: 18px;
+    color: var(--pn-text, #111);
+    background: var(--pn-bg, #fff);
+    border: 1px solid var(--pn-border-soft, #e3e6ea);
+    border-radius: 10px;
+}
+
+.usage-chart__head {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.usage-chart__title {
+    font-family: var(--type-display);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.usage-chart__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    list-style: none;
+}
+
+.usage-chart__legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8125rem;
+    color: var(--viz-ink, #666);
+}
+
+.usage-chart__key {
+    flex: 0 0 auto;
+}
+
+/* the plot: crosshair target for pointer and keyboard */
+.usage-chart__plot {
+    position: relative;
+    width: 100%;
+    border-radius: 5px;
+    touch-action: pan-y;
+}
+
+.usage-chart__plot:focus-visible {
+    outline: 2px solid var(--pn-accent, #2b7fd4);
+    outline-offset: 4px;
+}
+
+.usage-chart__svg {
+    display: block;
+    overflow: visible;
+}
+
+.usage-chart__tick {
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    fill: var(--viz-ink, #666);
+}
+
+.usage-chart__end {
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    fill: var(--pn-text, #191919);
+}
+
+.usage-chart__empty {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    padding: 6px 12px;
+    font-size: 0.875rem;
+    color: var(--pn-muted, #4a5160);
+    background: var(--pn-bg, #fff);
+    border-radius: 5px;
+    transform: translate(-50%, -50%);
+}
+
+/* tooltip: values lead, labels follow; line keys, not boxes */
+.usage-chart__tip {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 190px;
+    padding: 10px 12px;
+    pointer-events: none;
+    background: var(--pn-bg, #fff);
+    border: 1px solid var(--pn-border-soft, #e3e6ea);
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(17, 20, 24, 0.12);
+}
+
+/* placed left of the crosshair when it is on the right half */
+.usage-chart__tip--left {
+    translate: -100% 0;
+}
+
+.usage-chart__tip-date {
+    font-size: 0.75rem;
+    color: var(--viz-ink, #666);
+}
+
+.usage-chart__tip-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    list-style: none;
+}
+
+.usage-chart__tip-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.usage-chart__tip-value {
+    min-width: 28px;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.usage-chart__tip-label {
+    font-size: 0.75rem;
+    color: var(--viz-ink, #666);
+}
+
+/* ===== table view ===== */
+.usage-chart__table-wrap {
+    font-size: 0.875rem;
+}
+
+.usage-chart__summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.usage-chart__summary:focus-visible {
+    outline: 2px solid var(--pn-accent, #2b7fd4);
+    outline-offset: 2px;
+}
+
+.usage-chart__scroll {
+    max-height: 320px;
+    overflow: auto;
+}
+
+.usage-chart__table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.usage-chart__th {
+    position: sticky;
+    top: 0;
+    padding: 6px 8px;
+    font-size: 0.75rem;
+    text-align: left;
+    background: var(--pn-bg, #fff);
+    border-bottom: 1px solid var(--pn-border, #b5b5b5);
+}
+
+.usage-chart__td {
+    padding: 6px 8px;
+    font-weight: 400;
+    text-align: left;
+    border-bottom: 1px solid var(--pn-border-soft, #e3e6ea);
+}
+
+.usage-chart__td--num {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+.usage-chart__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* ===== Horizontal bars (accesses per product) ===== */
+.usage-chart__empty-text {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--pn-muted, #4a5160);
+}
+
+.bar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    list-style: none;
+}
+
+.bar-chart__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+}
+
+.bar-chart__name {
+    overflow: hidden;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--pn-text, #111);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bar-chart__name:focus-visible {
+    outline: 2px solid var(--pn-accent, #2b7fd4);
+    outline-offset: 2px;
+}
+
+.bar-chart__brand {
+    font-weight: 400;
+    color: var(--viz-ink, #666);
+}
+
+/* bar grows from a single baseline (left); value outside the tip */
+.bar-chart__track {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.bar-chart__bar {
+    flex: 0 0 auto;
+    min-width: 2px;
+    height: 16px;
+    background: var(--viz-1, #257de0);
+    border-radius: 0 4px 4px 0;
+}
+
+.bar-chart__value {
+    flex: 0 0 auto;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 768px) {
+    .bar-chart__row {
+        grid-template-columns: minmax(140px, 32%) minmax(0, 1fr);
+        align-items: center;
+        gap: 12px;
+    }
+}

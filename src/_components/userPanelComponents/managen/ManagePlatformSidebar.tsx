@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  LayoutDashboard,
   User,
   Building2,
   Tag,
@@ -18,11 +19,14 @@ type NavItem = {
   label: string;
   href: string;
   icon: LucideIcon;
+  /** active only on this exact path (the overview is the parent of the other sections) */
+  exact?: boolean;
 };
 
 // Only pages that exist: companies, brands and products are managed in their own panel pages
 // (the admin sees all of them there). "Relatórios" comes back when its page exists.
 const NAV_ITEMS: NavItem[] = [
+  { label: "Visão geral", href: MANAGE, icon: LayoutDashboard, exact: true },
   { label: "Usuários", href: `${MANAGE}/usuarios`, icon: User },
   { label: "Empresas", href: `${BASE}/empresas`, icon: Building2 },
   { label: "Marcas", href: `${BASE}/marcas`, icon: Tag },
@@ -40,8 +44,8 @@ export function ManagePlatformSidebar() {
       </header>
 
       <nav className={styles.nav} aria-label="Gerenciar plataforma">
-        {NAV_ITEMS.map(({ label, href, icon: Icon }) => {
-          const isActive = pathname === href || pathname.startsWith(`${href}/`);
+        {NAV_ITEMS.map(({ label, href, icon: Icon, exact }) => {
+          const isActive = pathname === href || (!exact && pathname.startsWith(`${href}/`));
 
           return (
             <Link

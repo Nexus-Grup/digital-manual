@@ -40,6 +40,19 @@
   --c-tag-bg: #e3f4e3;
   --c-tag-text: #1f6b2c;
   --c-media-bg: linear-gradient(160deg, #f4f6f5 0%, #e9eeeb 100%);
+  /* ===== charts (panel indicators): validated categorical order, see Indicadores =====
+     ink and grid follow the chart chrome; dashes stay solid on the default theme */
+  --viz-1: #257de0;
+  --viz-2: #f47230;
+  --viz-3: #00b894;
+  --viz-4: #f2a600;
+  --viz-dash-1: none;
+  --viz-dash-2: none;
+  --viz-dash-3: none;
+  --viz-dash-4: none;
+  --viz-grid: #e7e7e7;
+  --viz-axis: #c2c2c2;
+  --viz-ink: #666666;
   --c-shadow: 0 1px 2px rgba(17, 20, 24, 0.06), 0 6px 20px rgba(17, 20, 24, 0.06);
   /* ícones .svg pretos: filtros para ficarem brancos/pretos quando precisar */
   --icon-filter: none;
@@ -136,6 +149,18 @@ html[data-contrast="gray"] {
   --c-tag-bg: #3a3a3a;
   --c-tag-text: #f0f0f0;
   --c-media-bg: #2a2a2a;
+  /* charts: color can't carry identity here, so each series gets its own dash pattern */
+  --viz-1: #f0f0f0;
+  --viz-2: #f0f0f0;
+  --viz-3: #f0f0f0;
+  --viz-4: #f0f0f0;
+  --viz-dash-1: none;
+  --viz-dash-2: 8 4;
+  --viz-dash-3: 2 4;
+  --viz-dash-4: 12 4 2 4;
+  --viz-grid: #444;
+  --viz-axis: #8c8c8c;
+  --viz-ink: #f0f0f0;
   --c-shadow: none;
   --icon-filter: brightness(0) invert(1);
   --icon-inverse-filter: brightness(0);
@@ -248,6 +273,18 @@ html[data-contrast="high"] {
   --c-tag-bg: #000;
   --c-tag-text: #8dff9f;
   --c-media-bg: #000;
+  /* charts: color can't carry identity here, so each series gets its own dash pattern */
+  --viz-1: #ffffff;
+  --viz-2: #ffffff;
+  --viz-3: #ffffff;
+  --viz-4: #ffffff;
+  --viz-dash-1: none;
+  --viz-dash-2: 8 4;
+  --viz-dash-3: 2 4;
+  --viz-dash-4: 12 4 2 4;
+  --viz-grid: #5c5c5c;
+  --viz-axis: #ffffff;
+  --viz-ink: #ffffff;
   --c-shadow: none;
   --icon-filter: brightness(0) invert(1);
   --icon-inverse-filter: brightness(0);

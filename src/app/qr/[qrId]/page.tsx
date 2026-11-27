@@ -1,5 +1,6 @@
 import { notFound, redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
+import { recordEvent } from '@/lib/analytics';
 
 // Com Cache Components ligado, esta rota le o banco e faz redirect, entao ela precisa ser bloqueante.
 export const instant = false;
@@ -19,5 +20,7 @@ export default async function QrRedirectPage({ params }: { params: Promise<{ qrI
   // token inexistente ou QR desativado
   if (!qr) notFound();
 
+  // scan counted for the panel indicators (before redirect, which throws)
+  await recordEvent(qr.productId, 'QR_SCAN', 'qr');
   redirect(`/produtos/${qr.productId}`);
 }

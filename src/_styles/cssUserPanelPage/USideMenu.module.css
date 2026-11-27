@@ -122,7 +122,13 @@
 
 /* ===== tablet and desktop: icon rail that opens on hover/focus ===== */
 @media (min-width: 768px) {
+  /* the panel stage is the scroll container: the rail sticks to its top and keeps the full height,
+     so it doesn't scroll away with long pages */
   .nav {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    align-self: flex-start;
     height: 100%;
     width: 56px;
     overflow: hidden;

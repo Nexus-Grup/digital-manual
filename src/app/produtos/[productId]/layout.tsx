@@ -8,6 +8,7 @@ import { getVideos } from "@/_data/getVideos";
 import { getAudios } from "@/_data/geAudios";
 import { getProductSections } from "@/_data/productSections";
 import ReadAloud from "@/_components/productComponents/ReadAloud";
+import ProductTracker from "@/_components/productComponents/ProductTracker";
 import styles from "@/_styles/cssProductPage/ProductLayout.module.css";
 
 export const metadata: Metadata = {
@@ -72,6 +73,8 @@ export default function RootLayout({
           <HubLoader params={params} />
         </Suspense>
         <ReadAloud lang="pt-BR" />
+        {/* counts visits for the panel indicators (renders nothing) */}
+        <ProductTracker />
       </VideosProvider>
     </main>
   );
