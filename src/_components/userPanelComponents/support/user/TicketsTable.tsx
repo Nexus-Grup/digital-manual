@@ -28,7 +28,7 @@ export function TicketsTable({ tickets }: { tickets: TicketListItem[] }) {
   return (
     <>
       <div className={styles.toolbar}>
-        <div className={styles.filters} role="group" aria-label="Filter by status">
+        <div className={styles.filters} role="group" aria-label="Filtrar por status">
           {FILTERS.map((f) => (
             <button
               key={f.key}
@@ -43,11 +43,11 @@ export function TicketsTable({ tickets }: { tickets: TicketListItem[] }) {
           ))}
         </div>
         <label>
-          <span className={styles.srOnly}>Search tickets</span>
+          <span className={styles.srOnly}>Buscar chamados</span>
           <input
             type="search"
             className={styles.search}
-            placeholder="Search tickets..."
+            placeholder="Buscar chamados..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -55,18 +55,18 @@ export function TicketsTable({ tickets }: { tickets: TicketListItem[] }) {
       </div>
 
       {tickets.length === 0 ? (
-        <p className={styles.empty}>You haven&apos;t opened any tickets yet. Use &quot;Open ticket&quot; when you need help.</p>
+        <p className={styles.empty}>Você ainda não abriu nenhum chamado. Use &quot;Abrir chamado&quot; quando precisar de ajuda.</p>
       ) : (
         <div className={styles.scroll}>
           <table className={styles.table}>
             <thead>
               <tr>
                 <th scope="col">N°</th>
-                <th scope="col">Subject</th>
-                <th scope="col">Related to</th>
+                <th scope="col">Assunto</th>
+                <th scope="col">Relacionado a</th>
                 <th scope="col">Status</th>
-                <th scope="col">Updated</th>
-                <th scope="col">Action</th>
+                <th scope="col">Atualizado</th>
+                <th scope="col">Ação</th>
               </tr>
             </thead>
             <tbody>
@@ -95,7 +95,7 @@ export function TicketsTable({ tickets }: { tickets: TicketListItem[] }) {
               ))}
             </tbody>
           </table>
-          {visible.length === 0 && <p className={styles.empty}>No tickets match your filters.</p>}
+          {visible.length === 0 && <p className={styles.empty}>Nenhum chamado corresponde aos seus filtros.</p>}
         </div>
       )}
     </>

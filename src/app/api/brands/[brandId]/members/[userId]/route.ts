@@ -42,7 +42,7 @@ export async function DELETE(_req: Request, { params }: Ctx) {
         where: { id: brandId, isActive: true },
         select: { companyId: true },
       });
-      if (!brand) throw new HttpError(404, 'Brand not found');
+      if (!brand) throw new HttpError(404, 'Marca não encontrada');
       companyId = brand.companyId;
     } else {
       const { brand } = await requireBrandManager(brandId);

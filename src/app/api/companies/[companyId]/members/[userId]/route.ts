@@ -51,7 +51,7 @@ export async function DELETE(_req: Request, { params }: Ctx) {
       where: { userId_companyId: { userId, companyId } },
       select: { id: true },
     });
-    if (!membership) throw new HttpError(404, 'This user is not a member of the company');
+    if (!membership) throw new HttpError(404, 'Este usuário não é membro da empresa');
 
     await assertNotLastOwner(companyId, userId);
 

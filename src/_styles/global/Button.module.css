@@ -1,0 +1,112 @@
+/*
+ * Project buttons: 3 levels with the brand book colors (tokens --btn-* in globals.css, which also
+ * cover the grayscale and high contrast modes). Use the base class with one level:
+ *
+ *   <button className={`${button["button"]} ${button["button--primary"]}`}>Salvar</button>
+ *
+ * primary   = main action of the screen (one per area)
+ * secondary = alternative actions (Cancelar, Voltar, Ver detalhes)
+ * tertiary  = low-emphasis actions inside content (links-like: Editar, Remover, Ver mais)
+ *
+ * Material 3 buttons (md-filled / md-outlined / md-text) get the same tokens in globals.css.
+ */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 20px;
+    font-family: var(--type-display);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+.button:focus-visible {
+    outline: 3px solid var(--btn-focus-ring);
+    outline-offset: 2px;
+}
+
+.button:active:not(:disabled):not([aria-disabled="true"]) {
+    transform: scale(0.98);
+}
+
+.button:disabled,
+.button[aria-disabled="true"] {
+    color: var(--btn-disabled-text);
+    background-color: var(--btn-disabled-bg);
+    border-color: var(--btn-disabled-border);
+    cursor: not-allowed;
+}
+
+/* small variant for dense areas (tables, toolbars); keeps a 40px target */
+.button--small {
+    min-height: 40px;
+    padding: 0 14px;
+    font-size: 0.875rem;
+}
+
+/* ===== PRIMARY ===== */
+.button--primary {
+    color: var(--btn-primary-text);
+    background-color: var(--btn-primary-bg);
+    border-color: var(--btn-primary-bg);
+}
+
+.button--primary:hover:not(:disabled):not([aria-disabled="true"]) {
+    background-color: var(--btn-primary-bg-hover);
+    border-color: var(--btn-primary-bg-hover);
+}
+
+.button--primary:active:not(:disabled):not([aria-disabled="true"]) {
+    background-color: var(--btn-primary-bg-active);
+    border-color: var(--btn-primary-bg-active);
+}
+
+/* ===== SECONDARY ===== */
+.button--secondary {
+    color: var(--btn-secondary-text);
+    background-color: var(--btn-secondary-bg);
+    border-color: var(--btn-secondary-border);
+}
+
+.button--secondary:hover:not(:disabled):not([aria-disabled="true"]) {
+    background-color: var(--btn-secondary-bg-hover);
+}
+
+.button--secondary:active:not(:disabled):not([aria-disabled="true"]) {
+    color: var(--btn-secondary-text-active);
+    background-color: var(--btn-secondary-bg-active);
+}
+
+/* ===== TERTIARY ===== */
+.button--tertiary {
+    padding: 0 12px;
+    color: var(--btn-tertiary-text);
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.button--tertiary:hover:not(:disabled):not([aria-disabled="true"]) {
+    background-color: var(--btn-tertiary-bg-hover);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.button--tertiary:active:not(:disabled):not([aria-disabled="true"]) {
+    background-color: var(--btn-tertiary-bg-active);
+}
+
+.button--tertiary:disabled,
+.button--tertiary[aria-disabled="true"] {
+    background-color: transparent;
+    border-color: transparent;
+}

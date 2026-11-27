@@ -56,6 +56,7 @@
     font-size: 1.5rem;
     font-weight: 700;
     line-height: 1.25;
+    font-family: var(--type-display);
 }
 
 .manual__name {
@@ -85,21 +86,27 @@
     padding-left: 16px;
     padding-right: 16px;
     font-weight: 700;
-    color: var(--c-text);
     text-decoration: none;
-    background: var(--c-bg);
-    border: 1px solid var(--c-border);
     border-radius: 10px;
-    transition: background 0.15s, color 0.15s;
+    transition: background-color 0.15s, color 0.15s;
+
+    /* secondary button */
+    color: var(--btn-secondary-text);
+    background-color: var(--btn-secondary-bg);
+    border: 1px solid var(--btn-secondary-border);
 }
 
 .manual__pdf:hover {
-    color: var(--c-inverse-text);
-    background: var(--c-inverse-bg);
+    background-color: var(--btn-secondary-bg-hover);
+}
+
+.manual__pdf:active {
+    color: var(--btn-secondary-text-active);
+    background-color: var(--btn-secondary-bg-active);
 }
 
 .manual__pdf:focus-visible {
-    outline: 3px solid var(--c-accent);
+    outline: 3px solid var(--btn-focus-ring);
     outline-offset: 2px;
 }
 
@@ -235,6 +242,7 @@
 .manual__result-title {
     font-size: 0.9375rem;
     font-weight: 700;
+    font-family: var(--type-display);
 }
 
 .manual__result-count {
@@ -296,6 +304,7 @@
     color: var(--c-muted);
     text-transform: uppercase;
     letter-spacing: 0.04em;
+    font-family: var(--type-display);
 }
 
 .manual__toc-list {
@@ -462,6 +471,7 @@
     font-size: 1.125em;
     font-weight: 700;
     line-height: 1.35;
+    font-family: var(--type-display);
 }
 
 .manual__section-title {
@@ -469,6 +479,7 @@
     font-weight: 700;
     line-height: 1.3;
     scroll-margin-top: 16px;
+    font-family: var(--type-display);
 }
 
 .manual__section-title:focus {
@@ -571,6 +582,7 @@
 
 .manual__callout-title {
     font-weight: 700;
+    font-family: var(--type-display);
 }
 
 /* ----- tables ----- */

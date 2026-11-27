@@ -36,7 +36,7 @@ export function Modal({ label, onClose, children, bare = false }: Props) {
       }}
     >
       <div className={styles.inner}>
-        <button type="button" className={styles.close} aria-label="Close" onClick={onClose}>
+        <button type="button" className={styles.close} aria-label="Fechar" onClick={onClose}>
           <X size={20} aria-hidden />
         </button>
         {children}

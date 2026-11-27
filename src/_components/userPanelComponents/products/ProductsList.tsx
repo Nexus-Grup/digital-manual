@@ -11,7 +11,7 @@ import { KebabMenu } from './KebabMenu';
 import { ProductDetailsModal } from './ProductDetailsModal';
 import { formatDate } from './productApi';
 
-const BASE = '/user-panel/products';
+const BASE = '/painel/produtos';
 
 export type ListFilters = {
   brandId: string;
@@ -69,59 +69,59 @@ export function ProductsList({ items, total, pages, pageSize, summary, filters, 
   const to = Math.min(filters.page * pageSize, total);
 
   const pill = (p: ProductListItem) =>
-    p.status === 'DRAFT' ? { text: 'Draft', cls: styles.pillGray } : p.complete ? { text: 'Complete', cls: styles.pillGreen } : { text: 'Incomplete', cls: styles.pillYellow };
+    p.status === 'DRAFT' ? { text: 'Rascunho', cls: styles.pillGray } : p.complete ? { text: 'Completo', cls: styles.pillGreen } : { text: 'Incompleto', cls: styles.pillYellow };
 
   const TABS: { key: ListFilters['tab']; label: string; n: number; cls: string }[] = [
-    { key: 'all', label: 'All Products', n: summary.all, cls: styles.tabBlue },
-    { key: 'complete', label: 'Complete', n: summary.complete, cls: styles.tabGreen },
-    { key: 'incomplete', label: 'Incomplete', n: summary.incomplete, cls: styles.tabYellow },
-    { key: 'draft', label: 'Draft', n: summary.draft, cls: styles.tabGray },
+    { key: 'all', label: 'Todos os produtos', n: summary.all, cls: styles.tabBlue },
+    { key: 'complete', label: 'Completo', n: summary.complete, cls: styles.tabGreen },
+    { key: 'incomplete', label: 'Incompleto', n: summary.incomplete, cls: styles.tabYellow },
+    { key: 'draft', label: 'Rascunho', n: summary.draft, cls: styles.tabGray },
   ];
 
   return (
     <section className={styles.page}>
       <header className={styles.head}>
-        <h1 className={styles.title}>Products</h1>
-        <p className={styles.sub}>Add a new product to your brand</p>
+        <h1 className={styles.title}>Produtos</h1>
+        <p className={styles.sub}>Adicione um novo produto à sua marca</p>
       </header>
 
       <div className={styles.toolbar}>
         <div className={styles.filters}>
-          <select className={styles.select} aria-label="Brand" value={filters.brandId} onChange={(e) => go({ brandId: e.target.value })}>
-            <option value="">All Brands</option>
+          <select className={styles.select} aria-label="Marca" value={filters.brandId} onChange={(e) => go({ brandId: e.target.value })}>
+            <option value="">Todas as marcas</option>
             {brands.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
           </select>
           <select
             className={styles.select}
-            aria-label="Category"
+            aria-label="Categoria"
             value={filters.category}
             onChange={(e) => go({ category: e.target.value, subcategory: '' })}
           >
-            <option value="">All Categories</option>
+            <option value="">Todas as categorias</option>
             {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
           </select>
           {(showFilters || isList) && (
-            <select className={styles.select} aria-label="Sub category" value={filters.subcategory} onChange={(e) => go({ subcategory: e.target.value })}>
-              <option value="">All Sub Categories</option>
+            <select className={styles.select} aria-label="Subcategoria" value={filters.subcategory} onChange={(e) => go({ subcategory: e.target.value })}>
+              <option value="">Todas as subcategorias</option>
               {subOptions.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
             </select>
           )}
           <label className={styles.search}>
             <Search size={14} aria-hidden />
-            <input type="search" placeholder="Search products ...." aria-label="Search products" value={q} onChange={(e) => setQ(e.target.value)} />
+            <input type="search" placeholder="Buscar produtos..." aria-label="Buscar produtos" value={q} onChange={(e) => setQ(e.target.value)} />
           </label>
         </div>
 
         <div className={styles.actions}>
           <button type="button" className={styles.pillBtn} aria-pressed={showFilters} onClick={() => setShowFilters((v) => !v)}>
-            <SlidersHorizontal size={13} aria-hidden /> Filters
+            <SlidersHorizontal size={13} aria-hidden /> Filtros
           </button>
           <button type="button" className={styles.pillBtn} onClick={() => go({ view: isList ? 'overview' : 'list' }, true)}>
-            {isList ? <LayoutGrid size={13} aria-hidden /> : <List size={13} aria-hidden />} {isList ? 'Overview' : 'List'}
+            {isList ? <LayoutGrid size={13} aria-hidden /> : <List size={13} aria-hidden />} {isList ? 'Visão geral' : 'Lista'}
           </button>
           {canCreate && (
-            <Link href={`${BASE}/new`} className={styles.pillBtn}>
-              <Plus size={13} aria-hidden /> Add Product
+            <Link href={`${BASE}/novo`} className={styles.pillBtn}>
+              <Plus size={13} aria-hidden /> Adicionar produto
             </Link>
           )}
         </div>
@@ -130,13 +130,13 @@ export function ProductsList({ items, total, pages, pageSize, summary, filters, 
       {!isList && (
         <>
           <div className={styles.summary}>
-            <div className={styles.summaryCard}><span className={styles.summaryLabel}>All Products</span><strong>{summary.all}</strong><small>Total products</small></div>
-            <div className={styles.summaryCard}><span className={`${styles.summaryLabel} ${styles.green}`}>Published</span><strong>{summary.published}</strong><small>Ready to access</small></div>
-            <div className={styles.summaryCard}><span className={`${styles.summaryLabel} ${styles.yellow}`}>Draft</span><strong>{summary.draft}</strong><small>Not published</small></div>
-            <div className={styles.summaryCard}><span className={`${styles.summaryLabel} ${styles.gray}`}>Incomplete</span><strong>{summary.incomplete}</strong><small>Missing content</small></div>
+            <div className={styles.summaryCard}><span className={styles.summaryLabel}>Todos os produtos</span><strong>{summary.all}</strong><small>Total de produtos</small></div>
+            <div className={styles.summaryCard}><span className={`${styles.summaryLabel} ${styles.green}`}>Publicado</span><strong>{summary.published}</strong><small>Prontos para acesso</small></div>
+            <div className={styles.summaryCard}><span className={`${styles.summaryLabel} ${styles.yellow}`}>Rascunho</span><strong>{summary.draft}</strong><small>Não publicado</small></div>
+            <div className={styles.summaryCard}><span className={`${styles.summaryLabel} ${styles.gray}`}>Incompleto</span><strong>{summary.incomplete}</strong><small>Conteúdo pendente</small></div>
           </div>
 
-          <div className={styles.tabs} role="tablist" aria-label="Product status">
+          <div className={styles.tabs} role="tablist" aria-label="Status do produto">
             {TABS.map((t) => (
               <button key={t.key} type="button" role="tab" aria-selected={filters.tab === t.key} className={`${styles.tab} ${t.cls}`} onClick={() => go({ tab: t.key })}>
                 {t.label} · {t.n}
@@ -149,13 +149,13 @@ export function ProductsList({ items, total, pages, pageSize, summary, filters, 
       {items.length === 0 ? (
         <div className={styles.empty}>
           <Package size={28} aria-hidden />
-          <p>No products found.</p>
+          <p>Nenhum produto encontrado.</p>
         </div>
       ) : isList ? (
         <div className={styles.tableWrap}>
           <table className={styles.table}>
             <thead>
-              <tr><th>Product</th><th>Category</th><th>Company</th><th>Brand</th><th>Status</th><th>Updated</th><th>Edit</th></tr>
+              <tr><th>Produto</th><th>Categoria</th><th>Empresa</th><th>Marca</th><th>Status</th><th>Atualizado</th><th>Editar</th></tr>
             </thead>
             <tbody>
               {items.map((p) => (
@@ -169,7 +169,7 @@ export function ProductsList({ items, total, pages, pageSize, summary, filters, 
                   <td>{labelOf(CATEGORIES, p.category)}</td>
                   <td>{p.companyName}</td>
                   <td>{p.brandName}</td>
-                  <td><span className={`${styles.pill} ${p.status === 'PUBLISHED' ? styles.pillGreen : styles.pillYellow}`}>{p.status === 'PUBLISHED' ? 'Published' : 'Draft'}</span></td>
+                  <td><span className={`${styles.pill} ${p.status === 'PUBLISHED' ? styles.pillGreen : styles.pillYellow}`}>{p.status === 'PUBLISHED' ? 'Publicado' : 'Rascunho'}</span></td>
                   <td><time dateTime={p.updatedAt} suppressHydrationWarning>{formatDate(p.updatedAt)}</time></td>
                   <td><RowMenu p={p} onDetails={() => setDetails(p.id)} /></td>
                 </tr>
@@ -199,10 +199,10 @@ export function ProductsList({ items, total, pages, pageSize, summary, filters, 
       )}
 
       <footer className={styles.pager}>
-        <span>Showing {from}–{to} of {total} products</span>
+        <span>Mostrando {from}–{to} de {total} produtos</span>
         <div className={styles.pagerBtns}>
-          <button type="button" aria-label="Previous page" disabled={filters.page <= 1} onClick={() => go({ page: filters.page - 1 }, true)}><ChevronLeft size={20} aria-hidden /></button>
-          <button type="button" aria-label="Next page" disabled={filters.page >= pages} onClick={() => go({ page: filters.page + 1 }, true)}><ChevronRight size={20} aria-hidden /></button>
+          <button type="button" aria-label="Página anterior" disabled={filters.page <= 1} onClick={() => go({ page: filters.page - 1 }, true)}><ChevronLeft size={20} aria-hidden /></button>
+          <button type="button" aria-label="Próxima página" disabled={filters.page >= pages} onClick={() => go({ page: filters.page + 1 }, true)}><ChevronRight size={20} aria-hidden /></button>
         </div>
       </footer>
 
@@ -213,15 +213,15 @@ export function ProductsList({ items, total, pages, pageSize, summary, filters, 
 
 function RowMenu({ p, onDetails }: { p: ProductListItem; onDetails: () => void }) {
   return (
-    <KebabMenu label={`Actions for ${p.name}`}>
+    <KebabMenu label={`Ações de ${p.name}`}>
       {(close) => (
         <>
           <button type="button" className={styles.panelItem} onClick={() => { close(); onDetails(); }}>
-            <FileText size={14} aria-hidden /> View details
+            <FileText size={14} aria-hidden /> Ver detalhes
           </button>
           {p.canEdit && (
-            <Link href={`${BASE}/${p.id}/edit`} className={styles.panelItem} onClick={close}>
-              <Package size={14} aria-hidden /> Edit product
+            <Link href={`${BASE}/${p.id}/editar`} className={styles.panelItem} onClick={close}>
+              <Package size={14} aria-hidden /> Editar produto
             </Link>
           )}
         </>

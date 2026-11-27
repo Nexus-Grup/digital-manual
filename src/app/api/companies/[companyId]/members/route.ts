@@ -10,13 +10,13 @@ export async function POST(req: Request, { params }: { params: Promise<{ company
     const { userId, companyRole } = await readBody(req, addMemberInput);
 
     const user = await prisma.user.findFirst({ where: { id: userId, isActive: true }, select: { id: true } });
-    if (!user) throw new HttpError(404, 'User not found');
+    if (!user) throw new HttpError(404, 'Usuário não encontrado');
 
     const already = await prisma.userCompany.findUnique({
       where: { userId_companyId: { userId, companyId } },
       select: { id: true },
     });
-    if (already) throw new HttpError(409, 'User is already in this company');
+    if (already) throw new HttpError(409, 'O usuário já está nesta empresa');
 
     await prisma.userCompany.create({ data: { userId, companyId, companyRole } });
     return NextResponse.json({ ok: true }, { status: 201 });

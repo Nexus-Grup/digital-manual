@@ -49,7 +49,7 @@ function article(label: string) {
 
 /** Builds every searchable piece of knowledge about the product. */
 function buildDocs(product: PublicProduct, assembly: ProductAssembly | null, manual: ManualChunk[], pdfUrl: string | null): Doc[] {
-  const base = `/products/${product.id}`;
+  const base = `/produtos/${product.id}`;
   const docs: Doc[] = [];
   const add = (d: Omit<Doc, 'terms'>, extra = '') => docs.push({ ...d, terms: terms(`${d.title} ${d.text} ${extra}`) });
 
@@ -71,13 +71,13 @@ function buildDocs(product: PublicProduct, assembly: ProductAssembly | null, man
 
   // highlights
   for (const c of product.information?.cards ?? []) {
-    add({ kind: 'highlight', title: c.title, text: c.description ?? '', source: { label: 'Informações', href: `${base}/information` } });
+    add({ kind: 'highlight', title: c.title, text: c.description ?? '', source: { label: 'Informações', href: `${base}/informacoes` } });
   }
 
   // description (split so the best sentences can be quoted)
   const about = product.information?.description ?? product.description ?? '';
   for (const s of sentences(about)) {
-    add({ kind: 'about', title: product.name, text: s, source: { label: 'Informações', href: `${base}/information` } });
+    add({ kind: 'about', title: product.name, text: s, source: { label: 'Informações', href: `${base}/informacoes` } });
   }
 
   // assembly steps
@@ -88,7 +88,7 @@ function buildDocs(product: PublicProduct, assembly: ProductAssembly | null, man
         title: step.name,
         text: step.description ?? '',
         meta: { letter: step.label },
-        source: { label: `Montagem: passo ${step.label}`, href: `${base}/assembly?passo=${step.label}` },
+        source: { label: `Montagem: passo ${step.label}`, href: `${base}/montagem?passo=${step.label}` },
       },
       `passo etapa montagem montar ${step.label}`,
     );
@@ -171,7 +171,7 @@ export function answerQuestion(
   pdfUrl: string | null,
 ): AssistantAnswer {
   const q = normalize(question);
-  const base = `/products/${product.id}`;
+  const base = `/produtos/${product.id}`;
   const steps = assembly?.steps ?? [];
 
   // small talk
@@ -189,7 +189,7 @@ export function answerQuestion(
         `A montagem tem ${steps.length} ${steps.length === 1 ? 'passo' : 'passos'}:`,
         ...steps.map((s) => `${s.label}. ${s.name}`),
       ],
-      sources: [{ label: 'Abrir a montagem', href: `${base}/assembly` }],
+      sources: [{ label: 'Abrir a montagem', href: `${base}/montagem` }],
     };
   }
 
@@ -200,7 +200,7 @@ export function answerQuestion(
     if (step) {
       return {
         paragraphs: [`Passo ${step.label}: ${step.name}.`, ...(step.description ? [ensureDot(step.description)] : [])],
-        sources: [{ label: `Ver o passo ${step.label}`, href: `${base}/assembly?passo=${step.label}` }],
+        sources: [{ label: `Ver o passo ${step.label}`, href: `${base}/montagem?passo=${step.label}` }],
       };
     }
   }

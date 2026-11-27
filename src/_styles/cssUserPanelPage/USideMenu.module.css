@@ -8,10 +8,15 @@
   background: #fff;
   border-right: 1px solid var(--c-border);
   transition: width 0.2s ease;
+  /* lets the width animate up to max-content (Chrome/Edge 129+; elsewhere it opens without the slide) */
+  interpolate-size: allow-keywords;
 }
 
-.nav:hover {
-  width: 224px;
+/* opens as wide as the longest label ("Visão geral da empresa"), so no text is cut */
+.nav:hover,
+.nav:focus-within {
+  width: max-content;
+  min-width: 224px;
 }
 
 .groups {
@@ -29,7 +34,7 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  padding: 8px 13px;
+  padding: 8px 16px 8px 13px;
   border: none;
   border-radius: 6px;
   background: transparent;
@@ -60,7 +65,8 @@
   transition: opacity 0.2s ease;
 }
 
-.nav:hover .label {
+.nav:hover .label,
+.nav:focus-within .label {
   opacity: 1;
 }
 

@@ -5,22 +5,7 @@ import Image from 'next/image';
 import styles from '@/_styles/cssProductPage/ReadAloud.module.css';
 import IconAudio from '@/_assets/image/hub icon/icone-audio.svg';
 
-type Labels = {
-  titleReading: string;
-  titlePaused: string;
-  titleDone: string;
-  titleError: string;
-  fab: string;
-  pause: string;
-  resume: string;
-  replay: string;
-  close: string;
-  missingVoice: string;
-  error: string;
-};
-
-// pt-BR defaults (product pages); the landing page passes translated labels.
-const DEFAULT_LABELS: Labels = {
+const t = {
   titleReading: 'Lendo em voz alta',
   titlePaused: 'Leitura pausada',
   titleDone: 'Leitura concluída',
@@ -37,7 +22,6 @@ const DEFAULT_LABELS: Labels = {
 type Props = {
   /** idioma da voz (ex.: 'pt-BR', 'en-US'). Depois liga no botão de idioma do header. */
   lang?: string;
-  labels?: Labels;
 };
 
 type Chunk = { start: number; end: number };
@@ -112,7 +96,7 @@ function pickVoice(lang: string) {
 const isGoogleOnline = (v: SpeechSynthesisVoice | null) =>
   Boolean(v && !v.localService && v.name.toLowerCase().includes('google'));
 
-export default function ReadAloud({ lang = 'pt-BR', labels: t = DEFAULT_LABELS }: Props) {
+export default function ReadAloud({ lang = 'pt-BR' }: Props) {
   const [sel, setSel] = useState<Sel | null>(null);
   const [text, setText] = useState<string | null>(null);
   const [status, setStatus] = useState<Status>('reading');

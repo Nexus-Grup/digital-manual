@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import styles from "@/_styles/landingPage/Hero.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 import { SearchIcon } from "@/_components/landingPage/Icons";
+import { productSearchHref, type ShowcaseCategory, type ShowcaseSubcategory } from "@/_data/showcase";
 
 type HeroSearchProps = {
     t: {
@@ -24,7 +25,7 @@ type HeroSearchProps = {
     pulse?: boolean;
 };
 
-// Manual search for end users: name, model or product code. Results live at /products?q=...
+// Manual search for end users: name, model or product code. Results live at /produtos?busca=...
 export default function HeroSearch({
     t,
     id = "hero-search",
@@ -37,13 +38,15 @@ export default function HeroSearch({
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const query = String(new FormData(event.currentTarget).get("q") ?? "").trim();
-        const params = new URLSearchParams();
-        if (query) params.set("q", query);
-        if (category) params.set("category", category);
-        if (category && subcategory) params.set("sub", subcategory);
-        const search = params.toString();
-        router.push(search ? `/products?${search}` : "/products");
+        const query = String(new FormData(event.currentTarget).get("busca") ?? "");
+        // results page: /produtos?busca=...&categoria=...&tipo=... (keeps the active filters on /produtos)
+        router.push(
+            productSearchHref({
+                query,
+                category: (category ?? null) as ShowcaseCategory | null,
+                subcategory: (subcategory ?? null) as ShowcaseSubcategory | null,
+            }),
+        );
     };
 
     return (
@@ -63,7 +66,7 @@ export default function HeroSearch({
                         id={id}
                         suppressHydrationWarning
                         className={styles["hero__search-field"]}
-                        name="q"
+                        name="busca"
                         type="search"
                         value={defaultValue}
                         placeholder={t.placeholder}

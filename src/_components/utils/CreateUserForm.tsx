@@ -39,7 +39,7 @@ type CompanyProps = CommonProps & {
   variant: "company";
   /** Empresas onde o usuário logado é OWNER (opções do dropdown) */
   companies: CompanyOption[];
-  /** Empresa atual/selecionada por padrão (recebe o badge "Current company") */
+  /** Empresa atual/selecionada por padrão (recebe o badge "Empresa atual") */
   defaultCompanyId?: number;
   onSubmit: (values: CompanyCreateUserValues) => void | Promise<void>;
 };
@@ -47,14 +47,14 @@ type CompanyProps = CommonProps & {
 export type CreateUserFormProps = AdminProps | CompanyProps;
 
 const GLOBAL_ROLES: { value: GlobalRole; description: string }[] = [
-  { value: "USER", description: "Standard platform account. No global administration access." },
-  { value: "ADMIN", description: "Full platform administration access." },
+  { value: "USER", description: "Conta padrão da plataforma, sem acesso à administração geral." },
+  { value: "ADMIN", description: "Acesso total à administração da plataforma." },
 ];
 
 const COMPANY_ROLES: { value: CompanyRole; label: string }[] = [
-  { value: "OWNER", label: "Owner" },
-  { value: "MANAGER", label: "Manager"},
-  { value: "MEMBER", label: "Member" },
+  { value: "OWNER", label: "Proprietário" },
+  { value: "MANAGER", label: "Gerente"},
+  { value: "MEMBER", label: "Membro" },
 ];
 
 function generatePassword(length = 14) {
@@ -94,7 +94,7 @@ export function CreateUserForm(props: CreateUserFormProps) {
         await props.onSubmit({ ...values, role });
       } else {
         if (companyId === "") {
-          toast.error("Select a company.");
+          toast.error("Selecione uma empresa.");
           return;
         }
         await props.onSubmit({ ...values, companyRole, companyId });
@@ -102,38 +102,38 @@ export function CreateUserForm(props: CreateUserFormProps) {
     } catch (err) {
       // quem chama o formulário normalmente mostra o próprio toast de erro;
       // este cobre o caso em que o onSubmit lança uma exceção
-      toast.error(err instanceof Error ? err.message : "Could not create the user. Try again.");
+      toast.error(err instanceof Error ? err.message : "Não foi possível criar o usuário. Tente de novo.");
     }
   }
 
   return (
     <form className={styles.card} onSubmit={handleSubmit}>
       <header className={styles.header}>
-        <h2 className={styles.title}>Create user</h2>
+        <h2 className={styles.title}>Criar usuário</h2>
         <p className={styles.subtitle}>
-          {variant === "admin" ? "Register a new user." : "Register a new company user."}
+          {variant === "admin" ? "Cadastre um novo usuário." : "Cadastre um novo usuário da empresa."}
         </p>
       </header>
 
       <div className={styles.body}>
         <div className={styles.row}>
           <div className={styles.field}>
-            <label htmlFor="firstName">First name*</label>
+            <label htmlFor="firstName">Nome*</label>
             <input
               id="firstName"
               className={styles.input}
-              placeholder="First name"
+              placeholder="Nome"
               value={values.firstName}
               onChange={set("firstName")}
               required
             />
           </div>
           <div className={styles.field}>
-            <label htmlFor="lastName">Last name*</label>
+            <label htmlFor="lastName">Sobrenome*</label>
             <input
               id="lastName"
               className={styles.input}
-              placeholder="Last name"
+              placeholder="Sobrenome"
               value={values.lastName}
               onChange={set("lastName")}
               required
@@ -142,11 +142,11 @@ export function CreateUserForm(props: CreateUserFormProps) {
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="username">Username*</label>
+          <label htmlFor="username">Nome de usuário*</label>
           <input
             id="username"
             className={styles.input}
-            placeholder="e.g. john.smith"
+            placeholder="ex.: joao.silva"
             value={values.username}
             onChange={set("username")}
             required
@@ -154,12 +154,12 @@ export function CreateUserForm(props: CreateUserFormProps) {
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="email">Email address*</label>
+          <label htmlFor="email">E-mail*</label>
           <input
             id="email"
             type="email"
             className={styles.input}
-            placeholder="user@company.com"
+            placeholder="usuario@empresa.com"
             value={values.email}
             onChange={set("email")}
             required
@@ -169,7 +169,7 @@ export function CreateUserForm(props: CreateUserFormProps) {
         {/* ---------- Variante ADMIN: role global ---------- */}
         {props.variant === "admin" && (
           <fieldset className={styles.fieldset}>
-            <legend>Access</legend>
+            <legend>Acesso</legend>
             <div className={styles.accessList}>
               {GLOBAL_ROLES.map((r) => (
                 <label
@@ -192,7 +192,7 @@ export function CreateUserForm(props: CreateUserFormProps) {
                     )}
                     <span className={styles.accessName}>{r.value}</span>
                     {r.value === "USER" && (
-                      <span className={`${styles.badge} ${styles.badgeGreen}`}>Default</span>
+                      <span className={`${styles.badge} ${styles.badgeGreen}`}>Padrão</span>
                     )}
                   </span>
                   <span className={styles.accessDesc}>{r.description}</span>
@@ -206,7 +206,7 @@ export function CreateUserForm(props: CreateUserFormProps) {
         {props.variant === "company" && (
           <>
             <div className={styles.field}>
-              <label htmlFor="companyId">Company Access</label>
+              <label htmlFor="companyId">Acesso à empresa</label>
               <div className={styles.companySelect}>
                 <Building2 size={14} aria-hidden />
                 <select
@@ -223,14 +223,14 @@ export function CreateUserForm(props: CreateUserFormProps) {
                   ))}
                 </select>
                 {companyId === props.defaultCompanyId && (
-                  <span className={`${styles.badge} ${styles.badgeGray}`}>Current company</span>
+                  <span className={`${styles.badge} ${styles.badgeGray}`}>Empresa atual</span>
                 )}
                 {/* <ChevronDown size={16} aria-hidden /> */}
               </div>
             </div>
 
             <fieldset className={styles.fieldset}>
-              <legend>Change user role*</legend>
+              <legend>Papel do usuário*</legend>
               <div className={styles.radioList}>
                 {COMPANY_ROLES.map((r) => (
                   <label key={r.value} className={styles.radio}>
@@ -251,12 +251,12 @@ export function CreateUserForm(props: CreateUserFormProps) {
 
         {/* ---------- Senha temporária ---------- */}
         <div className={styles.field}>
-          <label htmlFor="password">Temporary password *</label>
+          <label htmlFor="password">Senha temporária *</label>
           <div className={styles.passwordWrap}>
             <input
               id="password"
               className={`${styles.input} ${styles.passwordInput}`}
-              placeholder="Temporary password"
+              placeholder="Senha temporária"
               value={values.password}
               onChange={set("password")}
               autoComplete="new-password"
@@ -271,14 +271,14 @@ export function CreateUserForm(props: CreateUserFormProps) {
             </button>
           </div>
           <p className={styles.hint}>
-            <Info size={11} aria-hidden /> User must change password on first login.
+            <Info size={11} aria-hidden /> O usuário precisa trocar a senha no primeiro acesso.
           </p>
         </div>
 
         {props.variant === "admin" && (
           <div className={styles.noCompany}>
             <span className={styles.noCompanyTitle}>
-              <Building2 size={13} aria-hidden /> No company assigned
+              <Building2 size={13} aria-hidden /> Nenhuma empresa vinculada
             </span>
             <span className={styles.noCompanyDesc}>
               You can associate this user with a company later.
@@ -291,9 +291,9 @@ export function CreateUserForm(props: CreateUserFormProps) {
         <button type="button" className={styles.btn} onClick={onCancel} disabled={loading}>
           Cancel
         </button>
-        <button type="submit" className={styles.btn} disabled={loading}>
+        <button type="submit" className={`${styles.btn} ${styles.btnPrimary}`} disabled={loading}>
           <UserPlus size={15} aria-hidden />
-          {loading ? "Creating..." : "Create user"}
+          {loading ? "Criando..." : "Criar usuário"}
         </button>
       </footer>
     </form>

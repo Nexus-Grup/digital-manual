@@ -22,9 +22,11 @@ type Props = {
   hint: string;
   /** quadradinho da galeria */
   compact?: boolean;
+  /** product photo: the server removes the background and crops to the product */
+  cutout?: boolean;
 };
 
-export function UploadBox({ productId, kind, value, onChange, title, hint, compact }: Props) {
+export function UploadBox({ productId, kind, value, onChange, title, hint, compact, cutout }: Props) {
   const id = useId();
   const [busy, setBusy] = useState(false);
   const [drag, setDrag] = useState(false);
@@ -32,9 +34,12 @@ export function UploadBox({ productId, kind, value, onChange, title, hint, compa
   async function send(file: File | undefined) {
     if (!file) return;
     setBusy(true);
-    const res = await uploadFile(productId, kind, file);
+    const res = await uploadFile(productId, kind, file, { cutout });
     setBusy(false);
     if (!res.ok) return toast.error(res.error);
+    if (cutout && res.data.cutout === false) {
+      toast.warning('Imagem salva, mas o fundo não pôde ser removido agora. Envie de novo mais tarde para tentar outra vez.');
+    }
     onChange(res.data.url);
   }
 
@@ -53,7 +58,7 @@ export function UploadBox({ productId, kind, value, onChange, title, hint, compa
         ) : (
           <span className={styles.uploadedName}>{fileNameFromUrl(value)}</span>
         )}
-        <button type="button" className={styles.iconBtn} onClick={() => onChange(null)} aria-label={`Remove ${title}`}>
+        <button type="button" className={styles.iconBtn} onClick={() => onChange(null)} aria-label={`Remover ${title}`}>
           <Trash2 size={14} aria-hidden />
         </button>
       </div>
@@ -69,7 +74,7 @@ export function UploadBox({ productId, kind, value, onChange, title, hint, compa
       onDrop={onDrop}
     >
       {compact ? <Plus size={14} aria-hidden /> : <ImagePlus size={18} aria-hidden />}
-      <span className={styles.dropTitle}>{busy ? 'Uploading...' : title}</span>
+      <span className={styles.dropTitle}>{busy ? (cutout ? 'Removendo o fundo...' : 'Enviando...') : title}</span>
       <span className={styles.dropHint}>{hint}</span>
       <input
         id={id}

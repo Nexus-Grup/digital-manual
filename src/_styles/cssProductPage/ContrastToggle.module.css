@@ -31,8 +31,14 @@
 
 /* algum modo ligado: botão destacado */
 .trigger[data-active="true"] {
+  /* the icon (lucide, currentColor) follows the inverse text, so it stays visible on the highlight */
+  color: var(--c-inverse-text);
   background: var(--c-inverse-bg);
   border-color: var(--c-inverse-bg);
+}
+
+.trigger[data-active="true"]:hover {
+  background: var(--c-inverse-bg);
 }
 
 .trigger[data-active="true"] .triggerImg {

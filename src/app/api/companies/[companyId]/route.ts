@@ -21,7 +21,7 @@ export async function GET(_req: Request, { params }: Ctx) {
         },
       },
     });
-    if (!company) throw new HttpError(404, 'Company not found');
+    if (!company) throw new HttpError(404, 'Empresa não encontrada');
     return NextResponse.json({ company });
   } catch (e) {
     return handleError(e);

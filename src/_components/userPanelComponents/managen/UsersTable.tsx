@@ -9,15 +9,15 @@ type SearchParams = Promise<{ q?: string; filter?: string; company?: string }>;
 // Conta ligada ou desligada (isActive)
 function statusOf(isActive: boolean) {
   return isActive
-    ? { label: "Active", className: styles.active }
-    : { label: "Inactive", className: styles.inactive };
+    ? { label: "Ativo", className: styles.active }
+    : { label: "Inativo", className: styles.inactive };
 }
 
 // Cadastro concluído = já trocou a senha temporária (mustChangePassword = false)
 function registrationOf(mustChangePassword: boolean) {
   return mustChangePassword
-    ? { label: "Pending", className: styles.pending }
-    : { label: "Complete", className: styles.complete };
+    ? { label: "Pendente", className: styles.pending }
+    : { label: "Completo", className: styles.complete };
 }
 
 export async function UsersTable({ searchParams }: { searchParams: SearchParams }) {
@@ -65,19 +65,19 @@ export async function UsersTable({ searchParams }: { searchParams: SearchParams 
   });
 
   if (users.length === 0) {
-    return <p className={styles.muted}>No users found.</p>;
+    return <p className={styles.muted}>Nenhum usuário encontrado.</p>;
   }
 
   return (
     <table className={styles.table}>
       <thead>
         <tr>
-          <th>Users</th>
-          <th className={styles.center}>System Role</th>
-          <th className={styles.center}>Company</th>
+          <th>Usuários</th>
+          <th className={styles.center}>Papel no sistema</th>
+          <th className={styles.center}>Empresa</th>
           <th className={styles.center}>Status</th>
-          <th className={styles.center}>Registration</th>
-          <th className={styles.center}>Edit</th>
+          <th className={styles.center}>Cadastro</th>
+          <th className={styles.center}>Editar</th>
         </tr>
       </thead>
       <tbody>
@@ -107,7 +107,7 @@ export async function UsersTable({ searchParams }: { searchParams: SearchParams 
               </td>
               <td className={styles.center}>
                 {names.length === 0 ? (
-                  <span className={styles.mutedText}>not assigned</span>
+                  <span className={styles.mutedText}>sem vínculo</span>
                 ) : (
                   <>
                     {names[0]}

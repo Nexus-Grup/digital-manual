@@ -20,6 +20,7 @@
     letter-spacing: 0.06em;
     text-align: center;
     text-transform: uppercase;
+    font-family: var(--type-display);
 }
 
 /* Single line; fades the logos out at both edges */

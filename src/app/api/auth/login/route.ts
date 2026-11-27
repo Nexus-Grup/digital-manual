@@ -14,7 +14,7 @@ const schema = z.object({
 const DUMMY_HASH = bcrypt.hashSync("dummy-password", 12);
 
 const invalid = () =>
-  NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
+  NextResponse.json({ error: "E-mail ou senha inválidos" }, { status: 401 });
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => null);

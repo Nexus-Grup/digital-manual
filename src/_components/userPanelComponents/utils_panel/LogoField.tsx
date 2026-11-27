@@ -27,12 +27,12 @@ export function LogoField({ value, onChange, onBusyChange, onError }: Props) {
       const res = await fetch('/api/uploads/logo', { method: 'POST', body });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        onError(data.error ?? 'Upload failed');
+        onError(data.error ?? 'Falha no envio');
         return;
       }
       onChange(data.url);
     } catch {
-      onError('Upload failed. Try again.');
+      onError('Falha no envio. Tente de novo.');
     } finally {
       setBusy(false);
       onBusyChange(false);
@@ -49,14 +49,14 @@ export function LogoField({ value, onChange, onBusyChange, onError }: Props) {
 
   return (
     <div className={styles.field}>
-      <span className={styles.label}>Company Logo</span>
+      <span className={styles.label}>Logo da empresa</span>
 
       <input
         ref={inputRef}
         type="file"
         accept="image/png,image/jpeg,image/svg+xml"
         className={styles.srOnly}
-        aria-label="Upload company logo"
+        aria-label="Enviar logo da empresa"
         onChange={(e) => {
           const file = e.target.files?.[0];
           if (file) void upload(file);
@@ -66,12 +66,12 @@ export function LogoField({ value, onChange, onBusyChange, onError }: Props) {
       {value ? (
         <div className={styles.logoRow}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={value} alt="Company logo" className={styles.logoPreview} />
+          <img src={value} alt="Logo da empresa" className={styles.logoPreview} />
           <button type="button" className={styles.smallBtn} disabled={busy} onClick={() => inputRef.current?.click()}>
-            <Download size={13} aria-hidden /> {busy ? 'Uploading...' : 'Change logo'}
+            <Download size={13} aria-hidden /> {busy ? 'Enviando...' : 'Trocar logo'}
           </button>
           <button type="button" className={styles.removeBtn} disabled={busy} onClick={() => onChange(null)}>
-            <Trash2 size={13} aria-hidden /> Remove
+            <Trash2 size={13} aria-hidden /> Remover
           </button>
         </div>
       ) : (
@@ -89,8 +89,8 @@ export function LogoField({ value, onChange, onBusyChange, onError }: Props) {
           }}
         >
           <ImagePlus size={18} aria-hidden />
-          <span className={styles.dropTitle}>{busy ? 'Uploading...' : 'Upload company logo'}</span>
-          <span className={styles.dropHint}>PNG, JPG OR SVG</span>
+          <span className={styles.dropTitle}>{busy ? 'Enviando...' : 'Enviar logo da empresa'}</span>
+          <span className={styles.dropHint}>PNG, JPG ou SVG</span>
         </label>
       )}
     </div>

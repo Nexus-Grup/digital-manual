@@ -3,13 +3,10 @@
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import styles from "@/_styles/landingPage/SnapCarousel.module.css";
-import { format } from "@/_i18n/config";
 
 type SnapCarouselProps = {
     /** Accessible name of the carousel region. */
     label: string;
-    /** Dot label template, e.g. "Ir para o card {index} de {total}". */
-    goToLabel: string;
     /** Number of cards (one dot per card). */
     count: number;
     /** Changing this value scrolls the carousel back to the first card (e.g. after filtering). */
@@ -22,7 +19,7 @@ type SnapCarouselProps = {
 
 // Mobile/tablet card carousel built on native CSS scroll-snap (swipe, trackpad and keyboard work out of the box).
 // The dots show the current card and jump to a card. From 1200px the list falls back to its own grid layout.
-export default function SnapCarousel({ label, goToLabel, count, resetKey, inverse = false, children }: SnapCarouselProps) {
+export default function SnapCarousel({ label, count, resetKey, inverse = false, children }: SnapCarouselProps) {
     const viewportRef = useRef<HTMLDivElement>(null);
     const [active, setActive] = useState(0);
 
@@ -95,7 +92,7 @@ export default function SnapCarousel({ label, goToLabel, count, resetKey, invers
                             inverse ? styles["snap-carousel__dot--inverse"] : "",
                             index === active ? styles["snap-carousel__dot--active"] : "",
                         ].join(" ")}
-                        aria-label={format(goToLabel, { index: index + 1, total: count })}
+                        aria-label={`Ir para o card ${index + 1} de ${count}`}
                         aria-current={index === active ? "true" : undefined}
                         onClick={() => goTo(index)}
                     ></button>

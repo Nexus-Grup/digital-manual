@@ -13,13 +13,13 @@ export class HttpError extends Error {
 
 export function parseId(raw: string) {
   const n = Number(raw);
-  if (!Number.isInteger(n) || n <= 0) throw new HttpError(400, 'Invalid id');
+  if (!Number.isInteger(n) || n <= 0) throw new HttpError(400, 'ID inválido');
   return n;
 }
 
 export async function requireUser() {
   const user = await getCurrentUser();
-  if (!user) throw new HttpError(401, 'Unauthorized');
+  if (!user) throw new HttpError(401, 'Faça login para continuar');
   return user;
 }
 
@@ -34,13 +34,13 @@ export async function requireMember(companyId: number) {
     where: { userId_companyId: { userId: user.id, companyId } },
     select: { companyRole: true },
   });
-  if (!m) throw new HttpError(404, 'Company not found');
+  if (!m) throw new HttpError(404, 'Empresa não encontrada');
   return { user, role: m.companyRole };
 }
 
 export async function requireOwner(companyId: number) {
   const access = await requireMember(companyId);
-  if (access.role !== 'OWNER') throw new HttpError(403, 'Only owners can do this');
+  if (access.role !== 'OWNER') throw new HttpError(403, 'Só proprietários podem fazer isso');
   return access.user;
 }
 
@@ -77,7 +77,7 @@ export async function canAccessCompanyArea(user: { id: number; systemRole: strin
 /** Para a rota de API que cria empresa. */
 export async function requireCompanyCreator() {
   const user = await requireUser();
-  if (!(await canAccessCompanyArea(user))) throw new HttpError(403, 'Not allowed');
+  if (!(await canAccessCompanyArea(user))) throw new HttpError(403, 'Ação não permitida');
   return user;
 }
 
@@ -87,12 +87,12 @@ export async function assertNotLastOwner(companyId: number, userId: number) {
     where: { userId_companyId: { userId, companyId } },
     select: { companyRole: true },
   });
-  if (!target) throw new HttpError(404, 'Member not found');
+  if (!target) throw new HttpError(404, 'Membro não encontrado');
   if (target.companyRole === 'OWNER') {
     const owners = await prisma.userCompany.count({
       where: { companyId, companyRole: 'OWNER' },
     });
-    if (owners <= 1) throw new HttpError(409, 'A company needs at least one owner');
+    if (owners <= 1) throw new HttpError(409, 'A empresa precisa de pelo menos um proprietário');
   }
 }
 
@@ -100,7 +100,7 @@ export async function readBody<S extends z.ZodType>(req: Request, schema: S): Pr
   const raw = await req.json().catch(() => null);
   const parsed = schema.safeParse(raw);
   if (!parsed.success) {
-    throw new HttpError(400, parsed.error.issues[0]?.message ?? 'Invalid data');
+    throw new HttpError(400, parsed.error.issues[0]?.message ?? 'Dados inválidos');
   }
   return parsed.data;
 }
@@ -111,11 +111,11 @@ export function handleError(err: unknown) {
   }
   const code = typeof err === 'object' && err && 'code' in err ? String((err as { code: unknown }).code) : '';
   if (code === 'P2002') {
-    return NextResponse.json({ error: 'Username or email already in use' }, { status: 409 });
+    return NextResponse.json({ error: 'Nome de usuário ou e-mail já em uso' }, { status: 409 });
   }
   if (code === 'P2025') {
-    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    return NextResponse.json({ error: 'Não encontrado' }, { status: 404 });
   }
   console.error(err);
-  return NextResponse.json({ error: 'Internal error' }, { status: 500 });
+  return NextResponse.json({ error: 'Erro interno' }, { status: 500 });
 }

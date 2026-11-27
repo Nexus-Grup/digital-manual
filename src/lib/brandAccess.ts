@@ -6,7 +6,7 @@ import { HttpError, requireUser } from '@/lib/companyAccess';
 export function parseBody<S extends z.ZodTypeAny>(schema: S, data: unknown): z.infer<S> {
   const result = schema.safeParse(data);
   if (!result.success) {
-    throw new HttpError(400, result.error.issues[0]?.message ?? 'Invalid data');
+    throw new HttpError(400, result.error.issues[0]?.message ?? 'Dados inválidos');
   }
   return result.data;
 }
@@ -14,7 +14,7 @@ export function parseBody<S extends z.ZodTypeAny>(schema: S, data: unknown): z.i
 /** Converte o parâmetro da rota em id numérico (404 se for inválido). */
 export function parseId(value: string) {
   const id = Number(value);
-  if (!Number.isInteger(id) || id <= 0) throw new HttpError(404, 'Not found');
+  if (!Number.isInteger(id) || id <= 0) throw new HttpError(404, 'Não encontrado');
   return id;
 }
 
@@ -35,7 +35,7 @@ export async function assertCanManageBrands(userId: number, companyId: number) {
   });
   if (me?.systemRole === 'ADMIN') return;
 
-  throw new HttpError(403, 'You do not have permission to manage brands in this company');
+  throw new HttpError(403, 'Você não tem permissão para gerenciar marcas nesta empresa');
 }
 
 /**
@@ -50,7 +50,7 @@ export async function requireBrandManager(brandId: number) {
     where: { id: brandId },
     select: { id: true, name: true, companyId: true, imgUrl: true, isActive: true },
   });
-  if (!brand) throw new HttpError(404, 'Brand not found');
+  if (!brand) throw new HttpError(404, 'Marca não encontrada');
 
   await assertCanManageBrands(user.id, brand.companyId);
   return { user, brand };
@@ -62,6 +62,6 @@ export async function findBrandMember(brandId: number, companyId: number, userId
     where: { brandId, userCompany: { userId, companyId } },
     select: { id: true },
   });
-  if (!member) throw new HttpError(404, 'User is not in this brand');
+  if (!member) throw new HttpError(404, 'O usuário não está nesta marca');
   return member;
 }

@@ -21,9 +21,9 @@ export async function POST(req: Request, { params }: Ctx) {
       where: { id },
       select: { status: true, assigneeId: true, title: true, createdById: true },
     });
-    if (!ticket) throw new HttpError(404, "Ticket not found");
+    if (!ticket) throw new HttpError(404, "Chamado não encontrado");
     if (ticket.status === "CLOSED" && !isInternal)
-      throw new HttpError(409, "This ticket is closed. You can still add internal notes");
+      throw new HttpError(409, "Este chamado está fechado. Você ainda pode adicionar notas internas");
 
     const now = new Date();
     const nextStatus: TicketStatus | undefined = isInternal
@@ -52,8 +52,8 @@ export async function POST(req: Request, { params }: Ctx) {
           data: ticketNotification(
             ticket.createdById,
             id,
-            resolve ? "Your ticket was resolved" : "New reply on your ticket",
-            `Support replied to "${ticket.title}".`,
+            resolve ? "Seu chamado foi resolvido" : "Nova resposta no seu chamado",
+            `O suporte respondeu ao chamado "${ticket.title}".`,
           ),
         });
       }

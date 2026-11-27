@@ -30,8 +30,8 @@ export async function AdminInboxView({
     <section className={page.page}>
       <header className={page.header}>
         <div>
-          <h1 className={page.title}>Support inbox</h1>
-          <p className={page.subtitle}>All tickets from users and companies.</p>
+          <h1 className={page.title}>Caixa de suporte</h1>
+          <p className={page.subtitle}>Todos os chamados de usuários e empresas.</p>
         </div>
       </header>
       <div className={styles.toolbar}>

@@ -10,10 +10,10 @@ export async function UsersStats() {
   ]);
 
   const cards = [
-    { label: "Total users", value: total },
-    { label: "Active users", value: active },
-    { label: "Pending registration", value: pending },
-    { label: "Unassigned", value: unassigned },
+    { label: "Total de usuários", value: total },
+    { label: "Usuários ativos", value: active },
+    { label: "Cadastro pendente", value: pending },
+    { label: "Sem responsável", value: unassigned },
   ];
 
   return (

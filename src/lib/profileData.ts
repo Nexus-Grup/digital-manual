@@ -8,15 +8,15 @@ import type { ProfileUser } from '@/_components/userPanelComponents/profile/Prof
 // - só OWNER edita a empresa
 // - OWNER e MANAGER enxergam e editam todas as marcas da empresa
 // - MEMBER só vê as marcas em que foi vinculado (UserBrand), sem editar
-const ONLY_OWNER_MSG = 'You are the only owner of this company. Add another owner before leaving.';
+const ONLY_OWNER_MSG = 'Você é o único proprietário desta empresa. Adicione outro proprietário antes de sair.';
 
-/** Tudo que a página /user-panel/profile precisa, já com as regras aplicadas. */
+/** Tudo que a página /painel/perfil precisa, já com as regras aplicadas. */
 export async function getProfileData(userId: number) {
   const found = await prisma.user.findUnique({
     where: { id: userId },
     select: { id: true, firstName: true, lastName: true, userName: true, email: true, createdAt: true },
   });
-  if (!found) throw new HttpError(404, 'User not found');
+  if (!found) throw new HttpError(404, 'Usuário não encontrado');
 
   const user: ProfileUser = {
     id: found.id,

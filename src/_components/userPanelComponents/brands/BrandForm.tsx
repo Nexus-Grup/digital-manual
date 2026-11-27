@@ -10,7 +10,7 @@ import extra from '@/_styles/cssUserPanelPage/Brand.module.css';
 import { LogoField } from '../utils_panel/LogoField';
 import { Modal } from '../utils_panel/Modal';
 
-const BASE = '/user-panel/brands';
+const BASE = '/painel/marcas';
 
 export type BrandData = {
   id: number;
@@ -66,11 +66,11 @@ function BrandFormInner({
 
     if (name.trim().length < 2) {
       setNameInvalid(true);
-      toast.error('Enter the brand name');
+      toast.error('Digite o nome da marca');
       return;
     }
     if (!isEdit && companyId === '') {
-      toast.error('Select a company');
+      toast.error('Selecione uma empresa');
       return;
     }
 
@@ -85,20 +85,20 @@ function BrandFormInner({
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        toast.error(data.error ?? 'Could not save the brand');
+        toast.error(data.error ?? 'Não foi possível salvar a marca');
         return;
       }
       if (isEdit) {
-        toast.success('Changes saved.');
+        toast.success('Alterações salvas.');
       } else {
-        toast.success('Brand created.');
+        toast.success('Marca criada.');
         onReset(); // zera o form: o Next guarda o estado da tela ao sair dela
         // depois de criar, vai para a edição para adicionar usuários
-        router.push(`${BASE}/${data.brand.id}/edit`);
+        router.push(`${BASE}/${data.brand.id}/editar`);
       }
       router.refresh(); // atualiza a lista da sidebar
     } catch {
-      toast.error('Network error. Try again.');
+      toast.error('Erro de conexão. Tente de novo.');
     } finally {
       setSaving(false);
     }
@@ -115,15 +115,15 @@ function BrandFormInner({
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        toast.error(data.error ?? 'Could not update the brand');
+        toast.error(data.error ?? 'Não foi possível atualizar a marca');
         return;
       }
-      toast.success(isActive ? 'Brand activated.' : 'Brand deactivated.');
+      toast.success(isActive ? 'Marca ativada.' : 'Marca desativada.');
       setConfirmOpen(false);
       router.push(BASE);
       router.refresh();
     } catch {
-      toast.error('Network error. Try again.');
+      toast.error('Erro de conexão. Tente de novo.');
     } finally {
       setStatusBusy(false);
     }
@@ -136,9 +136,9 @@ function BrandFormInner({
       <div className={styles.card}>
         <header className={styles.header}>
           <div>
-            <h1 className={styles.title}>{isEdit ? 'Edit Brand' : 'New Brand'}</h1>
+            <h1 className={styles.title}>{isEdit ? 'Editar marca' : 'Nova marca'}</h1>
             <p className={styles.subtitle}>
-              {isEdit ? 'Manage brand information and access.' : 'Register a new brand in your company.'}
+              {isEdit ? 'Gerencie as informações e os acessos da marca.' : 'Cadastre uma nova marca na sua empresa.'}
             </p>
           </div>
           {isEdit && (
@@ -151,11 +151,11 @@ function BrandFormInner({
         {/* o <form> envolve só os campos: a seção de usuários tem ações próprias */}
         <form id={formId} className={styles.form} onSubmit={onSubmit} noValidate>
           <div className={styles.field}>
-            <label htmlFor={`${formId}-name`} className={styles.label}>Brand name*</label>
+            <label htmlFor={`${formId}-name`} className={styles.label}>Nome da marca*</label>
             <input
               id={`${formId}-name`}
               className={styles.input}
-              placeholder="e.g. Bosch"
+              placeholder="ex.: Bosch"
               value={name}
               maxLength={120}
               aria-invalid={nameInvalid}
@@ -167,11 +167,11 @@ function BrandFormInner({
           </div>
 
           <div className={styles.field}>
-            <label htmlFor={`${formId}-desc`} className={styles.label}>Description</label>
+            <label htmlFor={`${formId}-desc`} className={styles.label}>Descrição</label>
             <textarea
               id={`${formId}-desc`}
               className={styles.textarea}
-              placeholder="Describe the brand ...."
+              placeholder="Descreva a marca..."
               value={description}
               maxLength={2000}
               onChange={(e) => setDescription(e.target.value)}
@@ -179,7 +179,7 @@ function BrandFormInner({
           </div>
 
           <LogoField
-            label="Brand Logo"
+            label="Logo da marca"
             value={logoUrl}
             onChange={setLogoUrl}
             onBusyChange={setUploading}
@@ -190,7 +190,7 @@ function BrandFormInner({
 
           {!isEdit && (
             <div className={styles.field}>
-              <label htmlFor={`${formId}-company`} className={styles.label}>Company</label>
+              <label htmlFor={`${formId}-company`} className={styles.label}>Empresa</label>
               <div className={extra.companyBox}>
                 <div className={extra.companyRow}>
                   <Building2 size={14} aria-hidden />
@@ -205,7 +205,7 @@ function BrandFormInner({
                     ))}
                   </select>
                   {selectedCompany && selectedCompany.id === defaultCompanyId && (
-                    <span className={extra.currentBadge}>Current company</span>
+                    <span className={extra.currentBadge}>Empresa atual</span>
                   )}
                   <ChevronDown size={16} aria-hidden />
                 </div>
@@ -228,7 +228,7 @@ function BrandFormInner({
                 onClick={() => setConfirmOpen(true)}
                 disabled={saving}
               >
-                Deactivate brand
+                Desativar marca
               </button>
             ) : (
               <button
@@ -237,13 +237,13 @@ function BrandFormInner({
                 onClick={() => changeStatus(true)}
                 disabled={statusBusy}
               >
-                {statusBusy ? 'Activating...' : 'Activate brand'}
+                {statusBusy ? 'Ativando...' : 'Ativar marca'}
               </button>
             )}
 
-            <button type="submit" form={formId} className={styles.btn} disabled={saving || uploading}>
+            <button type="submit" form={formId} className={`${styles.btn} ${styles.btnPrimary}`} disabled={saving || uploading}>
               <Check size={15} aria-hidden />
-              {saving ? 'Saving...' : 'Save changes'}
+              {saving ? 'Salvando...' : 'Salvar alterações'}
             </button>
           </footer>
         ) : (
@@ -257,24 +257,24 @@ function BrandFormInner({
               }}
               disabled={saving}
             >
-              Cancel
+              Cancelar
             </button>
             <button
               type="submit"
               form={formId}
-              className={styles.btn}
+              className={`${styles.btn} ${styles.btnPrimary}`}
               disabled={saving || uploading || companyId === ''}
             >
               <Check size={15} aria-hidden />
-              {saving ? 'Saving...' : 'Create brand'}
+              {saving ? 'Salvando...' : 'Criar marca'}
             </button>
           </footer>
         )}
       </div>
 
       {confirmOpen && brand && (
-        <Modal label="Deactivate brand" onClose={() => setConfirmOpen(false)}>
-          <h2 className={usersStyles.modalTitle}>Deactivate brand?</h2>
+        <Modal label="Desativar marca" onClose={() => setConfirmOpen(false)}>
+          <h2 className={usersStyles.modalTitle}>Desativar marca?</h2>
           <p className={extra.confirmText}>
             <strong>{brand.name}</strong> will be hidden from the platform. Its users and
             content are kept, and you can activate it again later.
@@ -286,7 +286,7 @@ function BrandFormInner({
               onClick={() => setConfirmOpen(false)}
               disabled={statusBusy}
             >
-              Cancel
+              Cancelar
             </button>
             <button
               type="button"
@@ -294,7 +294,7 @@ function BrandFormInner({
               onClick={() => changeStatus(false)}
               disabled={statusBusy}
             >
-              {statusBusy ? 'Deactivating...' : 'Deactivate brand'}
+              {statusBusy ? 'Desativando...' : 'Desativar marca'}
             </button>
           </div>
         </Modal>

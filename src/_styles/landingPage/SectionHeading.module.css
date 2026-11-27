@@ -61,6 +61,7 @@
     font-weight: 800;
     line-height: 1.15;
     letter-spacing: -0.02em;
+    font-family: var(--type-display);
 }
 
 .section-heading__title--inverse {

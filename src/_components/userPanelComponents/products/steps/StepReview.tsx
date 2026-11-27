@@ -8,11 +8,11 @@ export function StepReview({ product }: { product: ProductFull }) {
   const items = (product.information?.cards.length ?? 0) + product.assemblies.length;
 
   const rows: { title: string; sub?: string; value: string; done: boolean }[] = [
-    { title: 'Basic Information', sub: 'Product Name, Model, SKU, Category, Brand, Description', value: 'Completed', done: true },
-    { title: 'Images & Media', value: `${plural(images, 'image')} · ${plural(product.videos.length, 'video')}`, done: product.progress.steps.media },
-    { title: 'Technical Information', value: plural(product.technical?.specs.length ?? 0, 'specification'), done: product.progress.steps.technical },
-    { title: 'Manuals & Documents', value: plural(product.manuals.length, 'document'), done: product.progress.steps.manuals },
-    { title: 'Guides & Product Content', value: plural(items, 'item'), done: product.progress.steps.guides },
+    { title: 'Informações básicas', sub: 'Nome, modelo, SKU, categoria, marca e descrição do produto', value: 'Concluído', done: true },
+    { title: 'Imagens e mídias', value: `${plural(images, 'image')} · ${plural(product.videos.length, 'video')}`, done: product.progress.steps.media },
+    { title: 'Informações técnicas', value: plural(product.technical?.specs.length ?? 0, 'specification'), done: product.progress.steps.technical },
+    { title: 'Manuais e documentos', value: plural(product.manuals.length, 'document'), done: product.progress.steps.manuals },
+    { title: 'Guias e conteúdo do produto', value: plural(items, 'item'), done: product.progress.steps.guides },
     { title: 'QR Codes', value: `${product.qrCodes.length} generated`, done: product.progress.steps.qr },
   ];
 
@@ -26,10 +26,10 @@ export function StepReview({ product }: { product: ProductFull }) {
       ))}
       <li>
         <span className={styles.reviewText}>
-          <strong>Product Status</strong>
-          <small>{product.status === 'PUBLISHED' ? 'This product is published.' : 'Your product will be saved as a draft. You can publish it later.'}</small>
+          <strong>Status do produto</strong>
+          <small>{product.status === 'PUBLISHED' ? 'Este produto está publicado.' : 'Seu produto será salvo como rascunho. Você pode publicá-lo depois.'}</small>
         </span>
-        <span className={`${styles.badge} ${product.status === 'PUBLISHED' ? styles.badgeOn : styles.badgeDraft}`}>{product.status === 'PUBLISHED' ? 'Published' : 'Draft'}</span>
+        <span className={`${styles.badge} ${product.status === 'PUBLISHED' ? styles.badgeOn : styles.badgeDraft}`}>{product.status === 'PUBLISHED' ? 'Publicado' : 'Rascunho'}</span>
       </li>
     </ul>
   );

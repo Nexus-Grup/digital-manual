@@ -2,14 +2,11 @@ import Link from "next/link";
 import styles from "@/_styles/productSearch/ProductSearch.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 import heroStyles from "@/_styles/landingPage/Hero.module.css";
-import { getDictionary } from "@/_i18n/getDictionary";
-import { DEFAULT_LOCALE, format } from "@/_i18n/config";
 import {
     SHOWCASE_CATEGORIES,
     filterProducts,
     getProducts,
-    isShowcaseCategory,
-    isShowcaseSubcategory,
+    parseProductSearch,
     subcategoriesOf,
 } from "@/_data/products";
 import type { ShowcaseCategory, ShowcaseSubcategory } from "@/_data/products";
@@ -22,32 +19,45 @@ import { LeafIcon } from "@/_components/landingPage/Icons";
 
 export type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
-const firstValue = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value) ?? "";
+const CATEGORY_LABELS: Record<ShowcaseCategory, string> = {
+    appliances: "Eletrodomésticos",
+    furniture: "Móveis",
+    tools: "Ferramentas",
+    electronics: "Eletrônicos",
+    other: "Outros",
+};
+
+const SUBCATEGORY_LABELS: Record<ShowcaseSubcategory, string> = {
+    refrigerator: "Geladeiras",
+    washer: "Lavadoras",
+    microwave: "Micro-ondas",
+    wardrobe: "Guarda-roupas",
+    tvStand: "Racks e painéis",
+    desk: "Escrivaninhas",
+    screwdriver: "Parafusadeiras",
+    drill: "Furadeiras",
+    sander: "Lixadeiras",
+    tv: "TVs",
+    speaker: "Caixas de som",
+    headphones: "Fones de ouvido",
+};
+
+const SEARCH_LABELS = {
+    label: "Nome, modelo ou código",
+    placeholder: "Ex.: parafusadeira, GSR 120-LI",
+    aria: "Buscar manual por nome, modelo ou código",
+    button: "Buscar",
+};
+
 
 // Public product search (Cadasio showcase layout adapted to the brand): hero with search, category
 // chips, card grid and a B2B call to action. Reads the URL: render inside <Suspense>.
 export default async function ProductSearchView({ searchParams }: { searchParams: SearchParams }) {
-    const params = await searchParams;
-    const query = firstValue(params.q).trim();
-    const categoryParam = firstValue(params.category);
-    const category = isShowcaseCategory(categoryParam) ? categoryParam : null;
-    // ?sub= only counts when it belongs to the active category
-    const subParam = firstValue(params.sub);
-    const subcategory = category && isShowcaseSubcategory(category, subParam) ? subParam : null;
+    const { query, category, subcategory } = parseProductSearch(await searchParams);
 
-    const locale = DEFAULT_LOCALE;
-    const [dict, catalog] = await Promise.all([getDictionary(), getProducts()]);
-    const t = dict.productSearch;
-
-    const categoryLabels: Record<ShowcaseCategory, string> = {
-        appliances: dict.catalog.categories.appliances,
-        furniture: dict.catalog.categories.furniture,
-        tools: dict.catalog.categories.tools,
-        electronics: dict.catalog.categories.electronics,
-        other: t.other,
-    };
-
-    const subcategoryLabels: Record<ShowcaseSubcategory, string> = t.subcategories;
+    const catalog = await getProducts();
+    const categoryLabels = CATEGORY_LABELS;
+    const subcategoryLabels = SUBCATEGORY_LABELS;
 
     const results = filterProducts(catalog.products, {
         query,
@@ -73,15 +83,19 @@ export default async function ProductSearchView({ searchParams }: { searchParams
     // "Other" only appears when some product falls into it
     const hasOther = catalog.products.some((product) => product.category === "other");
     const filterOptions = [
-        { value: null, label: dict.catalog.categories.all },
+        { value: null, label: "Todos" },
         ...SHOWCASE_CATEGORIES.map((value) => ({ value, label: categoryLabels[value] })),
-        ...(hasOther ? [{ value: "other", label: t.other }] : []),
+        ...(hasOther ? [{ value: "other", label: CATEGORY_LABELS.other }] : []),
     ];
 
     const count = results.length;
     const countText = query
-        ? format(count === 1 ? t.countQueryOne : t.countQuery, { count, query })
-        : format(count === 1 ? t.countAllOne : t.countAll, { count });
+        ? count === 1
+            ? `1 resultado para “${query}”`
+            : `${count} resultados para “${query}”`
+        : count === 1
+          ? "1 manual disponível"
+          : `${count} manuais disponíveis`;
 
     return (
         <div className={styles["product-search"]}>
@@ -89,13 +103,15 @@ export default async function ProductSearchView({ searchParams }: { searchParams
                 <div className={styles["showcase-hero__container"]}>
                     <div className={styles["showcase-hero__content"]}>
                         <h1 className={styles["showcase-hero__title"]} id="showcase-title">
-                            {t.title}
+                            Encontre o manual do seu produto
                         </h1>
-                        <p className={styles["showcase-hero__text"]}>{t.text}</p>
+                        <p className={styles["showcase-hero__text"]}>
+                            Pesquise pelo nome, modelo ou código, ou aponte a câmera para o QR Code da embalagem.
+                        </p>
                     </div>
                     <HeroSearch
                         id="products-search"
-                        t={t.search}
+                        t={SEARCH_LABELS}
                         defaultValue={query}
                         category={category ?? undefined}
                         subcategory={subcategory ?? undefined}
@@ -113,19 +129,19 @@ export default async function ProductSearchView({ searchParams }: { searchParams
                                 active={category}
                                 query={query}
                                 category={category}
-                                label={t.filterAria}
+                                label="Filtrar por categoria"
                             />
                             {subcategoryOptions.length > 0 ? (
                                 <ShowcaseFilters
                                     level="subcategory"
                                     options={[
-                                        { value: null, label: t.allSubcategories },
+                                        { value: null, label: "Todas" },
                                         ...subcategoryOptions.map((value) => ({ value, label: subcategoryLabels[value] })),
                                     ]}
                                     active={subcategory}
                                     query={query}
                                     category={category}
-                                    label={t.subcategoryAria}
+                                    label="Filtrar por tipo de produto"
                                 />
                             ) : null}
                         </div>
@@ -133,15 +149,13 @@ export default async function ProductSearchView({ searchParams }: { searchParams
                             <h2 className={styles["showcase__count"]} id="showcase-count" aria-live="polite">
                                 {countText}
                             </h2>
-                            {catalog.isDemo && t.demoNote ? <p className={styles["showcase__note"]}>{t.demoNote}</p> : null}
                         </div>
                     </div>
 
                     {count > 0 ? (
                         // carousel on mobile/tablet, 4-column grid from 1200px
                         <SnapCarousel
-                            label={t.resultsAria}
-                            goToLabel={dict.carousel.goTo}
+                            label="Manuais encontrados"
                             count={count}
                             resetKey={`${query}|${category ?? ""}|${subcategory ?? ""}`}
                         >
@@ -151,7 +165,7 @@ export default async function ProductSearchView({ searchParams }: { searchParams
                                         <ProductCard
                                             product={product}
                                             categoryLabel={pathLabel(product)}
-                                            openLabel={t.openManual}
+                                            openLabel="Abrir manual"
                                         />
                                     </li>
                                 ))}
@@ -160,12 +174,12 @@ export default async function ProductSearchView({ searchParams }: { searchParams
                     ) : (
                         <div className={styles["showcase__empty"]}>
                             <p className={styles["showcase__empty-title"]}>
-                                {query ? format(t.emptyTitle, { query }) : t.emptyCategory}
+                                {query ? `Não encontramos manuais para “${query}”` : "Ainda não há manuais nesta categoria"}
                             </p>
-                            <p className={styles["showcase__empty-text"]}>{t.emptyText}</p>
-                            <md-filled-tonal-button suppressHydrationWarning className={buttonStyles["md-button"]} href="/products">
-                                {t.clear}
-                            </md-filled-tonal-button>
+                            <p className={styles["showcase__empty-text"]}>Confira o nome ou o código na etiqueta ou na embalagem do produto e tente de novo.</p>
+                            <md-outlined-button suppressHydrationWarning className={buttonStyles["md-button"]} href="/produtos">
+                                Ver todos os manuais
+                            </md-outlined-button>
                         </div>
                     )}
                 </div>
@@ -178,17 +192,17 @@ export default async function ProductSearchView({ searchParams }: { searchParams
                     </span>
                     <div className={styles["showcase-cta__content"]}>
                         <h2 className={styles["showcase-cta__title"]} id="showcase-cta-title">
-                            {t.cta.title}
+                            É fabricante? Digitalize os manuais da sua marca.
                         </h2>
-                        <p className={styles["showcase-cta__text"]}>{t.cta.text}</p>
+                        <p className={styles["showcase-cta__text"]}>Menos papel, menos chamados no SAC e um manual acessível para todos os seus clientes.</p>
                     </div>
-                    <Link className={styles["showcase-cta__link"]} href="/landing-page#contato">
-                        {t.cta.button}
+                    <Link className={styles["showcase-cta__link"]} href="/inicio#contato">
+                        Fale conosco
                     </Link>
                 </div>
             </section>
 
-            <ReadAloud lang={locale} labels={dict.readAloud} />
+            <ReadAloud lang="pt-BR" />
         </div>
     );
 }

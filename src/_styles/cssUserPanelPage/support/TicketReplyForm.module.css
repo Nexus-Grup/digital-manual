@@ -20,7 +20,7 @@
     resize: vertical; 
 }
 .textarea:focus-visible { 
-    outline: 2px solid #2f7fd0; 
+    outline: 3px solid var(--btn-focus-ring); 
     outline-offset: 1px; 
 }
 .hint { 
@@ -39,28 +39,25 @@
     justify-content: space-between; 
     gap: 12px; 
 }
+/* primary button (tokens --btn-* in globals.css) */
 .primary {
-    min-height: 40px; 
-    padding: 0 24px; border: 0; 
-    border-radius: 10px; 
-    background: #2f7fd0; 
-    color: #fff; 
-    font: inherit; 
-    font-size: 0.9rem; 
-    font-weight: 700; 
-    cursor: pointer; 
+    min-height: 40px;
+    padding: 0 24px;
+    border: 1px solid var(--btn-primary-bg);
+    border-radius: 10px;
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+    font-family: var(--type-display);
 }
-.primary:hover { 
-    background: #2a71ba; 
-}
-.primary:disabled { 
-    opacity: 0.6; 
-    cursor: wait; 
-}
-.primary:focus-visible { 
-    outline: 2px solid #111; 
-    outline-offset: 2px; 
-}
+.primary:hover:not(:disabled) { background: var(--btn-primary-bg-hover); border-color: var(--btn-primary-bg-hover); }
+.primary:active:not(:disabled) { background: var(--btn-primary-bg-active); border-color: var(--btn-primary-bg-active); }
+.primary:disabled { color: var(--btn-disabled-text); background: var(--btn-disabled-bg); border-color: var(--btn-disabled-border); cursor: wait; }
+.primary:focus-visible { outline: 3px solid var(--btn-focus-ring); outline-offset: 2px; }
 .closed { 
     margin: 20px 0 0; 
     padding-top: 20px; 

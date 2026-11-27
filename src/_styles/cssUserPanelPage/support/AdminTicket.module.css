@@ -88,39 +88,26 @@
     display: flex; 
     gap: 8px; 
 }
-.primary, .secondary { 
-    min-height: 40px; 
-    padding: 0 20px; 
-    border-radius: 40px; 
-    font: inherit; 
-    font-size: 0.9rem; 
-    font-weight: 700; 
-    cursor: pointer; 
+.primary, .secondary {
+    min-height: 40px;
+    padding: 0 20px;
+    border-radius: 10px;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+    font-family: var(--type-display);
 }
-.primary { 
-    border: 0; 
-    background: var(--c-accent); 
-    color: #fff; 
-}
-.primary:hover { 
-    background: var(--c-accent-dark); 
-}
-.secondary { 
-    border: 1px solid var(--c-border); 
-    background: #fff; 
-    color: #111; 
-}
-.secondary:hover { 
-    background: #f5f5f5; 
-}
-.primary:disabled, .secondary:disabled { 
-    opacity: 0.6; 
-    cursor: wait; 
-}
-.primary:focus-visible, .secondary:focus-visible { 
-    outline: 2px solid #111; 
-    outline-offset: 2px; 
-}
+/* primary / secondary buttons (tokens --btn-* in globals.css) */
+.primary { border: 1px solid var(--btn-primary-bg); background: var(--btn-primary-bg); color: var(--btn-primary-text); }
+.primary:hover:not(:disabled) { background: var(--btn-primary-bg-hover); border-color: var(--btn-primary-bg-hover); }
+.primary:active:not(:disabled) { background: var(--btn-primary-bg-active); border-color: var(--btn-primary-bg-active); }
+.secondary { border: 1px solid var(--btn-secondary-border); background: var(--btn-secondary-bg); color: var(--btn-secondary-text); }
+.secondary:hover:not(:disabled) { background: var(--btn-secondary-bg-hover); }
+.secondary:active:not(:disabled) { color: var(--btn-secondary-text-active); background: var(--btn-secondary-bg-active); }
+.primary:disabled, .secondary:disabled { color: var(--btn-disabled-text); background: var(--btn-disabled-bg); border-color: var(--btn-disabled-border); cursor: wait; }
+.primary:focus-visible, .secondary:focus-visible { outline: 3px solid var(--btn-focus-ring); outline-offset: 2px; }
 .closed { 
     margin: 0; 
     color: #555; 

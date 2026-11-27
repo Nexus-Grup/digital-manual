@@ -28,7 +28,7 @@ export function UserRowMenu({ userId }: { userId: number }) {
       <button
         type="button"
         className={styles.menuButton}
-        aria-label="User actions"
+        aria-label="Ações do usuário"
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}

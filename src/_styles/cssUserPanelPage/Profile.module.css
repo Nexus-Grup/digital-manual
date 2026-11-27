@@ -107,7 +107,7 @@
 }
 
 .input:focus-visible {
-  border-color: #2b7fd4;
+  border-color: #2a72bd;
   box-shadow: 0 0 0 3px rgba(43, 127, 212, 0.2);
 }
 
@@ -121,22 +121,30 @@
   margin-top: 4px;
 }
 
+/* .primaryBtn = primary, .secondaryBtn = secondary (tokens --btn-* in globals.css) */
 .primaryBtn,
 .secondaryBtn {
-  height: 32px;
-  padding: 0 22px;
+  min-height: 40px;
+  padding: 0 20px;
   font: inherit;
-  font-size: 0.8rem;
-  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 10px;
   cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+  font-family: var(--type-display);
 }
 
-.primaryBtn { color: #fff; background: #111; border: 1px solid #111; }
-.secondaryBtn { color: #111; background: #fff; border: 1px solid #444; }
+.primaryBtn { color: var(--btn-primary-text); background: var(--btn-primary-bg); border: 1px solid var(--btn-primary-bg); }
+.primaryBtn:hover:not(:disabled) { background: var(--btn-primary-bg-hover); border-color: var(--btn-primary-bg-hover); }
+.primaryBtn:active:not(:disabled) { background: var(--btn-primary-bg-active); border-color: var(--btn-primary-bg-active); }
+.secondaryBtn { color: var(--btn-secondary-text); background: var(--btn-secondary-bg); border: 1px solid var(--btn-secondary-border); }
+.secondaryBtn:hover:not(:disabled) { background: var(--btn-secondary-bg-hover); }
+.secondaryBtn:active:not(:disabled) { color: var(--btn-secondary-text-active); background: var(--btn-secondary-bg-active); }
 .primaryBtn:disabled,
-.secondaryBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.secondaryBtn:disabled { color: var(--btn-disabled-text); background: var(--btn-disabled-bg); border-color: var(--btn-disabled-border); cursor: not-allowed; }
 .primaryBtn:focus-visible,
-.secondaryBtn:focus-visible { outline: 2px solid #2b7fd4; outline-offset: 2px; }
+.secondaryBtn:focus-visible { outline: 3px solid var(--btn-focus-ring); outline-offset: 2px; }
 
 /* ===== LISTAS (empresas e marcas) ===== */
 .list {

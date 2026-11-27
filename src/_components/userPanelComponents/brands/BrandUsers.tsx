@@ -20,10 +20,10 @@ export type BrandMember = {
   brandRole: Role;
 };
 
-const ROLE_LABEL: Record<Role, string> = { EDITOR: 'Editor', VIEWER: 'Viewer' };
+const ROLE_LABEL: Record<Role, string> = { EDITOR: 'Editor', VIEWER: 'Visualizador' };
 const ROLE_HINT: Record<Role, string> = {
-  EDITOR: 'Can create and edit products, manuals and brand content.',
-  VIEWER: "Can only view this brand's products and content.",
+  EDITOR: 'Pode criar e editar produtos, manuais e conteúdos da marca.',
+  VIEWER: "Pode apenas ver os produtos e conteúdos desta marca.",
 };
 
 type Props = {
@@ -120,7 +120,7 @@ function MemberRow({
       toast.error(err);
       return;
     }
-    toast.success(method === 'PATCH' ? 'Role updated.' : 'User removed from the brand.');
+    toast.success(method === 'PATCH' ? 'Papel atualizado.' : 'Usuário removido da marca.');
     setPanel(null);
     router.refresh();
   }
@@ -142,7 +142,7 @@ function MemberRow({
           ref={btnRef}
           type="button"
           className={styles.kebab}
-          aria-label={`Actions for ${fullName}`}
+          aria-label={`Ações de ${fullName}`}
           aria-expanded={panel !== null}
           onClick={toggleMenu}
         >
@@ -159,10 +159,10 @@ function MemberRow({
           {panel === 'menu' && (
             <>
               <button type="button" className={styles.panelItem} onClick={() => setPanel('role')}>
-                <Lock size={14} aria-hidden /> Change role
+                <Lock size={14} aria-hidden /> Alterar papel
               </button>
               <button type="button" className={styles.panelItem} onClick={() => setPanel('details')}>
-                <User size={14} aria-hidden /> View details
+                <User size={14} aria-hidden /> Ver detalhes
               </button>
               <hr className={styles.panelDivider} />
               <button
@@ -170,7 +170,7 @@ function MemberRow({
                 className={`${styles.panelItem} ${styles.danger}`}
                 onClick={() => setPanel('remove')}
               >
-                <UserMinus size={14} aria-hidden /> Remove from brand
+                <UserMinus size={14} aria-hidden /> Remover da marca
               </button>
             </>
           )}
@@ -178,16 +178,16 @@ function MemberRow({
           {panel === 'details' && (
             <>
               <div className={styles.panelHeader}>
-                <p className={styles.panelTitle}>User details</p>
-                <button type="button" className={styles.closeMini} onClick={() => setPanel(null)} aria-label="Close">
+                <p className={styles.panelTitle}>Detalhes do usuário</p>
+                <button type="button" className={styles.closeMini} onClick={() => setPanel(null)} aria-label="Fechar">
                   <X size={14} />
                 </button>
               </div>
               <dl className={styles.details}>
-                <dt>Name</dt><dd>{fullName}</dd>
-                <dt>Username</dt><dd>{member.userName}</dd>
-                <dt>Email</dt><dd>{member.email}</dd>
-                <dt>Role</dt><dd>{ROLE_LABEL[member.brandRole]}</dd>
+                <dt>Nome</dt><dd>{fullName}</dd>
+                <dt>Nome de usuário</dt><dd>{member.userName}</dd>
+                <dt>E-mail</dt><dd>{member.email}</dd>
+                <dt>Papel</dt><dd>{ROLE_LABEL[member.brandRole]}</dd>
               </dl>
             </>
           )}
@@ -195,13 +195,13 @@ function MemberRow({
           {panel === 'role' && (
             <>
               <div className={styles.panelHeader}>
-                <p className={styles.panelTitle}>Change user role</p>
+                <p className={styles.panelTitle}>Alterar papel do usuário</p>
                 <button
                   type="button"
                   className={styles.closeMini}
                   onClick={() => setPanel(null)}
                   disabled={busy}
-                  aria-label="Close"
+                  aria-label="Fechar"
                 >
                   <X size={14} />
                 </button>
@@ -222,11 +222,11 @@ function MemberRow({
               <div className={styles.panelActions}>
                 <button
                   type="button"
-                  className={styles.pillBtn}
+                  className={`${styles.pillBtn} ${styles.pillPrimary}`}
                   disabled={busy || role === member.brandRole}
                   onClick={() => run('PATCH', { brandRole: role })}
                 >
-                  {busy ? 'Saving...' : 'Save role'}
+                  {busy ? 'Salvando...' : 'Salvar papel'}
                 </button>
               </div>
             </>
@@ -235,20 +235,20 @@ function MemberRow({
           {panel === 'remove' && (
             <>
               <p className={styles.panelTitle}>
-                <TriangleAlert size={15} className={styles.warn} aria-hidden /> Remove user?
+                <TriangleAlert size={15} className={styles.warn} aria-hidden /> Remover usuário?
               </p>
               <p className={styles.panelText}>
-                Are you sure you want to remove {fullName} from the <strong>{brandName}</strong> brand?
+                Tem certeza de que deseja remover {fullName} da marca <strong>{brandName}</strong>?
               </p>
               <p className={styles.panelSmall}>
                 The user account will not be deleted. Only their access to this brand will be removed.
               </p>
               <div className={styles.panelActions}>
                 <button type="button" className={styles.pillBtn} onClick={() => setPanel(null)} disabled={busy}>
-                  Cancel
+                  Cancelar
                 </button>
                 <button type="button" className={styles.dangerBtn} onClick={() => run('DELETE')} disabled={busy}>
-                  {busy ? 'Removing...' : 'Remove user'}
+                  {busy ? 'Removendo...' : 'Remover usuário'}
                 </button>
               </div>
             </>
@@ -264,11 +264,11 @@ export function BrandUsers({ brandId, brandName, members }: Props) {
   const [addOpen, setAddOpen] = useState(false);
 
   return (
-    <section className={styles.section} aria-label="Brand users">
+    <section className={styles.section} aria-label="Usuários da marca">
       <header className={styles.head}>
         <div>
-          <h2 className={styles.headTitle}>Brand Users</h2>
-          <p className={styles.headSub}>Manage users and their access permissions.</p>
+          <h2 className={styles.headTitle}>Usuários da marca</h2>
+          <p className={styles.headSub}>Gerencie os usuários e suas permissões de acesso.</p>
         </div>
         <span className={styles.count}>
           {members.length} {members.length === 1 ? 'user' : 'users'}
@@ -289,7 +289,7 @@ export function BrandUsers({ brandId, brandName, members }: Props) {
 
       <div className={extra.singleAction}>
         <button type="button" className={styles.actionBtn} onClick={() => setAddOpen(true)}>
-          <UserPlus size={14} aria-hidden /> Add user
+          <UserPlus size={14} aria-hidden /> Adicionar usuário
         </button>
       </div>
 

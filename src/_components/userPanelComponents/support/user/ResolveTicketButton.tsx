@@ -14,13 +14,13 @@ export function ResolveTicketButton({ ticketId }: { ticketId: number }) {
     const res = await resolveTicket(ticketId);
     setBusy(false);
     if (!res.ok) return toast.error(res.error);
-    toast.success("Ticket marked as resolved");
+    toast.success("Chamado marcado como resolvido");
     router.refresh();
   }
 
   return (
     <button type="button" className={styles.resolve} disabled={busy} onClick={onClick}>
-      {busy ? "Saving..." : "Mark as resolved"}
+      {busy ? "Salvando..." : "Marcar como resolvido"}
     </button>
   );
 }

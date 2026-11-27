@@ -66,6 +66,7 @@
     font-weight: 700;
     line-height: 1.25;
     letter-spacing: -0.01em;
+    font-family: var(--type-display);
 }
 
 .home-button {
@@ -79,53 +80,94 @@
     font: inherit;
     font-size: 1rem;
     font-weight: 700;
-    color: var(--c-on-accent);
     text-decoration: none;
-    background: var(--c-accent-dark);
-    border: 2px solid var(--c-accent-dark);
+    border: 2px solid transparent;
     border-radius: 10px;
     cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+
+    /* primary (brand tokens in globals.css) */
+    color: var(--btn-primary-text);
+    background-color: var(--btn-primary-bg);
+    border-color: var(--btn-primary-bg);
+    font-family: var(--type-display);
 }
 
 .home-button:hover {
+    background-color: var(--btn-primary-bg-hover);
+    border-color: var(--btn-primary-bg-hover);
     transform: translateY(-2px);
 }
 
 .home-button:active {
+    background-color: var(--btn-primary-bg-active);
+    border-color: var(--btn-primary-bg-active);
     transform: translateY(0);
 }
 
 .home-button:focus-visible {
-    outline: 3px solid var(--c-accent);
+    outline: 3px solid var(--btn-focus-ring);
     outline-offset: 3px;
 }
 
+/* secondary */
 .home-button--outlined {
-    color: var(--c-text);
-    background: var(--c-bg);
-    border-color: var(--c-border);
+    color: var(--btn-secondary-text);
+    background-color: var(--btn-secondary-bg);
+    border-color: var(--btn-secondary-border);
 }
 
 .home-button--outlined:hover {
-    background: var(--c-hover);
+    background-color: var(--btn-secondary-bg-hover);
+    border-color: var(--btn-secondary-border);
 }
 
-/* on the dark CTA card */
+.home-button--outlined:active {
+    color: var(--btn-secondary-text-active);
+    background-color: var(--btn-secondary-bg-active);
+    border-color: var(--btn-secondary-border);
+}
+
+/* on the dark CTA card (inverse surfaces): primary = light fill, secondary = light outline */
 .home-button--light {
     color: var(--lp-text);
-    background: var(--lp-bg);
-    border-color: var(--lp-bg);
+    background-color: var(--lp-bg);
+    /* white outline: invisible on the white fill, visible in high contrast (black fill) */
+    border-color: var(--lp-text-inverse);
+}
+
+.home-button--light:hover {
+    background-color: var(--lp-surface-blue);
+    border-color: var(--lp-surface-blue);
+}
+
+.home-button--light:active {
+    background-color: var(--lp-blue-soft);
+    border-color: var(--lp-blue-soft);
+}
+
+.home-button--light:focus-visible {
+    outline-color: var(--lp-text-inverse);
 }
 
 .home-button--ghost {
     color: var(--lp-text-inverse);
-    background: transparent;
+    background-color: transparent;
     border-color: var(--lp-text-inverse);
 }
 
 .home-button--ghost:hover {
-    background: var(--lp-impact-tile);
+    background-color: var(--lp-impact-tile);
+    border-color: var(--lp-text-inverse);
+}
+
+.home-button--ghost:active {
+    background-color: rgba(255, 255, 255, 0.24);
+    border-color: var(--lp-text-inverse);
+}
+
+.home-button--ghost:focus-visible {
+    outline-color: var(--lp-text-inverse);
 }
 
 /* ===== HERO ===== */
@@ -171,6 +213,7 @@
     background: var(--c-bg);
     border: 1px solid var(--c-border-soft);
     border-radius: 5px;
+    font-family: var(--type-display);
 }
 
 .home-hero__tag--brand {
@@ -191,6 +234,7 @@
     line-height: 1.15;
     letter-spacing: -0.02em;
     overflow-wrap: break-word;
+    font-family: var(--type-display);
 }
 
 .home-hero__model {
@@ -215,24 +259,36 @@
     overflow: hidden;
 }
 
+/* tertiary button (text link) */
 .home-hero__link {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     min-height: 48px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-left: -12px;
     font-weight: 700;
-    color: var(--c-accent-dark);
+    color: var(--btn-tertiary-text);
     text-decoration: none;
+    border-radius: 10px;
+    transition: background-color 0.15s ease;
+    font-family: var(--type-display);
 }
 
 .home-hero__link:hover {
+    background-color: var(--btn-tertiary-bg-hover);
     text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.home-hero__link:active {
+    background-color: var(--btn-tertiary-bg-active);
 }
 
 .home-hero__link:focus-visible {
-    outline: 3px solid var(--c-accent);
+    outline: 3px solid var(--btn-focus-ring);
     outline-offset: 2px;
-    border-radius: 5px;
 }
 
 .home-hero__stats {
@@ -260,6 +316,7 @@
     font-weight: 700;
     line-height: 1.2;
     color: var(--c-accent-dark);
+    font-family: var(--type-display);
 }
 
 .home-hero__stat-label {
@@ -515,6 +572,7 @@
     font-size: 1.0625rem;
     font-weight: 700;
     line-height: 1.3;
+    font-family: var(--type-display);
 }
 
 .home-highlights__text {
@@ -775,6 +833,7 @@
     font-size: 1.5rem;
     font-weight: 700;
     line-height: 1.25;
+    font-family: var(--type-display);
 }
 
 .home-cta__text {
@@ -1116,5 +1175,18 @@
 
     .home-actions__list {
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    /* desktop: photos in a grid, no carousel (the carousel is for mobile and tablet only) */
+    .home-gallery__track {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        padding-bottom: 0;
+        overflow: visible;
+        scroll-snap-type: none;
+    }
+
+    .home-gallery__item {
+        scroll-snap-align: none;
     }
 }

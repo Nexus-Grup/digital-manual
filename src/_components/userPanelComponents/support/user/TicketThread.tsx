@@ -18,7 +18,7 @@ export function TicketThread({ messages }: { messages: TicketMessageView[] }) {
           <div className={styles.body}>
             <div className={styles.meta}>
               <strong>{m.authorName}</strong> · <TimeText iso={m.createdAt} />
-              {m.isInternal && <span className={styles.tag}> · Internal note, only the team sees this</span>}
+              {m.isInternal && <span className={styles.tag}> · Nota interna, só a equipe vê</span>}
             </div>
             <div className={styles.bubble}>{m.body}</div>
             {m.attachments.length > 0 && (

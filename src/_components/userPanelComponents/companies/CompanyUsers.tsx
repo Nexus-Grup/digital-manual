@@ -16,18 +16,18 @@ const ROLE_CONFIG: Record<
   { label: string; description: string; badgeClass: string }
 > = {
   OWNER: {
-    label: 'Owner',
-    description: 'Full access to company management.',
+    label: 'Proprietário',
+    description: 'Acesso total à gestão da empresa.',
     badgeClass: styles.roleOwner,
   },
   MANAGER: {
-    label: 'Manager',
-    description: 'Can manage and edit the company’s brands.',
+    label: 'Gerente',
+    description: 'Pode gerenciar e editar as marcas da empresa.',
     badgeClass: styles.roleManager,
   },
   MEMBER: {
-    label: 'Member',
-    description: "Can access the company's brands.",
+    label: 'Membro',
+    description: "Pode acessar as marcas da empresa.",
     badgeClass: styles.roleMember,
   },
 };
@@ -118,7 +118,7 @@ function MemberRow({
       toast.error(err);
       return;
     }
-    toast.success(method === 'PATCH' ? 'Role updated.' : 'User removed from the company.');
+    toast.success(method === 'PATCH' ? 'Papel atualizado.' : 'Usuário removido da empresa.');
     setPanel(null);
     router.refresh();
   }
@@ -138,7 +138,7 @@ function MemberRow({
           ref={btnRef}
           type="button"
           className={styles.kebab}
-          aria-label={`Actions for ${fullName}`}
+          aria-label={`Ações de ${fullName}`}
           aria-expanded={panel !== null}
           onClick={openMenu}
         >
@@ -155,10 +155,10 @@ function MemberRow({
           {panel === 'menu' && (
             <>
               <button type="button" className={styles.panelItem} onClick={() => setPanel('role')}>
-                <Lock size={14} aria-hidden /> Change role
+                <Lock size={14} aria-hidden /> Alterar papel
               </button>
               <button type="button" className={styles.panelItem} onClick={() => setPanel('details')}>
-                <User size={14} aria-hidden /> View details
+                <User size={14} aria-hidden /> Ver detalhes
               </button>
               <hr className={styles.panelDivider} />
               <button
@@ -166,9 +166,9 @@ function MemberRow({
                 className={`${styles.panelItem} ${styles.danger}`}
                 onClick={() => setPanel('remove')}
                 disabled={isSelf}
-                title={isSelf ? "You can't remove yourself" : undefined}
+                title={isSelf ? "Você não pode remover a si mesmo" : undefined}
               >
-                <UserMinus size={14} aria-hidden /> Remove from company
+                <UserMinus size={14} aria-hidden /> Remover da empresa
               </button>
             </>
           )}
@@ -176,16 +176,16 @@ function MemberRow({
           {panel === 'details' && (
             <>
               <div className={styles.panelHeader}>
-                <p className={styles.panelTitle}>User details</p>
-                <button type="button" className={styles.closeMini} onClick={() => setPanel(null)} aria-label="Close">
+                <p className={styles.panelTitle}>Detalhes do usuário</p>
+                <button type="button" className={styles.closeMini} onClick={() => setPanel(null)} aria-label="Fechar">
                   <X size={14} />
                 </button>
               </div>
               <dl className={styles.details}>
-                <dt>Name</dt><dd>{fullName}</dd>
-                <dt>Username</dt><dd>{member.userName}</dd>
-                <dt>Email</dt><dd>{member.email}</dd>
-                <dt>Role</dt><dd>{currentRoleInfo.label}</dd>
+                <dt>Nome</dt><dd>{fullName}</dd>
+                <dt>Nome de usuário</dt><dd>{member.userName}</dd>
+                <dt>E-mail</dt><dd>{member.email}</dd>
+                <dt>Papel</dt><dd>{currentRoleInfo.label}</dd>
               </dl>
             </>
           )}
@@ -193,8 +193,8 @@ function MemberRow({
           {panel === 'role' && (
             <>
               <div className={styles.panelHeader}>
-                <p className={styles.panelTitle}>Change user role</p>
-                <button type="button" className={styles.closeMini} onClick={() => setPanel(null)} disabled={busy} aria-label="Close">
+                <p className={styles.panelTitle}>Alterar papel do usuário</p>
+                <button type="button" className={styles.closeMini} onClick={() => setPanel(null)} disabled={busy} aria-label="Fechar">
                   <X size={14} />
                 </button>
               </div>
@@ -214,11 +214,11 @@ function MemberRow({
               <div className={styles.panelActions}>
                 <button
                   type="button"
-                  className={styles.pillBtn}
+                  className={`${styles.pillBtn} ${styles.pillPrimary}`}
                   disabled={busy || role === member.companyRole}
                   onClick={() => run('PATCH', { companyRole: role })}
                 >
-                  {busy ? 'Saving...' : 'Save role'}
+                  {busy ? 'Salvando...' : 'Salvar papel'}
                 </button>
               </div>
             </>
@@ -227,20 +227,20 @@ function MemberRow({
           {panel === 'remove' && (
             <>
               <p className={styles.panelTitle}>
-                <TriangleAlert size={15} className={styles.warn} aria-hidden /> Remove user?
+                <TriangleAlert size={15} className={styles.warn} aria-hidden /> Remover usuário?
               </p>
               <p className={styles.panelText}>
-                Are you sure you want to remove {fullName} from <strong>{companyName}</strong>?
+                Tem certeza de que deseja remover {fullName} da empresa <strong>{companyName}</strong>?
               </p>
               <p className={styles.panelSmall}>
                 The user account will not be deleted. Only their access to this company will be removed.
               </p>
               <div className={styles.panelActions}>
                 <button type="button" className={styles.pillBtn} onClick={() => setPanel(null)} disabled={busy}>
-                  Cancel
+                  Cancelar
                 </button>
                 <button type="button" className={styles.dangerBtn} onClick={() => run('DELETE')} disabled={busy}>
-                  {busy ? 'Removing...' : 'Remove user'}
+                  {busy ? 'Removendo...' : 'Remover usuário'}
                 </button>
               </div>
             </>
@@ -261,11 +261,11 @@ export function CompanyUsers({ companyId, companyName, currentUserId, members }:
   };
 
   return (
-    <section className={styles.section} aria-label="Company users">
+    <section className={styles.section} aria-label="Usuários da empresa">
       <header className={styles.head}>
         <div>
-          <h2 className={styles.headTitle}>Company Users</h2>
-          <p className={styles.headSub}>Manage users and their access permissions.</p>
+          <h2 className={styles.headTitle}>Usuários da empresa</h2>
+          <p className={styles.headSub}>Gerencie os usuários e suas permissões de acesso.</p>
         </div>
         <span className={styles.count}>{members.length} {members.length === 1 ? 'user' : 'users'}</span>
       </header>
@@ -284,10 +284,10 @@ export function CompanyUsers({ companyId, companyName, currentUserId, members }:
 
       <div className={styles.actions}>
         <button type="button" className={styles.actionBtn} onClick={() => setModal('add')}>
-          <UserPlus size={14} aria-hidden /> Add existing user
+          <UserPlus size={14} aria-hidden /> Adicionar usuário existente
         </button>
         <button type="button" className={styles.actionBtn} onClick={() => setModal('create')}>
-          <Plus size={14} aria-hidden /> Create user
+          <Plus size={14} aria-hidden /> Criar usuário
         </button>
       </div>
 

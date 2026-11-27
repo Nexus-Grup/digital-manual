@@ -19,27 +19,28 @@ interface MenuItem {
   // sem "roles" e sem "companyRoles" = todo usuário vê
   // com os dois = vê quem atender a um OU ao outro
 }
-const BASE = "/user-panel" 
+const BASE = "/painel" 
 
 const MENU_GROUPS: MenuItem[][] = [
   [
-    { key: "overview", label: "Company Overview", href: `${BASE}/company-overview`, icon: Home },
+    { key: "overview", label: "Visão geral da empresa", href: `${BASE}/visao-geral`, icon: Home },
+    // same order as the setup flow: the company first, then its brands, then each brand's products
     {
-      key: "brand", label: "Brand Editor", href: `${BASE}/brands`, icon: Tags,
-      roles: ["ADMIN"], companyRoles: ["OWNER", "MANAGER"], // membro não vê
-    },
-    { key: "product",  label: "Product Editor",   href: `${BASE}/products`,    icon: Package },
-    {
-      key: "company", label: "Company Editor", href: `${BASE}/companies`, icon: Building2,
+      key: "company", label: "Empresas", href: `${BASE}/empresas`, icon: Building2,
       roles: ["ADMIN"], companyRoles: ["OWNER"], // só admin do sistema e owner de empresa
     },
+    {
+      key: "brand", label: "Marcas", href: `${BASE}/marcas`, icon: Tags,
+      roles: ["ADMIN"], companyRoles: ["OWNER", "MANAGER"], // membro não vê
+    },
+    { key: "product",  label: "Produtos",   href: `${BASE}/produtos`,    icon: Package },
   ],
   [
-    { key: "notifications", label: "Notifications",   href: `${BASE}/notifications`,   icon: Bell },
-    { key: "support", label: "Support",   href: `${BASE}/support`,   icon: Headset },
-    { key: "manage",        label: "Manage Platform", href: `${BASE}/manage-platform`, icon: Users, roles: ["ADMIN"] },
-    { key: "dashboard",     label: "Dashboard",       href: `${BASE}/dashboard`,       icon: LayoutDashboard },
-    { key: "logs",          label: "Logs",            href: `${BASE}/logs`,            icon: Logs, roles: ["ADMIN"] },
+    { key: "notifications", label: "Notificações",   href: `${BASE}/notificacoes`,   icon: Bell },
+    { key: "support", label: "Suporte",   href: `${BASE}/suporte`,   icon: Headset },
+    { key: "manage",        label: "Gerenciar plataforma", href: `${BASE}/gerenciar-plataforma`, icon: Users, roles: ["ADMIN"] },
+    { key: "dashboard",     label: "Indicadores",  href: `${BASE}/indicadores`,       icon: LayoutDashboard },
+    { key: "logs",          label: "Registros",            href: `${BASE}/registros`,            icon: Logs, roles: ["ADMIN"] },
   ],
 ];
 export function USideMenu({
@@ -67,7 +68,7 @@ export function USideMenu({
   async function handleLogout() {
     // ajuste para o seu sistema de autenticação
     await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/login");
+    router.push("/entrar");
   }
 
   return (

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react';
-import { SunMoon, Moon } from "lucide-react";
+import { SunMoon } from "lucide-react";
 import Image from 'next/image';
 import styles from '@/_styles/cssProductPage/ContrastToggle.module.css';
 import IconContraste from '@/_assets/image/hub icon/icone-contraste.svg';
@@ -36,16 +36,7 @@ function CheckIcon() {
   );
 }
 
-type ContrastLabels = {
-  trigger: string;
-  group: string;
-  normal: string;
-  gray: string;
-  high: string;
-};
-
-// pt-BR defaults (product pages); the landing page passes translated labels.
-const DEFAULT_LABELS: ContrastLabels = {
+const labels = {
   trigger: "Opções de contraste",
   group: "Modo de visualização",
   normal: "Padrão",
@@ -53,7 +44,7 @@ const DEFAULT_LABELS: ContrastLabels = {
   high: "Alto contraste",
 };
 
-export default function ContrastToggle({ labels = DEFAULT_LABELS }: { labels?: ContrastLabels }) {
+export default function ContrastToggle() {
   const mode = useSyncExternalStore<Mode>(subscribe, getSnapshot, () => 'normal');
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -104,6 +95,9 @@ export default function ContrastToggle({ labels = DEFAULT_LABELS }: { labels?: C
     triggerRef.current?.focus();
   };
 
+  // the active mode is part of the name, so screen readers announce it (not only the highlight)
+  const triggerLabel = mode === 'normal' ? labels.trigger : `${labels.trigger} (ativo: ${labels[mode]})`;
+
   return (
     <div className={styles.wrap} ref={wrapRef}>
       <button
@@ -113,11 +107,11 @@ export default function ContrastToggle({ labels = DEFAULT_LABELS }: { labels?: C
         data-active={mode !== 'normal'}
         aria-expanded={open}
         aria-controls={menuId}
-        aria-label={labels.trigger}
-        title={labels.trigger}
+        aria-label={triggerLabel}
+        title={triggerLabel}
         onClick={() => setOpen((v) => !v)}
       >
-        <SunMoon size={24} />
+        <SunMoon size={24} aria-hidden />
       </button>
 
       {open && (

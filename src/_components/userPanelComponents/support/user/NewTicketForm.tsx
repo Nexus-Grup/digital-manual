@@ -17,7 +17,12 @@ import { AttachmentPicker } from "./AttachmentPicker";
 import { ChipGroup } from "./ChipGroup";
 import styles from "@/_styles/cssUserPanelPage/support/NewTicketForm.module.css";
 
-const TARGET_NAME = { PRODUCT: "product", BRAND: "brand", COMPANY: "company" } as const;
+// pt-BR names with article, for the target field texts ("Selecione o produto", "nenhuma marca")
+const TARGET_NAME = {
+  PRODUCT: { the: "o produto", none: "nenhum produto" },
+  BRAND: { the: "a marca", none: "nenhuma marca" },
+  COMPANY: { the: "a empresa", none: "nenhuma empresa" },
+} as const;
 
 export function NewTicketForm({ targets }: { targets: TicketTargets }) {
   const router = useRouter();
@@ -36,7 +41,7 @@ export function NewTicketForm({ targets }: { targets: TicketTargets }) {
   const targetList = targetKey
     ? { PRODUCT: targets.products, BRAND: targets.brands, COMPANY: targets.companies }[targetKey]
     : null;
-  const targetName = targetKey ? TARGET_NAME[targetKey] : "";
+  const targetName = targetKey ? TARGET_NAME[targetKey] : null;
 
   function changeAbout(value: TicketAbout) {
     setAbout(value);
@@ -47,9 +52,9 @@ export function NewTicketForm({ targets }: { targets: TicketTargets }) {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
-    if (title.trim().length < LIMITS.titleMin) return setError("Add a short subject.");
-    if (targetList && !targetId) return setError(`Select a ${targetName}.`);
-    if (description.trim().length < LIMITS.bodyMin) return setError("Describe the problem in a few more words.");
+    if (title.trim().length < LIMITS.titleMin) return setError("Escreva um assunto curto.");
+    if (targetList && !targetId) return setError(`Selecione ${targetName?.the}.`);
+    if (description.trim().length < LIMITS.bodyMin) return setError("Descreva o problema com um pouco mais de detalhes.");
 
     setBusy(true);
     const id = targetList ? Number(targetId) : null;
@@ -66,41 +71,43 @@ export function NewTicketForm({ targets }: { targets: TicketTargets }) {
     });
     setBusy(false);
     if (!res.ok) return setError(res.error);
-    toast.success("Ticket opened");
+    toast.success("Chamado aberto");
     router.push(`${SUPPORT_BASE}/${res.data.id}`);
   }
 
   return (
     <form className={styles.form} onSubmit={onSubmit} noValidate>
       <div className={styles.field}>
-        <label className={styles.label} htmlFor="ticket-title">Subject</label>
+        <label className={styles.label} htmlFor="ticket-title">Assunto</label>
         <input
           id="ticket-title"
           className={styles.input}
           value={title}
           maxLength={LIMITS.titleMax}
-          placeholder="e.g. QR code won't open the manual"
+          placeholder="ex.: o QR Code não abre o manual"
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
 
-      <ChipGroup label="What is it about?" options={ABOUT_OPTIONS} value={about} onChange={changeAbout} />
+      <ChipGroup label="Sobre o que é?" options={ABOUT_OPTIONS} value={about} onChange={changeAbout} />
 
       <div className={styles.row}>
-        {targetList && (
+        {targetList && targetName && (
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="ticket-target">Select the {targetName}</label>
+            <label className={styles.label} htmlFor="ticket-target">Selecione {targetName.the}</label>
             <select id="ticket-target" className={styles.select} value={targetId} onChange={(e) => setTargetId(e.target.value)}>
-              <option value="">Choose...</option>
+              <option value="">Escolha...</option>
               {targetList.map((o) => (
                 <option key={o.id} value={o.id}>{o.name}</option>
               ))}
             </select>
-            {targetList.length === 0 && <p className={styles.hint}>You don&apos;t have any {targetName}s yet.</p>}
+            {targetList.length === 0 && (
+              <p className={styles.hint}>Você ainda não tem {targetName.none}.</p>
+            )}
           </div>
         )}
         <div className={styles.field}>
-          <label className={styles.label} htmlFor="ticket-category">Category</label>
+          <label className={styles.label} htmlFor="ticket-category">Categoria</label>
           <select id="ticket-category" className={styles.select} value={category} onChange={(e) => setCategory(e.target.value as TicketCategory)}>
             {CATEGORY_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>{o.label}</option>
@@ -109,16 +116,16 @@ export function NewTicketForm({ targets }: { targets: TicketTargets }) {
         </div>
       </div>
 
-      <ChipGroup label="Priority" options={PRIORITY_OPTIONS} value={priority} onChange={setPriority} />
+      <ChipGroup label="Prioridade" options={PRIORITY_OPTIONS} value={priority} onChange={setPriority} />
 
       <div className={styles.field}>
-        <label className={styles.label} htmlFor="ticket-description">Description</label>
+        <label className={styles.label} htmlFor="ticket-description">Descrição</label>
         <textarea
           id="ticket-description"
           className={styles.textarea}
           value={description}
           maxLength={LIMITS.bodyMax}
-          placeholder="Describe the problem and what you've already tried."
+          placeholder="Descreva o problema e o que você já tentou."
           onChange={(e) => setDescription(e.target.value)}
         />
       </div>
@@ -128,9 +135,9 @@ export function NewTicketForm({ targets }: { targets: TicketTargets }) {
       {error && <p className={styles.error} role="alert">{error}</p>}
 
       <div className={styles.actions}>
-        <Link href={SUPPORT_BASE} className={styles.secondary}>Cancel</Link>
+        <Link href={SUPPORT_BASE} className={styles.secondary}>Cancelar</Link>
         <button type="submit" className={styles.primary} disabled={busy || uploading}>
-          {busy ? "Opening..." : "Open ticket"}
+          {busy ? "Abrindo..." : "Abrir chamado"}
         </button>
       </div>
     </form>

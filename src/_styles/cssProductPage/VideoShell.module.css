@@ -131,6 +131,7 @@
   flex: 1;
   font-size: 0.95rem;
   font-weight: 700;
+  font-family: var(--type-display);
 }
 
 .close {

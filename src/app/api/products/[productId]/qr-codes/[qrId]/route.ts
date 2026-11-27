@@ -13,7 +13,7 @@ async function load(params: Ctx['params']) {
   await requireProductAccess(productId, 'edit');
   // o QR precisa ser deste produto
   const qr = await prisma.productQrCode.findFirst({ where: { id: qrId, productId }, select: { id: true } });
-  if (!qr) throw new HttpError(404, 'QR Code not found');
+  if (!qr) throw new HttpError(404, 'QR Code não encontrado');
   return qr.id;
 }
 

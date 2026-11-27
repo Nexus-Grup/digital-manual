@@ -1,16 +1,31 @@
 .wrapper { position: relative; }
 
 .avatarBtn {
-  display: flex;
+  /* same as the landing page's account button (.lp-header__account) */
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  background: #e0e0e0;
-  color: #111;
+  border: 1px solid var(--lp-border);
+  border-radius: 10px;
+  background-color: var(--lp-bg);
+  color: var(--lp-text);
   cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.avatarBtn:hover,
+.avatarBtn[aria-expanded="true"] {
+  border-color: var(--lp-primary);
+  background-color: var(--lp-surface-blue);
+  color: var(--lp-primary);
+}
+
+.avatarBtn:focus-visible {
+  outline: 3px solid var(--lp-primary);
+  outline-offset: 2px;
 }
 
 .dropdown {
@@ -30,12 +45,14 @@
 
 .avatarLg {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 48px;
   height: 48px;
-  border-radius: 50%;
-  background: #e0e0e0;
+  border-radius: 10px;
+  background-color: var(--lp-surface-blue);
+  color: var(--lp-primary);
 }
 
 .name  { margin: 0; font-size: 13px; font-weight: 500; }

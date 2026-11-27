@@ -70,30 +70,30 @@ export async function resolveTicketTarget(
   ids: TargetIds,
 ): Promise<TargetIds> {
   if (about === "PRODUCT") {
-    if (!ids.productId) throw new HttpError(400, "Select a product");
+    if (!ids.productId) throw new HttpError(400, "Selecione um produto");
     const p = await prisma.product.findFirst({
       where: { id: ids.productId, brand: brandScope(userId) },
       select: { id: true, brandId: true, brand: { select: { companyId: true } } },
     });
-    if (!p) throw new HttpError(404, "Product not found");
+    if (!p) throw new HttpError(404, "Produto não encontrado");
     return { productId: p.id, brandId: p.brandId, companyId: p.brand.companyId };
   }
   if (about === "BRAND") {
-    if (!ids.brandId) throw new HttpError(400, "Select a brand");
+    if (!ids.brandId) throw new HttpError(400, "Selecione uma marca");
     const b = await prisma.brand.findFirst({
       where: { id: ids.brandId, ...brandScope(userId) },
       select: { id: true, companyId: true },
     });
-    if (!b) throw new HttpError(404, "Brand not found");
+    if (!b) throw new HttpError(404, "Marca não encontrada");
     return { productId: null, brandId: b.id, companyId: b.companyId };
   }
   if (about === "COMPANY") {
-    if (!ids.companyId) throw new HttpError(400, "Select a company");
+    if (!ids.companyId) throw new HttpError(400, "Selecione uma empresa");
     const c = await prisma.company.findFirst({
       where: { id: ids.companyId, isActive: true, userCompanies: { some: { userId } } },
       select: { id: true },
     });
-    if (!c) throw new HttpError(404, "Company not found");
+    if (!c) throw new HttpError(404, "Empresa não encontrada");
     return { productId: null, brandId: null, companyId: c.id };
   }
   return { productId: null, brandId: null, companyId: null };

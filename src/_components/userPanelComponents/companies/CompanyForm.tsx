@@ -7,7 +7,7 @@ import styles from '@/_styles/cssUserPanelPage/CompanyForm.module.css';
 import { LogoField } from '../utils_panel/LogoField';
 import { toast } from "sonner";
 
-const BASE = '/user-panel/companies';
+const BASE = '/painel/empresas';
 
 export type CompanyData = {
   id: number;
@@ -46,7 +46,7 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
 
     if (name.trim().length < 2) {
       setNameInvalid(true); // só marca o campo; a mensagem vai no toast
-      toast.error('Enter the company name');
+      toast.error('Digite o nome da empresa');
       return;
     }
 
@@ -59,20 +59,20 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        toast.error(data.error ?? 'Could not save the company');
+        toast.error(data.error ?? 'Não foi possível salvar a empresa');
         return;
       }
       if (isEdit) {
-        toast.success('Changes saved.');
+        toast.success('Alterações salvas.');
       } else {
-        toast.success('Company created.');
+        toast.success('Empresa criada.');
         onReset(); // zera o form: o Next guarda o estado da tela ao sair dela
         // depois de criar, vai para a edição para adicionar usuários
-        router.push(`${BASE}/${data.company.id}/edit`);
+        router.push(`${BASE}/${data.company.id}/editar`);
       }
       router.refresh(); // atualiza a lista da sidebar
     } catch {
-      toast.error('Network error. Try again.');
+      toast.error('Erro de conexão. Tente de novo.');
     } finally {
       setSaving(false);
     }
@@ -82,9 +82,9 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
     <div className={styles.card}>
       <header className={styles.header}>
         <div>
-          <h1 className={styles.title}>{isEdit ? 'Edit Company' : 'New Company'}</h1>
+          <h1 className={styles.title}>{isEdit ? 'Editar empresa' : 'Nova empresa'}</h1>
           <p className={styles.subtitle}>
-            {isEdit ? 'Company Information' : 'Register a new company in the platform.'}
+            {isEdit ? 'Informações da empresa' : 'Cadastre uma nova empresa na plataforma.'}
           </p>
         </div>
         <div>
@@ -100,11 +100,11 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
       {/* o <form> envolve só os campos: a seção de usuários tem formulários próprios */}
       <form id={formId} className={styles.form} onSubmit={onSubmit} noValidate>
         <div className={styles.field}>
-          <label htmlFor={`${formId}-name`} className={styles.label}>Company name*</label>
+          <label htmlFor={`${formId}-name`} className={styles.label}>Nome da empresa*</label>
           <input
             id={`${formId}-name`}
             className={styles.input}
-            placeholder="e.g. robert bosch gmbh"
+            placeholder="ex.: Robert Bosch Ltda."
             value={name}
             maxLength={120}
             aria-invalid={nameInvalid}
@@ -116,11 +116,11 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
         </div>
 
         <div className={styles.field}>
-          <label htmlFor={`${formId}-desc`} className={styles.label}>Description</label>
+          <label htmlFor={`${formId}-desc`} className={styles.label}>Descrição</label>
           <textarea
             id={`${formId}-desc`}
             className={styles.textarea}
-            placeholder="Describe the company ...."
+            placeholder="Descreva a empresa..."
             value={description}
             maxLength={2000}
             onChange={(e) => setDescription(e.target.value)}
@@ -128,7 +128,7 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
         </div>
 
         <div className={styles.field}>
-          <label htmlFor={`${formId}-site`} className={styles.label}>Website</label>
+          <label htmlFor={`${formId}-site`} className={styles.label}>Site</label>
           <input
             id={`${formId}-site`}
             type="url"
@@ -153,8 +153,8 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
         children
       ) : (
         <div className={styles.note}>
-          <span className={styles.noteTitle}><Lock size={12} aria-hidden /> Owner assignment</span>
-          <span className={styles.noteText}>You will automatically become the Owner of this company.</span>
+          <span className={styles.noteTitle}><Lock size={12} aria-hidden /> Proprietário</span>
+          <span className={styles.noteText}>Você se tornará automaticamente o proprietário desta empresa.</span>
         </div>
       )}
 
@@ -168,11 +168,11 @@ function CompanyFormInner({ mode, company, children, onReset }: Props & { onRese
           }}
           disabled={saving}
         >
-          Cancel
+          Cancelar
         </button>
-        <button type="submit" form={formId} className={styles.btn} disabled={saving || uploading}>
+        <button type="submit" form={formId} className={`${styles.btn} ${styles.btnPrimary}`} disabled={saving || uploading}>
           <Check size={15} aria-hidden />
-          {saving ? 'Saving...' : isEdit ? 'Save changes' : 'Create company'}
+          {saving ? 'Salvando...' : isEdit ? 'Salvar alterações' : 'Criar empresa'}
         </button>
       </footer>
     </div>

@@ -17,16 +17,16 @@ import { StepQr } from './steps/StepQr';
 import { StepReview } from './steps/StepReview';
 import type { StepHandle } from './steps/stepTypes';
 
-const BASE = '/user-panel/products';
+const BASE = '/painel/produtos';
 
 const HINTS: Record<number, string> = {
-  1: 'Enter the main information about your product.',
-  2: 'Add images and media to showcase your product.',
-  3: 'Add technical specifications and product details.',
-  4: 'Upload and organize your product documentation.',
-  5: 'Create useful product information and step-by-step guides.',
-  6: 'Generate QR Codes to provide direct access to your product.',
-  7: 'Review the information below before saving your product.',
+  1: 'Preencha as informações principais do seu produto.',
+  2: 'Adicione imagens e mídias para apresentar seu produto.',
+  3: 'Adicione as especificações técnicas e os detalhes do produto.',
+  4: 'Envie e organize a documentação do seu produto.',
+  5: 'Crie informações úteis sobre o produto e guias passo a passo.',
+  6: 'Gere QR Codes para dar acesso direto ao seu produto.',
+  7: 'Revise as informações abaixo antes de salvar seu produto.',
 };
 const ICONS = [Package, Images, FileText, BookOpen, Wrench, QrCode, ClipboardCheck];
 const STEP_KEY: Record<number, StepKey> = { 2: 'media', 3: 'technical', 4: 'manuals', 5: 'guides', 6: 'qr' };
@@ -76,7 +76,7 @@ export function ProductWizard({ product: initial, brands, initialStep }: Props) 
   }
 
   function finish() {
-    toast.success('Product saved.');
+    toast.success('Produto salvo.');
     router.push(BASE);
     router.refresh();
   }
@@ -91,12 +91,12 @@ export function ProductWizard({ product: initial, brands, initialStep }: Props) 
   return (
     <section className={styles.page}>
       <header className={styles.head}>
-        <h1 className={styles.title}>{product ? 'Edit Product' : 'Create Product'}</h1>
-        <p className={styles.sub}>{product ? product.name : 'Add a new product to your brand'}</p>
+        <h1 className={styles.title}>{product ? 'Editar produto' : 'Criar produto'}</h1>
+        <p className={styles.sub}>{product ? product.name : 'Adicione um novo produto à sua marca'}</p>
       </header>
 
-      <p className={styles.lead}>Complete the steps to configure your product</p>
-      <div className={styles.progress} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct} aria-label="Content completion">
+      <p className={styles.lead}>Conclua as etapas para configurar seu produto</p>
+      <div className={styles.progress} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct} aria-label="Conteúdo preenchido">
         <span style={{ width: `${Math.max(pct, 3)}%` }} />
       </div>
 
@@ -116,7 +116,7 @@ export function ProductWizard({ product: initial, brands, initialStep }: Props) 
                 product={product}
                 brands={brands}
                 onProgress={setProgress}
-                onCreated={(id) => router.replace(`${BASE}/${id}/edit?step=2`)}
+                onCreated={(id) => router.replace(`${BASE}/${id}/editar?etapa=2`)}
               />
             </div>
             {stepProps && (
@@ -136,14 +136,14 @@ export function ProductWizard({ product: initial, brands, initialStep }: Props) 
             <div className={styles.footBtns}>
               {step === 7 ? (
                 <>
-                  <button type="button" className={styles.pillBtn} onClick={() => goTo(6)}>Back</button>
-                  <button type="button" className={styles.primaryBtn} onClick={finish}>Finish &amp; Save Product <ArrowRight size={14} aria-hidden /></button>
+                  <button type="button" className={styles.pillBtn} onClick={() => goTo(6)}>Voltar</button>
+                  <button type="button" className={styles.primaryBtn} onClick={finish}>Concluir e salvar produto <ArrowRight size={14} aria-hidden /></button>
                 </>
               ) : (
                 <>
-                  {product && <button type="button" className={styles.pillBtn} onClick={() => goTo(step + 1)} disabled={busy}>Skip for now</button>}
+                  {product && <button type="button" className={styles.pillBtn} onClick={() => goTo(step + 1)} disabled={busy}>Pular por enquanto</button>}
                   <button type="button" className={styles.primaryBtn} onClick={saveAndContinue} disabled={busy}>
-                    {busy ? 'Saving...' : <>Save &amp; Continue <ArrowRight size={14} aria-hidden /></>}
+                    {busy ? 'Salvando...' : <>Salvar e continuar <ArrowRight size={14} aria-hidden /></>}
                   </button>
                 </>
               )}
@@ -152,7 +152,7 @@ export function ProductWizard({ product: initial, brands, initialStep }: Props) 
         </div>
 
         {/* ---------- etapas (fixas) ---------- */}
-        <nav className={styles.steps} aria-label="Steps">
+        <nav className={styles.steps} aria-label="Etapas">
           <ol>
             {STEPS.map((s) => (
               <li key={s.n}>

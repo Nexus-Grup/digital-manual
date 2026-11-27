@@ -35,7 +35,7 @@ export function TicketActionsMenu({ ticketId, status }: { ticketId: number; stat
     setBusy(false);
     setOpen(false);
     if (!res.ok) return toast.error(res.error);
-    toast.success("Ticket marked as resolved");
+    toast.success("Chamado marcado como resolvido");
     router.refresh();
   }
 
@@ -44,7 +44,7 @@ export function TicketActionsMenu({ ticketId, status }: { ticketId: number; stat
       <button
         type="button"
         className={styles.trigger}
-        aria-label={`Actions for ticket #${ticketId}`}
+        aria-label={`Ações do chamado #${ticketId}`}
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
@@ -62,7 +62,7 @@ export function TicketActionsMenu({ ticketId, status }: { ticketId: number; stat
           </Link>
           {canResolve && (
             <button type="button" className={styles.item} role="menuitem" disabled={busy} onClick={resolve}>
-              Mark as resolved
+              Marcar como resolvido
             </button>
           )}
         </div>

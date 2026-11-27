@@ -20,10 +20,10 @@ export default function ResetPasswordForm({ initialEmail = '' }: { initialEmail?
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!EMAIL_RE.test(email.trim())) return setError('Enter a valid email');
-    if (!/^\d{6}$/.test(code)) return setError('Enter the 6-digit code');
-    if (password.length < 8) return setError('Password must have at least 8 characters');
-    if (password !== confirm) return setError('Passwords do not match');
+    if (!EMAIL_RE.test(email.trim())) return setError('Digite um e-mail válido');
+    if (!/^\d{6}$/.test(code)) return setError('Digite o código de 6 dígitos');
+    if (password.length < 8) return setError('A senha precisa ter pelo menos 8 caracteres');
+    if (password !== confirm) return setError('As senhas não coincidem');
     setError('');
 
     setLoading(true);
@@ -36,12 +36,12 @@ export default function ResetPasswordForm({ initialEmail = '' }: { initialEmail?
       const data = await res.json().catch(() => null);
 
       if (!res.ok) {
-        setError(typeof data?.error === 'string' ? data.error : 'Could not reset the password');
+        setError(typeof data?.error === 'string' ? data.error : 'Não foi possível redefinir a senha');
         return;
       }
       setDone(true);
     } catch {
-      setError('Network error. Try again.');
+      setError('Erro de conexão. Tente de novo.');
     } finally {
       setLoading(false);
     }
@@ -51,11 +51,11 @@ export default function ResetPasswordForm({ initialEmail = '' }: { initialEmail?
     <div className={styles.card}>
       <AuthLogo />
 
-      <h1 className={styles.title}>Reset your password</h1>
+      <h1 className={styles.title}>Redefina sua senha</h1>
 
       {done ? (
         <div className={styles.success} role="status">
-          <p>Your password was changed. You can sign in with the new password.</p>
+          <p>Sua senha foi alterada. Você já pode entrar com a nova senha.</p>
         </div>
       ) : (
         <>
@@ -65,12 +65,12 @@ export default function ResetPasswordForm({ initialEmail = '' }: { initialEmail?
 
           <form className={styles.form} onSubmit={onSubmit} noValidate>
             <div className={styles.field}>
-              <label htmlFor={`${id}-email`} className={styles.label}>Email</label>
+              <label htmlFor={`${id}-email`} className={styles.label}>E-mail</label>
               <input
                 id={`${id}-email`}
                 type="email"
                 autoComplete="email"
-                placeholder="Enter your email"
+                placeholder="Digite seu e-mail"
                 className={styles.input}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -78,13 +78,13 @@ export default function ResetPasswordForm({ initialEmail = '' }: { initialEmail?
             </div>
 
             <div className={styles.field}>
-              <label htmlFor={`${id}-code`} className={styles.label}>Code</label>
+              <label htmlFor={`${id}-code`} className={styles.label}>Código</label>
               <input
                 id={`${id}-code`}
                 inputMode="numeric"
                 autoComplete="one-time-code"
                 maxLength={6}
-                placeholder="6-digit code"
+                placeholder="Código de 6 dígitos"
                 className={styles.input}
                 value={code}
                 onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
@@ -92,12 +92,12 @@ export default function ResetPasswordForm({ initialEmail = '' }: { initialEmail?
             </div>
 
             <div className={styles.field}>
-              <label htmlFor={`${id}-password`} className={styles.label}>New password</label>
+              <label htmlFor={`${id}-password`} className={styles.label}>Nova senha</label>
               <input
                 id={`${id}-password`}
                 type="password"
                 autoComplete="new-password"
-                placeholder="At least 8 characters"
+                placeholder="Pelo menos 8 caracteres"
                 className={styles.input}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -105,12 +105,12 @@ export default function ResetPasswordForm({ initialEmail = '' }: { initialEmail?
             </div>
 
             <div className={styles.field}>
-              <label htmlFor={`${id}-confirm`} className={styles.label}>Confirm password</label>
+              <label htmlFor={`${id}-confirm`} className={styles.label}>Confirmar senha</label>
               <input
                 id={`${id}-confirm`}
                 type="password"
                 autoComplete="new-password"
-                placeholder="Repeat the new password"
+                placeholder="Repita a nova senha"
                 className={styles.input}
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
@@ -120,15 +120,15 @@ export default function ResetPasswordForm({ initialEmail = '' }: { initialEmail?
             {error && <p className={styles.formError} role="alert">{error}</p>}
 
             <button type="submit" className={styles.submit} disabled={loading}>
-              {loading ? 'Saving…' : 'Reset password'}
+              {loading ? 'Salvando…' : 'Redefinir senha'}
             </button>
           </form>
 
-          <Link href="/forgot-password" className={styles.back}>Send a new code</Link>
+          <Link href="/esqueci-a-senha" className={styles.back}>Enviar novo código</Link>
         </>
       )}
 
-      <Link href="/login" className={styles.back}>Back to sign in</Link>
+      <Link href="/entrar" className={styles.back}>Voltar para o login</Link>
     </div>
   );
 }

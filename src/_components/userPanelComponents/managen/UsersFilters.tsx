@@ -30,25 +30,25 @@ export function UsersSelects({ companies }: { companies: CompanyOption[] }) {
     <div className={styles.selects}>
       <select
         className={styles.select}
-        aria-label="Filter users"
+        aria-label="Filtrar usuários"
         value={params.get("filter") ?? ""}
         onChange={(e) => setParam("filter", e.target.value)}
       >
-        <option value="">All Users</option>
-        <option value="active">Active</option>
-        <option value="inactive">Inactive</option>
-        <option value="pending">Pending registration</option>
-        <option value="complete">Registration complete</option>
-        <option value="unassigned">Unassigned</option>
+        <option value="">Todos os usuários</option>
+        <option value="active">Ativo</option>
+        <option value="inactive">Inativo</option>
+        <option value="pending">Cadastro pendente</option>
+        <option value="complete">Cadastro completo</option>
+        <option value="unassigned">Sem responsável</option>
       </select>
 
       <select
         className={styles.select}
-        aria-label="Filter by company"
+        aria-label="Filtrar por empresa"
         value={params.get("company") ?? ""}
         onChange={(e) => setParam("company", e.target.value)}
       >
-        <option value="">All Companies</option>
+        <option value="">Todas as empresas</option>
         {companies.map((c) => (
           <option key={c.id} value={c.id}>
             {c.name}
@@ -78,7 +78,7 @@ export function UsersSearch() {
       <Search size={13} aria-hidden />
       <input
         type="search"
-        placeholder="Search name or email..."
+        placeholder="Buscar nome ou e-mail..."
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />

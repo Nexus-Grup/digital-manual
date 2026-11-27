@@ -20,17 +20,17 @@ export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const loggedIn = await isLoggedIn(req);
 
-  if (pathname.startsWith("/user-panel") && !loggedIn) {
-    return NextResponse.redirect(new URL("/login", req.url));
+  if (pathname.startsWith("/painel") && !loggedIn) {
+    return NextResponse.redirect(new URL("/entrar", req.url));
   }
 
-  if (pathname === "/login" && loggedIn) {
-    return NextResponse.redirect(new URL("/user-panel", req.url));
+  if (pathname === "/entrar" && loggedIn) {
+    return NextResponse.redirect(new URL("/painel", req.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/user-panel/:path*", "/login"],
+  matcher: ["/painel/:path*", "/entrar"],
 };

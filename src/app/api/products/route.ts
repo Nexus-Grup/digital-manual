@@ -35,7 +35,7 @@ export async function POST(req: Request) {
     await requireBrandEditor(data.brandId);
 
     if (await prisma.product.findUnique({ where: { code: data.code }, select: { id: true } })) {
-      throw new HttpError(409, 'This SKU / part number is already in use');
+      throw new HttpError(409, 'Este SKU / código já está em uso');
     }
 
     const product = await prisma.product.create({

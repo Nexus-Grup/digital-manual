@@ -6,7 +6,7 @@ import { Bell } from "lucide-react";
 import { useDropdown } from "./useDropdown";
 import styles from "@/_styles/cssUserPanelPage/NotificationBell.module.css";
 
-const BASE = "/user-panel";
+const BASE = "/painel";
 
 export interface NotificationItem {
   id: number;
@@ -82,7 +82,7 @@ export default function NotificationBell({ notifications, unreadCount }: Notific
             )}
           </div>
 
-          <Link href={`${BASE}/notifications`} className={styles.seeAll} onClick={() => setOpen(false)}>
+          <Link href={`${BASE}/notificacoes`} className={styles.seeAll} onClick={() => setOpen(false)}>
             Ver todas
           </Link>
         </div>

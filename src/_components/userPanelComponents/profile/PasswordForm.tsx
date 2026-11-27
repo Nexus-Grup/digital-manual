@@ -18,13 +18,13 @@ const EMPTY: Values = { currentPassword: '', newPassword: '', confirmPassword: '
 
 function validate(v: Values): Errors {
   const e: Errors = {};
-  if (!v.currentPassword) e.currentPassword = 'Enter your current password.';
-  if (!v.newPassword) e.newPassword = 'Enter a new password.';
-  else if (v.newPassword.length < MIN_LENGTH) e.newPassword = `Use at least ${MIN_LENGTH} characters.`;
-  else if (v.newPassword.length > MAX_LENGTH) e.newPassword = `Use at most ${MAX_LENGTH} characters.`;
-  else if (v.newPassword === v.currentPassword) e.newPassword = 'The new password must be different from the current one.';
-  if (!v.confirmPassword) e.confirmPassword = 'Repeat the new password.';
-  else if (v.confirmPassword !== v.newPassword) e.confirmPassword = 'The passwords do not match.';
+  if (!v.currentPassword) e.currentPassword = 'Digite sua senha atual.';
+  if (!v.newPassword) e.newPassword = 'Digite a nova senha.';
+  else if (v.newPassword.length < MIN_LENGTH) e.newPassword = `Use pelo menos ${MIN_LENGTH} caracteres.`;
+  else if (v.newPassword.length > MAX_LENGTH) e.newPassword = `Use no máximo ${MAX_LENGTH} caracteres.`;
+  else if (v.newPassword === v.currentPassword) e.newPassword = 'A nova senha precisa ser diferente da atual.';
+  if (!v.confirmPassword) e.confirmPassword = 'Repita a nova senha.';
+  else if (v.confirmPassword !== v.newPassword) e.confirmPassword = 'As senhas não coincidem.';
   return e;
 }
 
@@ -55,22 +55,22 @@ export function PasswordForm() {
       toast.error(err);
       return;
     }
-    toast.success('Password changed.');
+    toast.success('Senha alterada.');
     setValues(EMPTY);
   }
 
   const fields: { id: keyof Values; label: string; placeholder: string; autoComplete: string }[] = [
-    { id: 'currentPassword', label: 'Current password', placeholder: 'Current password', autoComplete: 'current-password' },
-    { id: 'newPassword', label: 'New password', placeholder: 'New password', autoComplete: 'new-password' },
-    { id: 'confirmPassword', label: 'Confirm new password', placeholder: 'Repeat new password', autoComplete: 'new-password' },
+    { id: 'currentPassword', label: 'Senha atual', placeholder: 'Senha atual', autoComplete: 'current-password' },
+    { id: 'newPassword', label: 'Nova senha', placeholder: 'Nova senha', autoComplete: 'new-password' },
+    { id: 'confirmPassword', label: 'Confirmar nova senha', placeholder: 'Repita a nova senha', autoComplete: 'new-password' },
   ];
 
   return (
-    <section className={page.card} aria-label="Security">
+    <section className={page.card} aria-label="Segurança">
       <header className={page.cardHead}>
         <div>
-          <h2 className={page.cardTitle}>Security</h2>
-          <p className={page.cardSub}>Change the password you use to sign in.</p>
+          <h2 className={page.cardTitle}>Segurança</h2>
+          <p className={page.cardSub}>Altere a senha que você usa para entrar.</p>
         </div>
       </header>
 
@@ -96,7 +96,7 @@ export function PasswordForm() {
 
         <div className={page.formActions}>
           <button type="submit" className={page.primaryBtn} disabled={busy}>
-            {busy ? 'Changing...' : 'Change password'}
+            {busy ? 'Alterando...' : 'Alterar senha'}
           </button>
         </div>
       </form>

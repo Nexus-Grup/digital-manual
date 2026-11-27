@@ -21,7 +21,7 @@ export function StepManuals({ product, onProgress, ref }: StepProps) {
 
   function add(list = manuals) {
     if (!fileUrl || !title.trim() || !documentType) {
-      toast.error('Upload the PDF, enter the title and choose the document type');
+      toast.error('Envie o PDF, digite o título e escolha o tipo de documento');
       return null;
     }
     const next = [...list, { title: title.trim(), fileUrl, documentType, language: language || null, version: version.trim() || null }];
@@ -37,7 +37,7 @@ export function StepManuals({ product, onProgress, ref }: StepProps) {
     const r = await api<{ progress: Progress }>(`/api/products/${product.id}/manuals`, 'PUT', { manuals: list });
     if (!r.ok) return void toast.error(r.error), false;
     onProgress(r.data.progress);
-    toast.success('Manuals & documents saved.');
+    toast.success('Manuais e documentos salvos.');
     return true;
   }
 
@@ -46,38 +46,38 @@ export function StepManuals({ product, onProgress, ref }: StepProps) {
   return (
     <div className={styles.stack}>
       <div className={styles.field}>
-        <span className={styles.label}>Upload PDF manual</span>
-        <UploadBox productId={product.id} kind="pdf" value={fileUrl} onChange={setFileUrl} title="Upload PDF manual" hint="PDF files only · up to 50 MB" />
+        <span className={styles.label}>Enviar manual em PDF</span>
+        <UploadBox productId={product.id} kind="pdf" value={fileUrl} onChange={setFileUrl} title="Enviar manual em PDF" hint="Somente PDF · até 50 MB" />
       </div>
       <div className={styles.field}>
-        <label htmlFor={`${uid}-t`}>Manual Title *</label>
-        <input id={`${uid}-t`} className={styles.input} placeholder="e.g. User Manual" value={title} maxLength={160} onChange={(e) => setTitle(e.target.value)} />
+        <label htmlFor={`${uid}-t`}>Título do manual *</label>
+        <input id={`${uid}-t`} className={styles.input} placeholder="ex.: Manual do usuário" value={title} maxLength={160} onChange={(e) => setTitle(e.target.value)} />
       </div>
       <div className={styles.row2}>
         <div className={styles.field}>
-          <label htmlFor={`${uid}-d`}>Document Type</label>
+          <label htmlFor={`${uid}-d`}>Tipo de documento</label>
           <select id={`${uid}-d`} className={styles.select} value={documentType} onChange={(e) => setDocumentType(e.target.value)}>
-            <option value="">Select type</option>
+            <option value="">Selecione o tipo</option>
             {DOCUMENT_TYPES.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}
           </select>
         </div>
         <div className={styles.field}>
-          <label htmlFor={`${uid}-l`}>Language</label>
+          <label htmlFor={`${uid}-l`}>Idioma</label>
           <select id={`${uid}-l`} className={styles.select} value={language} onChange={(e) => setLanguage(e.target.value)}>
-            <option value="">Select language</option>
+            <option value="">Selecione o idioma</option>
             {LANGUAGES.map((l) => <option key={l.value} value={l.value}>{l.label}</option>)}
           </select>
         </div>
       </div>
       <div className={styles.field}>
-        <label htmlFor={`${uid}-v`}>Manual Version</label>
+        <label htmlFor={`${uid}-v`}>Versão do manual</label>
         <input id={`${uid}-v`} className={styles.input} placeholder="e.g. 1.0" value={version} maxLength={40} onChange={(e) => setVersion(e.target.value)} />
       </div>
-      <div className={styles.builderActions}><button type="button" className={styles.pillBtn} onClick={() => add()}><Plus size={13} aria-hidden /> Add manual</button></div>
+      <div className={styles.builderActions}><button type="button" className={styles.pillBtn} onClick={() => add()}><Plus size={13} aria-hidden /> Adicionar manual</button></div>
 
       {manuals.length > 0 && (
-        <section className={styles.added} aria-label="Added manuals">
-          <h3 className={styles.addedTitle}>Added manuals</h3>
+        <section className={styles.added} aria-label="Manuais adicionados">
+          <h3 className={styles.addedTitle}>Manuais adicionados</h3>
           <ul>
             {manuals.map((m, i) => (
               <li key={i}>
@@ -85,7 +85,7 @@ export function StepManuals({ product, onProgress, ref }: StepProps) {
                   <span>{m.title}{m.version ? ` · v${m.version}` : ''}</span>
                   <small>{labelOf(DOCUMENT_TYPES, m.documentType)}{m.language ? ` · ${labelOf(LANGUAGES, m.language)}` : ''} · {fileNameFromUrl(m.fileUrl)}</small>
                 </span>
-                <button type="button" className={styles.iconBtn} aria-label={`Remove ${m.title}`} onClick={() => setManuals(manuals.filter((_, k) => k !== i))}><Trash2 size={14} aria-hidden /></button>
+                <button type="button" className={styles.iconBtn} aria-label={`Remover ${m.title}`} onClick={() => setManuals(manuals.filter((_, k) => k !== i))}><Trash2 size={14} aria-hidden /></button>
               </li>
             ))}
           </ul>

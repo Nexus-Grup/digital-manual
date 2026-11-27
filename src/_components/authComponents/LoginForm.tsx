@@ -33,9 +33,9 @@ export default function LoginForm() {
 
   const validate = (): Errors => {
     const next: Errors = {};
-    if (!email.trim()) next.email = 'Enter your email';
-    else if (!EMAIL_RE.test(email.trim())) next.email = 'Enter a valid email';
-    if (!password) next.password = 'Enter your password';
+    if (!email.trim()) next.email = 'Digite seu e-mail';
+    else if (!EMAIL_RE.test(email.trim())) next.email = 'Digite um e-mail válido';
+    if (!password) next.password = 'Digite sua senha';
     return next;
   };
 
@@ -53,12 +53,12 @@ export default function LoginForm() {
         body: JSON.stringify({ email: email.trim(), password, remember }),
       });
       const data = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(data?.error ?? 'Could not sign in');
+      if (!res.ok) throw new Error(data?.error ?? 'Não foi possível entrar');
 
-      router.push('/user-panel');
+      router.push('/painel');
       router.refresh();
     } catch (err) {
-      setErrors({ form: err instanceof Error ? err.message : 'Could not sign in' });
+      setErrors({ form: err instanceof Error ? err.message : 'Não foi possível entrar' });
     } finally {
       setLoading(false);
     }
@@ -74,13 +74,13 @@ export default function LoginForm() {
 
       <form className={styles.form} onSubmit={onSubmit} noValidate>
         <div className={styles.field}>
-          <label htmlFor={`${id}-email`} className={styles.label}>Email</label>
+          <label htmlFor={`${id}-email`} className={styles.label}>E-mail</label>
           <input
             id={`${id}-email`}
             type="email"
             name="email"
             autoComplete="email"
-            placeholder="Enter your email"
+            placeholder="Digite seu e-mail"
             className={styles.input}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -93,14 +93,14 @@ export default function LoginForm() {
         </div>
 
         <div className={styles.field}>
-          <label htmlFor={`${id}-password`} className={styles.label}>Password</label>
+          <label htmlFor={`${id}-password`} className={styles.label}>Senha</label>
           <div className={styles.inputWrap}>
             <input
               id={`${id}-password`}
               type={showPassword ? 'text' : 'password'}
               name="password"
               autoComplete="current-password"
-              placeholder="Enter your password"
+              placeholder="Digite sua senha"
               className={`${styles.input} ${styles.inputWithIcon}`}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -111,7 +111,7 @@ export default function LoginForm() {
               type="button"
               className={styles.eye}
               onClick={() => setShowPassword((v) => !v)}
-              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
               aria-pressed={showPassword}
             >
               <EyeIcon off={showPassword} />
@@ -130,15 +130,15 @@ export default function LoginForm() {
               checked={remember}
               onChange={(e) => setRemember(e.target.checked)}
             />
-            <span>Remember me</span>
+            <span>Lembrar de mim</span>
           </label>
-          <Link href="/forgot-password" className={styles.link}>Forgot Password</Link>
+          <Link href="/esqueci-a-senha" className={styles.link}>Esqueci minha senha</Link>
         </div>
 
         {errors.form && <p className={styles.formError} role="alert">{errors.form}</p>}
 
         <button type="submit" className={styles.submit} disabled={loading}>
-          {loading ? 'Signing in…' : 'Sign In'}
+          {loading ? 'Entrando…' : 'Entrar'}
         </button>
       </form>
     </div>

@@ -6,10 +6,10 @@ export async function request<T>(url: string, init: RequestInit): Promise<Res<T>
   try {
     const res = await fetch(url, { headers: { "Content-Type": "application/json" }, ...init });
     const json = await res.json().catch(() => null);
-    if (!res.ok) return { ok: false, error: json?.error ?? "Something went wrong. Try again." };
+    if (!res.ok) return { ok: false, error: json?.error ?? "Algo deu errado. Tente de novo." };
     return { ok: true, data: json as T };
   } catch {
-    return { ok: false, error: "Network error. Check your connection." };
+    return { ok: false, error: "Erro de conexão. Verifique sua internet." };
   }
 }
 
@@ -35,9 +35,9 @@ export async function uploadAttachment(file: File): Promise<Res<UploadedFile>> {
     body.append("file", file);
     const res = await fetch("/api/support/uploads", { method: "POST", body });
     const json = await res.json().catch(() => null);
-    if (!res.ok) return { ok: false, error: json?.error ?? "Upload failed" };
+    if (!res.ok) return { ok: false, error: json?.error ?? "Falha no envio" };
     return { ok: true, data: json as UploadedFile };
   } catch {
-    return { ok: false, error: "Upload failed. Try again." };
+    return { ok: false, error: "Falha no envio. Tente de novo." };
   }
 }
