@@ -7,14 +7,16 @@
   flex-direction: column;
   gap: 2px;
   padding: 7px 12px;
-  background: #fff;
+  background: var(--pn-bg, #fff);
   border: 1px solid var(--c-border);
   border-radius: 8px;
 }
 
 .companyBox:focus-within {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  /* the select inside has no outline: the box shows the project focus ring (WCAG 2.4.7) */
+  border-color: var(--btn-focus-ring);
+  outline: 3px solid var(--btn-focus-ring);
+  outline-offset: 2px;
 }
 
 .companyRow {
@@ -28,7 +30,7 @@
   min-width: 0;
   padding: 0;
   font-size: 13px;
-  color: #111;
+  color: var(--pn-text, #111);
   background: transparent;
   border: 0;
   outline: none;
@@ -39,15 +41,15 @@
 .currentBadge {
   flex-shrink: 0;
   padding: 1px 12px;
-  font-size: 9px;
-  background: #d9d9d9;
+  font-size: 0.75rem;
+  background: var(--pn-surface, #d9d9d9);
   border-radius: 999px;
 }
 
 .companyHint {
   padding-left: 22px;
-  font-size: 10px;
-  color: #999;
+  font-size: 0.75rem;
+  color: var(--pn-text, #737373);
 }
 
 /* ---- Rodapé do Edit Brand: Deactivate à esquerda, Save à direita ---- */
@@ -58,10 +60,10 @@ footer.footerBetween {
 .deactivate {
   height: 28px;
   padding: 0 18px;
-  font-size: 11px;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: #fff;
-  background: #e03131;
+  color: var(--pn-on-strong, #fff);
+  background: var(--pn-danger-strong, #e03131);
   border: 0;
   border-radius: 999px;
   cursor: pointer;
@@ -69,7 +71,7 @@ footer.footerBetween {
 }
 
 .deactivate:hover:not(:disabled) {
-  background: #c92a2a;
+  background: var(--pn-danger-strong, #c92a2a);
 }
 
 .deactivate:disabled {
@@ -80,9 +82,9 @@ footer.footerBetween {
 .activate {
   height: 28px;
   padding: 0 18px;
-  font-size: 11px;
-  color: #111;
-  background: #fff;
+  font-size: 0.75rem;
+  color: var(--pn-text, #111);
+  background: var(--pn-bg, #fff);
   border: 1px solid var(--c-border);
   border-radius: 999px;
   cursor: pointer;
@@ -95,14 +97,14 @@ footer.footerBetween {
 
 /* ---- Lista de usuários da marca ---- */
 .roleViewer {
-  color: #111;
-  background: #d9d9d9;
+  color: var(--pn-text, #111);
+  background: var(--pn-surface, #d9d9d9);
 }
 
 .empty {
   margin: 8px 0;
   font-size: 12px;
-  color: #777;
+  color: var(--pn-text, #747474);
   text-align: center;
 }
 

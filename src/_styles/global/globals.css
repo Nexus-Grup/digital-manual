@@ -7,6 +7,11 @@
 }
 :root {
   --background: #F9FAFB;
+
+  /* "Pergunte ao Lucca" chat: soft brand-blue wall with thin-line doodles (decorative only: text always
+     sits on solid bubbles, so it never changes text contrast) */
+  --chat-bg: #eef4fb;
+  --chat-doodle: rgba(42, 114, 189, 0.16);
   --foreground: #171717;
 
   /* ===== tema padrão ===== */
@@ -102,6 +107,8 @@
 /* ===== ESCALA DE CINZA: tema cinza escuro + filtro que tira qualquer cor ===== */
 html[data-contrast="gray"] {
   color-scheme: dark;
+  --chat-bg: #1b1b1b;
+  --chat-doodle: rgba(255, 255, 255, 0.09);
   filter: grayscale(1); /* fotos, vídeos e cores fixas viram cinza */
 
   --background: #222;
@@ -184,11 +191,38 @@ html[data-contrast="gray"] {
   --btn-disabled-text: #8c8c8c;
   --btn-disabled-border: #555;
   --btn-state-layer: #ffffff;
+
+  /* user panel: role tokens of its CSS modules (var(--pn-*, original color)), only defined in the
+     contrast modes, so the default panel keeps its exact colors */
+  --pn-text: #f0f0f0;
+  --pn-muted: #c4c4c4;
+  --pn-on-strong: #1a1a1a;
+  --pn-bg: #222;
+  --pn-surface: #2a2a2a;
+  --pn-hover: #333;
+  --pn-strong: #e6e6e6;
+  --pn-border: #8c8c8c;
+  --pn-border-soft: #707070;
+  --pn-shadow: transparent;
+  --pn-accent: #d0d0d0;
+  --pn-accent-bg: #3a3a3a;
+  --pn-accent-strong: #d0d0d0;
+  --pn-ok: #d0d0d0;
+  --pn-ok-bg: #3a3a3a;
+  --pn-ok-strong: #d0d0d0;
+  --pn-warn: #e6e6e6;
+  --pn-warn-bg: #3a3a3a;
+  --pn-danger: #e6e6e6;
+  --pn-danger-bg: #3a3a3a;
+  --pn-danger-strong: #d0d0d0;
 }
 
 /* ===== ALTO CONTRASTE ===== */
 html[data-contrast="high"] {
   color-scheme: dark;
+  /* high contrast: plain black wall, no doodles (nothing competes with the text) */
+  --chat-bg: #000;
+  --chat-doodle: transparent;
   --background: #000;
   --foreground: #fff;
 
@@ -269,6 +303,30 @@ html[data-contrast="high"] {
   --btn-disabled-text: #a0a0a0;
   --btn-disabled-border: #a0a0a0;
   --btn-state-layer: #ffffff;
+
+  /* user panel (see the gray mode): black surfaces, white text and lines, yellow actions;
+     status colors stay as light text on black, always next to a text label */
+  --pn-text: #fff;
+  --pn-muted: #fff;
+  --pn-on-strong: #000;
+  --pn-bg: #000;
+  --pn-surface: #000;
+  --pn-hover: #1f1f1f;
+  --pn-strong: #fff;
+  --pn-border: #fff;
+  --pn-border-soft: #fff;
+  --pn-shadow: transparent;
+  --pn-accent: #ffeb3b;
+  --pn-accent-bg: #000;
+  --pn-accent-strong: #ffeb3b;
+  --pn-ok: #8dff9f;
+  --pn-ok-bg: #000;
+  --pn-ok-strong: #8dff9f;
+  --pn-warn: #ffeb3b;
+  --pn-warn-bg: #000;
+  --pn-danger: #ffb4a0;
+  --pn-danger-bg: #000;
+  --pn-danger-strong: #ffb4a0;
 }
 
 @theme inline {
@@ -289,8 +347,8 @@ html[data-contrast="high"] {
  * Typography roles (fonts loaded in app/layout.tsx):
  *   --type-display  Greycliff CF Bold: titles, eyebrows/tags, highlighted numbers, button labels.
  *                   Short text only, never paragraphs (WCAG 1.4.8 readability; Nielsen: consistency).
- *   --type-body     JUST Sans: everything else (the default on <body>). Regular up to weight 599,
- *                   ExBold from 600, so bold text uses the real bold face (no synthesized bold).
+ *   --type-body     Greycliff CF Regular: everything else (the default on <body>). Regular up to weight 599,
+ *                   Bold from 600, so bold text uses the real bold face (no synthesized bold).
  * Components use the tokens, never the font names: font-family: var(--type-display);
  */
 :root {
@@ -424,34 +482,66 @@ body {
     scrollbar-width: thin;
 }
 
-.container-stage{
-  flex-direction: row;
+/* ===== User panel shell (mobile first) =====
+   Phones: everything stacks (panel menu bar, area sidebar, content) and the page scrolls as a whole,
+   so the content gets the full width (WCAG 1.4.10 reflow, no nested scroll areas).
+   From 768px: side by side, each column scrolls on its own (tablet and desktop layout). */
+.container-global--panel {
+  height: auto;
+  min-height: 100vh;
+  min-height: 100dvh;
   justify-content: flex-start;
-  align-items: center;
+}
+
+.container-stage{
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
   width: 100%;
-  height: 100%;
   display: flex;
-  overflow: auto;
 }
 
 .container-global-page{
     width: 100%;
-    height: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
 }
 
 .container-stage-section{
   width: 100%;
-  height: 100%;
   display: flex;
-  overflow: auto;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 24px 16px;
+  box-sizing: border-box;
+  padding: 16px 4%;
+}
+
+@media (min-width: 768px) {
+  .container-global--panel {
+    height: 100vh;
+  }
+
+  .container-stage{
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    overflow: auto;
+  }
+
+  .container-global-page{
+    height: 100%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container-stage-section{
+    height: 100%;
+    overflow: auto;
+    padding: 24px 16px;
+  }
 }
 
 /* Customização detalhada (Chrome, Edge, Safari) */
@@ -461,7 +551,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9; /* Cor do fundo/trilho */
+  background: var(--c-surface); /* Cor do fundo/trilho */
   border-radius: 10px;
 }
 
@@ -500,4 +590,10 @@ html {
 
 html::-webkit-scrollbar {
   display: none;
+}
+
+/* "Pular para o conteúdo" (SkipLink) focuses the page's <main> by script (tabindex="-1"): it is not an
+   interactive control, so no focus ring around the whole page */
+main[tabindex="-1"]:focus {
+  outline: none;
 }

@@ -2,7 +2,7 @@
 
 import { useId, useState, type FormEvent, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { Building2, Check, ChevronDown } from 'lucide-react';
+import { Building2, Check, ChevronDown, CircleAlert } from 'lucide-react';
 import { toast } from 'sonner';
 import styles from '@/_styles/cssUserPanelPage/CompanyForm.module.css';
 import usersStyles from '@/_styles/cssUserPanelPage/CompanyUsers.module.css';
@@ -65,8 +65,8 @@ function BrandFormInner({
     setNameInvalid(false);
 
     if (name.trim().length < 2) {
-      setNameInvalid(true);
-      toast.error('Digite o nome da marca');
+      setNameInvalid(true); // erro aparece embaixo do campo, e o foco vai para ele
+      document.getElementById(`${formId}-name`)?.focus();
       return;
     }
     if (!isEdit && companyId === '') {
@@ -143,27 +143,36 @@ function BrandFormInner({
           </div>
           {isEdit && (
             <span className={`${styles.badge} ${brand.isActive ? styles.badgeActive : styles.badgeInactive}`}>
-              {brand.isActive ? 'active' : 'inactive'}
+              {brand.isActive ? 'Ativa' : 'Inativa'}
             </span>
           )}
         </header>
 
         {/* o <form> envolve só os campos: a seção de usuários tem ações próprias */}
-        <form id={formId} className={styles.form} onSubmit={onSubmit} noValidate>
+        <form id={formId} className={styles.form} onSubmit={onSubmit} noValidate aria-describedby={`${formId}-required`}>
+          <p id={`${formId}-required`} className={styles.requiredNote}>Campos com * são obrigatórios.</p>
           <div className={styles.field}>
-            <label htmlFor={`${formId}-name`} className={styles.label}>Nome da marca*</label>
+            <label htmlFor={`${formId}-name`} className={styles.label}>Nome da marca *</label>
             <input
               id={`${formId}-name`}
               className={styles.input}
               placeholder="ex.: Bosch"
               value={name}
               maxLength={120}
+              required
+              aria-required="true"
               aria-invalid={nameInvalid}
+              aria-describedby={nameInvalid ? `${formId}-name-error` : undefined}
               onChange={(e) => {
                 setName(e.target.value);
                 setNameInvalid(false);
               }}
             />
+            {nameInvalid && (
+              <p id={`${formId}-name-error`} className={styles.fieldError} role="alert">
+                <CircleAlert size={14} aria-hidden /> Digite o nome da marca, com pelo menos 2 letras.
+              </p>
+            )}
           </div>
 
           <div className={styles.field}>
@@ -190,7 +199,7 @@ function BrandFormInner({
 
           {!isEdit && (
             <div className={styles.field}>
-              <label htmlFor={`${formId}-company`} className={styles.label}>Empresa</label>
+              <label htmlFor={`${formId}-company`} className={styles.label}>Empresa *</label>
               <div className={extra.companyBox}>
                 <div className={extra.companyRow}>
                   <Building2 size={14} aria-hidden />
@@ -198,6 +207,9 @@ function BrandFormInner({
                     id={`${formId}-company`}
                     className={extra.companySelect}
                     value={companyId}
+                    required
+                    aria-required="true"
+                    aria-describedby={`${formId}-company-hint`}
                     onChange={(e) => setCompanyId(Number(e.target.value))}
                   >
                     {companies.map((c) => (
@@ -209,8 +221,8 @@ function BrandFormInner({
                   )}
                   <ChevronDown size={16} aria-hidden />
                 </div>
-                <span className={extra.companyHint}>
-                  The brand will be registered under this company.
+                <span id={`${formId}-company-hint`} className={extra.companyHint}>
+                  A marca será cadastrada nesta empresa.
                 </span>
               </div>
             </div>
@@ -276,8 +288,8 @@ function BrandFormInner({
         <Modal label="Desativar marca" onClose={() => setConfirmOpen(false)}>
           <h2 className={usersStyles.modalTitle}>Desativar marca?</h2>
           <p className={extra.confirmText}>
-            <strong>{brand.name}</strong> will be hidden from the platform. Its users and
-            content are kept, and you can activate it again later.
+            <strong>{brand.name}</strong> deixará de aparecer na plataforma. Os usuários e o
+            conteúdo da marca são mantidos, e você pode ativá-la de novo depois.
           </p>
           <div className={usersStyles.panelActions}>
             <button

@@ -1,11 +1,15 @@
 /* Header language switcher */
+/* phones: the menu opens under the whole header, 8px from both screen edges (anchored to the sticky header),
+   so it never starts off screen when its button is not the last one (WCAG 1.4.10) */
 .language-menu {
-    position: relative;
+    position: static;
     display: flex;
 }
 
 .language-menu__trigger {
+    min-width: 44px;
     height: 44px;
+    justify-content: center;
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -27,7 +31,9 @@
     outline-offset: 2px;
 }
 
+/* phones (< 480px): globe only, so the header fits; the button name still starts with the code */
 .language-menu__code {
+    display: none;
     font-size: 0.8125rem;
     font-weight: 700;
     letter-spacing: 0.02em;
@@ -37,10 +43,10 @@
 /* Dropdown (same look as the contrast menu) */
 .language-menu__panel {
     position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
+    top: calc(100% + 4px);
+    right: 8px;
+    left: 8px;
     z-index: 30;
-    width: 240px;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -122,4 +128,23 @@
     overflow: hidden;
     clip-path: inset(50%);
     white-space: nowrap;
+}
+
+@media (min-width: 480px) {
+    .language-menu__code {
+        display: inline;
+    }
+}
+
+@media (min-width: 768px) {
+    .language-menu {
+        position: relative;
+    }
+
+    .language-menu__panel {
+        top: calc(100% + 8px);
+        right: 0;
+        left: auto;
+        width: 240px;
+    }
 }

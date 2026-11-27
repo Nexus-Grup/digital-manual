@@ -30,7 +30,7 @@ export function UsersSelects({ companies }: { companies: CompanyOption[] }) {
     <div className={styles.selects}>
       <select
         className={styles.select}
-        aria-label="Filtrar usuários"
+        aria-label="Filtrar por status do usuário"
         value={params.get("filter") ?? ""}
         onChange={(e) => setParam("filter", e.target.value)}
       >
@@ -78,6 +78,7 @@ export function UsersSearch() {
       <Search size={13} aria-hidden />
       <input
         type="search"
+        aria-label="Buscar usuários por nome ou e-mail"
         placeholder="Buscar nome ou e-mail..."
         value={value}
         onChange={(e) => setValue(e.target.value)}

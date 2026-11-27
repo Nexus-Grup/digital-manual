@@ -134,7 +134,7 @@ export default async function SettingsLayout({
     brandCompanies.some((c) => c.role === "OWNER" || c.role === "MANAGER");
 
   return (
-    <main className="container-global-page">
+    <div className="container-global-page">
       <div className="container-stage">
         <SettingsSidebar
           companies={companies}
@@ -143,11 +143,12 @@ export default async function SettingsLayout({
           showCompanies={showCompanies}
           showBrands={showBrands}
         />
-        <div className="container-stage-section">
+        {/* the page content is the main region (the sidebar stays outside it) */}
+        <main id="conteudo" className="container-stage-section">
           {children}
-        </div>
+        </main>
         
       </div>
-    </main>
+    </div>
   );
 }

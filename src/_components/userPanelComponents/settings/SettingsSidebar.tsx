@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Pencil, Plus } from "lucide-react";
@@ -74,6 +74,7 @@ export function SettingsSidebar({
   showCompanies,
   showBrands,
 }: Props) {
+  const uid = useId();
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams<Record<string, string | undefined>>();
@@ -132,7 +133,8 @@ export function SettingsSidebar({
     router.push(`${cfg.base}/${id}${suffix}`);
   }
 
-  const createHint = !companyId ? "Selecione uma empresa primeiro" : "Só proprietários podem criar marcas";
+  const createHint = !companyId ? "Selecione uma empresa para criar uma marca." : "Só proprietários da empresa podem criar marcas.";
+  const editHint = selected ? "Você não tem permissão para editar." : `${cfg.select} para editar.`;
 
   return (
     <aside className={styles.sidebar}>
@@ -182,15 +184,18 @@ export function SettingsSidebar({
             <span>{cfg.edit}</span>
           </Link>
         ) : (
-          <button
-            type="button"
-            className={styles.item}
-            disabled
-            title={selected ? "Você não tem permissão para editar" : cfg.select}
-          >
-            <Pencil size={14} aria-hidden />
-            <span>{cfg.edit}</span>
-          </button>
+          <>
+            <button
+              type="button"
+              className={styles.item}
+              disabled
+              aria-describedby={`${uid}-edit-hint`}
+            >
+              <Pencil size={14} aria-hidden />
+              <span>{cfg.edit}</span>
+            </button>
+            <p id={`${uid}-edit-hint`} className={styles.hint}>{editHint}</p>
+          </>
         )}
 
         {canCreate ? (
@@ -203,10 +208,13 @@ export function SettingsSidebar({
             <span>{cfg.create}</span>
           </Link>
         ) : (
-          <button type="button" className={styles.item} disabled title={createHint}>
-            <Plus size={14} aria-hidden />
-            <span>{cfg.create}</span>
-          </button>
+          <>
+            <button type="button" className={styles.item} disabled aria-describedby={`${uid}-create-hint`}>
+              <Plus size={14} aria-hidden />
+              <span>{cfg.create}</span>
+            </button>
+            <p id={`${uid}-create-hint`} className={styles.hint}>{createHint}</p>
+          </>
         )}
       </nav>
     </aside>

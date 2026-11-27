@@ -2,6 +2,10 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
 import { BrandForm } from '@/_components/userPanelComponents/brands/BrandForm';
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Nova marca" };
+
 export const instant = false;
 
 export default async function NewBrandPage() {

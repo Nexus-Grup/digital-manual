@@ -1,57 +1,98 @@
+/* Mobile first: on phones the area links sit above the content in a 2-column grid of 44px buttons;
+   from 768px it is the sticky column on the left (tablet and desktop layout). */
 .sidebar {
-  position: sticky;
-  top: 0;
   flex-shrink: 0;
-  width: 204px;
-  height: 100%;
+  box-sizing: border-box;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  background: #fff;
-  border-right: 1px solid var(--c-border);
-  overflow-y: auto;
-}
-
-.header {
-  padding: 10px 8px;
-  font-size: 13px;
-  color: #111;
+  background: var(--pn-bg, #fff);
   border-bottom: 1px solid var(--c-border);
 }
 
+.header {
+  padding: 10px 4%;
+  font-family: var(--type-display);
+  font-size: 0.875rem;
+  color: var(--pn-text, #111);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.headerLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.headerLink:focus-visible {
+  outline: 3px solid var(--btn-focus-ring);
+  outline-offset: -3px;
+}
+
 .nav {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  padding: 12px 6px;
+  padding: 12px 4%;
 }
 
 .item {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-height: 44px;
   padding: 6px 10px;
-  font-size: 13px;
-  color: #111;
+  box-sizing: border-box;
+  font-size: 0.875rem;
+  color: var(--pn-text, #111);
   text-decoration: none;
-  background: #fff;
+  background: var(--pn-bg, #fff);
   border: 1px solid var(--c-border);
   border-radius: 6px;
   transition: background-color 0.15s ease;
 }
 
 .item:hover {
-  background: #f2f2f2;
+  background: var(--pn-hover, #f2f2f2);
 }
 
 .item:focus-visible {
-  outline: 2px solid #2563eb;
+  outline: 3px solid var(--btn-focus-ring);
   outline-offset: 2px;
 }
 
 .active {
-  background: #d9d9d9;
+  background: var(--pn-hover, #d9d9d9);
 }
 
 .active:hover {
-  background: #d9d9d9;
+  background: var(--pn-hover, #d9d9d9);
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    position: sticky;
+    top: 0;
+    width: 204px;
+    height: 100%;
+    overflow-y: auto;
+    border-bottom: 0;
+    border-right: 1px solid var(--c-border);
+  }
+
+  .header {
+    padding: 10px 8px;
+    font-family: var(--type-body);
+    font-size: 13px;
+  }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 6px;
+  }
+
+  .item {
+    min-height: 0;
+    font-size: 13px;
+  }
 }

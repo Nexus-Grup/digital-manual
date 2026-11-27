@@ -1,7 +1,7 @@
 'use client';
 
 import { useId, useImperativeHandle, useState } from 'react';
-import { Loader2, Plus, Sparkles, Trash2 } from 'lucide-react';
+import { CircleAlert, Loader2, Plus, Sparkles, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import styles from '@/_styles/cssUserPanelPage/products/ProductWizard.module.css';
 import { AUDIO_TYPES, MAX_GALLERY, labelOf } from '@/_lib/productConstants';
@@ -17,6 +17,7 @@ export function StepMedia({ product, onProgress, ref }: StepProps) {
   const [imgUrl, setImgUrl] = useState<string | null>(product.imgUrl);
   const [gallery, setGallery] = useState<string[]>(product.gallery);
   const [model, setModel] = useState(product.model3dUrl ?? '');
+  const [imgMissing, setImgMissing] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [modelStatus, setModelStatus] = useState('');
   // photos left out of the 3D generation (close-ups confuse it); the main image is always used
@@ -85,6 +86,13 @@ export function StepMedia({ product, onProgress, ref }: StepProps) {
   }
 
   async function save() {
+    // main image: hero of the product home and first photo of Informações
+    if (!imgUrl) {
+      setImgMissing(true);
+      toast.error('Envie a imagem principal do produto');
+      document.getElementById(`${uid}-img`)?.focus();
+      return false;
+    }
     // o que já foi preenchido nos formulários abertos entra junto
     let v = videos, a = audios;
     if (video.title.trim() || video.url.trim()) { const n = addVideo(); if (!n) return false; v = n; }
@@ -103,9 +111,32 @@ export function StepMedia({ product, onProgress, ref }: StepProps) {
 
   return (
     <div className={styles.stack}>
+      <p className={styles.requiredNote}>
+        Campos com * são obrigatórios. Galeria, modelo 3D, vídeos e áudios são opcionais; ao adicionar um vídeo ou áudio, os campos com * dele são obrigatórios.
+      </p>
       <div className={styles.field}>
-        <span className={styles.label}>Imagem principal do produto</span>
-        <UploadBox productId={product.id} kind="image" cutout value={imgUrl} onChange={setImgUrl} title="Enviar imagem principal" hint="PNG, JPG ou WEBP · o fundo é removido automaticamente" />
+        <span className={styles.label}>Imagem principal do produto *</span>
+        <UploadBox
+          productId={product.id}
+          kind="image"
+          cutout
+          value={imgUrl}
+          onChange={(u) => {
+            setImgUrl(u);
+            if (u) setImgMissing(false);
+          }}
+          title="Enviar imagem principal"
+          hint="PNG, JPG ou WEBP · o fundo é removido automaticamente"
+          inputId={`${uid}-img`}
+          required
+          invalid={imgMissing}
+          errorId={`${uid}-img-error`}
+        />
+        {imgMissing && (
+          <p id={`${uid}-img-error`} className={styles.fieldError}>
+            <CircleAlert size={14} aria-hidden /> Envie a imagem principal: ela aparece no Início e em Informações.
+          </p>
+        )}
       </div>
 
       <div className={styles.field}>
@@ -147,7 +178,7 @@ export function StepMedia({ product, onProgress, ref }: StepProps) {
               })}
             </ul>
             <p className={styles.generateStatus}>
-              Keep full views of the product (front, sides, back) and uncheck close-ups of details: they distort the model.
+              Mantenha as fotos do produto inteiro (frente, laterais e verso) e desmarque os closes de detalhes: eles distorcem o modelo.
             </p>
           </fieldset>
         )}
@@ -180,8 +211,8 @@ export function StepMedia({ product, onProgress, ref }: StepProps) {
 
       {showVideo && (
         <div className={styles.builder}>
-          <div className={styles.field}><label htmlFor={`${uid}-vt`}>Título do vídeo</label><input id={`${uid}-vt`} className={styles.input} placeholder="Título do vídeo" value={video.title} maxLength={160} onChange={(e) => setVideo({ ...video, title: e.target.value })} /></div>
-          <div className={styles.field}><label htmlFor={`${uid}-vu`}>URL do vídeo</label><input id={`${uid}-vu`} className={styles.input} type="url" placeholder="Cole a URL do vídeo" value={video.url} onChange={(e) => setVideo({ ...video, url: e.target.value })} /></div>
+          <div className={styles.field}><label htmlFor={`${uid}-vt`}>Título do vídeo *</label><input id={`${uid}-vt`} className={styles.input} placeholder="Título do vídeo" value={video.title} maxLength={160} onChange={(e) => setVideo({ ...video, title: e.target.value })} /></div>
+          <div className={styles.field}><label htmlFor={`${uid}-vu`}>URL do vídeo *</label><input id={`${uid}-vu`} className={styles.input} type="url" placeholder="Cole a URL do vídeo" value={video.url} onChange={(e) => setVideo({ ...video, url: e.target.value })} /></div>
           <div className={styles.field}><label htmlFor={`${uid}-vc`}>Código do vídeo</label><input id={`${uid}-vc`} className={styles.input} placeholder="Código do vídeo" value={video.code} maxLength={80} onChange={(e) => setVideo({ ...video, code: e.target.value })} /></div>
           <div className={styles.field}><label htmlFor={`${uid}-vd`}>Descrição</label><textarea id={`${uid}-vd`} className={styles.textarea} placeholder="Descreva o vídeo..." value={video.description} maxLength={1000} onChange={(e) => setVideo({ ...video, description: e.target.value })} /></div>
           <div className={styles.builderActions}><button type="button" className={styles.pillBtn} onClick={() => addVideo()}><Plus size={13} aria-hidden /> Adicionar</button></div>
@@ -211,14 +242,14 @@ export function StepMedia({ product, onProgress, ref }: StepProps) {
       {showAudio && (
         <div className={styles.builder}>
           <div className={styles.field}>
-            <label htmlFor={`${uid}-at`}>Tipo de áudio</label>
+            <label htmlFor={`${uid}-at`}>Tipo de áudio *</label>
             <select id={`${uid}-at`} className={styles.select} value={audioType} onChange={(e) => setAudioType(e.target.value as AudioDTO['audioType'])}>
               <option value="">Selecione o tipo de áudio</option>
               {AUDIO_TYPES.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
             </select>
           </div>
           <div className={styles.field}>
-            <span className={styles.label}>Áudio do produto</span>
+            <span className={styles.label}>Áudio do produto *</span>
             <UploadBox productId={product.id} kind="audio" value={audioUrl} onChange={setAudioUrl} title="Enviar áudio" hint="MP3, WAV ou OGG" />
           </div>
           <div className={styles.builderActions}><button type="button" className={styles.pillBtn} onClick={() => addAudio()}><Plus size={13} aria-hidden /> Adicionar</button></div>

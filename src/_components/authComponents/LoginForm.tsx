@@ -68,8 +68,9 @@ export default function LoginForm() {
     <div className={styles.card}>
       <AuthLogo />
 
+      <h1 className={styles.title}>Entrar na sua conta</h1>
       <p className={styles.description}>
-        Enter your email and password to access your account
+        Digite seu e-mail e sua senha para acessar o painel.
       </p>
 
       <form className={styles.form} onSubmit={onSubmit} noValidate>

@@ -5,6 +5,10 @@ import { SUPPORT_BASE } from "@/lib/support/constants";
 import { getTicketTargets } from "@/lib/support/queries";
 import { NewTicketForm } from "@/_components/userPanelComponents/support/user/NewTicketForm";
 import page from "@/_styles/cssUserPanelPage/support/supportPage.module.css";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Novo chamado" };
+
 export const instant = false;
 export default async function NewTicketPage() {
   const user = await getCurrentUser();
@@ -14,7 +18,7 @@ export default async function NewTicketPage() {
   const targets = await getTicketTargets(user.id);
 
   return (
-    <main className="container-stage-section">
+    <main id="conteudo" className="container-stage-section">
       <section className={page.page}>
         <Link href={SUPPORT_BASE} className={page.crumb}>
           ← My support tickets

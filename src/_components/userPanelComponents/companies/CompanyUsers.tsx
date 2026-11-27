@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { EllipsisVertical, Lock, Plus, TriangleAlert, User, UserMinus, UserPlus, X } from 'lucide-react';
 import { toast } from 'sonner';
@@ -8,6 +8,7 @@ import styles from '@/_styles/cssUserPanelPage/CompanyUsers.module.css';
 import { request } from '@/lib/request';
 import { AddExistingUserModal } from '@/_components/userPanelComponents/utils_panel/AddExistingUserModal';
 import { CreateUserModal } from '@/_components/userPanelComponents/companies/CreateUserModal';
+import { usePopoverFocus } from '@/_components/userPanelComponents/utils_panel/usePopoverFocus';
 
 type Role = 'OWNER' | 'MANAGER' | 'MEMBER';
 
@@ -71,6 +72,17 @@ function MemberRow({
 
   const btnRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const panelId = useId();
+
+  usePopoverFocus({
+    open: panel !== null,
+    view: panel,
+    panelRef,
+    triggerRef: btnRef,
+    onClose: () => {
+      if (!busy) setPanel(null);
+    },
+  });
 
   const fullName = `${member.firstName} ${member.lastName}`;
   const url = `/api/companies/${companyId}/members/${member.userId}`;
@@ -140,6 +152,7 @@ function MemberRow({
           className={styles.kebab}
           aria-label={`Ações de ${fullName}`}
           aria-expanded={panel !== null}
+          aria-controls={panel !== null ? panelId : undefined}
           onClick={openMenu}
         >
           <EllipsisVertical size={18} aria-hidden />
@@ -149,6 +162,9 @@ function MemberRow({
       {panel !== null && (
         <div
           ref={panelRef}
+          id={panelId}
+          role="group"
+          aria-label={`Ações de ${fullName}`}
           className={styles.floatingPanel}
           style={{ top: coords.top, right: coords.right }}
         >
@@ -166,19 +182,24 @@ function MemberRow({
                 className={`${styles.panelItem} ${styles.danger}`}
                 onClick={() => setPanel('remove')}
                 disabled={isSelf}
-                title={isSelf ? "Você não pode remover a si mesmo" : undefined}
+                aria-describedby={isSelf ? `${panelId}-self` : undefined}
               >
                 <UserMinus size={14} aria-hidden /> Remover da empresa
               </button>
+              {isSelf && (
+                <p id={`${panelId}-self`} className={styles.panelSmall}>
+                  Você não pode remover a si mesmo.
+                </p>
+              )}
             </>
           )}
 
           {panel === 'details' && (
             <>
               <div className={styles.panelHeader}>
-                <p className={styles.panelTitle}>Detalhes do usuário</p>
+                <h3 className={styles.panelTitle}>Detalhes do usuário</h3>
                 <button type="button" className={styles.closeMini} onClick={() => setPanel(null)} aria-label="Fechar">
-                  <X size={14} />
+                  <X size={14} aria-hidden />
                 </button>
               </div>
               <dl className={styles.details}>
@@ -193,9 +214,9 @@ function MemberRow({
           {panel === 'role' && (
             <>
               <div className={styles.panelHeader}>
-                <p className={styles.panelTitle}>Alterar papel do usuário</p>
+                <h3 className={styles.panelTitle}>Alterar papel de {fullName}</h3>
                 <button type="button" className={styles.closeMini} onClick={() => setPanel(null)} disabled={busy} aria-label="Fechar">
-                  <X size={14} />
+                  <X size={14} aria-hidden />
                 </button>
               </div>
               {ROLES_LIST.map((r) => (
@@ -226,14 +247,14 @@ function MemberRow({
 
           {panel === 'remove' && (
             <>
-              <p className={styles.panelTitle}>
+              <h3 className={styles.panelTitle}>
                 <TriangleAlert size={15} className={styles.warn} aria-hidden /> Remover usuário?
-              </p>
+              </h3>
               <p className={styles.panelText}>
                 Tem certeza de que deseja remover {fullName} da empresa <strong>{companyName}</strong>?
               </p>
               <p className={styles.panelSmall}>
-                The user account will not be deleted. Only their access to this company will be removed.
+                A conta do usuário não será excluída. Só o acesso a esta empresa será removido.
               </p>
               <div className={styles.panelActions}>
                 <button type="button" className={styles.pillBtn} onClick={() => setPanel(null)} disabled={busy}>
@@ -267,7 +288,7 @@ export function CompanyUsers({ companyId, companyName, currentUserId, members }:
           <h2 className={styles.headTitle}>Usuários da empresa</h2>
           <p className={styles.headSub}>Gerencie os usuários e suas permissões de acesso.</p>
         </div>
-        <span className={styles.count}>{members.length} {members.length === 1 ? 'user' : 'users'}</span>
+        <span className={styles.count}>{members.length} {members.length === 1 ? 'usuário' : 'usuários'}</span>
       </header>
 
       <ul className={styles.list}>

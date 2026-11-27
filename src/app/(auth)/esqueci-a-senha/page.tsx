@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: 'Esqueci minha senha | Manual digital
 
 export default function ForgotPasswordPage() {
   return (
-    <main className={styles.page}>
+    <main id="conteudo" className={styles.page}>
       <ForgotPasswordForm />
     </main>
   );

@@ -19,14 +19,14 @@
 /* ===== BANNER ===== */
 .banner {
   overflow: hidden;
-  /* background: #f7f9fb; */
-  border: 1px solid #bdbdbd;
+  /* background: var(--pn-surface, #f7f9fb); */
+  border: 1px solid var(--pn-border, #bdbdbd);
   border-radius: 12px;
 }
 
 .bannerCover {
   height: 112px;
-  background: linear-gradient(90deg, #7dc87a, #2f7fd4);
+  background: linear-gradient(90deg, var(--pn-ok-bg, #7dc87a), var(--pn-accent-strong, #2f7fd4));
 }
 
 .bannerBody {
@@ -45,21 +45,21 @@
   margin-top: -44px;
   font-size: 2.6rem;
   font-weight: 700;
-  color: #111;
-  background: #fff;
-  border: 2px solid #d0d0d0;
+  color: var(--pn-text, #111);
+  background: var(--pn-bg, #fff);
+  border: 2px solid var(--pn-border-soft, #d0d0d0);
   border-radius: 50%;
 }
 
 .bannerText { padding-top: 12px; min-width: 0; }
 .bannerName { margin: 0; font-size: 1.1rem; font-weight: 600; }
 .bannerEmail { margin: 2px 0 0; font-size: 0.8rem; overflow-wrap: anywhere; }
-.bannerMeta { margin: 4px 0 0; font-size: 0.7rem; color: #555; }
+.bannerMeta { margin: 4px 0 0; font-size: 0.75rem; color: var(--pn-text, #555); }
 
 /* ===== CARDS ===== */
 .card {
   padding: 20px 24px;
-  background: #fff;
+  background: var(--pn-bg, #fff);
   border: 1px solid var(--c-border);
   border-radius: 12px;
 }
@@ -100,19 +100,19 @@
   padding: 0 16px;
   font: inherit;
   font-size: 0.85rem;
-  background: #fff;
+  background: var(--pn-bg, #fff);
   border: 1px solid var(--c-border);
   border-radius: 999px;
   outline: none;
 }
 
 .input:focus-visible {
-  border-color: #2a72bd;
-  box-shadow: 0 0 0 3px rgba(43, 127, 212, 0.2);
+  border-color: var(--pn-accent, #2a72bd);
+  box-shadow: 0 0 0 3px var(--pn-shadow, rgba(43, 127, 212, 0.2));
 }
 
-.input[aria-invalid='true'] { border-color: #e0201b; }
-.error { margin: 0; font-size: 0.7rem; color: #a1160a; }
+.input[aria-invalid='true'] { border-color: var(--pn-danger, #e0201b); }
+.error { margin: 0; font-size: 0.75rem; color: var(--pn-danger, #a1160a); }
 
 .formActions {
   display: flex;
@@ -164,7 +164,7 @@
   border-radius: 10px;
 }
 
-.row:hover { background: #f6f6f6; }
+.row:hover { background: var(--pn-hover, #f6f6f6); }
 
 .rowIcon {
   flex: none;
@@ -172,11 +172,11 @@
   place-items: center;
   width: 28px;
   height: 28px;
-  color: #111;
+  color: var(--pn-text, #111);
 }
 
 .menuLink { text-decoration: none; }
-.empty { margin: 16px 0 4px; font-size: 0.8rem; color: #666; }
+.empty { margin: 16px 0 4px; font-size: 0.8rem; color: var(--pn-text, #666); }
 
 @media (max-width: 640px) {
   .page { padding: 16px; }

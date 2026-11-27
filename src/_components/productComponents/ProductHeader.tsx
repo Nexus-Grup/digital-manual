@@ -16,8 +16,11 @@ function Logo() {
 
 // Product pages header: same structure and styles as the landing page header (LpHeader).
 // Other languages come from automatic translation (LanguageMenu).
-/** sections: on a product page, hides menu links to pages the product has no content for. */
-export default function ProductHeader({ sections }: { sections?: ProductSections }) {
+/**
+ * sections: on a product page, hides menu links to pages the product has no content for.
+ * showMenu: false on the product list (/produtos), where the menu would only link to the page itself.
+ */
+export default function ProductHeader({ sections, showMenu = true }: { sections?: ProductSections; showMenu?: boolean }) {
     return (
         <header className={styles["lp-header"]}>
             <div className={styles["lp-header__bar"]} aria-hidden="true"></div>
@@ -29,7 +32,7 @@ export default function ProductHeader({ sections }: { sections?: ProductSections
                     <ContrastToggle />
                     <LanguageMenu />
                     <VLibrasButton />
-                    <SiteMenu sections={sections} />
+                    {showMenu && <SiteMenu sections={sections} />}
                 </div>
             </div>
         </header>

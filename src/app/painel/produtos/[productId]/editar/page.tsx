@@ -8,6 +8,10 @@ import styles from '@/_styles/cssUserPanelPage/products/Products.module.css'
 
 export const instant = false;
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Editar produto" };
+
 export default async function EditProductPage({
   params,
   searchParams,
@@ -36,7 +40,7 @@ export default async function EditProductPage({
   const step = Math.min(Math.max(Number((await searchParams).etapa) || 1, 1), 7);
 
   return (
-    <main className={styles.container_main}>
+    <main id="conteudo" className={styles.container_main}>
       <ProductWizard product={product} brands={[]} initialStep={step} />;
     </main>
   )

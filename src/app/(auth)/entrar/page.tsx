@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: 'Entrar | Manual digital' };
 
 export default function LoginPage() {
   return (
-    <main className={styles.page}>
+    <main id="conteudo" className={styles.page}>
       <svg
         className={styles.wave}
         style={{ position: 'absolute', left: 0, bottom: 0, width: '100%' }}

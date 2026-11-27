@@ -1,9 +1,12 @@
-import styles from "@/_styles/cssUserPanelPage/EditBrands.module.css"
+import type { Metadata } from "next";
+import styles from "@/_styles/cssUserPanelPage/EditBrands.module.css";
+
+export const metadata: Metadata = { title: "Marcas" };
 
 export default function BrandsPage() {
   return (
-    <main className={styles.container_main}>
+    <div className={styles.container_main}>
       <p>Selecione uma marca à esquerda ou crie uma nova.</p>
-    </main>
+    </div>
   );
 }

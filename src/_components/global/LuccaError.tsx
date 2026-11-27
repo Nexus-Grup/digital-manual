@@ -61,7 +61,7 @@ export default function LuccaError({
   const info = INFO[finalCode] ?? INFO.unknown;
 
   return (
-    <main className={styles.page}>
+    <main id="conteudo" className={styles.page}>
       {/* not found: Lucca thinking ("where did it go?"); other errors keep the blinking Lucca */}
       {finalCode === 404 ? (
         <Image className={styles.thinking} src={luccaThinking} alt="" sizes="160px" priority />

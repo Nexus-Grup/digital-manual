@@ -20,6 +20,7 @@
 }
 
 .logoText {
+  /* logotype: exempt from WCAG 1.4.3 (brand green kept) */
   font-size: 1.9rem;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -139,17 +140,19 @@
   font-size: 0.85rem;
 }
 
+/* the whole label is the click/touch target: 44px tall (WCAG 2.5.8) */
 .check {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  min-height: 44px;
   color: #333;
   cursor: pointer;
 }
 
 .check input {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   margin: 0;
   accent-color: #111;
   cursor: pointer;

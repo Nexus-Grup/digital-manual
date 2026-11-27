@@ -35,7 +35,7 @@ export function StepQr({ product, onProgress, ref }: StepProps) {
     if (!r.ok) return void toast.error(r.error);
     setQrs((l) => [...l, r.data.qr]);
     setModal(null);
-    toast.success(`${r.data.qr.value} created.`);
+    toast.success(`QR Code ${r.data.qr.value} criado.`);
     refreshProgress();
   }
 
@@ -46,7 +46,7 @@ export function StepQr({ product, onProgress, ref }: StepProps) {
     if (!r.ok) return void toast.error(r.error);
     setQrs((l) => l.filter((q) => q.id !== qr.id));
     setModal(null);
-    toast.success(`${qr.value} removed.`);
+    toast.success(`QR Code ${qr.value} removido.`);
     refreshProgress();
   }
 
@@ -54,7 +54,7 @@ export function StepQr({ product, onProgress, ref }: StepProps) {
     const r = await api(`/api/products/${product.id}/qr-codes/${qr.id}`, 'PATCH', { isActive: !qr.isActive });
     if (!r.ok) return void toast.error(r.error);
     setQrs((l) => l.map((q) => (q.id === qr.id ? { ...q, isActive: !q.isActive } : q)));
-    toast.success(qr.isActive ? `${qr.value} deactivated.` : `${qr.value} activated.`);
+    toast.success(qr.isActive ? `QR Code ${qr.value} desativado.` : `QR Code ${qr.value} ativado.`);
   }
 
   const copy = (url: string) =>
@@ -64,7 +64,7 @@ export function StepQr({ product, onProgress, ref }: StepProps) {
     <div className={styles.stack}>
       <div className={styles.sectionHead}>
         <h3 className={styles.sectionTitle}>QR Codes do produto</h3>
-        <span className={styles.count}>{qrs.length} generated</span>
+        <span className={styles.count}>{qrs.length} {qrs.length === 1 ? 'gerado' : 'gerados'}</span>
       </div>
 
       {qrs.length > 0 && (
@@ -76,7 +76,7 @@ export function StepQr({ product, onProgress, ref }: StepProps) {
                 <strong>{q.value}</strong>
                 <small>{product.name}</small>
                 <span className={`${styles.badge} ${q.isActive ? styles.badgeOn : styles.badgeOff}`}>{q.isActive ? 'Ativo' : 'Inativo'}</span>
-                <small>Created {formatDay(q.createdAt)}</small>
+                <small>Criado em {formatDay(q.createdAt)}</small>
               </div>
               <KebabMenu label={`Ações de ${q.value}`}>
                 {(close) => (
@@ -110,9 +110,9 @@ export function StepQr({ product, onProgress, ref }: StepProps) {
           </div>
           <small>Gerado automaticamente</small>
           <div className={styles.field}>
-            <label>URL de destino</label>
-            <input className={styles.input} readOnly value={`${window.location.origin}/qr/••••••••`} aria-label="URL de destino" />
-            <small>O endereço final é criado quando você salvar.</small>
+            <label htmlFor="qr-target-url">URL de destino</label>
+            <input id="qr-target-url" className={styles.input} readOnly value={`${window.location.origin}/qr/••••••••`} aria-describedby="qr-target-hint" />
+            <small id="qr-target-hint">O endereço final é criado quando você salvar.</small>
           </div>
           <div className={styles.modalFoot}>
             <button type="button" className={styles.pillBtn} onClick={() => setModal(null)} disabled={busy}>Cancelar</button>
@@ -134,11 +134,11 @@ export function StepQr({ product, onProgress, ref }: StepProps) {
               <div className={styles.urlBox}>
                 <small>URL do QR Code</small>
                 <span>{modal.qr.url}</span>
-                <button type="button" className={styles.iconBtn} onClick={() => modal.qr.url && copy(modal.qr.url)} aria-label="Copiar URL"><Copy size={14} aria-hidden /></button>
+                <button type="button" className={styles.iconBtn} onClick={() => modal.qr.url && copy(modal.qr.url)} aria-label="Copiar URL do QR Code"><Copy size={14} aria-hidden /></button>
               </div>
             </div>
           </div>
-          <div className={styles.modalFoot}><button type="button" className={styles.pillBtn} onClick={() => setModal(null)}>Cancelar</button></div>
+          <div className={styles.modalFoot}><button type="button" className={styles.pillBtn} onClick={() => setModal(null)}>Fechar</button></div>
         </ProductModal>
       )}
 

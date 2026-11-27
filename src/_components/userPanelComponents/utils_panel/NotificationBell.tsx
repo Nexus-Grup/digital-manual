@@ -42,10 +42,18 @@ export default function NotificationBell({ notifications, unreadCount }: Notific
 
   return (
     <div className={styles.wrapper} ref={ref}>
-      <button className={styles.iconBtn} onClick={() => setOpen(!open)} aria-label="Notificações">
-        <Bell size={20} />
+      <button
+        type="button"
+        className={styles.iconBtn}
+        onClick={() => setOpen(!open)}
+        aria-haspopup="true"
+        aria-expanded={open}
+        // the count is part of the name, so screen readers announce it (the badge is visual only)
+        aria-label={unreadCount > 0 ? `Notificações, ${unreadCount} não ${unreadCount === 1 ? "lida" : "lidas"}` : "Notificações"}
+      >
+        <Bell size={20} aria-hidden="true" />
         {unreadCount > 0 && (
-          <span className={styles.badge}>{unreadCount > 99 ? "99+" : unreadCount}</span>
+          <span className={styles.badge} aria-hidden="true">{unreadCount > 99 ? "99+" : unreadCount}</span>
         )}
       </button>
 

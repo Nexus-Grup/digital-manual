@@ -1,7 +1,7 @@
 import styles from '@/_styles/cssUserPanelPage/products/ProductWizard.module.css';
 import type { ProductFull } from '@/_lib/productTypes';
 
-const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
+const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 
 export function StepReview({ product }: { product: ProductFull }) {
   const images = (product.imgUrl ? 1 : 0) + product.gallery.length;
@@ -9,11 +9,11 @@ export function StepReview({ product }: { product: ProductFull }) {
 
   const rows: { title: string; sub?: string; value: string; done: boolean }[] = [
     { title: 'Informações básicas', sub: 'Nome, modelo, SKU, categoria, marca e descrição do produto', value: 'Concluído', done: true },
-    { title: 'Imagens e mídias', value: `${plural(images, 'image')} · ${plural(product.videos.length, 'video')}`, done: product.progress.steps.media },
-    { title: 'Informações técnicas', value: plural(product.technical?.specs.length ?? 0, 'specification'), done: product.progress.steps.technical },
-    { title: 'Manuais e documentos', value: plural(product.manuals.length, 'document'), done: product.progress.steps.manuals },
-    { title: 'Guias e conteúdo do produto', value: plural(items, 'item'), done: product.progress.steps.guides },
-    { title: 'QR Codes', value: `${product.qrCodes.length} generated`, done: product.progress.steps.qr },
+    { title: 'Imagens e mídias', value: `${plural(images, 'imagem', 'imagens')} · ${plural(product.videos.length, 'vídeo', 'vídeos')}`, done: product.progress.steps.media },
+    { title: 'Informações técnicas', value: plural(product.technical?.specs.length ?? 0, 'especificação', 'especificações'), done: product.progress.steps.technical },
+    { title: 'Manuais e documentos', value: plural(product.manuals.length, 'documento', 'documentos'), done: product.progress.steps.manuals },
+    { title: 'Guias e conteúdo do produto', value: plural(items, 'item', 'itens'), done: product.progress.steps.guides },
+    { title: 'QR Codes', value: plural(product.qrCodes.length, 'gerado', 'gerados'), done: product.progress.steps.qr },
   ];
 
   return (
@@ -21,7 +21,10 @@ export function StepReview({ product }: { product: ProductFull }) {
       {rows.map((r) => (
         <li key={r.title}>
           <span className={styles.reviewText}><strong>{r.title}</strong>{r.sub && <small>{r.sub}</small>}</span>
-          <span className={`${styles.badge} ${r.done ? styles.badgeOn : styles.badgeOff}`}>{r.value}</span>
+          <span className={`${styles.badge} ${r.done ? styles.badgeOn : styles.badgeOff}`}>
+            {r.value}
+            <span className={styles.srOnly}>{r.done ? ' (concluída)' : ' (pendente)'}</span>
+          </span>
         </li>
       ))}
       <li>

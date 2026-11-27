@@ -5,7 +5,7 @@
 }
 .label { 
     font-size: 0.85rem; 
-    color: #555; 
+    color: var(--pn-text, #555); 
 }
 .select { 
     width: 100%; 
@@ -13,13 +13,13 @@
     padding: 0 12px; 
     border: 1px solid var(--c-border); 
     border-radius: 10px; 
-    background: #fff; 
-    color: #111; 
+    background: var(--pn-bg, #fff); 
+    color: var(--pn-text, #111); 
     font: inherit; 
     font-size: 0.9rem; 
 }
 .select:focus-visible, .textarea:focus-visible { 
-    outline: 2px solid #0f6f8c; 
+    outline: 2px solid var(--pn-accent, #0f6f8c); 
     outline-offset: 1px; 
 }
 .value { 
@@ -28,7 +28,7 @@
 }
 .hint { 
     margin: 0; 
-    color: #666; 
+    color: var(--pn-text, #666); 
     font-size: 0.8rem; 
 }
 .list { 
@@ -37,7 +37,7 @@
     margin: 0; 
 }
 .list dt { 
-    color: #555; 
+    color: var(--pn-text, #555); 
     font-size: 0.85rem; 
 }
 .list dd { 
@@ -46,7 +46,7 @@
 }
 .sub { 
     display: block; 
-    color: #555; 
+    color: var(--pn-text, #555); 
     font-size: 0.8rem; 
     font-weight: 400; 
 }
@@ -55,26 +55,26 @@
     gap: 12px; 
     margin-top: 20px; 
     padding-top: 20px; 
-    border-top: 1px solid #e3e3e3; 
+    border-top: 1px solid var(--pn-border-soft, #e3e3e3); 
 }
 .textarea { 
     width: 100%; 
     min-height: 110px; 
     max-height: 110px;
     padding: 10px 14px; 
-    border: 1px solid #bdbdbd; 
+    border: 1px solid var(--pn-border, #bdbdbd); 
     border-radius: 10px; 
     font: inherit; 
     font-size: 0.9rem; 
     resize: vertical; 
 }
 .note { 
-    background: #fffbea; 
-    border-color: #fde047; 
+    background: var(--pn-surface, #fffbea); 
+    border-color: var(--pn-warn, #fde047); 
 }
 .error { 
     margin: 0; 
-    color: #b42318; 
+    color: var(--pn-danger, #b42318); 
     font-size: 0.875rem; 
 }
 .actions { 
@@ -110,6 +110,6 @@
 .primary:focus-visible, .secondary:focus-visible { outline: 3px solid var(--btn-focus-ring); outline-offset: 2px; }
 .closed { 
     margin: 0; 
-    color: #555; 
+    color: var(--pn-text, #555); 
     font-size: 0.85rem; 
 }

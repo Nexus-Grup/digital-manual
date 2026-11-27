@@ -3,6 +3,10 @@ import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
 import { BrandForm } from '@/_components/userPanelComponents/brands/BrandForm';
 import { BrandUsers } from '@/_components/userPanelComponents/brands/BrandUsers';
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Editar marca" };
+
 export const instant = false;
 
 export default async function EditBrandPage({

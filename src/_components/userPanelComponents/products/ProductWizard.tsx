@@ -39,6 +39,8 @@ export function ProductWizard({ product: initial, brands, initialStep }: Props) 
   const [progress, setProgress] = useState<Progress | null>(initial?.progress ?? null);
   const [step, setStep] = useState(initial ? initialStep : 1);
   const [busy, setBusy] = useState(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const moved = useRef(false);
 
   // um ref por etapa (a etapa 7, revisão, não tem ref)
   const r1 = useRef<StepHandle>(null);
@@ -49,9 +51,17 @@ export function ProductWizard({ product: initial, brands, initialStep }: Props) 
   const r6 = useRef<StepHandle>(null);
 
   const goTo = (n: number) => {
+    moved.current = true;
     setStep(Math.min(Math.max(n, 1), 7));
     window.scrollTo?.({ top: 0 });
   };
+
+  // changing step swaps the whole card: move focus to its title so keyboard and
+  // screen reader users start at the new step (WCAG 2.4.3); skipped on first render
+  useEffect(() => {
+    if (!moved.current) return;
+    headingRef.current?.focus();
+  }, [step]);
 
   // a revisão mostra os números atuais: busca o produto de novo ao abrir a etapa 7
   useEffect(() => {
@@ -96,7 +106,15 @@ export function ProductWizard({ product: initial, brands, initialStep }: Props) 
       </header>
 
       <p className={styles.lead}>Conclua as etapas para configurar seu produto</p>
-      <div className={styles.progress} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct} aria-label="Conteúdo preenchido">
+      <div
+        className={styles.progress}
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={pct}
+        aria-valuetext={`${pct}% do conteúdo preenchido`}
+        aria-label="Conteúdo preenchido"
+      >
         <span style={{ width: `${Math.max(pct, 3)}%` }} />
       </div>
 
@@ -104,8 +122,14 @@ export function ProductWizard({ product: initial, brands, initialStep }: Props) 
         {/* ---------- cartão (só o miolo rola; cabeçalho e rodapé ficam fixos) ---------- */}
         <div className={styles.card}>
           <header className={styles.cardHead}>
-            <span className={styles.badgeNum}>{String(step).padStart(2, '0')}</span>
-            <div><h2>{stepInfo.title}</h2><p>{stepInfo.sub}</p></div>
+            <span className={styles.badgeNum} aria-hidden="true">{String(step).padStart(2, '0')}</span>
+            <div>
+              <h2 ref={headingRef} tabIndex={-1} className={styles.cardTitle}>
+                <span className={styles.srOnly}>Etapa {step} de 7: </span>
+                {stepInfo.title}
+              </h2>
+              <p>{stepInfo.sub}</p>
+            </div>
             <Icon size={30} className={styles.cardIcon} aria-hidden />
           </header>
 
@@ -161,14 +185,22 @@ export function ProductWizard({ product: initial, brands, initialStep }: Props) 
                   className={`${styles.stepBtn} ${s.n === step ? styles.stepCurrent : ''} ${isDone(s.n) ? styles.stepDone : ''}`}
                   aria-current={s.n === step ? 'step' : undefined}
                   disabled={!product && s.n > 1}
+                  aria-describedby={!product && s.n > 1 ? 'wizard-locked-hint' : undefined}
                   onClick={() => goTo(s.n)}
                 >
-                  <span className={styles.stepNumber}>{String(s.n).padStart(2, '0')}</span>
+                  <span className={styles.stepNumber} aria-hidden="true">{String(s.n).padStart(2, '0')}</span>
+                  <span className={styles.srOnly}>Etapa {s.n}: </span>
                   <span className={styles.stepText}><strong>{s.title}</strong><small>{s.sub}</small></span>
+                  {isDone(s.n) && <span className={styles.srOnly}> (concluída)</span>}
                 </button>
               </li>
             ))}
           </ol>
+          {!product && (
+            <p id="wizard-locked-hint" className={styles.stepsHint}>
+              Salve as informações básicas para liberar as outras etapas.
+            </p>
+          )}
         </nav>
       </div>
     </section>

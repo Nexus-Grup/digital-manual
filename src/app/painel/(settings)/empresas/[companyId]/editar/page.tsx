@@ -6,6 +6,10 @@ import { CompanyForm } from "@/_components/userPanelComponents/companies/Company
 import { CompanyUsers } from "@/_components/userPanelComponents/companies/CompanyUsers";
 
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Editar empresa" };
+
 export const instant = false; // mesmo padrão do seu layout
 
 export default async function EditCompanyPage({

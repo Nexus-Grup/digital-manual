@@ -45,18 +45,19 @@ export function StepManuals({ product, onProgress, ref }: StepProps) {
 
   return (
     <div className={styles.stack}>
+      <p className={styles.requiredNote}>Campos com * são obrigatórios para adicionar um manual. O manual do usuário é o que aparece na página Manual.</p>
       <div className={styles.field}>
-        <span className={styles.label}>Enviar manual em PDF</span>
-        <UploadBox productId={product.id} kind="pdf" value={fileUrl} onChange={setFileUrl} title="Enviar manual em PDF" hint="Somente PDF · até 50 MB" />
+        <span className={styles.label}>Enviar manual em PDF *</span>
+        <UploadBox productId={product.id} kind="pdf" value={fileUrl} onChange={setFileUrl} title="Enviar manual em PDF" hint="Somente PDF · até 50 MB" required />
       </div>
       <div className={styles.field}>
         <label htmlFor={`${uid}-t`}>Título do manual *</label>
-        <input id={`${uid}-t`} className={styles.input} placeholder="ex.: Manual do usuário" value={title} maxLength={160} onChange={(e) => setTitle(e.target.value)} />
+        <input id={`${uid}-t`} className={styles.input} placeholder="ex.: Manual do usuário" value={title} maxLength={160} required aria-required="true" onChange={(e) => setTitle(e.target.value)} />
       </div>
       <div className={styles.row2}>
         <div className={styles.field}>
-          <label htmlFor={`${uid}-d`}>Tipo de documento</label>
-          <select id={`${uid}-d`} className={styles.select} value={documentType} onChange={(e) => setDocumentType(e.target.value)}>
+          <label htmlFor={`${uid}-d`}>Tipo de documento *</label>
+          <select id={`${uid}-d`} className={styles.select} value={documentType} required aria-required="true" onChange={(e) => setDocumentType(e.target.value)}>
             <option value="">Selecione o tipo</option>
             {DOCUMENT_TYPES.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}
           </select>
@@ -71,7 +72,7 @@ export function StepManuals({ product, onProgress, ref }: StepProps) {
       </div>
       <div className={styles.field}>
         <label htmlFor={`${uid}-v`}>Versão do manual</label>
-        <input id={`${uid}-v`} className={styles.input} placeholder="e.g. 1.0" value={version} maxLength={40} onChange={(e) => setVersion(e.target.value)} />
+        <input id={`${uid}-v`} className={styles.input} placeholder="ex.: 1.0" value={version} maxLength={40} onChange={(e) => setVersion(e.target.value)} />
       </div>
       <div className={styles.builderActions}><button type="button" className={styles.pillBtn} onClick={() => add()}><Plus size={13} aria-hidden /> Adicionar manual</button></div>
 

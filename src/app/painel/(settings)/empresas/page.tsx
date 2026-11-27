@@ -5,6 +5,10 @@ import styles from "@/_styles/cssUserPanelPage/EditCompanies.module.css"
 
 export const instant = false;
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Empresas" };
+
 export default async function CompaniesIndexPage() {
   const user = await getCurrentUser();
   if (!user) redirect('/entrar');
@@ -13,8 +17,8 @@ export default async function CompaniesIndexPage() {
   if (!(await canAccessCompanyArea(user))) notFound();
 
   return (
-    <main className={styles.container_main}>
+    <div className={styles.container_main}>
       <p>Selecione uma empresa à esquerda ou crie uma nova.</p>
-    </main>
+    </div>
   );
 }

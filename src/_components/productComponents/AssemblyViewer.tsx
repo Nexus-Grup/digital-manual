@@ -98,7 +98,7 @@ export default function AssemblyViewer({ assembly }: { assembly: ProductAssembly
               title={s.name}
               text={`Passo ${s.label}`}
               active={active}
-              ariaLabel={`Passo ${s.label}: ${s.name}`}
+              // no aria-label: the name is the visible text itself ("<name> Passo 1"), WCAG 2.5.3
               onSelect={() => go(i)}
             />
           )}

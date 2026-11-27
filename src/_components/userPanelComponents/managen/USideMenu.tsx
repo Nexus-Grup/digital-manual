@@ -1,9 +1,10 @@
 // components/SideMenu/SideMenu.tsx
 "use client";
 
+import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Home, Tags, Package, Building2, Users, LayoutDashboard, LogOut, Bell, Logs, Headset, type LucideIcon, } from "lucide-react";
+import { Home, Tags, Package, Building2, Users, LayoutDashboard, LogOut, Bell, Logs, Headset, Menu, X, type LucideIcon, } from "lucide-react";
 import styles from "@/_styles/cssUserPanelPage/USideMenu.module.css";
 
 type SystemRole = "USER" | "ADMIN"; // mesmos valores do seu enum SystemRole
@@ -53,6 +54,29 @@ export function USideMenu({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const listId = useId();
+  // phones: the menu is a bar with a "Menu" button that opens the full list (labels always visible)
+  const [open, setOpen] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+
+  // a link was followed: close the list (the bar then shows the new section)
+  const [lastPath, setLastPath] = useState(pathname);
+  if (lastPath !== pathname) {
+    setLastPath(pathname);
+    setOpen(false);
+  }
+
+  // Esc closes the open list and returns focus to the button
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      toggleRef.current?.focus();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
 
   const canSee = (item: MenuItem) => {
     if (!item.roles && !item.companyRoles) return true;
@@ -65,6 +89,9 @@ export function USideMenu({
     .map((group) => group.filter(canSee))
     .filter((group) => group.length > 0);
 
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
+  const current = groups.flat().find((item) => isActive(item.href));
+
   async function handleLogout() {
     // ajuste para o seu sistema de autenticação
     await fetch("/api/auth/logout", { method: "POST" });
@@ -72,19 +99,37 @@ export function USideMenu({
   }
 
   return (
-    <nav className={styles.nav}>
+    <nav className={styles.nav} aria-label="Menu do painel">
+      {/* phones only (hidden from 768px): where am I + open the menu */}
+      <button
+        ref={toggleRef}
+        type="button"
+        className={styles.toggle}
+        aria-expanded={open}
+        aria-controls={listId}
+        onClick={() => setOpen((v) => !v)}
+      >
+        {open ? <X size={20} aria-hidden /> : <Menu size={20} aria-hidden />}
+        <span className={styles.toggleText}>
+          <span className={styles.toggleLabel}>{open ? "Fechar menu" : "Menu"}</span>
+          {current && <span className={styles.toggleCurrent}>{current.label}</span>}
+        </span>
+      </button>
+
+      <div id={listId} className={`${styles.panel} ${open ? styles.panelOpen : ""}`}>
       <div className={styles.groups}>
         {groups.map((group, i) => (
           <div key={i} className={styles.group}>
             {group.map(({ key, label, href, icon: Icon }) => {
-              const isActive = pathname === href || pathname.startsWith(href + "/");
+              const active = isActive(href);
               return (
                 <Link
                   key={key}
                   href={href}
-                  className={`${styles.item} ${isActive ? styles.active : ""}`}
+                  className={`${styles.item} ${active ? styles.active : ""}`}
+                  aria-current={active ? "page" : undefined}
                 >
-                  <Icon size={18} className={styles.icon} />
+                  <Icon size={18} className={styles.icon} aria-hidden />
                   <span className={styles.label}>{label}</span>
                 </Link>
               );
@@ -94,10 +139,11 @@ export function USideMenu({
       </div>
 
       <div className={styles.footer}>
-        <button onClick={handleLogout} className={styles.item}>
-          <LogOut size={18} className={styles.icon} />
+        <button type="button" onClick={handleLogout} className={styles.item}>
+          <LogOut size={18} className={styles.icon} aria-hidden />
           <span className={styles.label}>Sair</span>
         </button>
+      </div>
       </div>
     </nav>
   );

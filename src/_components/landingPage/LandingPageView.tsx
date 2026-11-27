@@ -30,7 +30,7 @@ export default function LandingPageView({ products }: LandingPageViewProps) {
         <div className={styles["landing"]}>
             <MaterialRegistry />
             <LpHeader />
-            <main className={styles["landing__main"]}>
+            <main id="conteudo" className={styles["landing__main"]}>
                 <Hero />
                 <WaveDivider from="var(--lp-surface)" to="var(--lp-bg)" />
                 <Problem />

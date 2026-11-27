@@ -116,7 +116,7 @@ export function ProductsList({ items, total, pages, pageSize, summary, filters, 
           <button type="button" className={styles.pillBtn} aria-pressed={showFilters} onClick={() => setShowFilters((v) => !v)}>
             <SlidersHorizontal size={13} aria-hidden /> Filtros
           </button>
-          <button type="button" className={styles.pillBtn} onClick={() => go({ view: isList ? 'overview' : 'list' }, true)}>
+          <button type="button" className={styles.pillBtn} aria-label={isList ? 'Mostrar em cards (visão geral)' : 'Mostrar em lista'} onClick={() => go({ view: isList ? 'overview' : 'list' }, true)}>
             {isList ? <LayoutGrid size={13} aria-hidden /> : <List size={13} aria-hidden />} {isList ? 'Visão geral' : 'Lista'}
           </button>
           {canCreate && (
@@ -136,9 +136,10 @@ export function ProductsList({ items, total, pages, pageSize, summary, filters, 
             <div className={styles.summaryCard}><span className={`${styles.summaryLabel} ${styles.gray}`}>Incompleto</span><strong>{summary.incomplete}</strong><small>Conteúdo pendente</small></div>
           </div>
 
-          <div className={styles.tabs} role="tablist" aria-label="Status do produto">
+          {/* filter buttons (not tabs: there is no tab panel); the pressed one is the current filter */}
+          <div className={styles.tabs} role="group" aria-label="Filtrar por status">
             {TABS.map((t) => (
-              <button key={t.key} type="button" role="tab" aria-selected={filters.tab === t.key} className={`${styles.tab} ${t.cls}`} onClick={() => go({ tab: t.key })}>
+              <button key={t.key} type="button" aria-pressed={filters.tab === t.key} className={`${styles.tab} ${t.cls}`} onClick={() => go({ tab: t.key })}>
                 {t.label} · {t.n}
               </button>
             ))}
@@ -149,29 +150,38 @@ export function ProductsList({ items, total, pages, pageSize, summary, filters, 
       {items.length === 0 ? (
         <div className={styles.empty}>
           <Package size={28} aria-hidden />
-          <p>Nenhum produto encontrado.</p>
+          <p>Nenhum produto encontrado. Tente outra busca ou limpe os filtros.</p>
         </div>
       ) : isList ? (
-        <div className={styles.tableWrap}>
+        <div className={styles.tableWrap} role="region" aria-label="Tabela de produtos" tabIndex={0}>
           <table className={styles.table}>
+            <caption className={styles.srOnly}>Produtos, página {filters.page} de {Math.max(pages, 1)}</caption>
             <thead>
-              <tr><th>Produto</th><th>Categoria</th><th>Empresa</th><th>Marca</th><th>Status</th><th>Atualizado</th><th>Editar</th></tr>
+              <tr>
+                <th scope="col" className={`${styles.th} ${styles.thStart}`}>Produto</th>
+                <th scope="col" className={styles.th}>Categoria</th>
+                <th scope="col" className={styles.th}>Empresa</th>
+                <th scope="col" className={styles.th}>Marca</th>
+                <th scope="col" className={styles.th}>Status</th>
+                <th scope="col" className={styles.th}>Atualizado</th>
+                <th scope="col" className={styles.th}>Ações</th>
+              </tr>
             </thead>
             <tbody>
               {items.map((p) => (
                 <tr key={p.id}>
-                  <td>
+                  <th scope="row" className={styles.rowHeader}>
                     <div className={styles.prodCell}>
                       <span className={styles.thumb}>{p.imgUrl ? /* eslint-disable-next-line @next/next/no-img-element */ <img src={p.imgUrl} alt="" /> : <Package size={16} aria-hidden />}</span>
                       <span><span className={styles.prodName}>{p.name}</span><small>{p.code}</small></span>
                     </div>
-                  </td>
-                  <td>{labelOf(CATEGORIES, p.category)}</td>
-                  <td>{p.companyName}</td>
-                  <td>{p.brandName}</td>
-                  <td><span className={`${styles.pill} ${p.status === 'PUBLISHED' ? styles.pillGreen : styles.pillYellow}`}>{p.status === 'PUBLISHED' ? 'Publicado' : 'Rascunho'}</span></td>
-                  <td><time dateTime={p.updatedAt} suppressHydrationWarning>{formatDate(p.updatedAt)}</time></td>
-                  <td><RowMenu p={p} onDetails={() => setDetails(p.id)} /></td>
+                  </th>
+                  <td className={styles.td}>{labelOf(CATEGORIES, p.category)}</td>
+                  <td className={styles.td}>{p.companyName}</td>
+                  <td className={styles.td}>{p.brandName}</td>
+                  <td className={styles.td}><span className={`${styles.pill} ${p.status === 'PUBLISHED' ? styles.pillGreen : styles.pillYellow}`}>{p.status === 'PUBLISHED' ? 'Publicado' : 'Rascunho'}</span></td>
+                  <td className={styles.td}><time dateTime={p.updatedAt} suppressHydrationWarning>{formatDate(p.updatedAt)}</time></td>
+                  <td className={styles.td}><RowMenu p={p} onDetails={() => setDetails(p.id)} /></td>
                 </tr>
               ))}
             </tbody>
@@ -189,7 +199,7 @@ export function ProductsList({ items, total, pages, pageSize, summary, filters, 
                   <RowMenu p={p} onDetails={() => setDetails(p.id)} />
                 </div>
                 <div className={styles.cardBottom}>
-                  <span>{p.completion}% content completion</span>
+                  <span>{p.completion}% do conteúdo preenchido</span>
                   <span className={`${styles.pill} ${s.cls}`}>{s.text}</span>
                 </div>
               </li>
@@ -199,7 +209,7 @@ export function ProductsList({ items, total, pages, pageSize, summary, filters, 
       )}
 
       <footer className={styles.pager}>
-        <span>Mostrando {from}–{to} de {total} produtos</span>
+        <span role="status">Mostrando {from}–{to} de {total} produtos</span>
         <div className={styles.pagerBtns}>
           <button type="button" aria-label="Página anterior" disabled={filters.page <= 1} onClick={() => go({ page: filters.page - 1 }, true)}><ChevronLeft size={20} aria-hidden /></button>
           <button type="button" aria-label="Próxima página" disabled={filters.page >= pages} onClick={() => go({ page: filters.page + 1 }, true)}><ChevronRight size={20} aria-hidden /></button>

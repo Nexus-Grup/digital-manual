@@ -67,7 +67,7 @@ export function AdminReplyForm({ ticketId, closed }: { ticketId: number; closed:
         <div className={styles.right}>
           {!isNote && (
             <button type="button" className={styles.secondary} disabled={busy || uploading} onClick={() => send(true)}>
-              Send and resolve
+              Enviar e resolver
             </button>
           )}
           <button type="submit" className={styles.primary} disabled={busy || uploading}>

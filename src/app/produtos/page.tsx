@@ -18,9 +18,10 @@ export default function ProductsPage({ searchParams }: PageProps<"/produtos">) {
         <div className={landingStyles["landing"]}>
             <MaterialRegistry />
             <Suspense fallback={<ProductHeaderFallback />}>
-                <ProductHeader />
+                {/* no menu here: its only link would be this same page */}
+                <ProductHeader showMenu={false} />
             </Suspense>
-            <main className={landingStyles["landing__main"]}>
+            <main id="conteudo" className={landingStyles["landing__main"]}>
                 <Suspense fallback={<ProductSearchFallback />}>
                     <ProductSearchView searchParams={searchParams} />
                 </Suspense>

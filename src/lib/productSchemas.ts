@@ -8,6 +8,8 @@ const emptyToNull = (v: string | null | undefined) => (v ? v : null);
 const optText = (max: number) => z.string().trim().max(max).nullish().transform(emptyToNull);
 const mediaUrl = z.string().trim().refine((v) => isProductMediaUrl(v), 'Arquivo inválido');
 const optMediaUrl = mediaUrl.nullish().transform(emptyToNull);
+// required text: shown on the public product pages (início, informações, montagem), so never left empty
+const reqText = (max: number, msg: string, min = 1) => z.string({ error: msg }).trim().min(min, msg).max(max);
 const httpUrl = (msg: string) => z.string().trim().max(500).refine((v) => /^https?:\/\/\S+$/i.test(v), msg);
 
 const subOk = (v: { category: string; subcategory?: string | null }) =>
@@ -21,7 +23,8 @@ const basicShape = z.object({
   code: z.string().trim().min(2, 'O SKU / código é obrigatório').max(80),
   category: z.enum(tuple(CATEGORIES)),
   subcategory: z.enum(tuple(ALL_SUBCATEGORIES)).nullish().transform((v) => v ?? null),
-  description: optText(4000),
+  // shown on the product home and on Informações (fallback when the information block has no text)
+  description: reqText(4000, 'Descreva o produto (pelo menos 10 caracteres)', 10),
 });
 
 export const updateBasicInput = basicShape.refine(subOk, { message: SUB_MSG, path: ['subcategory'] });
@@ -31,7 +34,8 @@ export const createProductInput = basicShape
 
 /* ---------- Etapa 2 ---------- */
 export const mediaInput = z.object({
-  imgUrl: optMediaUrl,
+  // hero of the product home and first photo of Informações
+  imgUrl: z.string({ error: 'Envie a imagem principal do produto' }).trim().min(1, 'Envie a imagem principal do produto').refine((v) => isProductMediaUrl(v), 'Arquivo inválido'),
   gallery: z.array(mediaUrl).max(7, 'A galeria aceita até 7 imagens').default([]),
   model3dUrl: httpUrl('Digite uma URL válida para o modelo 3D').nullish().transform(emptyToNull),
   videos: z
@@ -72,7 +76,7 @@ export const technicalInput = z.object({
     .max(40)
     .nullish()
     .transform(emptyToNull)
-    .refine((v) => !v || parseWeightKg(v) !== null, 'Enter the weight as a number, e.g. 1.8 kg'),
+    .refine((v) => !v || parseWeightKg(v) !== null, 'Digite o peso como número, ex.: 1,8 kg'),
   specs: z
     .array(
       z.object({
@@ -105,12 +109,13 @@ export const manualsInput = z.object({
 const infoCard = z.object({
   title: z.string().trim().min(1, 'O título do card é obrigatório').max(120),
   icon: z.enum(tuple(INFO_ICONS)).nullish().transform((v) => v ?? null),
-  description: optText(500),
+  description: reqText(500, 'A descrição do card é obrigatória'),
 });
 const guideStep = z.object({
   title: z.string().trim().min(1, 'O título do passo é obrigatório').max(160),
-  description: optText(2000),
-  imageUrl: optMediaUrl,
+  // the Montagem page shows each step's text and drawing
+  description: reqText(2000, 'A descrição do passo é obrigatória'),
+  imageUrl: z.string({ error: 'Envie a imagem do passo' }).trim().min(1, 'Envie a imagem do passo').refine((v) => isProductMediaUrl(v), 'Arquivo inválido'),
 });
 
 export const guidesInput = z.object({
@@ -129,7 +134,8 @@ export const guidesInput = z.object({
         type: z.enum(tuple(ASSEMBLY_TYPES)),
         description: optText(4000),
         imageUrl: optMediaUrl,
-        steps: z.array(guideStep).max(60).default([]),
+        // a guide without steps has no Montagem page (404): at least one step
+        steps: z.array(guideStep).min(1, 'Adicione pelo menos um passo ao guia').max(60),
       }),
     )
     .max(10)

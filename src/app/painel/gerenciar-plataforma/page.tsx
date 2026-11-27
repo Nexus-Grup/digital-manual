@@ -1,9 +1,6 @@
-import styles from '@/_styles/cssUserPanelPage/MenagePlatform.module.css'
+import { redirect } from "next/navigation";
 
+// The platform area starts at its first section (Usuários): no empty landing page.
 export default function ManagePlatformPage() {
-  return (
-  <main className={styles.container_main}>
-
-  </main>
-);
+  redirect("/painel/gerenciar-plataforma/usuarios");
 }

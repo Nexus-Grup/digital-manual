@@ -37,14 +37,14 @@
     border: 2px dashed var(--c-border); 
     border-radius: 12px; 
     background: transparent; 
-    color: #555; 
+    color: var(--pn-text, #555); 
     font: inherit; 
     font-size: 0.85rem; 
     cursor: pointer; 
 }
 .drop:hover, .dragging { 
     border-color: var(--btn-primary-bg); 
-    background: #f4f9ff; 
+    background: var(--pn-hover, #f4f9ff); 
 }
 .btn:focus-visible, .drop:focus-visible, .remove:focus-visible { 
     outline: 3px solid var(--btn-focus-ring); 
@@ -65,7 +65,7 @@
     max-width: 220px; 
     padding: 4px 6px 4px 10px; 
     border-radius: 50px; 
-    background: #eef1f4; 
+    background: var(--pn-surface, #eef1f4); 
     font-size: 0.8rem; 
 }
 .name { 
@@ -80,14 +80,14 @@
     border: 0; 
     border-radius: 50%; 
     background: transparent; 
-    color: #333; 
+    color: var(--pn-text, #333); 
     cursor: pointer; 
 }
 .remove:hover { 
-    background: #d9dde2; 
+    background: var(--pn-hover, #d9dde2); 
 }
 .error { 
     margin: 0; 
-    color: #b42318; 
+    color: var(--pn-danger, #b42318); 
     font-size: 0.8rem; 
 }

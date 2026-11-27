@@ -2,10 +2,14 @@ import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import { UsersSelects, UsersSearch } from "@/_components/userPanelComponents/managen/UsersFilters";
 import Link from "next/link";
-import { Filter, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { UsersStats } from "@/_components/userPanelComponents/managen/UsersStats";
 import { UsersTable } from "@/_components/userPanelComponents/managen/UsersTable";
 import styles from "@/_styles/cssUserPanelPage/UsersPage.module.css";
+
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Usuários da plataforma" };
 
 const NEW_USER_HREF = "/painel/gerenciar-plataforma/usuarios/novo";
 
@@ -31,7 +35,7 @@ async function Toolbar() {
 
 export default function UsersPage({ searchParams }: { searchParams: SearchParams }) {
   return (
-    <section className={styles.page}>
+    <main id="conteudo" className={styles.page}>
       <h1 className={styles.title}>Usuários da plataforma</h1>
       <p className={styles.subtitle}>Gerencie os perfis da sua plataforma.</p>
 
@@ -39,7 +43,7 @@ export default function UsersPage({ searchParams }: { searchParams: SearchParams
         <Toolbar />
       </Suspense>
 
-      <Suspense fallback={<p className={styles.muted}>Carregando...</p>}>
+      <Suspense fallback={<p className={styles.muted}>Carregando os números...</p>}>
         <UsersStats />
       </Suspense>
 
@@ -47,11 +51,6 @@ export default function UsersPage({ searchParams }: { searchParams: SearchParams
         <Suspense fallback={null}>
           <UsersSearch />
         </Suspense>
-
-        {/* TODO: filtros avançados (ainda sem ação) */}
-        <button type="button" className={styles.filtersButton}>
-          <Filter size={12} aria-hidden /> Filtros
-        </button>
       </div>
 
       <h2 className={styles.sectionTitle}>Todos os usuários da plataforma</h2>
@@ -59,6 +58,6 @@ export default function UsersPage({ searchParams }: { searchParams: SearchParams
       <Suspense fallback={<p className={styles.muted}>Carregando usuários...</p>}>
         <UsersTable searchParams={searchParams} />
       </Suspense>
-    </section>
+    </main>
   );
 }

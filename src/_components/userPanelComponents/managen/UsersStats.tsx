@@ -17,13 +17,13 @@ export async function UsersStats() {
   ];
 
   return (
-    <div className={styles.stats}>
+    <dl className={styles.stats} aria-label="Resumo dos usuários">
       {cards.map((c) => (
         <div key={c.label} className={styles.stat}>
-          <span className={styles.statLabel}>{c.label}</span>
-          <strong className={styles.statValue}>{c.value}</strong>
+          <dt className={styles.statLabel}>{c.label}</dt>
+          <dd className={styles.statValue}>{c.value}</dd>
         </div>
       ))}
-    </div>
+    </dl>
   );
 }

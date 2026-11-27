@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import Link from "next/link";
 import styles from "@/_styles/landingPage/LpMobileMenu.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 
@@ -88,6 +89,12 @@ export default function LpMobileMenu({ links, contact }: LpMobileMenuProps) {
                             </a>
                         </li>
                     ))}
+                    {/* on phones the header has no room for the account icon: login lives here (always listed) */}
+                    <li>
+                        <Link className={styles["lp-mobile-menu__link"]} href="/entrar" onClick={() => setOpen(false)}>
+                            Entrar na sua conta
+                        </Link>
+                    </li>
                 </ul>
                 <md-filled-button
                     className={`${buttonStyles["md-button"]} ${styles["lp-mobile-menu__cta"]}`}

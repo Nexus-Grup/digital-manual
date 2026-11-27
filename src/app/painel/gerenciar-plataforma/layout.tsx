@@ -19,11 +19,11 @@ export default async function ManagePlatformLayout({
   }
 
   return (
-    <main className="container-global-page">
+    <div className="container-global-page">
       <div className="container-stage">
         <ManagePlatformSidebar />  
         {children}
       </div>
-    </main>
+    </div>
   );
 }

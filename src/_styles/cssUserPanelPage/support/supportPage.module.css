@@ -18,12 +18,12 @@
     font-family: var(--type-display);
 }
 .subtitle {
-    color: #444; 
+    color: var(--pn-text, #444); 
 }
 .crumb { 
     display: inline-block; 
     margin-bottom: 8px; 
-    color: #444; 
+    color: var(--pn-text, #444); 
     font-size: 0.875rem; 
     text-decoration: none; 
 }
@@ -67,7 +67,7 @@
 .card { 
   border: 1px solid var(--c-border); 
   border-radius: 16px; 
-  background: #fff; 
+  background: var(--pn-bg, #fff); 
   padding: 20px; 
 }
 .cardTitle { 
@@ -78,7 +78,7 @@
 .cardText { 
     margin: 0 0 12px; 
     line-height: 1.5; 
-    color: #333; 
+    color: var(--pn-text, #333); 
 }
 @media (max-width: 900px) { 
     .page { 

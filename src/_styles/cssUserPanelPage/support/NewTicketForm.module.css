@@ -15,8 +15,8 @@
     padding: 8px 14px; 
     border: 1px solid var(--c-border); 
     border-radius: 10px; 
-    background: #fff; 
-    color: #111; 
+    background: var(--pn-bg, #fff); 
+    color: var(--pn-text, #111); 
     font: inherit; 
     font-size: 0.9rem; 
 }
@@ -37,12 +37,12 @@
 }
 .hint {
      margin: 0; 
-     color: #666; 
+     color: var(--pn-text, #666); 
      font-size: 0.8rem; 
 }
 .error { 
     margin: 0; 
-    color: #b42318; 
+    color: var(--pn-danger, #b42318); 
     font-size: 0.875rem; 
 }
 .actions { 

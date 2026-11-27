@@ -56,7 +56,8 @@ export default function LanguageMenu() {
     };
 
     const current = LANGUAGES.find((l) => l.code === state.lang) ?? LANGUAGES[0];
-    const triggerLabel = `Idioma: ${current.name}. Alterar idioma`;
+    // starts with the visible code ("PT-BR"), so voice commands like "clicar PT-BR" work (WCAG 2.5.3)
+    const triggerLabel = `${current.short}: idioma ${current.name}. Alterar idioma`;
     const busy = state.status === "downloading" || state.status === "translating";
     const statusText =
         state.status === "downloading"

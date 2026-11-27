@@ -57,9 +57,10 @@ export function StepTechnical({ product, onProgress, ref }: StepProps) {
 
   return (
     <div className={styles.stack}>
+      <p className={styles.requiredNote}>Campos com * são obrigatórios. Ao adicionar uma especificação, informe o tipo e o valor.</p>
       <div className={styles.field}>
-        <label htmlFor={`${uid}-title`}>Título da ficha técnica</label>
-        <input id={`${uid}-title`} className={styles.input} placeholder="ex.: Especificações do produto" value={title} maxLength={160} onChange={(e) => setTitle(e.target.value)} />
+        <label htmlFor={`${uid}-title`}>Título da ficha técnica *</label>
+        <input id={`${uid}-title`} className={styles.input} placeholder="ex.: Especificações do produto" value={title} maxLength={160} required aria-required="true" onChange={(e) => setTitle(e.target.value)} />
       </div>
       <div className={styles.field}>
         <label htmlFor={`${uid}-desc`}>Descrição</label>
@@ -68,7 +69,7 @@ export function StepTechnical({ product, onProgress, ref }: StepProps) {
 
       <div className={styles.row3}>
         <div className={styles.field}><label htmlFor={`${uid}-mat`}>Material</label><input id={`${uid}-mat`} className={styles.input} placeholder="ex.: Aço" value={material} maxLength={120} onChange={(e) => setMaterial(e.target.value)} /></div>
-        <div className={styles.field}><label htmlFor={`${uid}-dim`}>Dimensões</label><input id={`${uid}-dim`} className={styles.input} placeholder="L x W x H" value={dimensions} maxLength={120} onChange={(e) => setDimensions(e.target.value)} /></div>
+        <div className={styles.field}><label htmlFor={`${uid}-dim`}>Dimensões</label><input id={`${uid}-dim`} className={styles.input} placeholder="C x L x A (ex.: 30 x 10 x 25 cm)" value={dimensions} maxLength={120} onChange={(e) => setDimensions(e.target.value)} /></div>
         <div className={styles.field}><label htmlFor={`${uid}-w`}>Peso</label><input id={`${uid}-w`} className={styles.input} placeholder="ex.: 1,8 kg" value={weight} maxLength={40} onChange={(e) => setWeight(e.target.value)} /></div>
       </div>
 
@@ -79,7 +80,7 @@ export function StepTechnical({ product, onProgress, ref }: StepProps) {
         </div>
         <div className={styles.row3}>
           <div className={styles.field}>
-            <label htmlFor={`${uid}-sn`}>Especificação</label>
+            <label htmlFor={`${uid}-sn`}>Especificação *</label>
             <select id={`${uid}-sn`} className={styles.select} value={name} onChange={(e) => { setName(e.target.value); setUnit(''); }}>
               <option value="">Selecione a especificação</option>
               {Object.keys(SPEC_TYPES).map((n) => <option key={n} value={n}>{specTypeLabel(n)}</option>)}
@@ -93,8 +94,8 @@ export function StepTechnical({ product, onProgress, ref }: StepProps) {
             </select>
           </div>
           <div className={styles.field}>
-            <label htmlFor={`${uid}-sv`}>Valor</label>
-            <input id={`${uid}-sv`} className={styles.input} placeholder="e.g. 220" value={value} maxLength={80} onChange={(e) => setValue(e.target.value)} />
+            <label htmlFor={`${uid}-sv`}>Valor *</label>
+            <input id={`${uid}-sv`} className={styles.input} placeholder="ex.: 220" value={value} maxLength={80} onChange={(e) => setValue(e.target.value)} />
           </div>
         </div>
 

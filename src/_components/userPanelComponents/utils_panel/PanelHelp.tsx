@@ -76,7 +76,7 @@ const STEPS: Step[] = [
       </>
     ),
     text: 'Enquanto é rascunho, o manual não aparece para o público. Ao publicar, ele passa a abrir pelo QR Code e pela busca do site. Para tirar do ar, use Voltar para rascunho no mesmo lugar.',
-    tip: 'Publique só depois de chegar a 100%, para o cliente encontrar o manual completo.',
+    tip: 'O botão Publicar produto só fica disponível com o cadastro em 100%; antes disso, o painel mostra o que falta preencher.',
   },
 ];
 

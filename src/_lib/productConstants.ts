@@ -133,3 +133,19 @@ export const labelOf = (list: readonly Opt[], value?: string | null) =>
 /** Lista de valores no formato que o z.enum() pede. */
 export const tuple = <T extends readonly { value: string }[]>(list: T) =>
   list.map((o) => o.value) as [T[number]['value'], ...T[number]['value'][]];
+
+// Wizard steps that count for the completion (same names as the wizard). Used to explain what is
+// still missing before a product can be published.
+export const STEP_KEY_LABELS = {
+  media: 'Imagens e mídias',
+  technical: 'Informações técnicas',
+  manuals: 'Manuais e documentos',
+  guides: 'Guias e conteúdo do produto',
+  qr: 'QR Codes',
+} as const;
+
+/** Names of the steps without content yet (empty when the product is at 100%). */
+export const missingSteps = (steps: Record<keyof typeof STEP_KEY_LABELS, boolean>) =>
+  (Object.keys(STEP_KEY_LABELS) as (keyof typeof STEP_KEY_LABELS)[])
+    .filter((key) => !steps[key])
+    .map((key) => STEP_KEY_LABELS[key]);

@@ -865,6 +865,17 @@
     }
 }
 
+/* scroll reveal: same rise, no fade (a half-transparent card on screen would fail text contrast) */
+@keyframes home-rise-scroll {
+    from {
+        transform: translateY(32px);
+    }
+
+    to {
+        transform: none;
+    }
+}
+
 /* the LCP image only scales (no opacity), so it is painted right away */
 @keyframes home-zoom {
     from {
@@ -1008,7 +1019,8 @@
        scroll-driven animations just show them */
     @supports (animation-timeline: view()) {
         .home-reveal {
-            animation: home-rise linear both;
+            /* movement only: the cards stay fully opaque while visible (WCAG 1.4.3) */
+            animation: home-rise-scroll linear both;
             animation-timeline: view();
             animation-range: entry 5% cover 30%;
         }

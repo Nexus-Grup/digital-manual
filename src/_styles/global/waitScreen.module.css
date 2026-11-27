@@ -84,3 +84,17 @@
   font: 800 var(--size) / 1.1 var(--font);
   letter-spacing: -0.01em;
 }
+/* WCAG 2.3.3: "reduce motion" in the system -> no waving, blinking or sliding (the component also
+   skips the typing and shows the brand name at once) */
+@media (prefers-reduced-motion: reduce) {
+  /* same selector as the waving rule above, so it wins */
+  .waving .armL,
+  .caret {
+    animation: none;
+  }
+
+  .box,
+  .stage {
+    transition: none;
+  }
+}

@@ -1,10 +1,31 @@
 /* "Pergunte ao Lucca" tab of the side panel: the log scrolls, the form stays at the bottom */
 .chat {
+    position: relative;
+    isolation: isolate; /* the doodle layer (::before) stays behind the content */
     display: flex;
     flex-direction: column;
     flex: 1;
     min-height: 0;
     color: var(--c-text);
+    background: var(--chat-bg);
+}
+
+/* WhatsApp-like wallpaper: thin-line doodles (tools, manual, chat) tinted by a token.
+   It is a mask, so each contrast mode picks its own color, and high contrast turns it off.
+   Decorative only: every text sits on a solid surface (bubbles, chips, form). */
+.chat::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-color: var(--chat-doodle);
+    -webkit-mask-image: url("/patterns/lucca-chat-doodles.svg");
+    mask-image: url("/patterns/lucca-chat-doodles.svg");
+    -webkit-mask-size: 240px 240px;
+    mask-size: 240px 240px;
+    -webkit-mask-repeat: repeat;
+    mask-repeat: repeat;
 }
 
 .chat__sr-only {
@@ -42,8 +63,9 @@
 
 .chat__message--lucca {
     align-self: flex-start;
-    background: var(--c-surface);
+    background: var(--c-bg);
     border: 1px solid var(--c-border-soft);
+    box-shadow: var(--c-shadow);
 }
 
 .chat__message--user {
@@ -136,7 +158,9 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 0 16px 12px;
+    padding: 12px 16px;
+    background: var(--c-bg);
+    border-top: 1px solid var(--c-border-soft);
 }
 
 .chat__suggestions-title {
@@ -183,6 +207,7 @@
     display: flex;
     gap: 8px;
     padding: 12px 16px 16px;
+    background: var(--c-bg);
     border-top: 1px solid var(--c-border-soft);
 }
 

@@ -6,6 +6,10 @@ import styles from '@/_styles/cssUserPanelPage/products/Products.module.css'
 
 export const instant = false;
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Produtos" };
+
 type SP = Record<string, string | string[] | undefined>;
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) ?? "";
 
@@ -42,7 +46,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
 
   return (
 
-    <main className={styles.container_main}>
+    <main id="conteudo" className={styles.container_main}>
       <ProductsList
       items={result.items}
       total={result.total}

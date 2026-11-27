@@ -1,6 +1,6 @@
 .card {
-  color: #111;
-  background: #fff;
+  color: var(--pn-text, #111);
+  background: var(--pn-bg, #fff);
   border-radius: 15px;
   flex-direction: column;
   width: 100%;
@@ -8,12 +8,12 @@
   padding: 20px 22px 18px;
   font-size: 13px;
   display: flex;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--pn-border-soft, #e5e5e5);
 }
 
 .header {
   padding-bottom: 12px;
-  border-bottom: 1px solid #c8c8c8;
+  border-bottom: 1px solid var(--pn-border, #c8c8c8);
 }
 
 .title {
@@ -55,9 +55,9 @@
 }
 
 .input {
-  color: #111;
-  background: #fff;
-  border: 1px solid #b5b5b5;
+  color: var(--pn-text, #111);
+  background: var(--pn-bg, #fff);
+  border: 1px solid var(--pn-border, #b5b5b5);
   border-radius: 100px;
   outline: none;
   width: 100%;
@@ -67,12 +67,12 @@
 }
 
 .input::placeholder {
-  color: #aaa;
+  color: var(--pn-text, #747474);
 }
 
 .input:focus-visible {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  border-color: var(--pn-accent, #2563eb);
+  box-shadow: 0 0 0 2px var(--pn-shadow, rgba(37, 99, 235, 0.2));
 }
 
 .fieldset {
@@ -98,23 +98,23 @@
   flex-direction: column;
   gap: 2px;
   padding: 6px 10px;
-  border: 1px solid #b5b5b5;
+  border: 1px solid var(--pn-border, #b5b5b5);
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .accessCard:hover {
-  background: #f7f7f7;
+  background: var(--pn-hover, #f7f7f7);
 }
 
 .accessCardActive {
-  border-color: #111;
-  background: #f4f4f4;
+  border-color: var(--pn-border, #111);
+  background: var(--pn-hover, #f4f4f4);
 }
 
 .accessCard:has(input:focus-visible) {
-  outline: 2px solid #2563eb;
+  outline: 2px solid var(--pn-accent, #2563eb);
   outline-offset: 2px;
 }
 
@@ -130,24 +130,24 @@
 }
 
 .accessDesc {
-  font-size: 10px;
-  color: #999;
+  font-size: 0.75rem;
+  color: var(--pn-text, #737373);
 }
 
 .badge {
   border-radius: 100px;
   padding: 2px 12px;
-  font-size: 11px;
+  font-size: 0.75rem;
 }
 
 .badgeGreen {
-  background: #7ccf8a;
-  color: #111;
+  background: var(--pn-ok-bg, #7ccf8a);
+  color: var(--pn-text, #111);
 }
 
 .badgeGray {
-  background: #d4d4d4;
-  color: #333;
+  background: var(--pn-surface, #d4d4d4);
+  color: var(--pn-text, #333);
 }
 
 /* ---- Company (owner) ---- */
@@ -157,15 +157,17 @@
   gap: 8px;
   height: 35px;
   padding: 0 10px;
-  font-size: 11px;
-  border: 1px solid #b5b5b5;
+  font-size: 0.75rem;
+  border: 1px solid var(--pn-border, #b5b5b5);
   border-radius: 999px;
-  background: #fff;
+  background: var(--pn-bg, #fff);
 }
 
 .companySelect:focus-within {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  /* the native select inside has no outline: the box shows the project focus ring (WCAG 2.4.7) */
+  border-color: var(--btn-focus-ring);
+  outline: 3px solid var(--btn-focus-ring);
+  outline-offset: 2px;
 }
 
 .companyNative {
@@ -173,8 +175,8 @@
   min-width: 0;
   height: 100%;
   padding: 0;
-  font-size: 11px;
-  color: #111;
+  font-size: 0.75rem;
+  color: var(--pn-text, #111);
   background: transparent;
   border: 0;
   outline: none;
@@ -193,13 +195,13 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 10px;
+  font-size: 0.75rem;
   cursor: pointer;
 }
 
 .radio input {
   margin: 0;
-  accent-color: #111;
+  accent-color: var(--pn-text, #111);
 }
 
 /* ---- Password ---- */
@@ -212,13 +214,13 @@
 }
 
 .generate {
-  color: #111;
+  color: var(--pn-text, #111);
   cursor: pointer;
-  background: #f6d98a;
+  background: var(--pn-warn-bg, #f6d98a);
   border: 0;
   border-radius: 100px;
   padding: 3px 17px;
-  font-size: 11px;
+  font-size: 0.75rem;
   position: absolute;
   top: 50%;
   right: 4px;
@@ -226,7 +228,12 @@
 }
 
 .generate:hover {
-  background: #f1cc66;
+  background: var(--pn-warn-bg, #f1cc66);
+}
+
+.generate:focus-visible {
+  outline: 3px solid var(--btn-focus-ring);
+  outline-offset: 2px;
 }
 
 .hint {
@@ -234,7 +241,7 @@
   align-items: center;
   gap: 4px;
   margin: 2px 0 0;
-  font-size: 10px;
+  font-size: 0.75rem;
 }
 
 /* ---- No company (admin) ---- */
@@ -253,7 +260,7 @@
 }
 
 .noCompanyDesc {
-  font-size: 10px;
+  font-size: 0.75rem;
 }
 
 /* ---- Footer ---- */

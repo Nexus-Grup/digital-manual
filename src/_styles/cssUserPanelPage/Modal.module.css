@@ -4,9 +4,9 @@
   margin: auto;
   padding: 0;
   overflow: auto;
-  color: #111;
-  background: #fff;
-  border: 1px solid #b9b9b9;
+  color: var(--pn-text, #111);
+  background: var(--pn-bg, #fff);
+  border: 1px solid var(--pn-border, #b9b9b9);
   border-radius: 12px;
 }
 
@@ -38,7 +38,7 @@
   height: 32px;
   display: grid;
   place-items: center;
-  color: #111;
+  color: var(--pn-text, #111);
   background: transparent;
   border: 0;
   border-radius: 50%;

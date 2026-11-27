@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Package, Pencil } from 'lucide-react';
 import { toast } from 'sonner';
 import styles from '@/_styles/cssUserPanelPage/products/Products.module.css';
-import { CATEGORIES, labelOf } from '@/_lib/productConstants';
+import { CATEGORIES, labelOf, missingSteps } from '@/_lib/productConstants';
 import type { ProductFull } from '@/_lib/productTypes';
 import { ProductModal } from './ProductModal';
 import { api, formatDay } from './productApi';
@@ -27,6 +27,10 @@ export function ProductDetailsModal({ productId, onClose }: { productId: number;
     return () => { alive = false; };
   }, [productId]);
 
+  // publishing needs 100% (the server checks it too); a draft below that explains what is missing
+  const missing = product ? missingSteps(product.progress.steps) : [];
+  const blocked = !!product && product.status !== 'PUBLISHED' && product.progress.completion < 100 && missing.length > 0;
+
   async function toggleStatus() {
     if (!product) return;
     const next = product.status === 'PUBLISHED' ? 'DRAFT' : 'PUBLISHED';
@@ -46,12 +50,25 @@ export function ProductDetailsModal({ productId, onClose }: { productId: number;
         {product?.canEdit && (
           <div className={styles.detailsActions}>
             <Link href={`/painel/produtos/${product.id}/editar`} className={styles.pillBtn}><Pencil size={12} aria-hidden /> Editar produto</Link>
-            <button type="button" className={styles.primaryBtn} onClick={toggleStatus} disabled={busy}>
+            <button
+              type="button"
+              className={styles.primaryBtn}
+              onClick={toggleStatus}
+              disabled={busy || blocked}
+              aria-describedby={blocked ? 'publish-blocked' : undefined}
+            >
               {busy ? 'Salvando...' : product.status === 'PUBLISHED' ? 'Voltar para rascunho' : 'Publicar produto'}
             </button>
           </div>
         )}
       </header>
+
+      {product?.canEdit && blocked && (
+        <p className={styles.publishHint} id="publish-blocked">
+          Para publicar, complete o cadastro ({product.progress.completion}%). Falta preencher: <strong>{missing.join(', ')}</strong>.{' '}
+          <Link className={styles.publishHintLink} href={`/painel/produtos/${product.id}/editar`}>Continuar a edição</Link>
+        </p>
+      )}
 
       {error && <p className={styles.errorText} role="alert">{error}</p>}
       {!product && !error && <p className={styles.muted}>Carregando...</p>}

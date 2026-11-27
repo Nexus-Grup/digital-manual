@@ -8,11 +8,12 @@
     background-color: var(--lp-bg);
     border-bottom: 1px solid var(--lp-border);
 }
-/* Account (login) button: outlined, same 44px size as the other header actions */
+/* Account (login) button: outlined, same 44px size as the other header actions.
+   Phones (< 480px): hidden so the logo keeps its size; "Entrar na sua conta" is in the ☰ menu. */
 .lp-header__account {
     width: 44px;
     height: 44px;
-    display: inline-flex;
+    display: none;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
@@ -49,14 +50,18 @@
     padding-right: 4%;
 }
 
+/* the logo only gives way on very narrow screens, never below 96px */
 .lp-header__brand {
     display: flex;
+    flex: 0 1 auto;
     align-items: center;
+    min-width: 96px;
     min-height: 48px;
 }
 
 .lp-header__logo {
     width: 128px;
+    max-width: 100%;
     height: auto;
     filter: var(--lp-logo-filter);
 }
@@ -80,7 +85,7 @@
     border-radius: 10px;
     color: var(--lp-text);
     font-size: 0.9375rem;
-    /* navigation = body text (JUST Sans Regular); never wraps */
+    /* navigation = body text (Greycliff CF Regular); never wraps */
     font-weight: 400;
     white-space: nowrap;
     text-decoration: none;
@@ -104,6 +109,31 @@
 
 .lp-header__cta {
     display: none;
+}
+
+/* user panel: 6 actions (contrast, language, Libras, notifications, help, profile). On narrow
+   phones the logo gives way so every 44px button still fits; the side menu already names the area. */
+.lp-header__brand--panel {
+    display: none;
+}
+
+.lp-header__actions--panel {
+    gap: 4px;
+    margin-left: auto;
+}
+
+@media (min-width: 480px) {
+    .lp-header__account {
+        display: inline-flex;
+    }
+
+    .lp-header__brand--panel {
+        display: flex;
+    }
+
+    .lp-header__actions--panel {
+        gap: 8px;
+    }
 }
 
 @media (min-width: 768px) {

@@ -6,6 +6,10 @@ import styles from "@/_styles/cssUserPanelPage/EditCompanies.module.css"
 
 export const instant = false;
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Nova empresa" };
+
 export default async function NewCompanyPage() {
   const user = await getCurrentUser();
   if (!user) redirect('/entrar');
@@ -14,8 +18,8 @@ export default async function NewCompanyPage() {
   if (!(await canAccessCompanyArea(user))) notFound();
 
   return (
-    <main className={styles.container_main_page}>
+    <div className={styles.container_main_page}>
         <CompanyForm mode="create" />
-    </main>
+    </div>
   );
 }

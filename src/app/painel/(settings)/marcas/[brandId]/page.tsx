@@ -2,6 +2,10 @@ import { notFound, redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Marca" };
+
 export const instant = false;
 
 export default async function BrandPage({

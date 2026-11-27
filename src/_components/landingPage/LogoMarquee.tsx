@@ -52,7 +52,10 @@ function logoHeight(ratio: number) {
 
 function LogoList({ clone = false }: { clone?: boolean }) {
     return (
-        <ul className={styles["logo-marquee__list"]} aria-hidden={clone || undefined}>
+        <ul
+            className={clone ? `${styles["logo-marquee__list"]} ${styles["logo-marquee__list--clone"]}` : styles["logo-marquee__list"]}
+            aria-hidden={clone || undefined}
+        >
             {BRANDS.map(({ icon, box }) => {
                 const [x, y, width, height] = box;
                 const ratio = width / height;
