@@ -58,6 +58,7 @@
     font-size: 1.125rem;
     font-weight: 800;
     line-height: 1.3;
+    font-family: var(--type-display);
 }
 
 .business__card-text {

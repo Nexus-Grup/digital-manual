@@ -11,10 +11,10 @@ export async function UserTicketsView({ userId }: { userId: number }) {
     <section className={page.page}>
       <header className={page.header}>
         <div>
-          <h1 className={page.title}>My support tickets</h1>
-          <p className={page.subtitle}>Track the status of each request.</p>
+          <h1 className={page.title}>Meus chamados de suporte</h1>
+          <p className={page.subtitle}>Acompanhe o status de cada solicitação.</p>
         </div>
-        <Link href={`${SUPPORT_BASE}/new`} className={page.outlineBtn}>
+        <Link href={`${SUPPORT_BASE}/novo`} className={page.outlineBtn}>
           + Open ticket
         </Link>
       </header>

@@ -24,7 +24,7 @@ export default function ProductCard({ product, categoryLabel, openLabel }: Produ
     const details = [product.brand, product.model].filter(Boolean).join(" · ");
 
     return (
-        <Link className={styles["product-card"]} href={`/products/${product.id}`}>
+        <Link className={styles["product-card"]} href={`/produtos/${product.id}`}>
             {/* product photo when there is one, otherwise the icon of its category (same neutral background for all) */}
             <div className={styles["product-card__media"]}>
                 {product.imgUrl ? (

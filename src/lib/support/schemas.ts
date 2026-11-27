@@ -13,7 +13,7 @@ const category = z.enum(["TECHNICAL_ISSUE", "QUESTION", "OTHER"]);
 
 const attachment = z.object({
   // só aceita arquivos enviados pela nossa rota de upload
-  fileUrl: z.string().trim().refine(isSupportAttachmentUrl, "Invalid attachment"),
+  fileUrl: z.string().trim().refine(isSupportAttachmentUrl, "Anexo inválido"),
   fileName: z.string().trim().min(1).max(120),
   mimeType: z.string().max(100).nullish().transform((v) => v ?? null),
   sizeBytes: z.number().int().nonnegative().nullish().transform((v) => v ?? null),
@@ -21,25 +21,25 @@ const attachment = z.object({
 
 const attachments = z
   .array(attachment)
-  .max(MAX_ATTACHMENTS, `Attach up to ${MAX_ATTACHMENTS} files`)
+  .max(MAX_ATTACHMENTS, `Anexe até ${MAX_ATTACHMENTS} arquivos`)
   .default([]);
 
 const body = z
   .string()
   .trim()
-  .min(1, "Write a message first")
-  .max(LIMITS.bodyMax, `Message can have up to ${LIMITS.bodyMax} characters`);
+  .min(1, "Escreva uma mensagem primeiro")
+  .max(LIMITS.bodyMax, `A mensagem pode ter até ${LIMITS.bodyMax} caracteres`);
 
 export const createTicketInput = z.object({
   title: z
     .string()
     .trim()
-    .min(LIMITS.titleMin, `Subject must have at least ${LIMITS.titleMin} characters`)
-    .max(LIMITS.titleMax, `Subject can have up to ${LIMITS.titleMax} characters`),
+    .min(LIMITS.titleMin, `O assunto precisa ter pelo menos ${LIMITS.titleMin} caracteres`)
+    .max(LIMITS.titleMax, `O assunto pode ter até ${LIMITS.titleMax} caracteres`),
   description: z
     .string()
     .trim()
-    .min(LIMITS.bodyMin, "Describe the problem in a few more words")
+    .min(LIMITS.bodyMin, "Descreva o problema com um pouco mais de detalhes")
     .max(LIMITS.bodyMax),
   about,
   category,
@@ -57,7 +57,7 @@ export const userResolveInput = z.object({ status: z.literal("RESOLVED") });
 
 export const adminUpdateInput = z
   .object({ status: status.optional(), priority: priority.optional() })
-  .refine((v) => v.status || v.priority, "Nothing to update");
+  .refine((v) => v.status || v.priority, "Nada para atualizar");
 
 export const adminMessageInput = z
   .object({

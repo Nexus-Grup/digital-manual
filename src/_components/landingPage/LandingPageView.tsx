@@ -1,6 +1,5 @@
 import styles from "@/_styles/landingPage/LandingPage.module.css";
-import type { Locale } from "@/_i18n/config";
-import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
+import type { ProductSummary } from "@/_data/products";
 import MaterialRegistry from "@/_components/landingPage/MaterialRegistry";
 import LpHeader from "@/_components/landingPage/LpHeader";
 import Hero from "@/_components/landingPage/Hero";
@@ -21,46 +20,44 @@ import LogoMarquee from "@/_components/landingPage/LogoMarquee";
 import ReadAloud from "@/_components/productComponents/ReadAloud";
 
 type LandingPageViewProps = {
-    locale: Locale;
-    dict: Dictionary;
+    /** published products for the catalog section (same list as /products) */
+    products: ProductSummary[];
 };
 
-// Whole landing page for one locale. Server Component: the dictionary stays on the server and
-// client components only receive the strings they render.
-export default function LandingPageView({ locale, dict }: LandingPageViewProps) {
+// Whole landing page (pt-BR). Each section holds its own texts.
+export default function LandingPageView({ products }: LandingPageViewProps) {
     return (
-        // lang on the wrapper so screen readers switch pronunciation (the root <html> stays pt-BR).
         <div className={styles["landing"]}>
             <MaterialRegistry />
-            <LpHeader t={dict.header} menu={dict.mobileMenu} />
-            <main className={styles["landing__main"]}>
-                <Hero t={dict.hero} />
+            <LpHeader />
+            <main id="conteudo" className={styles["landing__main"]}>
+                <Hero />
                 <WaveDivider from="var(--lp-surface)" to="var(--lp-bg)" />
-                <Problem t={dict.problem} />
+                <Problem />
                 <WaveDivider from="var(--lp-bg)" to="var(--lp-surface)" flip />
-                <ImpactCalculator t={dict.calculator} locale={locale} />
+                <ImpactCalculator />
                 <WaveDivider from="var(--lp-surface)" to="var(--lp-bg)" />
-                <Solution t={dict.solution} />
+                <Solution />
                 <WaveDivider from="var(--lp-bg)" to="var(--lp-surface-dark)" accent="var(--lp-brand-blue)" flip />
-                <Accessibility t={dict.accessibility} carousel={dict.carousel} />
+                <Accessibility />
                 <WaveDivider from="var(--lp-surface-dark)" to="var(--lp-bg)" accent="var(--lp-brand-blue)" />
-                <Brand t={dict.brand} />
-                <BrandBand t={dict.brandBand} />
-                <LogoMarquee t={dict.marquee} />
+                <Brand />
+                <BrandBand />
+                <LogoMarquee />
                 <WaveDivider from="var(--lp-bg)" to="var(--lp-surface)" flip />
-                <Sustainability t={dict.sustainability} />
+                <Sustainability />
                 <WaveDivider from="var(--lp-surface)" to="var(--lp-bg)" />
-                <Business t={dict.business} />
+                <Business />
                 <WaveDivider from="var(--lp-bg)" to="var(--lp-surface)" flip />
-                <HowItWorks t={dict.howItWorks} />
+                <HowItWorks />
                 <WaveDivider from="var(--lp-surface)" to="var(--lp-bg)" />
-                <Catalog t={dict.catalog} carousel={dict.carousel} />
+                <Catalog products={products} />
                 <WaveDivider from="var(--lp-bg)" to="var(--lp-surface-dark)" accent="var(--lp-brand-blue)" flip />
-                <Contact t={dict.contact} />
+                <Contact />
             </main>
-            <LpFooter t={dict.footer} />
+            <LpFooter />
             {/* Select any text to get a speaker button that reads it aloud in the page language. */}
-            <ReadAloud lang={locale} labels={dict.readAloud} />
+            <ReadAloud lang="pt-BR" />
         </div>
     );
 }

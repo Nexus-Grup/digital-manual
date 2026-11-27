@@ -19,11 +19,11 @@ export type MembershipRowProps = {
   roleClassName: string;
   entity: 'company' | 'brand';
   details: { label: string; value: string }[];
-  /** Link da tela de edição. Se vier vazio, o item "Edit" não aparece. */
+  /** Link da tela de edição. Se vier vazio, o item "Editar" não aparece. */
   editHref?: string | null;
   /** DELETE .../members/[meuUserId] */
   leaveUrl: string;
-  /** Se vier preenchido, "Leave" fica desabilitado e o texto é mostrado ao usuário. */
+  /** Se vier preenchido, "Sair" fica desabilitado e o texto é mostrado ao usuário. */
   leaveBlockedReason?: string | null;
 };
 
@@ -40,6 +40,8 @@ export function ProfileMembershipRow({
   leaveBlockedReason,
 }: MembershipRowProps) {
   const router = useRouter();
+  // pt-BR words for the entity: "a empresa" / "a marca" (both feminine)
+  const entityName = entity === 'company' ? 'empresa' : 'marca';
   const [panel, setPanel] = useState<Panel>(null);
   const [busy, setBusy] = useState(false);
   const [coords, setCoords] = useState({ top: 0, right: 0 });
@@ -114,7 +116,7 @@ export function ProfileMembershipRow({
       toast.error(err);
       return;
     }
-    toast.success(`You left ${title}.`);
+    toast.success(`Você saiu de ${title}.`);
     setPanel(null);
     router.refresh();
   }
@@ -132,7 +134,7 @@ export function ProfileMembershipRow({
           ref={btnRef}
           type="button"
           className={styles.kebab}
-          aria-label={`Actions for ${title}`}
+          aria-label={`Ações de ${title}`}
           aria-expanded={panel !== null}
           onClick={() => setPanel(panel ? null : 'menu')}
         >
@@ -145,7 +147,7 @@ export function ProfileMembershipRow({
           {panel === 'menu' && (
             <>
               <button type="button" className={styles.panelItem} onClick={() => setPanel('details')}>
-                <User size={14} aria-hidden /> View details
+                <User size={14} aria-hidden /> Ver detalhes
               </button>
 
               {editHref && (
@@ -154,7 +156,7 @@ export function ProfileMembershipRow({
                   className={`${styles.panelItem} ${page.menuLink}`}
                   onClick={() => setPanel(null)}
                 >
-                  <Pencil size={14} aria-hidden /> Edit {entity}
+                  <Pencil size={14} aria-hidden /> Editar {entityName}
                 </Link>
               )}
 
@@ -166,7 +168,7 @@ export function ProfileMembershipRow({
                 disabled={!!leaveBlockedReason}
                 onClick={() => setPanel('leave')}
               >
-                <LogOut size={14} aria-hidden /> Leave {entity}
+                <LogOut size={14} aria-hidden /> Sair da {entityName}
               </button>
               {leaveBlockedReason && <p className={styles.panelSmall}>{leaveBlockedReason}</p>}
             </>
@@ -175,8 +177,8 @@ export function ProfileMembershipRow({
           {panel === 'details' && (
             <>
               <div className={styles.panelHeader}>
-                <p className={styles.panelTitle}>Details</p>
-                <button type="button" className={styles.closeMini} onClick={() => setPanel(null)} aria-label="Close">
+                <p className={styles.panelTitle}>Detalhes</p>
+                <button type="button" className={styles.closeMini} onClick={() => setPanel(null)} aria-label="Fechar">
                   <X size={14} />
                 </button>
               </div>
@@ -194,20 +196,20 @@ export function ProfileMembershipRow({
           {panel === 'leave' && (
             <>
               <p className={styles.panelTitle}>
-                <TriangleAlert size={15} className={styles.warn} aria-hidden /> Leave {entity}?
+                <TriangleAlert size={15} className={styles.warn} aria-hidden /> Sair da {entityName}?
               </p>
               <p className={styles.panelText}>
-                Are you sure you want to leave <strong>{title}</strong>?
+                Tem certeza de que deseja sair de <strong>{title}</strong>?
               </p>
               <p className={styles.panelSmall}>
-                Your account will not be deleted. You will only lose your access to this {entity}.
+                Sua conta não será excluída. Você só perderá o acesso a esta {entityName}.
               </p>
               <div className={styles.panelActions}>
                 <button type="button" className={styles.pillBtn} onClick={() => setPanel(null)} disabled={busy}>
-                  Cancel
+                  Cancelar
                 </button>
                 <button type="button" className={styles.dangerBtn} onClick={leave} disabled={busy}>
-                  {busy ? 'Leaving...' : `Leave ${entity}`}
+                  {busy ? 'Saindo...' : `Sair da ${entityName}`}
                 </button>
               </div>
             </>

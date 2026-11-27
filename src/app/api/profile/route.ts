@@ -6,16 +6,16 @@ import { HttpError, handleError, readBody, requireUser } from '@/lib/companyAcce
 
 // Mesmas regras do cadastro de usuário (api/users)
 const profileInput = z.object({
-  firstName: z.string().trim().min(1, 'First name is required').max(80),
-  lastName: z.string().trim().min(1, 'Last name is required').max(80),
+  firstName: z.string().trim().min(1, 'O nome é obrigatório').max(80),
+  lastName: z.string().trim().min(1, 'O sobrenome é obrigatório').max(80),
   userName: z
     .string()
     .trim()
     .toLowerCase()
-    .min(3, 'Username must have at least 3 characters')
+    .min(3, 'O nome de usuário precisa ter pelo menos 3 caracteres')
     .max(40)
-    .regex(/^[a-z0-9._-]+$/, 'Username can only have letters, numbers, dots, dashes and underscores'),
-  email: z.string().trim().toLowerCase().email('Enter a valid email address').max(254),
+    .regex(/^[a-z0-9._-]+$/, 'O nome de usuário só pode ter letras, números, pontos, hifens e sublinhados'),
+  email: z.string().trim().toLowerCase().email('Digite um e-mail válido').max(254),
 });
 
 // PATCH /api/profile  { firstName, lastName, userName, email }
@@ -29,7 +29,7 @@ export async function PATCH(req: Request) {
       await prisma.user.update({ where: { id: me.id }, data });
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
-        throw new HttpError(409, 'Username or email already exists');
+        throw new HttpError(409, 'Nome de usuário ou e-mail já cadastrado');
       }
       throw e;
     }

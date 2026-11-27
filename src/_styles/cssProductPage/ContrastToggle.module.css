@@ -1,5 +1,7 @@
+/* phones: the menu opens under the whole header, 8px from both screen edges (anchored to the sticky header),
+   so it never starts off screen when its button is not the last one (WCAG 1.4.10) */
 .wrap {
-  position: relative;
+  position: static;
   color: var(--c-text);
 }
 
@@ -31,8 +33,14 @@
 
 /* algum modo ligado: botão destacado */
 .trigger[data-active="true"] {
+  /* the icon (lucide, currentColor) follows the inverse text, so it stays visible on the highlight */
+  color: var(--c-inverse-text);
   background: var(--c-inverse-bg);
   border-color: var(--c-inverse-bg);
+}
+
+.trigger[data-active="true"]:hover {
+  background: var(--c-inverse-bg);
 }
 
 .trigger[data-active="true"] .triggerImg {
@@ -42,10 +50,10 @@
 /* ===== MENU ===== */
 .menu {
   position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
+  top: calc(100% + 4px);
+  right: 8px;
+  left: 8px;
   z-index: 600;
-  width: 230px;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -90,4 +98,17 @@
 .item:focus-visible {
   outline: 2px solid var(--c-accent);
   outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+  .wrap {
+    position: relative;
+  }
+
+  .menu {
+    top: calc(100% + 8px);
+    right: 0;
+    left: auto;
+    width: 230px;
+  }
 }

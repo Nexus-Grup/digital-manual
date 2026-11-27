@@ -29,16 +29,16 @@ export function InboxSelects({ companies, brands }: Props) {
 
   return (
     <div className={styles.selects}>
-      <select className={styles.select} aria-label="Filter by company" value={company} onChange={(e) => set("company", e.target.value)}>
-        <option value="">All companies</option>
+      <select className={styles.select} aria-label="Filtrar por empresa" value={company} onChange={(e) => set("company", e.target.value)}>
+        <option value="">Todas as empresas</option>
         {companies.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
       </select>
-      <select className={styles.select} aria-label="Filter by brand" value={brand} onChange={(e) => set("brand", e.target.value)}>
-        <option value="">All brands</option>
+      <select className={styles.select} aria-label="Filtrar por marca" value={brand} onChange={(e) => set("brand", e.target.value)}>
+        <option value="">Todas as marcas</option>
         {visibleBrands.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
       </select>
-      <select className={styles.select} aria-label="Filter by priority" value={priority} onChange={(e) => set("priority", e.target.value)}>
-        <option value="">Any priority</option>
+      <select className={styles.select} aria-label="Filtrar por prioridade" value={priority} onChange={(e) => set("priority", e.target.value)}>
+        <option value="">Qualquer prioridade</option>
         {PRIORITY_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
     </div>

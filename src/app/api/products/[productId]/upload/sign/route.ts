@@ -18,13 +18,13 @@ export async function POST(req: Request, { params }: Ctx) {
     const body = await req.json().catch(() => null);
     const { kind, fileName, size } = body ?? {};
     if (!isFileKind(kind) || typeof fileName !== 'string' || !Number.isFinite(size) || size <= 0) {
-      throw new HttpError(400, 'Invalid file');
+      throw new HttpError(400, 'Arquivo inválido');
     }
 
     const rule = ruleForName(kind, fileName);
-    if (!rule) throw new HttpError(400, 'This file type is not supported');
+    if (!rule) throw new HttpError(400, 'Este tipo de arquivo não é aceito');
     const max = FILE_KINDS[kind].maxSize;
-    if (size > max) throw new HttpError(400, `The file must be up to ${Math.round(max / 1024 / 1024)} MB`);
+    if (size > max) throw new HttpError(400, `O arquivo pode ter até ${Math.round(max / 1024 / 1024)} MB`);
 
     const safeName = fileName
       .replace(/\.[^.]+$/, '')
@@ -38,7 +38,7 @@ export async function POST(req: Request, { params }: Ctx) {
     const { data, error } = await supabase.storage.from(PRODUCT_BUCKET).createSignedUploadUrl(path);
     if (error || !data) {
       console.error('createSignedUploadUrl failed', error);
-      throw new HttpError(500, 'Could not start the upload');
+      throw new HttpError(500, 'Não foi possível iniciar o envio');
     }
 
     return NextResponse.json({

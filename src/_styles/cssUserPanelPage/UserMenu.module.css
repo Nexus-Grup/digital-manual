@@ -1,16 +1,31 @@
 .wrapper { position: relative; }
 
 .avatarBtn {
-  display: flex;
+  /* same as the landing page's account button (.lp-header__account) */
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  background: #e0e0e0;
-  color: #111;
+  border: 1px solid var(--lp-border);
+  border-radius: 10px;
+  background-color: var(--lp-bg);
+  color: var(--lp-text);
   cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.avatarBtn:hover,
+.avatarBtn[aria-expanded="true"] {
+  border-color: var(--lp-primary);
+  background-color: var(--lp-surface-blue);
+  color: var(--lp-primary);
+}
+
+.avatarBtn:focus-visible {
+  outline: 3px solid var(--lp-primary);
+  outline-offset: 2px;
 }
 
 .dropdown {
@@ -22,24 +37,26 @@
   padding: 8px;
   border: 1px solid var(--c-border);
   border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  background: var(--pn-bg, #fff);
+  box-shadow: 0 8px 24px var(--pn-shadow, rgba(0, 0, 0, 0.12));
 }
 
 .profile { display: flex; align-items: center; gap: 12px; padding: 8px; }
 
 .avatarLg {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 48px;
   height: 48px;
-  border-radius: 50%;
-  background: #e0e0e0;
+  border-radius: 10px;
+  background-color: var(--lp-surface-blue);
+  color: var(--lp-primary);
 }
 
 .name  { margin: 0; font-size: 13px; font-weight: 500; }
-.email { margin: 0; font-size: 12px; color: #777; }
+.email { margin: 0; font-size: 12px; color: var(--pn-text, #747474); }
 
 .row {
   display: flex;
@@ -50,7 +67,7 @@
   border: none;
   border-radius: 8px;
   background: transparent;
-  color: #111;
+  color: var(--pn-text, #111);
   font: inherit;
   font-size: 14px;
   text-decoration: none;
@@ -58,6 +75,6 @@
   box-sizing: border-box;
 }
 
-.row:hover { background: #f5f6fa; }
+.row:hover { background: var(--pn-hover, #f5f6fa); }
 .rowLabel  { flex: 1; text-align: left; }
-.chevron   { color: #888; }
+.chevron   { color: var(--pn-text, #747474); }

@@ -7,14 +7,17 @@ import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
 import luccaWaving from "@/_assets/image/lucca/lucca-waving.png";
 import { CheckIcon } from "@/_components/landingPage/Icons";
-import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 
-// Option values, in the same order as t.volumes.
-const VOLUME_VALUES = ["up-to-10k", "10k-100k", "100k-1m", "over-1m"];
+const VOLUMES = [
+    { value: "up-to-10k", label: "Até 10 mil produtos/ano" },
+    { value: "10k-100k", label: "De 10 mil a 100 mil produtos/ano" },
+    { value: "100k-1m", label: "De 100 mil a 1 milhão de produtos/ano" },
+    { value: "over-1m", label: "Mais de 1 milhão de produtos/ano" },
+];
 
 // B2B lead form. Material fields are form-associated, so native validation blocks invalid submits.
 // TODO: send the lead to a backend (API route or CRM) once it exists.
-export default function Contact({ t }: { t: Dictionary["contact"] }) {
+export default function Contact() {
     const [sent, setSent] = useState(false);
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -30,9 +33,9 @@ export default function Contact({ t }: { t: Dictionary["contact"] }) {
                     <SectionHeading
                         id="contact-title"
                         lucca={luccaWaving}
-                        eyebrow={t.eyebrow}
-                        title={t.title}
-                        text={t.text}
+                        eyebrow="Fale com a gente"
+                        title="Pronto para modernizar a embalagem e o pós-venda dos seus produtos?"
+                        text="Conte um pouco sobre a sua operação. Nosso time prepara uma demonstração com um manual da sua linha de produtos."
                         inverse
                     />
                 </div>
@@ -42,10 +45,10 @@ export default function Contact({ t }: { t: Dictionary["contact"] }) {
                             <span className={styles["contact__success-icon"]}>
                                 <CheckIcon size={32} />
                             </span>
-                            <h3 className={styles["contact__success-title"]}>{t.successTitle}</h3>
-                            <p className={styles["contact__success-text"]}>{t.successText}</p>
+                            <h3 className={styles["contact__success-title"]}>Recebemos seu contato!</h3>
+                            <p className={styles["contact__success-text"]}>Em breve o Time Nexus fala com você pelo e-mail informado.</p>
                             <md-text-button suppressHydrationWarning className={buttonStyles["md-button--text"]} onClick={() => setSent(false)}>
-                                {t.sendAnother}
+                                Enviar outro contato
                             </md-text-button>
                         </div>
                     ) : (
@@ -53,7 +56,7 @@ export default function Contact({ t }: { t: Dictionary["contact"] }) {
                             <md-outlined-text-field
                                 suppressHydrationWarning
                                 className={styles["contact__field"]}
-                                label={t.name}
+                                label="Nome"
                                 name="name"
                                 autocomplete="name"
                                 required
@@ -61,7 +64,7 @@ export default function Contact({ t }: { t: Dictionary["contact"] }) {
                             <md-outlined-text-field
                                 suppressHydrationWarning
                                 className={styles["contact__field"]}
-                                label={t.company}
+                                label="Empresa"
                                 name="company"
                                 autocomplete="organization"
                                 required
@@ -69,7 +72,7 @@ export default function Contact({ t }: { t: Dictionary["contact"] }) {
                             <md-outlined-text-field
                                 suppressHydrationWarning
                                 className={styles["contact__field"]}
-                                label={t.email}
+                                label="E-mail corporativo"
                                 name="email"
                                 type="email"
                                 autocomplete="email"
@@ -78,20 +81,20 @@ export default function Contact({ t }: { t: Dictionary["contact"] }) {
                             <md-outlined-select
                                 suppressHydrationWarning
                                 className={styles["contact__field"]}
-                                label={t.volume}
+                                label="Volume aproximado de produtos por ano"
                                 name="volume"
                                 required
                             >
-                                {VOLUME_VALUES.map((value, index) => (
+                                {VOLUMES.map(({ value, label }) => (
                                     <md-select-option suppressHydrationWarning key={value} value={value}>
-                                        <div slot="headline">{t.volumes[index]}</div>
+                                        <div slot="headline">{label}</div>
                                     </md-select-option>
                                 ))}
                             </md-outlined-select>
                             <md-filled-button suppressHydrationWarning className={`${buttonStyles["md-button"]} ${styles["contact__submit"]}`} type="submit">
-                                {t.submit}
+                                Quero uma demonstração
                             </md-filled-button>
-                            <p className={styles["contact__privacy"]}>{t.privacy}</p>
+                            <p className={styles["contact__privacy"]}>Usamos seus dados apenas para retornar este contato.</p>
                         </form>
                     )}
                 </div>

@@ -1,0 +1,176 @@
+/* "?" help button in the panel header + the step-by-step guide (opened in the shared Modal) */
+
+/* ===== TRIGGER: same 44px outlined square as the header's account button ===== */
+.panel-help__trigger {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--lp-text);
+    background-color: var(--lp-bg);
+    border: 1px solid var(--lp-border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.panel-help__trigger:hover {
+    /* same states as the account button (.lp-header__account) */
+    color: var(--lp-primary);
+    background-color: var(--lp-surface-blue);
+    border-color: var(--lp-primary);
+}
+
+.panel-help__trigger:focus-visible {
+    outline: 3px solid var(--lp-primary);
+    outline-offset: 2px;
+}
+
+/* ===== GUIDE ===== */
+.panel-help {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: var(--c-text);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+}
+
+.panel-help__header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    /* room for the modal's close button */
+    padding-right: 40px;
+}
+
+.panel-help__title {
+    font-family: var(--type-display);
+    font-size: 1.5rem;
+    line-height: 1.2;
+}
+
+.panel-help__lead {
+    color: var(--c-muted);
+}
+
+.panel-help__steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    list-style: none;
+}
+
+.panel-help__step {
+    display: grid;
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px;
+    background-color: var(--c-surface);
+    border: 1px solid var(--c-border-soft);
+    border-radius: 10px;
+}
+
+/* step number in a brand-blue circle (white on #2a72bd = 4.95:1) */
+.panel-help__number {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    font-family: var(--type-display);
+    font-size: 1rem;
+    color: var(--btn-primary-text);
+    background-color: var(--btn-primary-bg);
+    border-radius: 50%;
+}
+
+.panel-help__content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.panel-help__step-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 32px;
+    font-family: var(--type-display);
+    font-size: 1.0625rem;
+    line-height: 1.25;
+}
+
+.panel-help__step-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--btn-tertiary-text);
+}
+
+/* where to click: the exact menu/button names */
+.panel-help__where {
+    font-size: 0.875rem;
+    color: var(--btn-tertiary-text);
+}
+
+.panel-help__inline-icon {
+    display: inline-block;
+    vertical-align: -2px;
+}
+
+.panel-help__text {
+    color: var(--c-text);
+}
+
+.panel-help__tip {
+    padding: 8px 12px;
+    font-size: 0.875rem;
+    color: var(--c-text);
+    background-color: var(--c-bg);
+    border-left: 3px solid var(--lp-green);
+    border-radius: 5px;
+}
+
+.panel-help__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--c-border-soft);
+}
+
+.panel-help__footer-text {
+    font-size: 0.875rem;
+    color: var(--c-muted);
+}
+
+/* tertiary button */
+.panel-help__support {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 12px;
+    margin-left: -12px;
+    font-family: var(--type-display);
+    color: var(--btn-tertiary-text);
+    text-decoration: none;
+    border-radius: 10px;
+}
+
+.panel-help__support:hover {
+    background-color: var(--btn-tertiary-bg-hover);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.panel-help__support:active {
+    background-color: var(--btn-tertiary-bg-active);
+}
+
+.panel-help__support:focus-visible {
+    outline: 3px solid var(--btn-focus-ring);
+    outline-offset: 2px;
+}

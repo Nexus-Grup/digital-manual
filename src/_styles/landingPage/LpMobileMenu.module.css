@@ -96,7 +96,7 @@
     border-bottom: 1px solid var(--lp-border);
     color: var(--lp-text);
     font-size: 1.0625rem;
-    font-weight: 600;
+    font-weight: 400; /* navigation = body text, same as the desktop header */
     text-decoration: none;
 }
 

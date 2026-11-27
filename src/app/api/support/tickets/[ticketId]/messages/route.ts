@@ -17,8 +17,8 @@ export async function POST(req: Request, { params }: Ctx) {
       where: { id, createdById: user.id },
       select: { status: true, assigneeId: true },
     });
-    if (!ticket) throw new HttpError(404, "Ticket not found");
-    if (ticket.status === "CLOSED") throw new HttpError(409, "This ticket is closed. Open a new one");
+    if (!ticket) throw new HttpError(404, "Chamado não encontrado");
+    if (ticket.status === "CLOSED") throw new HttpError(409, "Este chamado está fechado. Abra um novo");
 
     // Resposta do usuário reabre chamado resolvido e tira "aguardando você".
     const nextStatus: TicketStatus | undefined =

@@ -10,14 +10,14 @@
     border: 0; 
     border-radius: 8px; 
     background: transparent; 
-    color: #111; 
+    color: var(--pn-text, #111); 
     cursor: pointer; 
 }
 .trigger:hover { 
-    background: #f0f0f0; 
+    background: var(--pn-hover, #f0f0f0); 
 }
 .trigger:focus-visible, .item:focus-visible { 
-    outline: 2px solid #2f7fd0; 
+    outline: 3px solid var(--btn-focus-ring); 
     outline-offset: 2px; 
 }
 .menu { 
@@ -27,10 +27,10 @@
     z-index: 20; 
     min-width: 180px; 
     padding: 4px; 
-    border: 1px solid #cfcfcf; 
+    border: 1px solid var(--pn-border-soft, #cfcfcf); 
     border-radius: 10px; 
-    background: #fff; 
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); 
+    background: var(--pn-bg, #fff); 
+    box-shadow: 0 4px 16px var(--pn-shadow, rgba(0, 0, 0, 0.12)); 
     text-align: left; 
 }
 .item { 
@@ -40,7 +40,7 @@
     border: 0; 
     border-radius: 6px; 
     background: transparent; 
-    color: #111; 
+    color: var(--pn-text, #111); 
     font: inherit; 
     font-size: 0.85rem; 
     text-align: left; 
@@ -48,7 +48,7 @@
     cursor: pointer; 
 }
 .item:hover { 
-    background: #f3f3f3; 
+    background: var(--pn-hover, #f3f3f3); 
 }
 .item:disabled { 
     opacity: 0.6; 

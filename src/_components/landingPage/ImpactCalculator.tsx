@@ -4,17 +4,26 @@ import { useEffect, useRef, useState } from "react";
 import styles from "@/_styles/landingPage/ImpactCalculator.module.css";
 import SectionHeading from "@/_components/landingPage/SectionHeading";
 import luccaCalculator from "@/_assets/image/lucca/lucca-calculator.png";
-import { format } from "@/_i18n/config";
-import type { Locale } from "@/_i18n/config";
-import type { Dictionary } from "@/_i18n/dictionaries/pt-BR";
 
 // Research assumptions (Time Nexus benchmark): 75 g/m² paper, A4 sheet = 4.68 g, ream = 500 sheets.
 const A4_SHEET_GRAMS = 4.68;
 const SHEETS_PER_REAM = 500;
 
-// Option values (grams per manual / printed share), in the same order as t.manualTypes and t.shares.
-const MANUAL_TYPE_VALUES = ["80", "18.72", "1.5"];
-const PRINTED_SHARE_VALUES = ["0.7", "0.8", "0.9"];
+// Option values: grams per manual and printed share.
+const MANUAL_TYPES = [
+    { value: "80", label: "Eletrodoméstico (34 páginas, 80 g)" },
+    { value: "18.72", label: "Manual compacto (16 páginas, 18,72 g)" },
+    { value: "1.5", label: "Smartphone (folheto, 1,5 g)" },
+];
+const PRINTED_SHARES = [
+    { value: "0.7", label: "70% dos produtos" },
+    { value: "0.8", label: "80% dos produtos" },
+    { value: "0.9", label: "90% dos produtos" },
+];
+
+const integerFormat = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 });
+const decimalFormat = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 2 });
+const plural = new Intl.PluralRules("pt-BR");
 
 type CalculatorState = {
     products: number;
@@ -38,15 +47,7 @@ function toNumber(value: string | undefined, fallback: number) {
     return value !== undefined && value !== "" && Number.isFinite(parsed) && parsed >= 0 ? parsed : fallback;
 }
 
-type ImpactCalculatorProps = {
-    t: Dictionary["calculator"];
-    /** Drives number formatting (1.367.521 in pt-BR, 1,367,521 in en...). */
-    locale: Locale;
-};
-
-export default function ImpactCalculator({ t, locale }: ImpactCalculatorProps) {
-    const integerFormat = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
-    const decimalFormat = new Intl.NumberFormat(locale, { maximumFractionDigits: 2 });
+export default function ImpactCalculator() {
     const [state, setState] = useState<CalculatorState>(INITIAL_STATE);
     const productsRef = useRef<HTMLElement>(null);
     const gramsRef = useRef<HTMLElement>(null);
@@ -83,19 +84,18 @@ export default function ImpactCalculator({ t, locale }: ImpactCalculatorProps) {
     const reams = sheets / SHEETS_PER_REAM;
 
     // Main figure with the unit spelled out ("6,4 toneladas", not "6,4 t"); below 1 ton, kilograms read better.
-    const plural = new Intl.PluralRules(locale);
     const useKilos = tons < 1;
     const weightAmount = useKilos ? totalGrams / 1000 : tons;
     const weightValue =
         weightAmount < 10 && !useKilos ? decimalFormat.format(weightAmount) : integerFormat.format(weightAmount);
     const isOne = plural.select(weightAmount) === "one";
     const weightUnit = useKilos
-        ? isOne ? t.units.kgOne : t.units.kgOther
-        : isOne ? t.units.tonOne : t.units.tonOther;
+        ? isOne ? "quilo" : "quilos"
+        : isOne ? "tonelada" : "toneladas";
 
     const details = [
-        { value: integerFormat.format(sheets), label: t.results[1] },
-        { value: integerFormat.format(reams), label: t.results[2] },
+        { value: integerFormat.format(sheets), label: "folhas A4 equivalentes" },
+        { value: integerFormat.format(reams), label: "resmas de 500 folhas" },
     ];
 
     return (
@@ -105,16 +105,16 @@ export default function ImpactCalculator({ t, locale }: ImpactCalculatorProps) {
                     <SectionHeading
                         id="calculator-title"
                         lucca={luccaCalculator}
-                        eyebrow={t.eyebrow}
-                        title={t.title}
-                        text={t.text}
+                        eyebrow="Calculadora de impacto"
+                        title="Quanto papel a sua empresa deixaria de imprimir?"
+                        text="Informe quantos produtos você vende por ano e veja, com as premissas da nossa pesquisa, o impacto de migrar para o Manual digital."
                     />
                     <form className={styles["impact-calculator__form"]} onSubmit={(event) => event.preventDefault()}>
                         <md-outlined-text-field
                             suppressHydrationWarning
                             ref={productsRef}
                             className={styles["impact-calculator__field"]}
-                            label={t.productsLabel}
+                            label="Produtos vendidos por ano"
                             type="number"
                             min="0"
                             step="1000"
@@ -124,30 +124,30 @@ export default function ImpactCalculator({ t, locale }: ImpactCalculatorProps) {
                         <md-outlined-select
                             ref={gramsRef}
                             className={styles["impact-calculator__field"]}
-                            label={t.manualTypeLabel}
+                            label="Tipo de manual"
                         >
-                            {MANUAL_TYPE_VALUES.map((value, index) => (
+                            {MANUAL_TYPES.map(({ value, label }) => (
                                 <md-select-option
                                     key={value}
                                     value={value}
                                     selected={value === String(INITIAL_STATE.grams) ? "" : undefined}
                                 >
-                                    <div slot="headline">{t.manualTypes[index]}</div>
+                                    <div slot="headline">{label}</div>
                                 </md-select-option>
                             ))}
                         </md-outlined-select>
                         <md-outlined-select
                             ref={shareRef}
                             className={styles["impact-calculator__field"]}
-                            label={t.shareLabel}
+                            label="Produtos que hoje vão com manual impresso"
                         >
-                            {PRINTED_SHARE_VALUES.map((value, index) => (
+                            {PRINTED_SHARES.map(({ value, label }) => (
                                 <md-select-option
                                     key={value}
                                     value={value}
                                     selected={value === String(INITIAL_STATE.share) ? "" : undefined}
                                 >
-                                    <div slot="headline">{t.shares[index]}</div>
+                                    <div slot="headline">{label}</div>
                                 </md-select-option>
                             ))}
                         </md-outlined-select>
@@ -155,7 +155,7 @@ export default function ImpactCalculator({ t, locale }: ImpactCalculatorProps) {
                 </div>
                 <div className={styles["impact-calculator__results"]} aria-live="polite">
                     <p className={styles["impact-calculator__results-title"]}>
-                        {format(t.resultsTitle, { count: integerFormat.format(manuals) })}
+                        {integerFormat.format(manuals)} manuais impressos a menos por ano significam:
                     </p>
                     {/* main result: paper weight, spelled out */}
                     <div className={styles["impact-calculator__highlight"]}>
@@ -163,7 +163,7 @@ export default function ImpactCalculator({ t, locale }: ImpactCalculatorProps) {
                             {weightValue}{" "}
                             <span className={styles["impact-calculator__highlight-unit"]}>{weightUnit}</span>
                         </p>
-                        <p className={styles["impact-calculator__highlight-label"]}>{t.results[0]}</p>
+                        <p className={styles["impact-calculator__highlight-label"]}>de papel a menos por ano</p>
                     </div>
                     {/* equivalences, side by side */}
                     <ul className={styles["impact-calculator__list"]}>
@@ -174,7 +174,10 @@ export default function ImpactCalculator({ t, locale }: ImpactCalculatorProps) {
                             </li>
                         ))}
                     </ul>
-                    <p className={styles["impact-calculator__note"]}>{t.note}</p>
+                    <p className={styles["impact-calculator__note"]}>
+                        Premissas: papel 75 g/m², folha A4 de 4,68 g e manual de 18,72 g a 80 g, conforme o estudo do
+                        Time Nexus. Sem contar capa, perdas de impressão e frete.
+                    </p>
                 </div>
             </div>
         </section>

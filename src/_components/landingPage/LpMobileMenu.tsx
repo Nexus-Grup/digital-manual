@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import Link from "next/link";
 import styles from "@/_styles/landingPage/LpMobileMenu.module.css";
 import buttonStyles from "@/_styles/landingPage/MaterialButton.module.css";
 
@@ -13,15 +14,10 @@ type LpMobileMenuProps = {
     links: NavLink[];
     /** "Fale conosco" button label. */
     contact: string;
-    t: {
-        open: string;
-        close: string;
-        navAria: string;
-    };
 };
 
 // Hamburger menu for tablet and mobile (< 1200px). The panel drops down under the sticky header.
-export default function LpMobileMenu({ links, contact, t }: LpMobileMenuProps) {
+export default function LpMobileMenu({ links, contact }: LpMobileMenuProps) {
     const [open, setOpen] = useState(false);
     const panelId = useId();
     const wrapRef = useRef<HTMLDivElement>(null);
@@ -67,7 +63,7 @@ export default function LpMobileMenu({ links, contact, t }: LpMobileMenuProps) {
                 className={styles["lp-mobile-menu__toggle"]}
                 aria-expanded={open}
                 aria-controls={panelId}
-                aria-label={open ? t.close : t.open}
+                aria-label={open ? "Fechar menu" : "Abrir menu"}
                 onClick={() => setOpen((value) => !value)}
             >
                 <span
@@ -83,7 +79,7 @@ export default function LpMobileMenu({ links, contact, t }: LpMobileMenuProps) {
             <nav
                 id={panelId}
                 className={`${styles["lp-mobile-menu__panel"]} ${open ? styles["lp-mobile-menu__panel--open"] : ""}`}
-                aria-label={t.navAria}
+                aria-label="Menu principal"
             >
                 <ul className={styles["lp-mobile-menu__list"]}>
                     {links.map((link) => (
@@ -93,6 +89,12 @@ export default function LpMobileMenu({ links, contact, t }: LpMobileMenuProps) {
                             </a>
                         </li>
                     ))}
+                    {/* on phones the header has no room for the account icon: login lives here (always listed) */}
+                    <li>
+                        <Link className={styles["lp-mobile-menu__link"]} href="/entrar" onClick={() => setOpen(false)}>
+                            Entrar na sua conta
+                        </Link>
+                    </li>
                 </ul>
                 <md-filled-button
                     className={`${buttonStyles["md-button"]} ${styles["lp-mobile-menu__cta"]}`}

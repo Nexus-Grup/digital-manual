@@ -25,12 +25,12 @@ export function CreateUserModal({ companyId, companyName, onClose, onCreated }: 
       toast.error(err);
       return;
     }
-    toast.success('User created.');
+    toast.success('Usuário criado.');
     onCreated();
   }
 
   return (
-    <Modal label="Create user" onClose={onClose} bare>
+    <Modal label="Criar usuário" onClose={onClose} bare>
       <CreateUserForm
         variant="company"
         companies={[{ id: companyId, name: companyName }]}

@@ -1,28 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Pencil, Plus } from "lucide-react";
 import styles from "@/_styles/cssUserPanelPage/SettingsSidebar.module.css";
 
-const BASE = "/user-panel";
+const BASE = "/painel";
 
 const CONFIG = {
   company: {
-    title: "Company Settings",
-    select: "Select company",
-    edit: "Edit company",
-    create: "New company",
-    base: `${BASE}/companies`,
+    title: "Configurações da empresa",
+    select: "Selecione a empresa",
+    edit: "Editar empresa",
+    create: "Nova empresa",
+    base: `${BASE}/empresas`,
     param: "companyId", // nome da pasta dinâmica: companies/[companyId]
   },
   brand: {
-    title: "Brand Settings",
-    select: "Select brand",
-    edit: "Edit brand",
-    create: "New brand",
-    base: `${BASE}/brands`,
+    title: "Configurações da marca",
+    select: "Selecione a marca",
+    edit: "Editar marca",
+    create: "Nova marca",
+    base: `${BASE}/marcas`,
     param: "brandId", // brands/[brandId]
   },
 } as const;
@@ -74,6 +74,7 @@ export function SettingsSidebar({
   showCompanies,
   showBrands,
 }: Props) {
+  const uid = useId();
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams<Record<string, string | undefined>>();
@@ -108,10 +109,10 @@ export function SettingsSidebar({
 
   // New brand: só ADMIN/OWNER, e só com uma empresa escolhida. Empresas e o resto seguem livres.
   const canCreate = isBrand ? !!currentCompany?.canCreateBrand : true;
-  const newPath = `${cfg.base}/new`;
+  const newPath = `${cfg.base}/nova`; // marcas/nova, empresas/nova
   
   const newHref = newPath;
-  const editHref = selected ? `${cfg.base}/${selected.id}/edit` : null;
+  const editHref = selected ? `${cfg.base}/${selected.id}/editar` : null;
 
   const isNew = pathname === newPath;
   const isEdit = !!editHref && pathname === editHref;
@@ -128,11 +129,12 @@ export function SettingsSidebar({
       return;
     }
     // Se estiver na tela de edição, continua nela ao trocar de item
-    const suffix = pathname.endsWith("/edit") ? "/edit" : "";
+    const suffix = pathname.endsWith("/editar") ? "/editar" : "";
     router.push(`${cfg.base}/${id}${suffix}`);
   }
 
-  const createHint = !companyId ? "Select a company first" : "Only owners can create brands";
+  const createHint = !companyId ? "Selecione uma empresa para criar uma marca." : "Só proprietários da empresa podem criar marcas.";
+  const editHint = selected ? "Você não tem permissão para editar." : `${cfg.select} para editar.`;
 
   return (
     <aside className={styles.sidebar}>
@@ -142,11 +144,11 @@ export function SettingsSidebar({
         {isBrand && (
           <select
             className={styles.select}
-            aria-label="Select company"
+            aria-label="Selecione a empresa"
             value={companyId}
             onChange={onSelectCompany}
           >
-            <option value="">Select company</option>
+            <option value="">Selecione a empresa</option>
             {brandCompanies.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -163,7 +165,7 @@ export function SettingsSidebar({
           disabled={isBrand && !companyId}
         >
           <option value="">
-            {isBrand && companyId && items.length === 0 ? "No brands in this company" : cfg.select}
+            {isBrand && companyId && items.length === 0 ? "Nenhuma marca nesta empresa" : cfg.select}
           </option>
           {items.map((item) => (
             <option key={item.id} value={item.id}>
@@ -182,15 +184,18 @@ export function SettingsSidebar({
             <span>{cfg.edit}</span>
           </Link>
         ) : (
-          <button
-            type="button"
-            className={styles.item}
-            disabled
-            title={selected ? "You don't have permission to edit" : cfg.select}
-          >
-            <Pencil size={14} aria-hidden />
-            <span>{cfg.edit}</span>
-          </button>
+          <>
+            <button
+              type="button"
+              className={styles.item}
+              disabled
+              aria-describedby={`${uid}-edit-hint`}
+            >
+              <Pencil size={14} aria-hidden />
+              <span>{cfg.edit}</span>
+            </button>
+            <p id={`${uid}-edit-hint`} className={styles.hint}>{editHint}</p>
+          </>
         )}
 
         {canCreate ? (
@@ -203,10 +208,13 @@ export function SettingsSidebar({
             <span>{cfg.create}</span>
           </Link>
         ) : (
-          <button type="button" className={styles.item} disabled title={createHint}>
-            <Plus size={14} aria-hidden />
-            <span>{cfg.create}</span>
-          </button>
+          <>
+            <button type="button" className={styles.item} disabled aria-describedby={`${uid}-create-hint`}>
+              <Plus size={14} aria-hidden />
+              <span>{cfg.create}</span>
+            </button>
+            <p id={`${uid}-create-hint`} className={styles.hint}>{createHint}</p>
+          </>
         )}
       </nav>
     </aside>

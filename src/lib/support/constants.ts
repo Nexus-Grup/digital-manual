@@ -5,18 +5,18 @@ import type {
   TicketStatus,
 } from "@prisma/client";
 
-// Mude aqui se o painel do usuário ficar sob outro prefixo (ex.: "/panel/support").
-export const SUPPORT_BASE = "/user-panel/support";
-export const SUPPORT_TEAM_LABEL = "Support team";
+// Mude aqui se o painel do usuário ficar sob outro prefixo (ex.: "/panel/suporte").
+export const SUPPORT_BASE = "/painel/suporte";
+export const SUPPORT_TEAM_LABEL = "Equipe de suporte";
 
 export const LIMITS = { titleMin: 3, titleMax: 120, bodyMin: 10, bodyMax: 5000 } as const;
 
 export const STATUS_LABEL: Record<TicketStatus, string> = {
-  OPEN: "Open",
-  IN_PROGRESS: "In progress",
-  AWAITING_USER: "Awaiting your reply",
-  RESOLVED: "Resolved",
-  CLOSED: "Closed",
+  OPEN: "Aberto",
+  IN_PROGRESS: "Em andamento",
+  AWAITING_USER: "Aguardando sua resposta",
+  RESOLVED: "Resolvido",
+  CLOSED: "Fechado",
 };
 
 export type StatusTone = "blue" | "yellow" | "purple" | "green" | "gray" | "red";
@@ -29,23 +29,23 @@ export const STATUS_TONE: Record<TicketStatus, StatusTone> = {
 };
 
 export const PRIORITY_LABEL: Record<TicketPriority, string> = {
-  LOW: "Low",
-  MEDIUM: "Medium",
-  HIGH: "High",
+  LOW: "Baixa",
+  MEDIUM: "Média",
+  HIGH: "Alta",
 };
 
 export const ABOUT_LABEL: Record<TicketAbout, string> = {
-  PRODUCT: "Product",
-  BRAND: "Brand",
-  COMPANY: "Company",
-  ACCOUNT: "Account and access",
-  OTHER: "Other",
+  PRODUCT: "Produto",
+  BRAND: "Marca",
+  COMPANY: "Empresa",
+  ACCOUNT: "Conta e acesso",
+  OTHER: "Outros",
 };
 
 export const CATEGORY_LABEL: Record<TicketCategory, string> = {
-  TECHNICAL_ISSUE: "Technical issue",
-  QUESTION: "Question",
-  OTHER: "Other",
+  TECHNICAL_ISSUE: "Problema técnico",
+  QUESTION: "Dúvida",
+  OTHER: "Outros",
 };
 
 function toOptions<T extends string>(labels: Record<T, string>) {
@@ -55,12 +55,12 @@ export const ABOUT_OPTIONS = toOptions(ABOUT_LABEL);
 export const PRIORITY_OPTIONS = toOptions(PRIORITY_LABEL);
 export const CATEGORY_OPTIONS = toOptions(CATEGORY_LABEL);
 
-// Filtros da lista (chips). "In progress" inclui os que aguardam resposta do usuário.
+// Filtros da lista (chips). "Em andamento" inclui os que aguardam resposta do usuário.
 export const FILTERS: { key: string; label: string; statuses: readonly TicketStatus[] | null }[] = [
-  { key: "all", label: "All", statuses: null },
-  { key: "open", label: "Open", statuses: ["OPEN"] },
-  { key: "in_progress", label: "In progress", statuses: ["IN_PROGRESS", "AWAITING_USER"] },
-  { key: "resolved", label: "Resolved", statuses: ["RESOLVED", "CLOSED"] },
+  { key: "all", label: "Todos", statuses: null },
+  { key: "open", label: "Aberto", statuses: ["OPEN"] },
+  { key: "in_progress", label: "Em andamento", statuses: ["IN_PROGRESS", "AWAITING_USER"] },
+  { key: "resolved", label: "Resolvido", statuses: ["RESOLVED", "CLOSED"] },
 ];
 
 // ----- Admin e anexos -----
@@ -70,7 +70,7 @@ export const ADMIN_PAGE_SIZE = 20;
 
 export const STATUS_LABEL_ADMIN: Record<TicketStatus, string> = {
   ...STATUS_LABEL,
-  AWAITING_USER: "Awaiting user",
+  AWAITING_USER: "Aguardando usuário",
 };
 export const STATUS_OPTIONS_ADMIN = toOptions(STATUS_LABEL_ADMIN);
 
@@ -81,10 +81,10 @@ export const PRIORITY_TONE: Record<TicketPriority, StatusTone> = {
 };
 
 export const ADMIN_VIEWS = [
-  { key: "all", label: "All" },
-  { key: "unassigned", label: "Unassigned" },
-  { key: "mine", label: "Assigned to me" },
-  { key: "awaiting", label: "Awaiting user" },
+  { key: "all", label: "Todos" },
+  { key: "unassigned", label: "Sem responsável" },
+  { key: "mine", label: "Atribuídos a mim" },
+  { key: "awaiting", label: "Aguardando usuário" },
 ] as const;
 export type AdminView = (typeof ADMIN_VIEWS)[number]["key"];
 

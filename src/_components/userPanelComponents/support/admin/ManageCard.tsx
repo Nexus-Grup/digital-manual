@@ -30,13 +30,13 @@ export function ManageCard({ ticketId, status, priority, assigneeName }: Props) 
       setP(priority);
       return toast.error(res.error);
     }
-    toast.success("Ticket updated");
+    toast.success("Chamado atualizado");
     router.refresh();
   }
 
   return (
     <aside className={page.card}>
-      <h2 className={page.cardTitle}>Manage</h2>
+      <h2 className={page.cardTitle}>Gerenciar</h2>
       <div className={styles.field}>
         <label className={styles.label} htmlFor="manage-status">Status</label>
         <select
@@ -54,7 +54,7 @@ export function ManageCard({ ticketId, status, priority, assigneeName }: Props) 
         </select>
       </div>
       <div className={styles.field}>
-        <label className={styles.label} htmlFor="manage-priority">Priority</label>
+        <label className={styles.label} htmlFor="manage-priority">Prioridade</label>
         <select
           id="manage-priority"
           className={styles.select}
@@ -70,9 +70,9 @@ export function ManageCard({ ticketId, status, priority, assigneeName }: Props) 
         </select>
       </div>
       <div className={styles.field}>
-        <span className={styles.label}>Assignee</span>
-        <p className={styles.value}>{assigneeName ?? "Unassigned"}</p>
-        {!assigneeName && <p className={styles.hint}>The first admin to reply takes this ticket.</p>}
+        <span className={styles.label}>Responsável</span>
+        <p className={styles.value}>{assigneeName ?? "Sem responsável"}</p>
+        {!assigneeName && <p className={styles.hint}>O primeiro admin a responder assume este chamado.</p>}
       </div>
     </aside>
   );

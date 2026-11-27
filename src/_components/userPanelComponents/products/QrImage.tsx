@@ -24,7 +24,7 @@ export function QrImage({ value, size = 64, className }: { value: string; size?:
   }, [value, size]);
 
   // eslint-disable-next-line @next/next/no-img-element
-  return src ? <img src={src} alt={`QR Code for ${value}`} width={size} height={size} className={className} /> : <span style={{ width: size, height: size, display: 'inline-block' }} />;
+  return src ? <img src={src} alt={`QR Code de ${value}`} width={size} height={size} className={className} /> : <span style={{ width: size, height: size, display: 'inline-block' }} />;
 }
 
 export async function downloadQrPng(value: string, fileName: string) {

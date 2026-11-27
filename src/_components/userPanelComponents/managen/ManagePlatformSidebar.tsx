@@ -7,13 +7,12 @@ import {
   Building2,
   Tag,
   Package,
-  FileBarChart,
   type LucideIcon,
 } from "lucide-react";
 import styles from "@/_styles/cssUserPanelPage/ManagePlatformSidebar.module.css";
 
-const BASE = "/user-panel";
-const MANAGE = `${BASE}/manage-platform`;
+const BASE = "/painel";
+const MANAGE = `${BASE}/gerenciar-plataforma`;
 
 type NavItem = {
   label: string;
@@ -21,12 +20,13 @@ type NavItem = {
   icon: LucideIcon;
 };
 
+// Only pages that exist: companies, brands and products are managed in their own panel pages
+// (the admin sees all of them there). "Relatórios" comes back when its page exists.
 const NAV_ITEMS: NavItem[] = [
-  { label: "Users", href: `${MANAGE}/users`, icon: User },
-  { label: "Companies", href: `${MANAGE}/companies`, icon: Building2 },
-  { label: "Brands", href: `${MANAGE}/brands`, icon: Tag },
-  { label: "Products", href: `${MANAGE}/products`, icon: Package },
-  { label: "Reports", href: `${MANAGE}/reports`, icon: FileBarChart },
+  { label: "Usuários", href: `${MANAGE}/usuarios`, icon: User },
+  { label: "Empresas", href: `${BASE}/empresas`, icon: Building2 },
+  { label: "Marcas", href: `${BASE}/marcas`, icon: Tag },
+  { label: "Produtos", href: `${BASE}/produtos`, icon: Package },
 ];
 
 export function ManagePlatformSidebar() {
@@ -34,9 +34,12 @@ export function ManagePlatformSidebar() {
 
   return (
     <aside className={styles.sidebar}>
-      <Link href={MANAGE}><header className={styles.header}>Manage Platform</header></Link>
-    
-      <nav className={styles.nav} aria-label="Manage Platform">
+      {/* the area title (a link inside a header, not a header inside a link) */}
+      <header className={styles.header}>
+        <Link href={MANAGE} className={styles.headerLink}>Gerenciar plataforma</Link>
+      </header>
+
+      <nav className={styles.nav} aria-label="Gerenciar plataforma">
         {NAV_ITEMS.map(({ label, href, icon: Icon }) => {
           const isActive = pathname === href || pathname.startsWith(`${href}/`);
 

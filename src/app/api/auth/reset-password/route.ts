@@ -12,7 +12,7 @@ const schema = z.object({
 });
 
 const invalid = () =>
-  NextResponse.json({ error: "Invalid or expired code" }, { status: 400 });
+  NextResponse.json({ error: "Código inválido ou expirado" }, { status: 400 });
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => null);

@@ -4,7 +4,7 @@ import { useId, useImperativeHandle, useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import styles from '@/_styles/cssUserPanelPage/products/ProductWizard.module.css';
-import { SPEC_TYPES } from '@/_lib/productConstants';
+import { SPEC_TYPES, specTypeLabel } from '@/_lib/productConstants';
 import type { Progress, SpecDTO } from '@/_lib/productTypes';
 import { api } from '../productApi';
 import type { StepProps } from './stepTypes';
@@ -26,7 +26,7 @@ export function StepTechnical({ product, onProgress, ref }: StepProps) {
 
   function addSpec(list = specs) {
     if (!name || !value.trim()) {
-      toast.error('Select the specification and enter its value');
+      toast.error('Selecione a especificação e informe o valor');
       return null;
     }
     const next = [...list, { name, unit: unit || null, value: value.trim() }];
@@ -37,7 +37,7 @@ export function StepTechnical({ product, onProgress, ref }: StepProps) {
 
   async function save() {
     if (!title.trim()) {
-      toast.error('Enter the technical sheet title');
+      toast.error('Digite o título da ficha técnica');
       document.getElementById(`${uid}-title`)?.focus();
       return false;
     }
@@ -49,7 +49,7 @@ export function StepTechnical({ product, onProgress, ref }: StepProps) {
     });
     if (!r.ok) return void toast.error(r.error), false;
     onProgress(r.data.progress);
-    toast.success('Technical information saved.');
+    toast.success('Informações técnicas salvas.');
     return true;
   }
 
@@ -57,44 +57,45 @@ export function StepTechnical({ product, onProgress, ref }: StepProps) {
 
   return (
     <div className={styles.stack}>
+      <p className={styles.requiredNote}>Campos com * são obrigatórios. Ao adicionar uma especificação, informe o tipo e o valor.</p>
       <div className={styles.field}>
-        <label htmlFor={`${uid}-title`}>Technical Sheet Title</label>
-        <input id={`${uid}-title`} className={styles.input} placeholder="e.g. Product Specifications" value={title} maxLength={160} onChange={(e) => setTitle(e.target.value)} />
+        <label htmlFor={`${uid}-title`}>Título da ficha técnica *</label>
+        <input id={`${uid}-title`} className={styles.input} placeholder="ex.: Especificações do produto" value={title} maxLength={160} required aria-required="true" onChange={(e) => setTitle(e.target.value)} />
       </div>
       <div className={styles.field}>
-        <label htmlFor={`${uid}-desc`}>Description</label>
-        <textarea id={`${uid}-desc`} className={styles.textarea} placeholder="Technical sheet description ...." value={description} maxLength={2000} onChange={(e) => setDescription(e.target.value)} />
+        <label htmlFor={`${uid}-desc`}>Descrição</label>
+        <textarea id={`${uid}-desc`} className={styles.textarea} placeholder="Descrição da ficha técnica..." value={description} maxLength={2000} onChange={(e) => setDescription(e.target.value)} />
       </div>
 
       <div className={styles.row3}>
-        <div className={styles.field}><label htmlFor={`${uid}-mat`}>Material</label><input id={`${uid}-mat`} className={styles.input} placeholder="e.g. Steel" value={material} maxLength={120} onChange={(e) => setMaterial(e.target.value)} /></div>
-        <div className={styles.field}><label htmlFor={`${uid}-dim`}>Dimensions</label><input id={`${uid}-dim`} className={styles.input} placeholder="L x W x H" value={dimensions} maxLength={120} onChange={(e) => setDimensions(e.target.value)} /></div>
-        <div className={styles.field}><label htmlFor={`${uid}-w`}>Weight</label><input id={`${uid}-w`} className={styles.input} placeholder="e.g. 1.8 kg" value={weight} maxLength={40} onChange={(e) => setWeight(e.target.value)} /></div>
+        <div className={styles.field}><label htmlFor={`${uid}-mat`}>Material</label><input id={`${uid}-mat`} className={styles.input} placeholder="ex.: Aço" value={material} maxLength={120} onChange={(e) => setMaterial(e.target.value)} /></div>
+        <div className={styles.field}><label htmlFor={`${uid}-dim`}>Dimensões</label><input id={`${uid}-dim`} className={styles.input} placeholder="C x L x A (ex.: 30 x 10 x 25 cm)" value={dimensions} maxLength={120} onChange={(e) => setDimensions(e.target.value)} /></div>
+        <div className={styles.field}><label htmlFor={`${uid}-w`}>Peso</label><input id={`${uid}-w`} className={styles.input} placeholder="ex.: 1,8 kg" value={weight} maxLength={40} onChange={(e) => setWeight(e.target.value)} /></div>
       </div>
 
-      <section className={styles.builder} aria-label="Added Specifications">
+      <section className={styles.builder} aria-label="Especificações adicionadas">
         <div className={styles.sectionHead}>
-          <h3 className={styles.addedTitle}>Added Specifications</h3>
-          <button type="button" className={styles.pillBtn} onClick={() => addSpec()}><Plus size={13} aria-hidden /> Add</button>
+          <h3 className={styles.addedTitle}>Especificações adicionadas</h3>
+          <button type="button" className={styles.pillBtn} onClick={() => addSpec()}><Plus size={13} aria-hidden /> Adicionar</button>
         </div>
         <div className={styles.row3}>
           <div className={styles.field}>
-            <label htmlFor={`${uid}-sn`}>Specification Name</label>
+            <label htmlFor={`${uid}-sn`}>Especificação *</label>
             <select id={`${uid}-sn`} className={styles.select} value={name} onChange={(e) => { setName(e.target.value); setUnit(''); }}>
-              <option value="">Select type specification</option>
-              {Object.keys(SPEC_TYPES).map((n) => <option key={n} value={n}>{n}</option>)}
+              <option value="">Selecione a especificação</option>
+              {Object.keys(SPEC_TYPES).map((n) => <option key={n} value={n}>{specTypeLabel(n)}</option>)}
             </select>
           </div>
           <div className={styles.field}>
-            <label htmlFor={`${uid}-su`}>Unit</label>
+            <label htmlFor={`${uid}-su`}>Unidade</label>
             <select id={`${uid}-su`} className={styles.select} value={unit} disabled={!name || units.length === 0} onChange={(e) => setUnit(e.target.value)}>
-              <option value="">{name && units.length === 0 ? 'No unit' : 'Select type Unit'}</option>
+              <option value="">{name && units.length === 0 ? 'Sem unidade' : 'Selecione a unidade'}</option>
               {units.map((u) => <option key={u} value={u}>{u}</option>)}
             </select>
           </div>
           <div className={styles.field}>
-            <label htmlFor={`${uid}-sv`}>Value</label>
-            <input id={`${uid}-sv`} className={styles.input} placeholder="e.g. 220" value={value} maxLength={80} onChange={(e) => setValue(e.target.value)} />
+            <label htmlFor={`${uid}-sv`}>Valor *</label>
+            <input id={`${uid}-sv`} className={styles.input} placeholder="ex.: 220" value={value} maxLength={80} onChange={(e) => setValue(e.target.value)} />
           </div>
         </div>
 
@@ -102,8 +103,8 @@ export function StepTechnical({ product, onProgress, ref }: StepProps) {
           <ul className={styles.addedList}>
             {specs.map((s, i) => (
               <li key={i}>
-                <span className={styles.addedText}><span>{s.name}</span><small>{s.value}{s.unit ? ` ${s.unit}` : ''}</small></span>
-                <button type="button" className={styles.iconBtn} aria-label={`Remove ${s.name}`} onClick={() => setSpecs(specs.filter((_, k) => k !== i))}><Trash2 size={14} aria-hidden /></button>
+                <span className={styles.addedText}><span>{specTypeLabel(s.name)}</span><small>{s.value}{s.unit ? ` ${s.unit}` : ''}</small></span>
+                <button type="button" className={styles.iconBtn} aria-label={`Remover ${specTypeLabel(s.name)}`} onClick={() => setSpecs(specs.filter((_, k) => k !== i))}><Trash2 size={14} aria-hidden /></button>
               </li>
             ))}
           </ul>

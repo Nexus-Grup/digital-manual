@@ -10,20 +10,20 @@ export async function UsersStats() {
   ]);
 
   const cards = [
-    { label: "Total users", value: total },
-    { label: "Active users", value: active },
-    { label: "Pending registration", value: pending },
-    { label: "Unassigned", value: unassigned },
+    { label: "Total de usuários", value: total },
+    { label: "Usuários ativos", value: active },
+    { label: "Cadastro pendente", value: pending },
+    { label: "Sem responsável", value: unassigned },
   ];
 
   return (
-    <div className={styles.stats}>
+    <dl className={styles.stats} aria-label="Resumo dos usuários">
       {cards.map((c) => (
         <div key={c.label} className={styles.stat}>
-          <span className={styles.statLabel}>{c.label}</span>
-          <strong className={styles.statValue}>{c.value}</strong>
+          <dt className={styles.statLabel}>{c.label}</dt>
+          <dd className={styles.statValue}>{c.value}</dd>
         </div>
       ))}
-    </div>
+    </dl>
   );
 }

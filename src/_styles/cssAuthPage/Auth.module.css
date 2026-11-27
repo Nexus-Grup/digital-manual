@@ -20,6 +20,7 @@
 }
 
 .logoText {
+  /* logotype: exempt from WCAG 1.4.3 (brand green kept) */
   font-size: 1.9rem;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -32,6 +33,7 @@
   text-align: center;
   font-size: 1.5rem;
   font-weight: 800;
+  font-family: var(--type-display);
 }
 
 .description {
@@ -88,7 +90,7 @@
 }
 
 .input:focus-visible {
-  border-color: #2b7fd4;
+  border-color: var(--btn-primary-bg);
   box-shadow: 0 0 0 3px rgba(43, 127, 212, 0.2);
 }
 
@@ -124,7 +126,7 @@
 }
 
 .eye:focus-visible {
-  outline: 2px solid #2b7fd4;
+  outline: 3px solid var(--btn-focus-ring);
   outline-offset: -2px;
 }
 
@@ -138,40 +140,48 @@
   font-size: 0.85rem;
 }
 
+/* the whole label is the click/touch target: 44px tall (WCAG 2.5.8) */
 .check {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  min-height: 44px;
   color: #333;
   cursor: pointer;
 }
 
 .check input {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   margin: 0;
   accent-color: #111;
   cursor: pointer;
 }
 
+/* tertiary (text) */
 .link {
-  color: #333;
+  font-weight: 700;
+  color: var(--btn-tertiary-text);
   text-decoration: none;
 }
 
 .link:hover {
-  color: #111;
   text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.link:active {
+  color: var(--btn-secondary-text-active);
 }
 
 .link:focus-visible,
 .back:focus-visible {
-  outline: 2px solid #2b7fd4;
+  outline: 3px solid var(--btn-focus-ring);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* ===== BOTÃO ===== */
+/* ===== BOTÃO (primário, tokens --btn-* em globals.css) ===== */
 .submit {
   width: 100%;
   height: 48px;
@@ -179,29 +189,34 @@
   font-size: 0.95rem;
   font-weight: 700;
   font-family: inherit;
-  color: #fff;
-  background: #111;
-  border: 0;
-  border-radius: 12px;
+  color: var(--btn-primary-text);
+  background: var(--btn-primary-bg);
+  border: 1px solid var(--btn-primary-bg);
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.15s, transform 0.1s;
+  transition: background-color 0.15s, border-color 0.15s, transform 0.1s;
 }
 
 .submit:hover:not(:disabled) {
-  background: #2a2a2a;
+  background: var(--btn-primary-bg-hover);
+  border-color: var(--btn-primary-bg-hover);
 }
 
 .submit:active:not(:disabled) {
+  background: var(--btn-primary-bg-active);
+  border-color: var(--btn-primary-bg-active);
   transform: scale(0.99);
 }
 
 .submit:disabled {
-  background: #6b6b6b;
+  color: var(--btn-disabled-text);
+  background: var(--btn-disabled-bg);
+  border-color: var(--btn-disabled-border);
   cursor: not-allowed;
 }
 
 .submit:focus-visible {
-  outline: 2px solid #2b7fd4;
+  outline: 3px solid var(--btn-focus-ring);
   outline-offset: 3px;
 }
 

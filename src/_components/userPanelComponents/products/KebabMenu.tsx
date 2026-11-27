@@ -1,18 +1,23 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { EllipsisVertical } from 'lucide-react';
 import styles from '@/_styles/cssUserPanelPage/products/Products.module.css';
+import { usePopoverFocus } from '../utils_panel/usePopoverFocus';
 
 /**
  * Botão de três pontinhos que abre um painel FLUTUANTE (position: fixed),
  * então não é cortado por listas com scroll. Mesmo padrão do CompanyUsers.
+ * Teclado: o foco entra no painel ao abrir; Esc fecha e volta ao botão.
  */
 export function KebabMenu({ label, children }: { label: string; children: (close: () => void) => ReactNode }) {
+  const panelId = useId();
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState({ top: 0, right: 0 });
   const btn = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
+
+  usePopoverFocus({ open, panelRef: panel, triggerRef: btn, onClose: () => setOpen(false) });
 
   function toggle() {
     if (open) return setOpen(false);
@@ -33,25 +38,37 @@ export function KebabMenu({ label, children }: { label: string; children: (close
       const t = e.target as Node;
       if (!panel.current?.contains(t) && !btn.current?.contains(t)) setOpen(false);
     };
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
     const onScroll = () => setOpen(false);
     document.addEventListener('mousedown', onDown);
-    document.addEventListener('keydown', onKey);
-    window.addEventListener('scroll', onScroll, true);
+    window.addEventListener('scroll', onScroll, { capture: true, passive: true });
     return () => {
       document.removeEventListener('mousedown', onDown);
-      document.removeEventListener('keydown', onKey);
       window.removeEventListener('scroll', onScroll, true);
     };
   }, [open]);
 
   return (
     <>
-      <button ref={btn} type="button" className={styles.kebab} aria-label={label} aria-expanded={open} onClick={toggle}>
+      <button
+        ref={btn}
+        type="button"
+        className={styles.kebab}
+        aria-label={label}
+        aria-expanded={open}
+        aria-controls={open ? panelId : undefined}
+        onClick={toggle}
+      >
         <EllipsisVertical size={18} aria-hidden />
       </button>
       {open && (
-        <div ref={panel} className={styles.floatingPanel} style={{ top: pos.top, right: pos.right }}>
+        <div
+          ref={panel}
+          id={panelId}
+          role="group"
+          aria-label={label}
+          className={styles.floatingPanel}
+          style={{ top: pos.top, right: pos.right }}
+        >
           {children(() => setOpen(false))}
         </div>
       )}

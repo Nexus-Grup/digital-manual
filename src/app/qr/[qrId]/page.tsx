@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 // Com Cache Components ligado, esta rota le o banco e faz redirect, entao ela precisa ser bloqueante.
 export const instant = false;
 
-// Rota publica (fora do user-panel): /qr/a1b2c3d4e5f6  ->  /products/{productId}
+// Rota publica (fora do painel): /qr/a1b2c3d4e5f6  ->  /produtos/{productId}
 export default async function QrRedirectPage({ params }: { params: Promise<{ qrId: string }> }) {
   const { qrId } = await params;
 
@@ -19,5 +19,5 @@ export default async function QrRedirectPage({ params }: { params: Promise<{ qrI
   // token inexistente ou QR desativado
   if (!qr) notFound();
 
-  redirect(`/products/${qr.productId}`);
+  redirect(`/produtos/${qr.productId}`);
 }

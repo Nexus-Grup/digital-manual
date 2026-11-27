@@ -6,7 +6,7 @@
   --green: #7dc77e;
   --fg: #12161a;
   --muted: #5b6b60;
-  --font: var(--font-brand), Arial, sans-serif;
+  --font: var(--type-body);
 
   position: fixed;
   inset: 0;
@@ -43,7 +43,7 @@
 
 .info { text-align: center; font-family: var(--font); }
 .code { margin: 0; font-size: clamp(3.5rem, 14vw, 7rem); font-weight: 800; line-height: 1; letter-spacing: -0.02em; color: var(--green); }
-.title { margin: 14px 0 0; font-size: clamp(1.2rem, 3.5vw, 1.7rem); font-weight: 700; color: var(--fg); }
+.title { margin: 14px 0 0; font-size: clamp(1.2rem, 3.5vw, 1.7rem); font-weight: 700; color: var(--fg); font-family: var(--type-display); }
 .text { margin: 8px auto 0; max-width: 34ch; font-size: 1rem; line-height: 1.5; color: var(--muted); }
 
 .actions {
@@ -53,21 +53,25 @@
   gap: 14px;
 }
 
-/* Botões no estilo do balão: contorno grosso + sombra dura */
+/* Botões no estilo do balão (contorno grosso + sombra dura) com as cores dos botões do projeto:
+   .btn = primário, .ghost = secundário */
 .btn {
+  min-height: 48px;
   padding: 10px 22px;
-  background: var(--hat);
-  color: var(--ink);
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
   border: 3px solid var(--ink);
-  border-radius: 14px;
+  border-radius: 10px;
   box-shadow: 4px 4px 0 var(--ink);
-  font: 700 1rem / 1.2 var(--font);
+  font: 700 1rem / 1.2 var(--type-display);
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.12s, box-shadow 0.12s;
+  transition: transform 0.12s, box-shadow 0.12s, background-color 0.12s;
 }
-.btn:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
-.btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
-.btn:focus-visible { outline: 3px solid #7dc77e; outline-offset: 3px; }
+.btn:hover { background: var(--btn-primary-bg-hover); transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
+.btn:active { background: var(--btn-primary-bg-active); transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+.btn:focus-visible { outline: 3px solid var(--btn-focus-ring); outline-offset: 3px; }
 
-.ghost { background: var(--paper); }
+.ghost { background: var(--paper); color: var(--btn-secondary-text); }
+.ghost:hover { background: var(--btn-secondary-bg-hover); }
+.ghost:active { background: var(--btn-secondary-bg-active); color: var(--btn-secondary-text-active); }

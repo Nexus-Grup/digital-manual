@@ -7,26 +7,33 @@
 }
 :root {
   --background: #F9FAFB;
+
+  /* "Pergunte ao Lucca" chat: soft brand-blue wall with thin-line doodles (decorative only: text always
+     sits on solid bubbles, so it never changes text contrast) */
+  --chat-bg: #eef4fb;
+  --chat-doodle: rgba(42, 114, 189, 0.16);
   --foreground: #171717;
 
   /* ===== tema padrão ===== */
   --c-bg: #fff;
   --c-text: #111;
   --c-muted: #4a5160;
-  --c-border: #b5b5b5;
+  /* control outlines (buttons, chips, fields): >= 3:1 on white, WCAG 1.4.11 */
+  --c-border: #878e99;
   --c-border-soft: #e3e6ea;
   --c-hover: #f0f2f5;
   --c-active: #d9d9d9;
   --c-surface: #f8f9fb;
   --c-inverse-bg: #111418;
   --c-inverse-text: #fff;
-  --c-accent: #2b7fd4;
-  --c-accent-dark: #1f66b0;
+  /* brand primary blue: white text on it is 4.95:1 (AA); dark variant 6.84:1 */
+  --c-accent: #2a72bd;
+  --c-accent-dark: #1f5c9c;
   --c-on-accent: #fff;
   --c-highlight: #ffe066;
   --c-highlight-soft: #fff3b8;
   --c-on-highlight: #111;
-  --c-ok: #2f8a3f;
+  --c-ok: #1f6b2c; /* brand dark green, 6.57:1 on white */
   --c-warn: #c2410c;
   --c-loading: #4a4a4a;
   /* product pages: green section tag (text >= 4.5:1 on its background) and photo card */
@@ -70,11 +77,38 @@
   --lp-glass-bg: rgba(255, 255, 255, 0.5);
   --lp-glass-border: rgba(255, 255, 255, 0.75);
   --lp-haze: 1;
+
+  /* ===== buttons: 3 levels (brand book blue), every state AA ===== */
+  /* primary: filled brand blue, white text (4.95 / 6.84 / 10.66:1) */
+  --btn-primary-bg: #2a72bd;
+  --btn-primary-bg-hover: #1f5c9c;
+  --btn-primary-bg-active: #163f6e;
+  --btn-primary-text: #ffffff;
+  /* secondary: outlined, dark brand blue text (6.84:1), light blue fill on hover/press */
+  --btn-secondary-border: #2a72bd;
+  --btn-secondary-text: #1f5c9c;
+  --btn-secondary-text-active: #163f6e;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-bg-hover: #eaf3fc;
+  --btn-secondary-bg-active: #d4e6f8;
+  /* tertiary: text only, same blue; fill appears on hover/press */
+  --btn-tertiary-text: #1f5c9c;
+  --btn-tertiary-bg-hover: #eaf3fc;
+  --btn-tertiary-bg-active: #d4e6f8;
+  /* shared */
+  --btn-focus-ring: #1f5c9c;
+  --btn-disabled-bg: #e3e6ea;
+  --btn-disabled-text: #6b7280;
+  --btn-disabled-border: #e3e6ea;
+  /* Material 3 buttons darken with a state layer over the container */
+  --btn-state-layer: #000000;
 }
 
 /* ===== ESCALA DE CINZA: tema cinza escuro + filtro que tira qualquer cor ===== */
 html[data-contrast="gray"] {
   color-scheme: dark;
+  --chat-bg: #1b1b1b;
+  --chat-doodle: rgba(255, 255, 255, 0.09);
   filter: grayscale(1); /* fotos, vídeos e cores fixas viram cinza */
 
   --background: #222;
@@ -84,7 +118,7 @@ html[data-contrast="gray"] {
   --c-text: #f0f0f0;
   --c-muted: #c4c4c4;
   --c-border: #8c8c8c;
-  --c-border-soft: #444;
+  --c-border-soft: #707070; /* 3.1:1 on #222 (WCAG 1.4.11) */
   --c-hover: #333;
   --c-active: #444;
   --c-surface: #222;
@@ -123,7 +157,7 @@ html[data-contrast="gray"] {
   --lp-green-soft: #3a3a3a;
   --lp-yellow: #d9d9d9;
   --lp-yellow-soft: #3a3a3a;
-  --lp-border: #555;
+  --lp-border: #707070;
   --lp-gradient: linear-gradient(90deg, #8c8c8c 0%, #d0d0d0 100%);
   --lp-logo-inverse-filter: brightness(0) invert(1);
   --lp-logo-filter: brightness(0) invert(1);
@@ -137,11 +171,58 @@ html[data-contrast="gray"] {
   --lp-glass-border: rgba(255, 255, 255, 0.2);
   --lp-haze: 0;
   --lp-marquee-logo-color: #f0f0f0;
+
+  /* buttons (grayscale, dark): light gray fill, light outline, light text */
+  --btn-primary-bg: #d0d0d0;
+  --btn-primary-bg-hover: #f0f0f0;
+  --btn-primary-bg-active: #a8a8a8;
+  --btn-primary-text: #1a1a1a;
+  --btn-secondary-border: #d0d0d0;
+  --btn-secondary-text: #f0f0f0;
+  --btn-secondary-text-active: #f0f0f0;
+  --btn-secondary-bg: transparent;
+  --btn-secondary-bg-hover: #333;
+  --btn-secondary-bg-active: #444;
+  --btn-tertiary-text: #f0f0f0;
+  --btn-tertiary-bg-hover: #333;
+  --btn-tertiary-bg-active: #444;
+  --btn-focus-ring: #f0f0f0;
+  --btn-disabled-bg: #333;
+  --btn-disabled-text: #8c8c8c;
+  --btn-disabled-border: #555;
+  --btn-state-layer: #ffffff;
+
+  /* user panel: role tokens of its CSS modules (var(--pn-*, original color)), only defined in the
+     contrast modes, so the default panel keeps its exact colors */
+  --pn-text: #f0f0f0;
+  --pn-muted: #c4c4c4;
+  --pn-on-strong: #1a1a1a;
+  --pn-bg: #222;
+  --pn-surface: #2a2a2a;
+  --pn-hover: #333;
+  --pn-strong: #e6e6e6;
+  --pn-border: #8c8c8c;
+  --pn-border-soft: #707070;
+  --pn-shadow: transparent;
+  --pn-accent: #d0d0d0;
+  --pn-accent-bg: #3a3a3a;
+  --pn-accent-strong: #d0d0d0;
+  --pn-ok: #d0d0d0;
+  --pn-ok-bg: #3a3a3a;
+  --pn-ok-strong: #d0d0d0;
+  --pn-warn: #e6e6e6;
+  --pn-warn-bg: #3a3a3a;
+  --pn-danger: #e6e6e6;
+  --pn-danger-bg: #3a3a3a;
+  --pn-danger-strong: #d0d0d0;
 }
 
 /* ===== ALTO CONTRASTE ===== */
 html[data-contrast="high"] {
   color-scheme: dark;
+  /* high contrast: plain black wall, no doodles (nothing competes with the text) */
+  --chat-bg: #000;
+  --chat-doodle: transparent;
   --background: #000;
   --foreground: #fff;
 
@@ -202,12 +283,56 @@ html[data-contrast="high"] {
   --lp-glass-border: #fff;
   --lp-haze: 0;
   --lp-marquee-logo-color: #fff;
+
+  /* buttons (high contrast): yellow fill with black text, yellow outline, white focus ring */
+  --btn-primary-bg: #ffeb3b;
+  --btn-primary-bg-hover: #ffffff;
+  --btn-primary-bg-active: #c9b800;
+  --btn-primary-text: #000;
+  --btn-secondary-border: #ffeb3b;
+  --btn-secondary-text: #ffeb3b;
+  --btn-secondary-text-active: #ffeb3b;
+  --btn-secondary-bg: #000;
+  --btn-secondary-bg-hover: #1f1f1f;
+  --btn-secondary-bg-active: #333;
+  --btn-tertiary-text: #ffeb3b;
+  --btn-tertiary-bg-hover: #1f1f1f;
+  --btn-tertiary-bg-active: #333;
+  --btn-focus-ring: #fff;
+  --btn-disabled-bg: #000;
+  --btn-disabled-text: #a0a0a0;
+  --btn-disabled-border: #a0a0a0;
+  --btn-state-layer: #ffffff;
+
+  /* user panel (see the gray mode): black surfaces, white text and lines, yellow actions;
+     status colors stay as light text on black, always next to a text label */
+  --pn-text: #fff;
+  --pn-muted: #fff;
+  --pn-on-strong: #000;
+  --pn-bg: #000;
+  --pn-surface: #000;
+  --pn-hover: #1f1f1f;
+  --pn-strong: #fff;
+  --pn-border: #fff;
+  --pn-border-soft: #fff;
+  --pn-shadow: transparent;
+  --pn-accent: #ffeb3b;
+  --pn-accent-bg: #000;
+  --pn-accent-strong: #ffeb3b;
+  --pn-ok: #8dff9f;
+  --pn-ok-bg: #000;
+  --pn-ok-strong: #8dff9f;
+  --pn-warn: #ffeb3b;
+  --pn-warn-bg: #000;
+  --pn-danger: #ffb4a0;
+  --pn-danger-bg: #000;
+  --pn-danger-strong: #ffb4a0;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-brand), Arial, Helvetica, sans-serif;
+  --font-sans: var(--font-body), Arial, Helvetica, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
@@ -218,18 +343,32 @@ html[data-contrast="high"] {
   }
 }
 
-/* Brand typeface on every page (loaded in app/layout.tsx). Only 400 and 700 exist: 500 renders as
-   400 and 600/800 as 700, using the real bold instead of a synthesized one. */
+/*
+ * Typography roles (fonts loaded in app/layout.tsx):
+ *   --type-display  Greycliff CF Bold: titles, eyebrows/tags, highlighted numbers, button labels.
+ *                   Short text only, never paragraphs (WCAG 1.4.8 readability; Nielsen: consistency).
+ *   --type-body     Greycliff CF Regular: everything else (the default on <body>). Regular up to weight 599,
+ *                   Bold from 600, so bold text uses the real bold face (no synthesized bold).
+ * Components use the tokens, never the font names: font-family: var(--type-display);
+ */
+:root {
+  --type-display: var(--font-display), Arial, Helvetica, sans-serif;
+  --type-body: var(--font-body), Arial, Helvetica, sans-serif;
+}
+
 body {
   background: var(--background);
   color: var(--c-text);
-  font-family: var(--font-brand), Arial, Helvetica, sans-serif;
+  font-family: var(--type-body);
   font-synthesis-weight: none;
   text-rendering: optimizeLegibility;
 
-  /* Material 3 web components read the typeface from these tokens */
-  --md-ref-typeface-brand: var(--font-brand), Arial, sans-serif;
-  --md-ref-typeface-plain: var(--font-brand), Arial, sans-serif;
+  /* Material 3: titles/headlines use "brand", body/labels use "plain"; button and chip labels use
+     the display face, like every other button in the project */
+  --md-ref-typeface-brand: var(--type-display);
+  --md-ref-typeface-plain: var(--type-body);
+  --md-sys-typescale-label-large-font: var(--type-display);
+  --md-sys-typescale-label-large-weight: 700;
 
   /* Project corner scale: 5px and 10px, never above 10px. Maps the Material 3 shape scale, so md-*
      components follow it too (buttons default to "full" = pill, which becomes 10px). */
@@ -239,6 +378,69 @@ body {
   --md-sys-shape-corner-large: 10px;
   --md-sys-shape-corner-extra-large: 10px;
   --md-sys-shape-corner-full: 10px;
+
+  /* Material 3 buttons follow the project's 3 levels on every page (and every contrast mode):
+     md-filled-button = primary, md-outlined-button = secondary, md-text-button = tertiary */
+  --md-focus-ring-color: var(--btn-focus-ring);
+  --md-focus-ring-width: 3px;
+
+  --md-filled-button-container-color: var(--btn-primary-bg);
+  --md-filled-button-label-text-color: var(--btn-primary-text);
+  --md-filled-button-hover-label-text-color: var(--btn-primary-text);
+  --md-filled-button-focus-label-text-color: var(--btn-primary-text);
+  --md-filled-button-pressed-label-text-color: var(--btn-primary-text);
+  --md-filled-button-icon-color: var(--btn-primary-text);
+  --md-filled-button-hover-icon-color: var(--btn-primary-text);
+  --md-filled-button-focus-icon-color: var(--btn-primary-text);
+  --md-filled-button-pressed-icon-color: var(--btn-primary-text);
+  --md-filled-button-hover-state-layer-color: var(--btn-state-layer);
+  --md-filled-button-hover-state-layer-opacity: 0.16;
+  --md-filled-button-pressed-state-layer-color: var(--btn-state-layer);
+  --md-filled-button-pressed-state-layer-opacity: 0.32;
+  --md-filled-button-disabled-container-color: var(--btn-disabled-bg);
+  --md-filled-button-disabled-container-opacity: 1;
+  --md-filled-button-disabled-label-text-color: var(--btn-disabled-text);
+  --md-filled-button-disabled-label-text-opacity: 1;
+  --md-filled-button-disabled-icon-color: var(--btn-disabled-text);
+  --md-filled-button-disabled-icon-opacity: 1;
+
+  --md-outlined-button-outline-color: var(--btn-secondary-border);
+  --md-outlined-button-pressed-outline-color: var(--btn-secondary-border);
+  --md-outlined-button-label-text-color: var(--btn-secondary-text);
+  --md-outlined-button-hover-label-text-color: var(--btn-secondary-text);
+  --md-outlined-button-focus-label-text-color: var(--btn-secondary-text);
+  --md-outlined-button-pressed-label-text-color: var(--btn-secondary-text-active);
+  --md-outlined-button-icon-color: var(--btn-secondary-text);
+  --md-outlined-button-hover-icon-color: var(--btn-secondary-text);
+  --md-outlined-button-focus-icon-color: var(--btn-secondary-text);
+  --md-outlined-button-pressed-icon-color: var(--btn-secondary-text-active);
+  --md-outlined-button-hover-state-layer-color: var(--btn-secondary-border);
+  --md-outlined-button-hover-state-layer-opacity: 0.1;
+  --md-outlined-button-pressed-state-layer-color: var(--btn-secondary-border);
+  --md-outlined-button-pressed-state-layer-opacity: 0.2;
+  --md-outlined-button-disabled-outline-color: var(--btn-disabled-border);
+  --md-outlined-button-disabled-outline-opacity: 1;
+  --md-outlined-button-disabled-label-text-color: var(--btn-disabled-text);
+  --md-outlined-button-disabled-label-text-opacity: 1;
+  --md-outlined-button-disabled-icon-color: var(--btn-disabled-text);
+  --md-outlined-button-disabled-icon-opacity: 1;
+
+  --md-text-button-label-text-color: var(--btn-tertiary-text);
+  --md-text-button-hover-label-text-color: var(--btn-tertiary-text);
+  --md-text-button-focus-label-text-color: var(--btn-tertiary-text);
+  --md-text-button-pressed-label-text-color: var(--btn-tertiary-text);
+  --md-text-button-icon-color: var(--btn-tertiary-text);
+  --md-text-button-hover-icon-color: var(--btn-tertiary-text);
+  --md-text-button-focus-icon-color: var(--btn-tertiary-text);
+  --md-text-button-pressed-icon-color: var(--btn-tertiary-text);
+  --md-text-button-hover-state-layer-color: var(--btn-tertiary-text);
+  --md-text-button-hover-state-layer-opacity: 0.1;
+  --md-text-button-pressed-state-layer-color: var(--btn-tertiary-text);
+  --md-text-button-pressed-state-layer-opacity: 0.2;
+  --md-text-button-disabled-label-text-color: var(--btn-disabled-text);
+  --md-text-button-disabled-label-text-opacity: 1;
+  --md-text-button-disabled-icon-color: var(--btn-disabled-text);
+  --md-text-button-disabled-icon-opacity: 1;
 }
 
 /* Smooth scroll for in-page links (landing header nav, "Fale conosco", hero CTAs). Sections already
@@ -280,34 +482,66 @@ body {
     scrollbar-width: thin;
 }
 
-.container-stage{
-  flex-direction: row;
+/* ===== User panel shell (mobile first) =====
+   Phones: everything stacks (panel menu bar, area sidebar, content) and the page scrolls as a whole,
+   so the content gets the full width (WCAG 1.4.10 reflow, no nested scroll areas).
+   From 768px: side by side, each column scrolls on its own (tablet and desktop layout). */
+.container-global--panel {
+  height: auto;
+  min-height: 100vh;
+  min-height: 100dvh;
   justify-content: flex-start;
-  align-items: center;
+}
+
+.container-stage{
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
   width: 100%;
-  height: 100%;
   display: flex;
-  overflow: auto;
 }
 
 .container-global-page{
     width: 100%;
-    height: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
 }
 
 .container-stage-section{
   width: 100%;
-  height: 100%;
   display: flex;
-  overflow: auto;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 24px 16px;
+  box-sizing: border-box;
+  padding: 16px 4%;
+}
+
+@media (min-width: 768px) {
+  .container-global--panel {
+    height: 100vh;
+  }
+
+  .container-stage{
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    overflow: auto;
+  }
+
+  .container-global-page{
+    height: 100%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container-stage-section{
+    height: 100%;
+    overflow: auto;
+    padding: 24px 16px;
+  }
 }
 
 /* Customização detalhada (Chrome, Edge, Safari) */
@@ -317,7 +551,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9; /* Cor do fundo/trilho */
+  background: var(--c-surface); /* Cor do fundo/trilho */
   border-radius: 10px;
 }
 
@@ -356,4 +590,10 @@ html {
 
 html::-webkit-scrollbar {
   display: none;
+}
+
+/* "Pular para o conteúdo" (SkipLink) focuses the page's <main> by script (tabindex="-1"): it is not an
+   interactive control, so no focus ring around the whole page */
+main[tabindex="-1"]:focus {
+  outline: none;
 }

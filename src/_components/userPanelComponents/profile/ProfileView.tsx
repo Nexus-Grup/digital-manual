@@ -20,7 +20,7 @@ export type ProfileUser = {
 
 function formatMemberSince(iso: string) {
   const d = new Date(iso);
-  const month = d.toLocaleString('en-US', { month: 'short', timeZone: 'UTC' }).toUpperCase();
+  const month = d.toLocaleString('pt-BR', { month: 'short', timeZone: 'UTC' }).replace('.', '').toUpperCase();
   return `${month} ${d.getUTCFullYear()}`;
 }
 
@@ -37,7 +37,7 @@ export function ProfileView({
 
   return (
     <div className={page.page}>
-      <section className={page.banner} aria-label="Profile summary">
+      <section className={page.banner} aria-label="Resumo do perfil">
         <div className={page.bannerCover} />
         <div className={page.bannerBody}>
           <div className={page.avatarBig} aria-hidden>{initials}</div>

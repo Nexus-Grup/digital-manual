@@ -18,39 +18,39 @@ export function TicketReplyForm({ ticketId, status }: { ticketId: number; status
   const [uploading, setUploading] = useState(false);
 
   if (status === "CLOSED")
-    return <p className={styles.closed}>This ticket is closed. Open a new ticket if you still need help.</p>;
+    return <p className={styles.closed}>Este chamado está fechado. Abra um novo chamado se ainda precisar de ajuda.</p>;
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
-    if (!body.trim()) return setError("Write a message first.");
+    if (!body.trim()) return setError("Escreva uma mensagem primeiro.");
     setBusy(true);
     const res = await sendReply(ticketId, body, files);
     setBusy(false);
     if (!res.ok) return setError(res.error);
     setBody("");
     setFiles([]);
-    toast.success("Reply sent");
+    toast.success("Resposta enviada");
     router.refresh();
   }
 
   return (
     <form className={styles.form} onSubmit={onSubmit} noValidate>
-      <label className={styles.label} htmlFor="ticket-reply">Your reply</label>
+      <label className={styles.label} htmlFor="ticket-reply">Sua resposta</label>
       <textarea
         id="ticket-reply"
         className={styles.textarea}
         value={body}
         maxLength={LIMITS.bodyMax}
-        placeholder="Write a message"
+        placeholder="Escreva uma mensagem"
         onChange={(e) => setBody(e.target.value)}
       />
-      {status === "RESOLVED" && <p className={styles.hint}>Replying will reopen this ticket.</p>}
+      {status === "RESOLVED" && <p className={styles.hint}>Responder vai reabrir este chamado.</p>}
       {error && <p className={styles.error} role="alert">{error}</p>}
       <div className={styles.actions}>
         <AttachmentPicker files={files} onChange={setFiles} onBusyChange={setUploading} />
         <button type="submit" className={styles.primary} disabled={busy || uploading}>
-          {busy ? "Sending..." : "Send reply"}
+          {busy ? "Enviando..." : "Enviar resposta"}
         </button>
       </div>
     </form>

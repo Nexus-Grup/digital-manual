@@ -10,7 +10,7 @@ export type ProfileCompany = {
   role: 'OWNER' | 'MANAGER' | 'MEMBER';
   /** O servidor decide se o usuário pode abrir a tela de edição */
   canEdit: boolean;
-  /** Ex.: "You are the only owner of this company." (null = pode sair) */
+  /** Ex.: "Você é o único proprietário desta empresa." (null = pode sair) */
   leaveBlockedReason: string | null;
 };
 
@@ -25,16 +25,16 @@ export type ProfileBrand = {
 };
 
 const COMPANY_ROLE = {
-  OWNER: { label: 'Owner', className: styles.roleOwner },
-  MANAGER: { label: 'Manager', className: styles.roleManager },
-  MEMBER: { label: 'Member', className: styles.roleMember },
+  OWNER: { label: 'Proprietário', className: styles.roleOwner },
+  MANAGER: { label: 'Gerente', className: styles.roleManager },
+  MEMBER: { label: 'Membro', className: styles.roleMember },
 } as const;
 
 const BRAND_ROLE = {
-  OWNER: { label: 'Owner', className: styles.roleOwner },
-  MANAGER: { label: 'Manager', className: styles.roleManager },
+  OWNER: { label: 'Proprietário', className: styles.roleOwner },
+  MANAGER: { label: 'Gerente', className: styles.roleManager },
   EDITOR: { label: 'Editor', className: styles.roleMember },
-  VIEWER: { label: 'Viewer', className: extra.roleViewer },
+  VIEWER: { label: 'Visualizador', className: extra.roleViewer },
 } as const;
 
 function SectionHead({ title, subtitle, count }: { title: string; subtitle: string; count: string }) {
@@ -51,15 +51,15 @@ function SectionHead({ title, subtitle, count }: { title: string; subtitle: stri
 
 export function ProfileCompanies({ userId, companies }: { userId: number; companies: ProfileCompany[] }) {
   return (
-    <section className={page.card} aria-label="Companies">
+    <section className={page.card} aria-label="Empresas">
       <SectionHead
-        title="Companies"
-        subtitle="The companies you are part of."
+        title="Empresas"
+        subtitle="As empresas das quais você faz parte."
         count={`${companies.length} ${companies.length === 1 ? 'company' : 'companies'}`}
       />
 
       {companies.length === 0 ? (
-        <p className={page.empty}>You are not part of any company yet.</p>
+        <p className={page.empty}>Você ainda não faz parte de nenhuma empresa.</p>
       ) : (
         <ul className={page.list}>
           {companies.map((c) => (
@@ -71,10 +71,10 @@ export function ProfileCompanies({ userId, companies }: { userId: number; compan
               roleClassName={COMPANY_ROLE[c.role].className}
               entity="company"
               details={[
-                { label: 'Company', value: c.name },
-                { label: 'Your role', value: COMPANY_ROLE[c.role].label },
+                { label: 'Empresa', value: c.name },
+                { label: 'Seu papel', value: COMPANY_ROLE[c.role].label },
               ]}
-              editHref={c.canEdit ? `/user-panel/companies/${c.companyId}/edit` : null}
+              editHref={c.canEdit ? `/painel/empresas/${c.companyId}/editar` : null}
               leaveUrl={`/api/companies/${c.companyId}/members/${userId}`}
               leaveBlockedReason={c.leaveBlockedReason}
             />
@@ -87,15 +87,15 @@ export function ProfileCompanies({ userId, companies }: { userId: number; compan
 
 export function ProfileBrands({ userId, brands }: { userId: number; brands: ProfileBrand[] }) {
   return (
-    <section className={page.card} aria-label="Brands">
+    <section className={page.card} aria-label="Marcas">
       <SectionHead
-        title="Brands"
-        subtitle="The brands you have access to and your role in each."
+        title="Marcas"
+        subtitle="As marcas a que você tem acesso e seu papel em cada uma."
         count={`${brands.length} ${brands.length === 1 ? 'brand' : 'brands'}`}
       />
 
       {brands.length === 0 ? (
-        <p className={page.empty}>You do not have access to any brand yet.</p>
+        <p className={page.empty}>Você ainda não tem acesso a nenhuma marca.</p>
       ) : (
         <ul className={page.list}>
           {brands.map((b) => (
@@ -108,11 +108,11 @@ export function ProfileBrands({ userId, brands }: { userId: number; brands: Prof
               roleClassName={BRAND_ROLE[b.role].className}
               entity="brand"
               details={[
-                { label: 'Brand', value: b.name },
-                { label: 'Company', value: b.companyName },
-                { label: 'Your role', value: BRAND_ROLE[b.role].label },
+                { label: 'Marca', value: b.name },
+                { label: 'Empresa', value: b.companyName },
+                { label: 'Seu papel', value: BRAND_ROLE[b.role].label },
               ]}
-              editHref={b.canEdit ? `/user-panel/brands/${b.brandId}/edit` : null}
+              editHref={b.canEdit ? `/painel/marcas/${b.brandId}/editar` : null}
               leaveUrl={`/api/brands/${b.brandId}/members/${userId}`}
               leaveBlockedReason={b.leaveBlockedReason}
             />

@@ -20,7 +20,7 @@ export function AttachmentPicker({ files, onChange, onBusyChange, variant = "but
 
   async function addFiles(list: FileList | File[]) {
     const picked = Array.from(list).slice(0, MAX_ATTACHMENTS - files.length);
-    if (picked.length === 0) return setError(`You can attach up to ${MAX_ATTACHMENTS} files.`);
+    if (picked.length === 0) return setError(`Você pode anexar até ${MAX_ATTACHMENTS} arquivos.`);
 
     setBusy(true);
     onBusyChange?.(true);
@@ -56,7 +56,7 @@ export function AttachmentPicker({ files, onChange, onBusyChange, variant = "but
         multiple
         accept="image/png,image/jpeg,application/pdf"
         className={styles.input}
-        aria-label="Attach files"
+        aria-label="Anexar arquivos"
         tabIndex={-1}
         onChange={(e) => e.target.files && void addFiles(e.target.files)}
       />
@@ -73,12 +73,12 @@ export function AttachmentPicker({ files, onChange, onBusyChange, variant = "but
           onDragLeave={() => setDragging(false)}
           onDrop={onDrop}
         >
-          <span>{busy ? "Uploading..." : "Drag files or screenshots here, or click to choose"}</span>
-          <span>PNG, JPG or PDF, up to 10 MB each</span>
+          <span>{busy ? "Enviando..." : "Arraste arquivos ou prints para cá, ou clique para escolher"}</span>
+          <span>PNG, JPG ou PDF, até 10 MB cada</span>
         </button>
       ) : (
         <button type="button" className={styles.btn} disabled={busy} onClick={open}>
-          {busy ? "Uploading..." : "Attach file"}
+          {busy ? "Enviando..." : "Anexar arquivo"}
         </button>
       )}
 
@@ -90,7 +90,7 @@ export function AttachmentPicker({ files, onChange, onBusyChange, variant = "but
               <button
                 type="button"
                 className={styles.remove}
-                aria-label={`Remove ${f.fileName}`}
+                aria-label={`Remover ${f.fileName}`}
                 onClick={() => onChange(files.filter((x) => x.fileUrl !== f.fileUrl))}
               >
                 ×

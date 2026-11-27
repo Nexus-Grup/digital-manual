@@ -27,7 +27,7 @@ export async function PATCH(req: Request, { params }: Ctx) {
     const data = await readBody(req, updateBasicInput);
 
     const clash = await prisma.product.findUnique({ where: { code: data.code }, select: { id: true } });
-    if (clash && clash.id !== productId) throw new HttpError(409, 'This SKU / part number is already in use');
+    if (clash && clash.id !== productId) throw new HttpError(409, 'Este SKU / código já está em uso');
 
     await prisma.product.update({
       where: { id: productId },

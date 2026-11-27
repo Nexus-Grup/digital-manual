@@ -7,7 +7,7 @@ const emptyToNull = (v: string | null | undefined) => (v ? v : null);
 const brandRole = z.enum(['EDITOR', 'VIEWER']);
 
 export const brandInput = z.object({
-  name: z.string().trim().min(2, 'Brand name is required').max(120),
+  name: z.string().trim().min(2, 'O nome da marca é obrigatório').max(120),
   description: z.string().trim().max(2000).nullish().transform(emptyToNull),
   // só aceita arquivos enviados pela nossa rota de upload (mesmo bucket dos logos de empresa)
   logoUrl: z
@@ -15,7 +15,7 @@ export const brandInput = z.object({
     .trim()
     .nullish()
     .transform(emptyToNull)
-    .refine((v) => !v || isCompanyLogoUrl(v), 'Invalid logo'),
+    .refine((v) => !v || isCompanyLogoUrl(v), 'Logo inválido'),
 });
 
 export const createBrandInput = brandInput.extend({
